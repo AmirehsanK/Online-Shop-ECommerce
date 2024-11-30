@@ -10,4 +10,8 @@
       <ProjectReference Include="..\IOC\IOC.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="wwwroot\theme-assets\.DS_Store" />
+    </ItemGroup>
+
 </Project>
