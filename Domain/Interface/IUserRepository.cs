@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Account;
+using Domain.ViewModel;
 
 namespace Domain.Interface
 {

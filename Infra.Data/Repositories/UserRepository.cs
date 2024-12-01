@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Account;
 using Domain.Interface;
+using Domain.ViewModel;
 using Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,6 +39,8 @@ namespace Infra.Data.Repositories
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
+       
+     
         public async Task<bool> IsEmailActive(int id)
         {
             var user = await _context.Users.FindAsync(id);
