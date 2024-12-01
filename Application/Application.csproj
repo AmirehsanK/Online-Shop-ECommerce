@@ -10,4 +10,9 @@
       <ProjectReference Include="..\Infra.Data\Infra.Data.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\Interfaces\" />
+      <Folder Include="Services\Impelementation\" />
+    </ItemGroup>
+
 </Project>
