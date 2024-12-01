@@ -1,12 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Application.Services.Interfaces;
+using Domain.ViewModel.User;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Areas.Admin.Controllers
 {
     public class UserController : AdminBaseController
     {
-        public async Task<IActionResult> UserList()
+        #region Ctor
+
+        private readonly IUserService _userService;
+
+        public UserController(IUserService userService)
         {
-            return View();
+            _userService = userService;
+        }
+
+        #endregion
+
+        [HttpGet]
+        public async Task<IActionResult> UserList(UserListViewModel model)
+        {
+            var models = await _userService.GetUserListAsync();
+            return View(models);
         }
     }
 }
