@@ -23,42 +23,31 @@ namespace Infra.Data.Repositories
 
         #endregion
     
-        public async Task<IEnumerable<Users>> GetAll()
+        public async Task<List<Users>> GetAllAsync()
         {
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<Users> GetUserById(int userid)
+        public async Task<Users> GetUserByIdAsync(int userid)
         {
             return await _context.Users.FirstOrDefaultAsync(u=> u.Id==userid);
         }
 
-        public async Task<Users?> GetUserByEmail(string email)
+        public async Task<Users> GetUserByEmailAsync(string email)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public async Task<bool> IsEmailActive(int id)
+
+
+
+        public async Task<bool> IsEmailExistAsync(string email)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user.IsEmailActive == true)
-            {
-                return true;
-            }
-            return false;
+            return await _context.Users.AnyAsync(u => u.Email == email);
+          
         }
 
-        public async Task<bool> IsEmailExist(string email)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-            if (user!=null)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public async Task AddUser(Users user)
+        public async Task AddUserAsync(Users user)
         {
             await _context.Users.AddAsync(user);
         }
@@ -68,7 +57,7 @@ namespace Infra.Data.Repositories
              _context.Update(user);
         }
 
-        public async Task Save()
+        public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }

@@ -9,6 +9,6 @@ namespace Application.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<IEnumerable<UserListViewModel>> GetUserListAsync();
+        Task<List<UserListViewModel>> GetUserListAsync();
     }
 }

@@ -11,19 +11,18 @@ namespace Domain.Entities.Account
     public class Users:BaseEntity
     {
 
-        [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر داشته باشد")]
+        [MaxLength(200)]
         public string? FirstName { get; set; }
 
-        [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر داشته باشد")]
+        [MaxLength(200)]
         public string? LastName { get; set; }
 
-        [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر داشته باشد")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        [DataType(DataType.EmailAddress,ErrorMessage = "ایمیل شما معتبر نیست")]
+        [MaxLength(200)]
+     
         public string Email { get; set; }
-        [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر داشته باشد")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        [DataType(DataType.Password,ErrorMessage = "ایمیل شما معتبر نیست")]
+        [MaxLength(200)]
+
+   
         public string Password { get; set; }
         public string EmailActiveCode { get; set; }
 

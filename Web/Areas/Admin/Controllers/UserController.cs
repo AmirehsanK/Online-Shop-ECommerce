@@ -18,10 +18,24 @@ namespace Web.Areas.Admin.Controllers
         #endregion
 
         [HttpGet]
-        public async Task<IActionResult> UserList(UserListViewModel model)
+        public async Task<IActionResult> UserList()
+        
         {
             var models = await _userService.GetUserListAsync();
             return View(models);
+        }
+
+        [HttpGet]
+
+        public async Task<IActionResult> CreateUser()
+        {
+            return View();
+        }
+        [HttpPost]
+
+        public async Task<IActionResult> CreateUser()
+        {
+            return View();
         }
     }
 }

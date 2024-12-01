@@ -9,19 +9,19 @@ namespace Domain.Interface
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<Users>> GetAll();
+        Task<List<Users>> GetAllAsync();
 
-        Task<Users> GetUserById(int userid);
+        Task<Users> GetUserByIdAsync(int userid);
 
-        Task<Users> GetUserByEmail(string email);
-        Task<bool> IsEmailActive(int id);
+        Task<Users> GetUserByEmailAsync(string email);
+     
 
-        Task<bool> IsEmailExist(string email);
+        Task<bool> IsEmailExistAsync(string email);
 
-        Task AddUser(Users user);
+        Task AddUserAsync(Users user);
         void UpdateUser(Users user);
 
-        Task Save();
+        Task SaveChangesAsync();
 
     }
 }

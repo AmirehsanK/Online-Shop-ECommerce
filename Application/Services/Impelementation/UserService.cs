@@ -23,9 +23,9 @@ namespace Application.Services.Impelementation
 
         #endregion
 
-        public async Task<IEnumerable<UserListViewModel>> GetUserListAsync()
+        public async Task<List<UserListViewModel>> GetUserListAsync()
         {
-            var users = await _userRepository.GetAll();
+            var users = await _userRepository.GetAllAsync();
             return users.Select(u => new UserListViewModel()
             {
                 Id = u.Id,
@@ -36,6 +36,7 @@ namespace Application.Services.Impelementation
                 IsAdmin = u.IsAdmin,
                 IsEmailActive = u.IsEmailActive
             }).ToList();
+
 
         }
     }
