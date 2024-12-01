@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Account;
 using Domain.Interface;
+using Domain.ViewModel;
 using Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
