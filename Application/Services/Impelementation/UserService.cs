@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Application.Services.Interfaces;
 using Domain.Entities.Account;
 using Domain.Interface;
-using Domain.ViewModel.User;
+using Domain.ViewModel.User.Admin;
 
 namespace Application.Services.Impelementation
 {

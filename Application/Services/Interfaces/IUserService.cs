@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.ViewModel.User;
+using Domain.ViewModel.User.Admin;
 
 namespace Application.Services.Interfaces
 {

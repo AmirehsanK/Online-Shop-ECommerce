@@ -1,5 +1,6 @@
 ﻿using Application.Services.Interfaces;
 using Domain.ViewModel.User;
+using Domain.ViewModel.User.Admin;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Areas.Admin.Controllers
@@ -33,7 +34,7 @@ namespace Web.Areas.Admin.Controllers
         }
         [HttpPost]
 
-        public async Task<IActionResult> CreateUser()
+        public async Task<IActionResult> CreateUser(CreateUserViewModel model)
         {
             return View();
         }

@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Domain.ViewModel;
+namespace Domain.ViewModel.User;
 
 public class RegisterUserViewModel
 {
@@ -20,6 +20,6 @@ public class RegisterUserViewModel
     [DataType(dataType: DataType.Password)]
     [Display(Name = "تکرار رمز عبور")]
     [Required(ErrorMessage = "{0} الزامی است")]
-    [Compare("Password",ErrorMessage = "تکرار رمز عبور اشتباه است")]
+    [Compare("Password", ErrorMessage = "تکرار رمز عبور اشتباه است")]
     public string ConfirmPassword { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿
+﻿@model Domain.ViewModel.User.Admin.CreateUserViewModel
 @{
     ViewData["Title"] = "افزودن کاربر";
 }
@@ -12,11 +12,20 @@
         <div class="card-body">
             <form>
                 <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Name</label>
+                    <label class="col-sm-4 col-form-label"asp-for="FirstName" for="basic-icon-default-fullname"></label>
                     <div class="col-sm-10">
                         <div class="input-group input-group-merge">
                             <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                            <input type="text" class="form-control" id="basic-icon-default-fullname" placeholder="John Doe" aria-label="John Doe" aria-describedby="basic-icon-default-fullname2">
+                            <input type="text" class="form-control" id="basic-icon-default-fullname" asp-for="FirstName"   aria-describedby="basic-icon-default-fullname2">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" asp-for="LastName" for="basic-icon-default-fullname"></label>
+                    <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
+                            <input type="text" class="form-control" id="basic-icon-default-fullname" asp-for="LastName"  aria-describedby="basic-icon-default-fullname2">
                         </div>
                     </div>
                 </div>
