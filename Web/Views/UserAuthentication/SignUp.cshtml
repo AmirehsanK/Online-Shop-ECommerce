@@ -1,0 +1,63 @@
+@model Domain.ViewModel.User.RegisterUserViewModel
+@{
+    Layout = "_UserAuthenticationLayout";
+}
+
+<div class="page-wrapper">
+    
+    <main class="page-content page-auth">
+        <!-- start of auth-container -->
+        <div class="auth-container">
+            <div class="auth-title mb-3">ثبت نام</div>
+            <!-- start of auth-box -->
+            <div class="auth-box ui-box">
+                <!-- start of auth-form -->
+                <form asp-action="SignupUser" asp-controller="UserAuthentication" method="post" class="auth-form">
+                    <!-- start of form-element -->
+                    <div class="form-element-row mb-5">
+                        <input asp-for="FirstName" type="text" class="form-control" placeholder="نام">
+                        <span asp-validation-for="FirstName" class="alert-danger"></span>
+                    </div>
+                    <div class="form-element-row mb-5">
+                        <input asp-for="LastName" type="text" class="form-control" placeholder="نام خانوادگی">
+                        <span asp-validation-for="LastName" class="alert-danger"></span>
+                    </div>
+                    <div class="form-element-row mb-5">
+                        <input asp-for="Email" type="text" class="form-control" placeholder="ایمیل">
+                        <span asp-validation-for="Email" class="alert-danger"></span>
+                    </div>
+                    <div class="form-element-row mb-5">
+                        <input asp-for="Password" type="text" class="form-control" placeholder="رمز عبور">
+                        <span asp-validation-for="Password" class="alert-danger"></span>
+                    </div>
+                    <div class="form-element-row mb-5">
+                        <input asp-for="ConfirmPassword" type="text" class="form-control" placeholder="تکرار رمز عبور">
+                        <span asp-validation-for="ConfirmPassword" class="alert-danger"></span>
+                    </div>
+                    <!-- end of form-element -->
+                    <!-- start of form-element -->
+                    <div class="form-element-row mb-3">
+                        <button type="submit" asp-action="SignupUser" class="btn btn-primary">ثبت نام</button>
+                    </div>
+                    <!-- end of form-element -->
+                    <!-- start of form-element -->
+                    <div class="form-element-row">
+                        <div>با ورود و یا ثبت نام در سایت شما <a href="#" class="link">شرایط و
+                                قوانین</a> استفاده
+                            از تمام سرویس های
+                            سایت و <a href="#" class="link">قوانین حریم خصوصی</a> آن را می‌پذیرید.
+                        </div>
+                    </div>
+
+                    <!-- end of form-element -->
+                </form>
+                <!-- end of auth-form -->
+            </div>
+            <!-- end of auth-box -->
+        </div>
+        <!-- start of auth-container -->
+    </main>
+    
+</div>
+
+>

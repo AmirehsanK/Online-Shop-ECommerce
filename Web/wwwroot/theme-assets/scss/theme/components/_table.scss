@@ -3,32 +3,32 @@
 ========================================================================== */
 
 .table {
-    width: 100%;
+  width: 100%;
 
-    th,
+  th,
+  td {
+    text-align: center;
+  }
+
+  tr {
+    vertical-align: middle;
+  }
+
+  thead {
+    th {
+      padding: 10px 20px;
+    }
+  }
+
+  tbody {
     td {
-        text-align: center;
+      padding: 15px 10px;
     }
 
     tr {
-        vertical-align: middle;
+      &:nth-child(2n) {
+        background-color: #f9f9f9;
+      }
     }
-
-    thead {
-        th {
-            padding: 10px 20px;
-        }
-    }
-
-    tbody {
-        td {
-            padding: 15px 10px;
-        }
-
-        tr {
-            &:nth-child(2n) {
-                background-color: #f9f9f9;
-            }
-        }
-    }
+  }
 }

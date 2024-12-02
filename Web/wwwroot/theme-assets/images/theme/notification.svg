@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="180" height="135" viewBox="0 0 180 135">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="180" height="135"
+     viewBox="0 0 180 135">
     <defs>
         <linearGradient id="a" x1="85.573%" x2="0%" y1="49.996%" y2="50.005%">
             <stop offset="0%" stop-color="#A1A3A8"/>
@@ -83,12 +84,15 @@
             <use fill="url(#k)" xlink:href="#j"/>
             <use fill="url(#m)" xlink:href="#l"/>
         </g>
-        <path fill="url(#n)" d="M118.8 122.4H72.9c0-8.947 7.253-16.2 16.2-16.2 5.025 0 9.515 2.288 12.486 5.878a11.648 11.648 0 0 1 5.514-1.378c6.462 0 11.7 5.238 11.7 11.7z" transform="matrix(-1 0 0 1 191.7 0)"/>
+        <path fill="url(#n)"
+              d="M118.8 122.4H72.9c0-8.947 7.253-16.2 16.2-16.2 5.025 0 9.515 2.288 12.486 5.878a11.648 11.648 0 0 1 5.514-1.378c6.462 0 11.7 5.238 11.7 11.7z"
+              transform="matrix(-1 0 0 1 191.7 0)"/>
         <g>
             <use fill="url(#o)" xlink:href="#p"/>
             <use fill="url(#q)" xlink:href="#p"/>
         </g>
         <path fill="url(#h)" d="M80.1 78.3h16.65L80.1 90z"/>
-        <path fill="url(#r)" d="M101.7 122.4H63c0-7.456 6.115-13.5 13.659-13.5 4.236 0 8.022 1.906 10.528 4.898a9.913 9.913 0 0 1 4.648-1.148c5.448 0 9.865 4.365 9.865 9.75z"/>
+        <path fill="url(#r)"
+              d="M101.7 122.4H63c0-7.456 6.115-13.5 13.659-13.5 4.236 0 8.022 1.906 10.528 4.898a9.913 9.913 0 0 1 4.648-1.148c5.448 0 9.865 4.365 9.865 9.75z"/>
     </g>
 </svg>

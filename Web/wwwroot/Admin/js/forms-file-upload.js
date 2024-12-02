@@ -5,9 +5,9 @@
 'use strict';
 
 (function () {
-  // previewTemplate: Updated Dropzone default previewTemplate
-  // ! Don't change it unless you really know what you are doing
-  const previewTemplate = `<div class="dz-preview dz-file-preview">
+    // previewTemplate: Updated Dropzone default previewTemplate
+    // ! Don't change it unless you really know what you are doing
+    const previewTemplate = `<div class="dz-preview dz-file-preview">
 <div class="dz-details">
   <div class="dz-thumbnail">
     <img data-dz-thumbnail>
@@ -24,25 +24,25 @@
 </div>
 </div>`;
 
-  // ? Start your code from here
+    // ? Start your code from here
 
-  // Basic Dropzone
-  // --------------------------------------------------------------------
+    // Basic Dropzone
+    // --------------------------------------------------------------------
 
-  const myDropzone = new Dropzone('#dropzone-basic', {
-    previewTemplate: previewTemplate,
-    parallelUploads: 1,
-    maxFilesize: 5,
-    addRemoveLinks: true,
-    maxFiles: 1
-  });
+    const myDropzone = new Dropzone('#dropzone-basic', {
+        previewTemplate: previewTemplate,
+        parallelUploads: 1,
+        maxFilesize: 5,
+        addRemoveLinks: true,
+        maxFiles: 1
+    });
 
-  // Multiple Dropzone
-  // --------------------------------------------------------------------
-  const dropzoneMulti = new Dropzone('#dropzone-multi', {
-    previewTemplate: previewTemplate,
-    parallelUploads: 1,
-    maxFilesize: 5,
-    addRemoveLinks: true
-  });
+    // Multiple Dropzone
+    // --------------------------------------------------------------------
+    const dropzoneMulti = new Dropzone('#dropzone-multi', {
+        previewTemplate: previewTemplate,
+        parallelUploads: 1,
+        maxFilesize: 5,
+        addRemoveLinks: true
+    });
 })();

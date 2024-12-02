@@ -1,0 +1,45 @@
+@{
+    Layout = "_UserAuthenticationLayout";
+}
+@model Domain.ViewModel.User.LoginUserViewModel
+
+<div class="page-wrapper">
+    <main class="page-content page-auth">
+        <!-- start of auth-container -->
+        <div class="auth-container">
+            <div class="auth-title mb-3">ورود</div>
+            <!-- start of auth-box -->
+            <div class="auth-box ui-box">
+                <!-- start of auth-form -->
+                <form asp-action="UserLogin" asp-controller="UserAuthentication" method="post" class="auth-form">
+                    @Html.AntiForgeryToken()
+                    <!-- start of form-element -->
+                    <div class="form-element-row mb-5">
+                        <input asp-for="Email" type="text" class="form-control" placeholder="شماره موبایل یا ایمیل">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <input asp-for="Password" type="password" class="form-control" placeholder="رمز عبور">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <!-- end of form-element -->
+                    <!-- start of form-element -->
+                    <div class="form-element-row mb-3">
+                        <button type="submit" class="btn btn-primary">ورود</button>
+                    </div>
+                    <!-- end of form-element -->
+                    <!-- start of form-element -->
+                    <div class="form-element-row">
+                        <div>با ورود و یا ثبت نام در سایت شما <a href="#" class="link">شرایط و
+                                قوانین</a> استفاده
+                            از تمام سرویس های
+                            سایت و <a href="#" class="link">قوانین حریم خصوصی</a> آن را می‌پذیرید.
+                        </div>
+                    </div>
+                    <!-- end of form-element -->
+                </form>
+                <!-- end of auth-form -->
+            </div>
+            <!-- end of auth-box -->
+        </div>
+        <!-- end of auth-container -->
+    </main>
+</div>

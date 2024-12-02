@@ -23,8 +23,10 @@
         </linearGradient>
     </defs>
     <g fill="none" fill-rule="evenodd">
-        <path fill="url(#a)" d="M127.8 122.4l-.677.9H40.5l29.106-.9z" filter="url(#b)" transform="matrix(-1 0 0 1 168.3 0)"/>
-        <path fill="url(#c)" d="M134.1 14.4v90.9H71.568c-5.726 0-10.368-4.642-10.368-10.368V14.4h72.9z" transform="matrix(-1 0 0 1 195.3 0)"/>
+        <path fill="url(#a)" d="M127.8 122.4l-.677.9H40.5l29.106-.9z" filter="url(#b)"
+              transform="matrix(-1 0 0 1 168.3 0)"/>
+        <path fill="url(#c)" d="M134.1 14.4v90.9H71.568c-5.726 0-10.368-4.642-10.368-10.368V14.4h72.9z"
+              transform="matrix(-1 0 0 1 195.3 0)"/>
         <path fill="url(#d)" d="M0 0h38.88v3.888H0z" transform="matrix(-1 0 0 1 113.58 26.1)"/>
         <path fill="#A1A3A8" d="M121.356 26.1h-3.888v3.888h3.888z"/>
         <path fill="url(#d)" d="M0 0h38.88v3.888H0z" transform="matrix(-1 0 0 1 113.58 35.172)"/>
@@ -49,6 +51,8 @@
             <path fill="url(#d)" d="M0 0h38.88v3.888H0z" transform="matrix(-1 0 0 1 113.58 89.604)"/>
             <path fill="#A1A3A8" d="M121.356 89.604h-3.888v3.888h3.888z"/>
         </g>
-        <path fill="url(#e)" d="M50.85 91.8h72.45v2.092c0 5.803-4.705 10.508-10.508 10.508H40.5c5.716 0 10.35-4.634 10.35-10.35V91.8z" transform="matrix(-1 0 0 1 163.8 0)"/>
+        <path fill="url(#e)"
+              d="M50.85 91.8h72.45v2.092c0 5.803-4.705 10.508-10.508 10.508H40.5c5.716 0 10.35-4.634 10.35-10.35V91.8z"
+              transform="matrix(-1 0 0 1 163.8 0)"/>
     </g>
 </svg>
