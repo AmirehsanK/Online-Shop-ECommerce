@@ -1,3 +1,5 @@
+@using Domain.ViewModel
+@model RegisterUserViewModel
 <!DOCTYPE html>
 <html lang="fa">
 
@@ -34,7 +36,19 @@
                     <form action="#" class="auth-form">
                         <!-- start of form-element -->
                         <div class="form-element-row mb-5">
-                            <input type="text" class="form-control" placeholder="شماره موبایل یا ایمیل">
+                            <input asp-for="FirstName" type="text" class="form-control" placeholder="نام">
+                        </div>
+                        <div class="form-element-row mb-5">
+                            <input asp-for="LastName" type="text" class="form-control" placeholder="نام خانوادگی">
+                        </div>
+                        <div class="form-element-row mb-5">
+                            <input asp-for="Email" type="text" class="form-control" placeholder="ایمیل">
+                        </div>
+                        <div class="form-element-row mb-5">
+                            <input asp-for="Password" type="text" class="form-control" placeholder="رمز عبور">
+                        </div>
+                        <div class="form-element-row mb-5">
+                            <input asp-for="ConfirmPassword" type="text" class="form-control" placeholder="تکرار رمز عبور">
                         </div>
                         <!-- end of form-element -->
                         <!-- start of form-element -->
@@ -50,6 +64,7 @@
                                 سایت و <a href="#" class="link">قوانین حریم خصوصی</a> آن را می‌پذیرید.
                             </div>
                         </div>
+                        <div asp-validation-summary="All"></div>
                         <!-- end of form-element -->
                     </form>
                     <!-- end of auth-form -->

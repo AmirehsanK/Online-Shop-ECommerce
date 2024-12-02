@@ -25,12 +25,12 @@ namespace Web.Areas.Admin.Controllers
             return View(models);
         }
 
-        [HttpGet]
+        //[HttpGet]
 
-        public async Task<IActionResult> CreateUser()
-        {
-            return View();
-        }
+        //public async Task<IActionResult> CreateUser()
+        //{
+          //  return View();
+        //}
         [HttpPost]
 
         public async Task<IActionResult> CreateUser()
