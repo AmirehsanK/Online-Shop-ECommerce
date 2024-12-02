@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Security;
 using Application.Services.Interfaces;
 using Domain.Entities.Account;
+using Domain.Enums;
 using Domain.Interface;
 using Domain.ViewModel.User.Admin;
 
@@ -37,6 +39,26 @@ namespace Application.Services.Impelementation
                 IsEmailActive = u.IsEmailActive
             }).ToList();
 
+
+        }
+
+        public async Task CreateUserAsync(CreateUserViewModel model)
+        {
+            var user = new Users()
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                Password = PasswordHasher.HashPassword(model.Password),
+                IsAdmin = model.IsAdmin,
+                IsEmailActive = model.IsEmailActive,
+                CreateDate = DateTime.Now,
+                EmailActiveCode = Guid.NewGuid().ToString("N"),
+                IsDeleted = false
+
+            };
+            await _userRepository.AddUserAsync(user);
+            await _userRepository.SaveChangesAsync();
 
         }
     }

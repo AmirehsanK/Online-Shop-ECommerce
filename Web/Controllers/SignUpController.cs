@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Application.Security;
+using Domain.ViewModel.User;
 
 namespace Web.Controllers;
 

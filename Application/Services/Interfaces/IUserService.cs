@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Enums;
 using Domain.ViewModel.User.Admin;
 
 namespace Application.Services.Interfaces
@@ -10,5 +11,6 @@ namespace Application.Services.Interfaces
     public interface IUserService
     {
         Task<List<UserListViewModel>> GetUserListAsync();
+        Task CreateUserAsync(CreateUserViewModel model);
     }
 }
