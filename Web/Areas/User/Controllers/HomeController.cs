@@ -6,11 +6,12 @@ namespace Web.Areas.User.Controllers;
 [Authorize]
 public class HomeController : Controller
 {
-    
+    [Route("User/Home")]
     public IActionResult Index()
     {
         return View();
     }
+    [Route("Failed")]
     [AllowAnonymous]
     public IActionResult Failed()
     {
