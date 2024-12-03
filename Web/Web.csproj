@@ -24,11 +24,15 @@
 
     <ItemGroup>
         <_ContentIncludedByDefault Remove="Pages\SignUp\SignUp.cshtml"/>
+        <_ContentIncludedByDefault Remove="Areas\User\Views\Home\Failed.cshtml" />
+        <_ContentIncludedByDefault Remove="Areas\User\Views\Home\Index.cshtml" />
+        <_ContentIncludedByDefault Remove="Areas\User\Views\_ViewImports.cshtml" />
+        <_ContentIncludedByDefault Remove="Areas\User\Views\_ViewStart.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Areas\User\ViewComponents\" />
-      <Folder Include="Areas\User\Views\Shared\" />
+      <Folder Include="Areas\UserPanel\Data\" />
+      <Folder Include="Areas\UserPanel\Models\" />
       <Folder Include="Views\Dashboard\" />
     </ItemGroup>
 
