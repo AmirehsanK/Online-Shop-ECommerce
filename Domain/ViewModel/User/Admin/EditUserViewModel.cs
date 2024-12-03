@@ -7,21 +7,33 @@ using System.Threading.Tasks;
 
 namespace Domain.ViewModel.User.Admin
 {
-    public class UserListViewModel
+    public class EditUserViewModel
     {
         public int Id { get; set; }
+        [MaxLength(200)]
         [Display(Name = "نام")]
-        [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر داشته باشد")]
+
         public string? FirstName { get; set; }
-        [Display(Name = "نام خانوادگی")]
+
+        [Display(Name = " نام خانوادگی")]
         [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر داشته باشد")]
+
         public string? LastName { get; set; }
+
         [Display(Name = "ایمیل")]
         [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر داشته باشد")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        [DataType(DataType.EmailAddress, ErrorMessage = "ایمیل شما معتبر نیست")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "ایمیل وارد شده معتبر نمیباشد")]
+
         public string Email { get; set; }
-       
-        public bool IsDeleted { get; set; }
+
+        [Display(Name = "کلمه عبور")]
+        [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر داشته باشد")]
+        [DataType(DataType.Password)]
+
+        public string? Password { get; set; }
+        [Display(Name = "ادمین")]
+        public bool IsAdmin { get; set; }
+        [Display(Name = "فعال است")]
+        public bool IsEmailActive { get; set; }
     }
 }

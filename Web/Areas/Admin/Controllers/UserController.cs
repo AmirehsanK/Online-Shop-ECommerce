@@ -18,6 +18,7 @@ namespace Web.Areas.Admin.Controllers
 
         #endregion
 
+        #region USerList
         [HttpGet]
         public async Task<IActionResult> UserList()
         
@@ -26,6 +27,11 @@ namespace Web.Areas.Admin.Controllers
             return View(models);
         }
 
+        #endregion
+
+        #region CreateUser
+
+        
         [HttpGet]
 
         public async Task<IActionResult> CreateUser()
@@ -48,5 +54,57 @@ namespace Web.Areas.Admin.Controllers
             await _userService.CreateUserAsync(model);
             return View();
         }
+
+        #endregion
+
+        #region EditUser
+
+        [HttpGet]
+        public async Task<IActionResult> EditUser(int UserId)
+        {
+            var model = await _userService.GetUsersByIDAsync(UserId);
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel model)
+        {
+            #region Validation
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            #endregion
+
+            await _userService.EditUserAsync(model);
+            return RedirectToAction(nameof(UserList));
+
+        }
+        #endregion
+
+        #region Userdetail
+
+        [HttpGet]
+        public async Task<IActionResult> UserDetail(int userId)
+        {
+          var model=  await _userService.GetUserDetailAsync(userId);
+            return View(model);
+        }
+
+        #endregion
+
+        #region DeleteSUer
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteUser(int UserId)
+        {
+            await _userService.DeleteUserAsync(UserId);
+            return RedirectToAction("UserList");
+        }
+
+        #endregion
+
+
     }
 }

@@ -26,7 +26,7 @@ namespace Infra.Data.Repositories
     
         public async Task<List<Users>> GetAllAsync()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.Where(u=> !u.IsDeleted).ToListAsync();
         }
 
         public async Task<Users> GetUserByIdAsync(int userid)

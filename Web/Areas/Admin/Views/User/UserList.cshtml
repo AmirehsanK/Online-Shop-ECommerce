@@ -1,6 +1,4 @@
-﻿@using Microsoft.IdentityModel.Tokens
-@using Microsoft.IdentityModel.Tokens
-@model List<Domain.ViewModel.User.Admin.UserListViewModel>
+﻿@model List<Domain.ViewModel.User.Admin.UserListViewModel>
 @{
     ViewData["Title"] = "لیست کاربران";
 }
@@ -8,44 +6,45 @@
 <div class="card">
     <h5 class="card-header">لسیت کاربران</h5>
     <div class="table-responsive text-nowrap">
-        <table class="table">
-            <caption class="ms-4">
-            </caption>
-            <thead>
-                <tr>
-                    <th>کد</th>
-                    <th>نام</th>
-                    <th>نام خانوادگی</th>
-                    <th>ایمیل</th>
-                    <th>کلمه عبور</th>
-                    <th>ادمین است؟</th>
-                    <th>فعال است؟</th>
-
-                </tr>
-            </thead>
-            <tbody>
-            @if (!Model.IsNullOrEmpty() && Model.Any())
-            {
-                foreach (var user in Model)
-                {
+        @if (Model != null && Model.Any())
+        {
+            <table class="table">
+                <caption class="ms-4">
+                </caption>
+                <thead>
                     <tr>
-                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong> @user.Id </strong></td>
-                        <td>@user.FirstName </td>
-                        <td>@user.LastName</td>
-                        <td><span class="badge bg-label-primary me-1">@user.Email</span></td>
-                        <td>
-                            @user.Password
-                        </td>
-                        <td>
-                            @user.IsAdmin
-                        </td>
-                            <td>
-                                @user.IsEmailActive
-                            </td>
+                        <th>کد</th>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>ایمیل</th>
+                    
+                        <th>عملیات</th>
+
                     </tr>
-                }
-            }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong> @user.Id </strong></td>
+                            <td>@user.FirstName </td>
+                            <td>@user.LastName</td>
+                            <td><span class="badge bg-label-primary me-1">@user.Email</span></td>
+                       
+                            <td>
+                                <a asp-controller="User" asp-area="Admin" asp-action="EditUser" asp-route-UserId="@user.Id" class="btn btn-label-warning">ویرایش کاربر</a>
+                                <a asp-controller="User" asp-area="Admin" asp-action="DeleteUser" asp-route-UserId="@user.Id" class="btn btn-label-danger">حدف</a>
+                                <a asp-controller="User" asp-area="Admin" asp-action="UserDetail" asp-route-UserId="@user.Id" class="btn btn-label-primary">جزییات</a>
+                                
+
+
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        }
     </div>
 </div>

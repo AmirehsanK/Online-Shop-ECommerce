@@ -28,15 +28,14 @@ namespace Application.Services.Impelementation
         public async Task<List<UserListViewModel>> GetUserListAsync()
         {
             var users = await _userRepository.GetAllAsync();
-            return users.Select(u => new UserListViewModel()
+            return users.Where(u=> u.IsDeleted==false).Select(u => new UserListViewModel()
             {
                 Id = u.Id,
                 FirstName = u.FirstName,
                 LastName = u.LastName,
                 Email = u.Email,
-                Password = u.Password,
-                IsAdmin = u.IsAdmin,
-                IsEmailActive = u.IsEmailActive
+                IsDeleted = u.IsDeleted,
+                
             }).ToList();
 
 
@@ -60,6 +59,66 @@ namespace Application.Services.Impelementation
             await _userRepository.AddUserAsync(user);
             await _userRepository.SaveChangesAsync();
 
+        }
+
+        public async Task EditUserAsync(EditUserViewModel model)
+        {
+            
+            var user = await _userRepository.GetUserByIdAsync(model.Id);
+          
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Email = model.Email;
+            user.IsAdmin= model.IsAdmin;
+            user.IsEmailActive= model.IsEmailActive;
+            user.Password = !string.IsNullOrEmpty(model.Password?.Trim())
+                ? PasswordHasher.HashPassword(model.Password) : user.Password;
+            _userRepository.UpdateUser(user);
+            await _userRepository.SaveChangesAsync();
+
+        }
+
+        public async Task<EditUserViewModel> GetUsersByIDAsync(int userid)
+        {
+            var user= await _userRepository.GetUserByIdAsync(userid);
+            var edit = new EditUserViewModel()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                IsAdmin = user.IsAdmin,
+                IsEmailActive = user.IsEmailActive,
+                Password = user.Password,
+                Id = userid,
+
+            };
+            return edit;
+        }
+
+        public async Task DeleteUserAsync(int userid)
+        {
+            var user = await _userRepository.GetUserByIdAsync(userid);
+            user.IsDeleted = true;
+            _userRepository.UpdateUser(user);
+           await _userRepository.SaveChangesAsync();
+
+        }
+
+        public async Task<UserDetailViewModel> GetUserDetailAsync(int userid)
+        {
+            var user = await _userRepository.GetUserByIdAsync(userid);
+            var Detail = new UserDetailViewModel()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                IsAdmin = user.IsAdmin,
+                CreatedDate = user.CreateDate,
+                Id = userid,
+                IsActive = user.IsEmailActive
+            };
+            return Detail;
         }
     }
 }
