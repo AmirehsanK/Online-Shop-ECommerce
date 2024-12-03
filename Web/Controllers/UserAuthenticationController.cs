@@ -61,7 +61,8 @@ public class UserAuthenticationController : Controller
 
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, user.Email),
+            new Claim(ClaimTypes.Name, user.FirstName ?? "کاربر"),
+            new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim("IsAdmin", user.IsAdmin.ToString())
         };
@@ -112,7 +113,7 @@ public class UserAuthenticationController : Controller
         await _userService.RegisterUserAsync(register);
         return RedirectToAction(nameof(Success));
     }
-    [Authorize]
+    
     [Route("Success")]
     public IActionResult Success()
     {

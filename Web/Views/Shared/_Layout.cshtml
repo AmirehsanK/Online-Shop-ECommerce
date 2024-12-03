@@ -12,7 +12,7 @@
         <!-- start banner -->
         <div class="alert banner-container alert-dismissible fade show" role="alert">
             <a href="#" class="banner-placement rounded-0"
-               style="background-image: url(./theme-assets/images/banner/017.jpg);height: 60px;"></a>
+               style="background-image: url(/theme-assets/images/banner/017.jpg);height: 60px;"></a>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         <!-- end banner -->
@@ -28,7 +28,8 @@
                                     <!-- Slides -->
                                     <div class="swiper-slide">
                                         <div class="notification-item">
-                                            <div class="notification-item--text">خوش آمدید 👋</div>
+                                            
+                                            <partial name="_LoggedInUserP1"/>
                                         </div>
                                     </div>
                                     <div class="swiper-slide">
@@ -74,7 +75,7 @@
                     <div class="d-flex align-items-center flex-grow-1 pe-3">
                         <div class="logo-container logo-box me-3">
                             <a href="index-1.html" class="logo">
-                                <img src="./theme-assets/images/logo.svg" width="120" alt="">
+                                <img src="/theme-assets/images/logo.svg" width="120" alt="">
                                 <span class="logo-text">بررسی،انتخاب و خرید آنلاین</span>
                             </a>
                         </div>
@@ -123,7 +124,7 @@
                                     <div class="profile-detail">
                                         <div class="d-flex align-items-center">
                                             <div class="profile-avatar me-3"><img
-                                                    src="./theme-assets/images/avatar/default.png" alt="avatar">
+                                                    src="/theme-assets/images/avatar/default.png" alt="avatar">
                                             </div>
                                             <div class="profile-info">
                                                 <a href="#" class="text-decoration-none text-dark fw-bold mb-2">جلال
@@ -166,11 +167,7 @@
                                                     class="nav-link-icon ri-copper-coin-fill"></i>
                                                 باشگاه مشتریان</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a asp-action="LogOut" asp-controller="UserAuthentication" class="nav-link" ><i
-                                                    class="nav-link-icon ri-logout-box-r-line"></i>
-                                                خروج</a>
-                                        </li>
+                                        <partial name="_LoggedInUserP2"/>
                                     </ul>
                                 </div>
                             </div>
@@ -321,7 +318,7 @@
                         <div class="navigation-header">
                             <div class="logo-container logo-box">
                                 <a href="#" class="logo">
-                                    <img src="./theme-assets/images/logo.svg" width="120" alt="">
+                                    <img src="/theme-assets/images/logo.svg" width="120" alt="">
                                     <span class="logo-text">بررسی،انتخاب و خرید آنلاین</span>
                                 </a>
                             </div>
@@ -399,7 +396,7 @@
                 </div>
                 <div class="logo">
                     <a href="#">
-                        <img src="./theme-assets/images/logo-dark.svg" alt="">
+                        <img src="/theme-assets/images/logo-dark.svg" alt="">
                     </a>
                 </div>
             </div>
