@@ -33,7 +33,8 @@
         <filter id="h" width="180.1%" height="199.5%" x="-39.9%" y="-49.6%" filterUnits="objectBoundingBox">
             <feOffset dx="-13" in="SourceAlpha" result="shadowOffsetOuter1"/>
             <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5"/>
-            <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
+            <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
             <feMerge>
                 <feMergeNode in="shadowMatrixOuter1"/>
                 <feMergeNode in="SourceGraphic"/>
@@ -62,13 +63,19 @@
     </defs>
     <g fill="none" fill-rule="evenodd">
         <path fill="url(#a)" d="M265.05 208.8l-1.37 1.547H10.85l58.911-1.547z" filter="url(#b)"/>
-        <path fill="url(#c)" d="M9.6 0h161.22a9.6 9.6 0 0 1 9.6 9.6v132.992a9.6 9.6 0 0 1-9.6 9.6H9.6a9.6 9.6 0 0 1-9.6-9.6V9.6A9.6 9.6 0 0 1 9.6 0z" transform="translate(34.1 57.227)"/>
-        <path fill="url(#d)" d="M15.18 0H213.6a9.6 9.6 0 0 1 9.6 9.6v132.992a9.6 9.6 0 0 1-9.6 9.6H15.18a9.6 9.6 0 0 1-9.6-9.6V9.6a9.6 9.6 0 0 1 9.6-9.6z" transform="translate(34.1 57.227)"/>
-        <path fill="url(#e)" d="M16.74 115.072h93v5.568h-93zM16.74 103.936h93v5.568h-93z" opacity=".7" transform="translate(34.1 57.227)"/>
+        <path fill="url(#c)"
+              d="M9.6 0h161.22a9.6 9.6 0 0 1 9.6 9.6v132.992a9.6 9.6 0 0 1-9.6 9.6H9.6a9.6 9.6 0 0 1-9.6-9.6V9.6A9.6 9.6 0 0 1 9.6 0z"
+              transform="translate(34.1 57.227)"/>
+        <path fill="url(#d)"
+              d="M15.18 0H213.6a9.6 9.6 0 0 1 9.6 9.6v132.992a9.6 9.6 0 0 1-9.6 9.6H15.18a9.6 9.6 0 0 1-9.6-9.6V9.6a9.6 9.6 0 0 1 9.6-9.6z"
+              transform="translate(34.1 57.227)"/>
+        <path fill="url(#e)" d="M16.74 115.072h93v5.568h-93zM16.74 103.936h93v5.568h-93z" opacity=".7"
+              transform="translate(34.1 57.227)"/>
         <path fill="url(#f)" d="M5.58 40.832H223.2v46.4H5.58z" transform="translate(34.1 57.227)"/>
         <path fill="url(#g)" d="M0 40.832h5.58v46.4H0z" transform="matrix(-1 0 0 1 39.68 57.227)"/>
         <g filter="url(#h)" transform="translate(164.3 122.187)">
-            <path fill="url(#i)" d="M4.464 22.272h102.672v62.885a3.931 3.931 0 0 1-3.931 3.931H8.395a3.931 3.931 0 0 1-3.931-3.931V22.272z"/>
+            <path fill="url(#i)"
+                  d="M4.464 22.272h102.672v62.885a3.931 3.931 0 0 1-3.931 3.931H8.395a3.931 3.931 0 0 1-3.931-3.931V22.272z"/>
             <path fill="url(#j)" d="M44.64 26.726h22.32v62.362H44.64z"/>
             <path fill="url(#k)" d="M29.016 26.726h78.12l-78.12 42.317-24.552-3.34V26.725z"/>
             <path fill="url(#l)" d="M0 0h111.6v26.726H0z"/>

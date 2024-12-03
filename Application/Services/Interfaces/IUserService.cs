@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Domain.Entities.Account;
-using Domain.Enums;
+using Domain.ViewModel.User;
 using Domain.ViewModel.User.Admin;
 
 namespace Application.Services.Interfaces
@@ -12,6 +8,8 @@ namespace Application.Services.Interfaces
     public interface IUserService
     {
         Task<List<UserListViewModel>> GetUserListAsync();
+        Task RegisterUserAsync(RegisterUserViewModel model);
+        Task<LoginUserViewModel> LoginAsync(LoginUserViewModel loginUser);
         Task CreateUserAsync(CreateUserViewModel model);
 
         Task EditUserAsync(EditUserViewModel model);

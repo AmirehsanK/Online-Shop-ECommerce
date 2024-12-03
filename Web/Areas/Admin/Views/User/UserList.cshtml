@@ -1,50 +1,48 @@
-﻿@model List<Domain.ViewModel.User.Admin.UserListViewModel>
+﻿@using Microsoft.IdentityModel.Tokens
+@model List<Domain.ViewModel.User.Admin.UserListViewModel>
 @{
     ViewData["Title"] = "لیست کاربران";
 }
 
 <div class="card">
-    <h5 class="card-header">لسیت کاربران</h5>
+    <h5 class="card-header">Table Basic</h5>
     <div class="table-responsive text-nowrap">
         @if (Model != null && Model.Any())
         {
             <table class="table">
-                <caption class="ms-4">
-                </caption>
                 <thead>
                     <tr>
                         <th>کد</th>
                         <th>نام</th>
                         <th>نام خانوادگی</th>
                         <th>ایمیل</th>
-                    
                         <th>عملیات</th>
-
                     </tr>
                 </thead>
-                <tbody>
-
-                    @foreach (var user in Model)
-                    {
-                        <tr>
-                            <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong> @user.Id </strong></td>
-                            <td>@user.FirstName </td>
-                            <td>@user.LastName</td>
-                            <td><span class="badge bg-label-primary me-1">@user.Email</span></td>
-                       
-                            <td>
-                                <a asp-controller="User" asp-area="Admin" asp-action="EditUser" asp-route-UserId="@user.Id" class="btn btn-label-warning">ویرایش کاربر</a>
-                                <a asp-controller="User" asp-area="Admin" asp-action="DeleteUser" asp-route-UserId="@user.Id" class="btn btn-label-danger">حدف</a>
-                                <a asp-controller="User" asp-area="Admin" asp-action="UserDetail" asp-route-UserId="@user.Id" class="btn btn-label-primary">جزییات</a>
-                                
-
-
-                            </td>
-                        </tr>
-                    }
+                <tbody class="table-border-bottom-0">
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>> <strong></strong>@user.Id</td>
+                        <td>@user.FirstName</td>
+                        <td>
+                            @user.LastName
+                        </td>
+                        <td><span class="badge bg-label-success me-1">@user.Email</span></td>
+                        <td>
+                            <a asp-controller="User" asp-area="Admin" asp-action="EditUser" asp-route-UserId="@user.Id" class="btn btn-label-warning">ویرایش کاربر</a>
+                            <a asp-controller="User" asp-area="Admin" asp-action="DeleteUser" asp-route-UserId="@user.Id" class="btn btn-label-danger">حدف</a>
+                            <a asp-controller="User" asp-area="Admin" asp-action="UserDetail" asp-route-UserId="@user.Id" class="btn btn-label-primary">جزییات</a>
+                        </td>
+                    </tr>
+                }
+  
 
                 </tbody>
             </table>
         }
+      
     </div>
 </div>
+
+

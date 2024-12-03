@@ -5,5 +5,5 @@
 'use strict';
 
 (function () {
-  window.print();
+    window.print();
 })();

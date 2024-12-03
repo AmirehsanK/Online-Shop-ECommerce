@@ -3,16 +3,16 @@
 ========================================================================== */
 
 .form-check {
-    min-height: unset;
+  min-height: unset;
 }
 
 .form-check-input {
-    &:focus {
-        box-shadow: unset;
-    }
+  &:focus {
+    box-shadow: unset;
+  }
 
-    &:checked {
-        background-color: $color-primary;
-        border-color: $color-primary;
-    }
+  &:checked {
+    background-color: $color-primary;
+    border-color: $color-primary;
+  }
 }
