@@ -8,6 +8,7 @@ using Domain.ViewModel.User;
 using Domain.ViewModel.User.Admin;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
@@ -30,6 +31,10 @@ public class UserAuthenticationController : Controller
     [Route("Login")]
     public IActionResult Login()
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            return RedirectToAction("Index", "Home");
+        }
         return View();
     }
 
@@ -48,7 +53,7 @@ public class UserAuthenticationController : Controller
             ModelState.AddModelError("UserNameOrEmail","کاربری یافت نشد");
             return View(login);
         }
-        if(await _userService.IsPasswordCorrectAsync(login.Email,login.Password))
+        if(!await _userService.IsPasswordCorrectAsync(login.Email,login.Password))
         {
             ModelState.AddModelError("UserNameOrEmail", "کاربری یافت نشد");
             return View(login);
@@ -82,6 +87,11 @@ public class UserAuthenticationController : Controller
     [HttpGet("signup")]
     public IActionResult SignUp()
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         return View();
     }
 
@@ -102,7 +112,8 @@ public class UserAuthenticationController : Controller
         await _userService.RegisterUserAsync(register);
         return RedirectToAction(nameof(Success));
     }
-
+    [Authorize]
+    [Route("Success")]
     public IActionResult Success()
     {
         var x=TempData["Name"];
