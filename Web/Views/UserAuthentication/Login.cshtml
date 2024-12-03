@@ -5,6 +5,12 @@
 
 <div class="page-wrapper">
     <main class="page-content page-auth">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="alert alert-danger">
+                شما به این بخش دسترسی ندارید
+            </div>
+        }
         <!-- start of auth-container -->
         <div class="auth-container">
             <div class="auth-title mb-3">ورود</div>
@@ -35,7 +41,8 @@
                     <!-- end of form-element -->
                     <!-- start of form-element -->
                     <div class="form-element-row">
-                        <div>با ورود و یا ثبت نام در سایت شما <a href="#" class="link">شرایط و
+                        <div>با ورود و یا ثبت نام در سایت شما
+                            <a href="#" class="link">شرایط و
                                 قوانین</a> استفاده
                             از تمام سرویس های
                             سایت و <a href="#" class="link">قوانین حریم خصوصی</a> آن را می‌پذیرید.

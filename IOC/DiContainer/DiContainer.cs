@@ -1,7 +1,9 @@
-﻿using Application.Services.Impelementation;
+﻿using Application.Security;
+using Application.Services.Impelementation;
 using Application.Services.Interfaces;
 using Domain.Interface;
 using Infra.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IOC.DiContainer;
@@ -19,7 +21,7 @@ public static class DiContainer
         #region Services
 
         services.AddScoped<IUserService, UserService>();
-
+        services.AddSingleton<IAuthorizationHandler, AdminHandler>();
         #endregion
     }
 }
