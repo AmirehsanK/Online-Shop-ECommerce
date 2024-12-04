@@ -74,26 +74,42 @@ namespace Application.Services.Impelementation
             return await _userRepository.IsEmailExistAsync(email);
         }
 
+        #region Password
+        
         public async Task<bool> IsPasswordCorrectAsync(string email,string password)
         {
             var x =await _userRepository.GetUserByEmailAsync(email);
             return PasswordHasher.VerifyHashedPassword(x.Password, password);
         }
 
+        public async Task ChangePasswordAsync(int userId, string newPassword)
+        {
+            var user = await _userRepository.GetUserByIdAsync(userId);
+
+            if (user == null)
+                throw new Exception("User not found");
+
+            user.Password = PasswordHasher.HashPassword(newPassword);
+
+            _userRepository.UpdateUser(user) ;
+            await _userRepository.SaveChangesAsync();
+        }
+        
+        public async Task<bool> ComparePasswordAsync(string hashedPassword, string providedPassword)
+        {
+            return PasswordHasher.VerifyHashedPassword(hashedPassword, providedPassword);
+        }
+        
+        #endregion
+
         public async Task<User> GetUserByEmailAsync(string email)
         {
             return await _userRepository.GetUserByEmailAsync(email);
         }
 
-
-        public async Task<LoginUserViewModel> LoginAsync(LoginUserViewModel loginUser)
-        {
-            return loginUser;
-        }
-
+        
         public async Task RegisterUserAsync(RegisterUserViewModel model)
         {
-            // Validate input
             if (model == null)
                 throw new ArgumentNullException(nameof(model));
 
@@ -152,7 +168,7 @@ namespace Application.Services.Impelementation
             };
             return edit;
         }
-
+        
         public async Task DeleteUserAsync(int userid)
         {
             var user = await _userRepository.GetUserByIdAsync(userid);
