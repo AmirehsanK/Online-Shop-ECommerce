@@ -1,7 +1,7 @@
 namespace Application.Security;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+
 using System.Security.Claims;
 using System.Threading.Tasks;
 

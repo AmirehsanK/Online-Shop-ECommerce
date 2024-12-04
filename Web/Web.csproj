@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="Pages\SignUp\SignUp.cshtml" />
+      <!--<_ContentIncludedByDefault Remove="Pages\SignUp\SignUp.cshtml" />-->
     </ItemGroup>
 
 </Project>

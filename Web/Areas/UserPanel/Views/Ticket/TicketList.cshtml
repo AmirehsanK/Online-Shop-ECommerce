@@ -1,4 +1,4 @@
-﻿
+﻿@model List<Domain.ViewModel.Ticket.TicketListViewModel>
 @{
     ViewData["Title"] = "لیست تیکت ها";
 }
@@ -16,17 +16,13 @@
             تیکتهای شما
             <a asp-area="UserPanel" asp-controller="Ticket" asp-action="AddTicket" class="btn btn-outline-light">تیکت جدید <i class="ri-add-line ms-2"></i></a>
         </div>
-        <!-- <div class="ui-box-empty-content">
-            <div class="ui-box-empty-content-icon">
-                <img src="./theme-assets/images/theme/orders.svg" alt="">
-            </div>
-            <div class="ui-box-empty-content-message">تیکتی تا به الان ایجاد نکرده اید.
-            </div>
-        </div> -->
+  
         <div class="ui-box-content">
             <div class="table-responsive">
-                <table class="table">
-                    <thead>
+                @if (Model != null && Model.Any())
+                {
+                    <table class="table">
+                        <thead>
                         <tr>
                             <th>#</th>
                             <th>زمان ایجاد</th>
@@ -36,90 +32,42 @@
                             <th>آخرین بروزرسانی</th>
                             <th>عملیات</th>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="fa-num">1</td>
-                            <td class="fa-num">1400 دی 25</td>
-                            <td class="fa-num">پشتیبانی</td>
-                            <td class="fa-num">کالای غیراصل</td>
-                            <td class="fa-num">
-                                <span class="badge bg-warning rounded-pill">
-                                    در حال
-                                    بررسی
-                                </span>
-                            </td>
-                            <td class="fa-num">1400 دی 26</td>
-                            <td>
-                                <a href="#" class="btn btn-circle btn-info my-1"><i class="ri-eye-line"></i></a>
-                                <a href="#" class="btn btn-circle btn-danger my-1"><i class="ri-close-line"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="fa-num">1</td>
-                            <td class="fa-num">1400 دی 25</td>
-                            <td class="fa-num">پشتیبانی</td>
-                            <td class="fa-num">کالای غیراصل</td>
-                            <td class="fa-num">
-                                <span class="badge bg-success rounded-pill">
-                                    پاسخ داده
-                                    شد
-                                </span>
-                            </td>
-                            <td class="fa-num">1400 دی 26</td>
-                            <td>
-                                <a href="#" class="btn btn-circle btn-info my-1"><i class="ri-eye-line"></i></a>
-                                <a href="#" class="btn btn-circle btn-danger my-1"><i class="ri-close-line"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="fa-num">1</td>
-                            <td class="fa-num">1400 دی 25</td>
-                            <td class="fa-num">پشتیبانی</td>
-                            <td class="fa-num">کالای غیراصل</td>
-                            <td class="fa-num"><span class="badge bg-danger rounded-pill">بسته</span></td>
-                            <td class="fa-num">1400 دی 26</td>
-                            <td>
-                                <a href="#" class="btn btn-circle btn-info my-1"><i class="ri-eye-line"></i></a>
-                                <a href="#" class="btn btn-circle btn-danger my-1"><i class="ri-close-line"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="fa-num">1</td>
-                            <td class="fa-num">1400 دی 25</td>
-                            <td class="fa-num">پشتیبانی</td>
-                            <td class="fa-num">کالای غیراصل</td>
-                            <td class="fa-num">
-                                <span class="badge bg-warning rounded-pill">
-                                    در حال
-                                    بررسی
-                                </span>
-                            </td>
-                            <td class="fa-num">1400 دی 26</td>
-                            <td>
-                                <a href="#" class="btn btn-circle btn-info my-1"><i class="ri-eye-line"></i></a>
-                                <a href="#" class="btn btn-circle btn-danger my-1"><i class="ri-close-line"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="fa-num">1</td>
-                            <td class="fa-num">1400 دی 25</td>
-                            <td class="fa-num">پشتیبانی</td>
-                            <td class="fa-num">کالای غیراصل</td>
-                            <td class="fa-num">
-                                <span class="badge bg-warning rounded-pill">
-                                    در حال
-                                    بررسی
-                                </span>
-                            </td>
-                            <td class="fa-num">1400 دی 26</td>
-                            <td>
-                                <a href="#" class="btn btn-circle btn-info my-1"><i class="ri-eye-line"></i></a>
-                                <a href="#" class="btn btn-circle btn-danger my-1"><i class="ri-close-line"></i></a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="fa-num">@item.TicketId</td>
+                                <td class="fa-num">@item.CreateDate</td>
+                                <td class="fa-num">@item.Section</td>
+                                <td class="fa-num">@item.Title</td>
+                                <td class="fa-num">
+                                    <span class="badge bg-warning rounded-pill">
+                                       @item.Status
+                                    </span>
+                                </td>
+                                <td class="fa-num">@item.UpdateDate</td>
+                                <td>
+                                    <a href="#" class="btn btn-circle btn-info my-1"><i class="ri-eye-line"></i></a>
+                                    <a href="#" class="btn btn-circle btn-danger my-1"><i class="ri-close-line"></i></a>
+                                </td>
+                            </tr>
+
+                        }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                <div class="ui-box-empty-content">
+                        <div class="ui-box-empty-content-icon">
+                            <img src="/theme-assets/images/theme/orders.svg" alt="">
+                        </div>
+                        <div class="ui-box-empty-content-message">تیکتی تا به الان ایجاد نکرده اید.
+                        </div>
+                    </div> 
+                }
+     
             </div>
         </div>
     </div>

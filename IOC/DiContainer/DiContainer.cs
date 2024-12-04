@@ -17,12 +17,14 @@ public static class DiContainer
         #region Repositories
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ITicketRepository, TicketRepository>();
 
         #endregion
 
         #region Services
 
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ITicketService, TicketService>();
         services.AddSingleton<IAuthorizationHandler, AdminHandler>();
         #endregion
 

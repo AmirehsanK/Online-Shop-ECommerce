@@ -11,8 +11,8 @@ using Domain.Interface;
 using Domain.ViewModel;
 using Domain.ViewModel.User;
 using Domain.ViewModel.User.Admin;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Authentication;
+//using Microsoft.AspNetCore.Http;
 using System.Linq;
 
 namespace Application.Services.Impelementation
@@ -37,8 +37,15 @@ namespace Application.Services.Impelementation
                 Email = u.Email,
                 IsDeleted = u.IsDeleted,
                 
+                
             }).ToList();
         }
+
+        public Task<User> GetUserByEmailAsync(string email)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public async Task<CreateUserEnums> CreateUserAsync(CreateUserViewModel model)
         {

@@ -2,8 +2,6 @@
 <html lang="fa">
 
 <head>
-
-
     <partial name="_UserPanelHeaderReferences" />
     <title>@ViewData["Title"]</title>
 
@@ -26,7 +24,7 @@
                         @RenderBody()
                     </div>
                 </div>
-            
+            @await RenderSectionAsync("userpanel" ,false)
         </main>
         <partial name="_UserPanelFooter" />
     </div>
@@ -37,3 +35,4 @@
 </body>
 
 </html> 
+

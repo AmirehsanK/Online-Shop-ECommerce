@@ -26,7 +26,7 @@ namespace Infra.Data.Context
         
 
         #endregion
-
+        //For Conflict relation
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             foreach(var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))

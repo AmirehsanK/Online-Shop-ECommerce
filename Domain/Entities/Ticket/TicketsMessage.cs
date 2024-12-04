@@ -13,9 +13,11 @@ namespace Domain.Entities.Ticket
     {
         [ForeignKey("Ticket")]
         public int TicketId { get; set; }
-        public int Text { get; set; }
-        [ForeignKey("User")]
+        public string Text { get; set; }
+        [ForeignKey("User")]    
         public int SenderId { get; set; }
+
+        public string FileName { get; set; }
 
         #region Relation
 
