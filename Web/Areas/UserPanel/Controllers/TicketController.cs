@@ -1,20 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Web.Areas.UserPanel.Controllers
+namespace Web.Areas.UserPanel.Controllers;
+
+public class TicketController : UserPanelBaseController
 {
-
-    public class TicketController : UserPanelBaseController
+    [HttpGet]
+    public async Task<IActionResult> TicketList()
     {
-        [HttpGet]
-        public async Task<IActionResult> TicketList()
-        {
-            return View();
-        }
+        return View();
+    }
 
-        [HttpGet]
-        public async Task<IActionResult> AddTicket()
-        {
-            return View();
-        }
+    [HttpGet]
+    public async Task<IActionResult> AddTicket()
+    {
+        return View();
     }
 }

@@ -8,13 +8,12 @@
             Swal.fire({
                 icon: 'warning',
                 title: 'اخطار',
-                text:'@message'
+                text: '@message'
             });
         </script>
     }
     else if (TempData["Success"] != null)
     {
-
         <script>
             Swal.fire({
                 icon: 'success',
@@ -23,13 +22,11 @@
 
             });
         </script>
-
     }
-
 }
 @if (TempData["RegisterResult"] != null)
 {
-    string Register = (string)TempData["RegisterResult"];
+    var Register = (string)TempData["RegisterResult"];
     if (Register == "Error")
     {
         <script>
@@ -63,12 +60,11 @@
             });
         </script>
     }
-
 }
 
 @if (TempData["LoginResult"] != null)
 {
-    string login = (string)TempData["LoginResult"];
+    var login = (string)TempData["LoginResult"];
     if (login == "NotActive")
     {
         <script>
@@ -114,13 +110,11 @@
             });
         </script>
     }
-
-
 }
 
 @if (TempData["Contactresult"] != null)
 {
-    string Contact = (string)TempData["Contactresult"];
+    var Contact = (string)TempData["Contactresult"];
     if (Contact == "Error")
     {
         <script>
@@ -143,13 +137,11 @@
             });
         </script>
     }
-
-
 }
 
 @if (TempData["ForgotPassResult"] != null)
 {
-    string Forgot = (string)TempData["ForgotPassResult"];
+    var Forgot = (string)TempData["ForgotPassResult"];
     if (Forgot == "Error")
     {
         <script>
@@ -172,13 +164,12 @@
             });
         </script>
     }
-
 }
 
 
 @if (TempData["ResetPassResult"] != null)
 {
-    string Reset = (string)TempData["ResetPassResult"];
+    var Reset = (string)TempData["ResetPassResult"];
     if (Reset == "Error")
     {
         <script>
@@ -201,7 +192,6 @@
             });
         </script>
     }
-
 }
 
 

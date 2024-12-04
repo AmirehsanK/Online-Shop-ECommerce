@@ -14,6 +14,7 @@ using Domain.ViewModel.User.Admin;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
+using Application.Tools;
 
 namespace Application.Services.Impelementation
 {
@@ -123,17 +124,21 @@ namespace Application.Services.Impelementation
                 Email = model.Email,
                 Password = PasswordHasher.HashPassword(model.Password),
                 IsAdmin = false,
-                IsEmailActive = true,
+                IsEmailActive = false,
                 IsDeleted = false,
                 CreateDate = DateTime.UtcNow,
                 EmailActiveCode = Guid.NewGuid().ToString("N")
             };
-
+            var domainLink = "https://localhost:7271";
+            string mailbody = $"<a href=\"{domainLink}/activate-account/{user.EmailActiveCode}\"> فعالسازی حساب کاربری </a>";
+            await EmailSender.SendEmail(user.Email,"فعال سازی حساب کاربری",mailbody );
             await _userRepository.AddUserAsync(user);
             await _userRepository.SaveChangesAsync();
 
         }
-
+        
+        
+        
         public async Task EditUserAsync(EditUserViewModel model)
         {
             
@@ -168,7 +173,62 @@ namespace Application.Services.Impelementation
             };
             return edit;
         }
+
+        public async Task<ActiveEmailEnum> EmailActivatorAsync(string emailActiveCode)
+        {
+            var user= await _userRepository.GetUserByGUIDAsync(emailActiveCode);
+            if (user == null)
+                return ActiveEmailEnum.Failed;
+            else
+            {
+                user.IsEmailActive = true;
+                user.EmailActiveCode=Guid.NewGuid().ToString("N");
+                await _userRepository.SaveChangesAsync();
+                return ActiveEmailEnum.Success;
+            }
+        }
         
+        public async Task<LoginUserEnum> LoginUserAsync(LoginUserViewModel model)
+        {
+            var user = await _userRepository.GetUserByEmailAsync(model.Email);
+            if (user != null)
+            {
+                if (user.Password == PasswordHasher.HashPassword(model.Password))
+                {
+                    if (user.IsEmailActive)
+                    {
+                        return LoginUserEnum.Success;
+                    }
+                    else
+                    {
+                        return LoginUserEnum.UserNotActive;
+                    }
+                }
+                else
+                {
+                    return LoginUserEnum.PasswordInvalid;
+                }
+            }
+            else
+            {
+                return LoginUserEnum.EmailInvalid;
+            }
+            
+        }
+
+        public async Task<RegisterUserEnum> RegisterUserValidationAsync(RegisterUserViewModel model)
+        {
+            
+            if (await IsEmailExistAsync(model.Email))
+            {
+                return RegisterUserEnum.EmailUsed;
+            }
+            else
+            {
+                return RegisterUserEnum.Success;
+            }
+        }
+
         public async Task DeleteUserAsync(int userid)
         {
             var user = await _userRepository.GetUserByIdAsync(userid);

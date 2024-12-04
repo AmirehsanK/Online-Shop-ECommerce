@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
 
-public class HomeController : Controller
+public class HomeController : SiteBaseController
 {
     private readonly ILogger<HomeController> _logger;
 

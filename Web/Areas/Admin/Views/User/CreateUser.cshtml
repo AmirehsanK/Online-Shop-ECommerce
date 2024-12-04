@@ -10,48 +10,51 @@
             <div class="mb-3 row">
                 <label asp-for="FirstName" for="html5-text-input" class="col-md-2 col-form-label"></label>
                 <div class="col-md-10">
-                    <input asp-for="FirstName" class="form-control" type="text"  id="html5-text-input">
+                    <input asp-for="FirstName" class="form-control" type="text" id="html5-text-input">
                     <span asp-validation-for="FirstName"></span>
                 </div>
             </div>
             <div class="mb-3 row">
                 <label asp-for="LastName" for="html5-text-input" class="col-md-2 col-form-label"></label>
                 <div class="col-md-10">
-                    <input asp-for="LastName" class="form-control" type="text"  id="html5-text-input">
+                    <input asp-for="LastName" class="form-control" type="text" id="html5-text-input">
                     <span asp-validation-for="LastName"></span>
                 </div>
-            </div> 
+            </div>
             <div class="mb-3 row">
                 <label asp-for="Email" for="html5-text-input" class="col-md-2 col-form-label"></label>
                 <div class="col-md-10">
-                    <input asp-for="Email" class="form-control" type="text"  id="html5-text-input">
+                    <input asp-for="Email" class="form-control" type="text" id="html5-text-input">
                     <span asp-validation-for="Email"></span>
                 </div>
             </div>
             <div class="mb-3 row">
                 <label asp-for="Password" for="html5-text-input" class="col-md-2 col-form-label"></label>
                 <div class="col-md-10">
-                    <input asp-for="Password" class="form-control" type="text"  id="html5-text-input">
+                    <input asp-for="Password" class="form-control" type="text" id="html5-text-input">
                     <span asp-validation-for="Password"></span>
                 </div>
             </div>
             <div class="mb-3 row">
                 <label asp-for="IsAdmin" for="html5-text-input" class="col-md-2 col-form-label"></label>
                 <div class="col-md-10">
-                    <input asp-for="IsAdmin" class="form-check-input" type="checkbox"  id="defaultCheck3" checked="">
+                    <input asp-for="IsAdmin" class="form-check-input" type="checkbox" id="defaultCheck3" checked="">
                     <span asp-validation-for="IsAdmin"></span>
                 </div>
             </div>
             <div class="mb-3 row">
                 <label asp-for="IsEmailActive" for="html5-text-input" class="col-md-2 col-form-label"></label>
                 <div class="col-md-10">
-                    <input asp-for="IsEmailActive" class="form-check-input" type="checkbox"  id="defaultCheck3" checked="">
+                    <input asp-for="IsEmailActive" class="form-check-input" type="checkbox" id="defaultCheck3"
+                           checked="">
                     <span asp-validation-for="IsEmailActive"></span>
                 </div>
             </div>
-            
-                <button asp-controller="User" asp-action="CreateUser" asp-area="Admin" type="submit" class="btn btn-success">Success</button>
-            </div>
 
+            <button asp-controller="User" asp-action="CreateUser" asp-area="Admin" type="submit"
+                    class="btn btn-success">Success
+            </button>
         </div>
+
+    </div>
 </form>

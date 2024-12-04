@@ -28,7 +28,11 @@ namespace Application.Services.Interfaces
 
         Task<EditUserViewModel> GetUsersByIDAsync(int userid);
         
+        Task<ActiveEmailEnum> EmailActivatorAsync(string emailActiveCode);
         
+        Task<LoginUserEnum> LoginUserAsync(LoginUserViewModel model);
+        
+        Task<RegisterUserEnum> RegisterUserValidationAsync(RegisterUserViewModel model);
 
         Task DeleteUserAsync(int userid);
 

@@ -31,10 +31,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminOnly", policy => policy.Requirements.Add(new AdminRequirement()));
 });
 
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.AccessDeniedPath = "/Login";
-});
+builder.Services.ConfigureApplicationCookie(options => { options.AccessDeniedPath = "/Login"; });
 
 var app = builder.Build();
 

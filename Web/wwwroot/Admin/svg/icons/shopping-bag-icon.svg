@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="22px" height="22px" viewBox="0 0 22 22" version="1.1"
+     xmlns="http://www.w3.org/2000/svg">
     <title>shopping-bag</title>
     <defs>
         <path d="M14.3,22 L3.3,22 C1.47746033,22 -9.76996262e-16,20.5225397 -9.76996262e-16,18.7 L-9.76996262e-16,7.7 C-9.76996262e-16,6.48497355 0.98497355,5.5 2.2,5.5 L15.4,5.5 C16.6150264,5.5 17.6,6.48497355 17.6,7.7 L17.6,18.7 C17.6,20.5225397 16.1225397,22 14.3,22 Z"

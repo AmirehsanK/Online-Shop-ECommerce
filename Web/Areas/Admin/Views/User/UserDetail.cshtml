@@ -7,14 +7,15 @@
     <div class="card-body">
         <div class="user-avatar-section">
             <div class="d-flex align-items-center flex-column">
-                <img class="img-fluid rounded my-4" src="/Admin/img/avatars/SiteAvatar.jpg" height="110" width="110" alt="User avatar">
+                <img class="img-fluid rounded my-4" src="/Admin/img/avatars/SiteAvatar.jpg" height="110" width="110"
+                     alt="User avatar">
                 <div class="user-info text-center">
                     <h4 class="mb-2">@Model.FirstName @Model.LastName</h4>
                     <span class="badge bg-label-success">کاربر</span>
                 </div>
             </div>
         </div>
-      
+
         <h5 class="pb-2 border-bottom mb-4">جزییات</h5>
         <div class="info-container">
             <ul class="list-unstyled">
@@ -28,15 +29,15 @@
                 </li>
                 <li class="mb-3">
                     <span class="fw-bold me-2">ایمیل:</span>
-                    <span >@Model.Email</span>
+                    <span>@Model.Email</span>
                 </li>
                 <li class="mb-3">
                     <span class="fw-bold me-2">تاریخ ثبت نام:</span>
-                    <span>@Date.ToShamsi(Model.CreatedDate) @Model.CreatedDate.ToString("hh:mm:ss")</span>
+                    <span>@Model.CreatedDate.ToShamsi() @Model.CreatedDate.ToString("hh:mm:ss")</span>
                 </li>
                 <li class="mb-3">
                     <span class="fw-bold me-2">ادمین </span>
-                    <span class=" @((!Model.IsAdmin) ? "badge bg-label-danger" :"badge bg-label-success" )">
+                    <span class=" @(!Model.IsAdmin ? "badge bg-label-danger" : "badge bg-label-success")">
                         @if (Model.IsAdmin)
                         {
                             <text>بله</text>
@@ -49,7 +50,7 @@
                 </li>
                 <li class="mb-3">
                     <span class="fw-bold me-2">فعال :</span>
-                    <span class=" @((!Model.IsActive) ? "badge bg-label-danger" :"badge bg-label-success" )">
+                    <span class=" @(!Model.IsActive ? "badge bg-label-danger" : "badge bg-label-success")">
                         @if (Model.IsActive)
                         {
                             <text>فعال</text>
@@ -60,11 +61,13 @@
                         }
                     </span>
                 </li>
-                
+
             </ul>
             <div class="d-flex justify-content-center pt-3">
-                <a asp-controller="User" asp-action="EditUser" asp-area="Admin" asp-route-UserId="@Model.Id" class="btn btn-label-warning me-3" data-bs-target="#editUser" data-bs-toggle="modal">ویرایش</a>
-                <a asp-area="Admin" asp-controller="User" asp-action="DeleteUser"  class="btn btn-label-danger suspend-user">حذف</a>
+                <a asp-controller="User" asp-action="EditUser" asp-area="Admin" asp-route-UserId="@Model.Id"
+                   class="btn btn-label-warning me-3" data-bs-target="#editUser" data-bs-toggle="modal">ویرایش</a>
+                <a asp-area="Admin" asp-controller="User" asp-action="DeleteUser"
+                   class="btn btn-label-danger suspend-user">حذف</a>
             </div>
         </div>
     </div>

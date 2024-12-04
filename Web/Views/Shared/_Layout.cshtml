@@ -28,7 +28,7 @@
                                     <!-- Slides -->
                                     <div class="swiper-slide">
                                         <div class="notification-item">
-                                            
+
                                             <partial name="_LoggedInUserP1"/>
                                         </div>
                                     </div>
@@ -115,7 +115,8 @@
                     </div>
                     <div class="user-options">
                         <div class="user-option user-option--account">
-                            <a asp-action="Index" asp-controller="Home" asp-area="UserPanel" class="user-option-btn user-option-btn--account">
+                            <a asp-action="Index" asp-controller="Home" asp-area="UserPanel"
+                               class="user-option-btn user-option-btn--account">
                                 <i class="ri-user-fill icon"></i>
                                 <i class="ri-arrow-down-s-fill icon fs-7 text-muted"></i>
                             </a>
@@ -124,18 +125,17 @@
                                     <div class="profile-detail">
                                         <div class="d-flex align-items-center">
                                             <div class="profile-avatar me-3">
-                                            <a asp-action="Index" asp-controller="Home" asp-area="UserPanel">
-                                                <img
-                                                    src="/theme-assets/images/avatar/default.png" alt="avatar">
-                                            </a>
+                                                <a asp-action="Index" asp-controller="Home" asp-area="UserPanel">
+                                                    <img
+                                                        src="/theme-assets/images/avatar/default.png" alt="avatar">
+                                                </a>
                                             </div>
                                             <div class="profile-info">
                                                 <a asp-action="Index" asp-controller="Home" asp-area="UserPanel">
-                                                <partial name="_UserPanelUserInfo"></partial>
                                                 </a>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                     <ul class="nav nav-items-with-icon flex-column">
                                         <li class="nav-item">
@@ -171,7 +171,7 @@
                                             class="ri-arrow-left-s-fill"></i></a>
                                 </div>
                                 <div class="mini-cart-products do-simplebar">
-                                    
+
                                 </div>
                                 <div class="mini-cart-footer">
                                     <div class="mini-cart-total">
@@ -432,10 +432,9 @@
             </div>
         </div>
     </header>
-    @RenderSection("UserPanel",false)
     @RenderBody()
 
-    
+
 </div>
 <partial name="_Footer"/>
 @await RenderSectionAsync("Scripts", false)

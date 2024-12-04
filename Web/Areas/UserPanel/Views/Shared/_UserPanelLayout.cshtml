@@ -4,35 +4,35 @@
 <head>
 
 
-    <partial name="_UserPanelHeaderReferences" />
+    <partial name="_UserPanelHeaderReferences"/>
     <title>@ViewData["Title"]</title>
 
 </head>
 
 <body>
 
-    <div class="page-wrapper">
-        <!-- start of page-header -->
-        <partial name="_UserPanelHeader" />
-        <!-- end of page-header -->
+<div class="page-wrapper">
+    <!-- start of page-header -->
+    <partial name="_UserPanelHeader"/>
+    <!-- end of page-header -->
 
-        <main class="page-content">
-            <div class="container ">
-                <div class="row mb-5">
-                    <div class="col-xl-3 col-lg-4 col-md-5 mb-md-0 mb-4">
-                        @await Component.InvokeAsync("UserProfile")
-                    </div>
-                 
-                        @RenderBody()
-                    </div>
+    <main class="page-content">
+        <div class="container ">
+            <div class="row mb-5">
+                <div class="col-xl-3 col-lg-4 col-md-5 mb-md-0 mb-4">
+                    @await Component.InvokeAsync("UserProfile")
                 </div>
-            
-        </main>
-        <partial name="_UserPanelFooter" />
-    </div>
+
+                @RenderBody()
+            </div>
+        </div>
+
+    </main>
+    <partial name="_UserPanelFooter"/>
+</div>
 
 
-<partial name="_UserPAnelFooterReferences" />
+<partial name="_UserPAnelFooterReferences"/>
 
 </body>
 

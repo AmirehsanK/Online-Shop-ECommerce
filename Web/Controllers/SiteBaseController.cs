@@ -4,9 +4,7 @@ namespace Web.Controllers;
 
 public class SiteBaseController : Controller
 {
-    // GET
-    public IActionResult Index()
-    {
-        return View();
-    }
+    public string FailMessage = "Error";
+
+    public string SuccesMessage = "Success";
 }
