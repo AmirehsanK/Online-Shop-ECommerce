@@ -1,0 +1,8 @@
+@if (User.Identity.IsAuthenticated)
+{
+    <a href="#" class="btn btn-primary">ثبت سفارش</a>
+}
+else
+{
+    <a asp-action="Login" asp-controller="UserAuthentication" class="btn btn-primary">ورود و ثبت سفارش</a>
+}

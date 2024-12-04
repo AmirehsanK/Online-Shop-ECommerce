@@ -69,9 +69,9 @@ namespace Application.Services.Impelementation
 
         }
 
-        public Task<bool> IsEmailExistAsync(string email)
+        public async Task<bool> IsEmailExistAsync(string email)
         {
-            return _userRepository.IsEmailExistAsync(email);
+            return await _userRepository.IsEmailExistAsync(email);
         }
 
         public async Task<bool> IsPasswordCorrectAsync(string email,string password)
@@ -79,6 +79,12 @@ namespace Application.Services.Impelementation
             var x =await _userRepository.GetUserByEmailAsync(email);
             return PasswordHasher.VerifyHashedPassword(x.Password, password);
         }
+
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _userRepository.GetUserByEmailAsync(email);
+        }
+
 
         public async Task<LoginUserViewModel> LoginAsync(LoginUserViewModel loginUser)
         {

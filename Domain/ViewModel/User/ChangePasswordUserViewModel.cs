@@ -1,28 +1,24 @@
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.ViewModel.User;
 
-public class RegisterUserViewModel
-{   [MaxLength(200)]
-    [Display(Name = "نام")]
-    public string? FirstName { get; set; }
-    [MaxLength(200)]
-    [Display(Name = "نام خانوادگی")]
-    public string? LastName { get; set; }
-    [MaxLength(50)]
-    [EmailAddress]
-    [Display(Name = "ایمیل")]
-    [Required(ErrorMessage = "{0} الزامی است")]
-    public string Email { get; set; }
+public class ChangePasswordUserViewModel
+{
     [MaxLength(50)]
     [DataType(dataType: DataType.Password)]
-    [Display(Name = "رمز عبور")]
+    [Display(Name = "رمز عبور فعلی")]
     [Required(ErrorMessage = "{0} الزامی است")]
-    public string Password { get; set; }
+    public string OldPassword { get; set; }
+
     [MaxLength(50)]
     [DataType(dataType: DataType.Password)]
-    [Display(Name = "تکرار رمز عبور")]
+    [Display(Name = "رمز عبور جدید")]
+    [Required(ErrorMessage = "{0} الزامی است")]
+    public string NewPassword { get; set; }
+
+    [MaxLength(50)]
+    [DataType(dataType: DataType.Password)]
+    [Display(Name = "تکرار رمز عبور جدید")]
     [Required(ErrorMessage = "{0} الزامی است")]
     [Compare("Password", ErrorMessage = "تکرار رمز عبور اشتباه است")]
     public string ConfirmPassword { get; set; }
