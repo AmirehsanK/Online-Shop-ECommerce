@@ -1,0 +1,16 @@
+@if (User.Identity.IsAuthenticated)
+{
+    <li class="nav-item">
+        <a asp-action="LogOut" asp-controller="UserAuthentication" class="nav-link" ><i
+                                                                                         class="nav-link-icon ri-logout-box-r-line"></i>
+            خروج</a>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a asp-action="Login" asp-controller="UserAuthentication" class="nav-link" ><i
+                                                                                         class="nav-link-icon ri-logout-box-r-line"></i>
+            ورود</a>
+    </li>
+}

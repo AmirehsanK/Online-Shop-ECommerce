@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Application.Security;
 using Application.Services.Interfaces;
@@ -10,6 +11,9 @@ using Domain.Interface;
 using Domain.ViewModel;
 using Domain.ViewModel.User;
 using Domain.ViewModel.User.Admin;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace Application.Services.Impelementation
 {
@@ -65,20 +69,20 @@ namespace Application.Services.Impelementation
 
         }
 
+        public Task<bool> IsEmailExistAsync(string email)
+        {
+            return _userRepository.IsEmailExistAsync(email);
+        }
+
+        public async Task<bool> IsPasswordCorrectAsync(string email,string password)
+        {
+            var x =await _userRepository.GetUserByEmailAsync(email);
+            return PasswordHasher.VerifyHashedPassword(x.Password, password);
+        }
+
         public async Task<LoginUserViewModel> LoginAsync(LoginUserViewModel loginUser)
         {
-            if (loginUser == null)
-                throw new ArgumentNullException(nameof(loginUser));
-
-            var user = await _userRepository.GetUserByEmailAsync(loginUser.Email);
-
-            if (user == null || !PasswordHasher.VerifyHashedPassword(user.Password, loginUser.Password))
-                return null; // Invalid login
-
-            return new LoginUserViewModel
-            {
-                Email = user.Email
-            };
+            return loginUser;
         }
 
         public async Task RegisterUserAsync(RegisterUserViewModel model)

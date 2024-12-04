@@ -9,6 +9,7 @@ namespace Application.Services.Interfaces
     public interface IUserService
     {
         Task<List<UserListViewModel>> GetUserListAsync();
+        Task<Users> GetUserByEmailAsync(string email);
         Task RegisterUserAsync(RegisterUserViewModel model);
         Task<LoginUserViewModel> LoginAsync(LoginUserViewModel loginUser);
         Task<CreateUserEnums> CreateUserAsync(CreateUserViewModel model);

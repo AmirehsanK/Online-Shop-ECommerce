@@ -2,7 +2,7 @@
     Layout = "";
 }
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 
 <partial name="_Head"/>
 <body>
@@ -12,7 +12,7 @@
         <!-- start banner -->
         <div class="alert banner-container alert-dismissible fade show" role="alert">
             <a href="#" class="banner-placement rounded-0"
-               style="background-image: url(./theme-assets/images/banner/017.jpg);height: 60px;"></a>
+               style="background-image: url(/theme-assets/images/banner/017.jpg);height: 60px;"></a>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         <!-- end banner -->
@@ -28,7 +28,8 @@
                                     <!-- Slides -->
                                     <div class="swiper-slide">
                                         <div class="notification-item">
-                                            <div class="notification-item--text">خوش آمدید 👋</div>
+                                            
+                                            <partial name="_LoggedInUserP1"/>
                                         </div>
                                     </div>
                                     <div class="swiper-slide">
@@ -74,7 +75,7 @@
                     <div class="d-flex align-items-center flex-grow-1 pe-3">
                         <div class="logo-container logo-box me-3">
                             <a href="index-1.html" class="logo">
-                                <img src="./theme-assets/images/logo.svg" width="120" alt="">
+                                <img src="/theme-assets/images/logo.svg" width="120" alt="">
                                 <span class="logo-text">بررسی،انتخاب و خرید آنلاین</span>
                             </a>
                         </div>
@@ -123,7 +124,7 @@
                                     <div class="profile-detail">
                                         <div class="d-flex align-items-center">
                                             <div class="profile-avatar me-3"><img
-                                                    src="./theme-assets/images/avatar/default.png" alt="avatar">
+                                                    src="/theme-assets/images/avatar/default.png" alt="avatar">
                                             </div>
                                             <div class="profile-info">
                                                 <a href="#" class="text-decoration-none text-dark fw-bold mb-2">جلال
@@ -166,11 +167,7 @@
                                                     class="nav-link-icon ri-copper-coin-fill"></i>
                                                 باشگاه مشتریان</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#"><i
-                                                    class="nav-link-icon ri-logout-box-r-line"></i>
-                                                خروج</a>
-                                        </li>
+                                        <partial name="_LoggedInUserP2"/>
                                     </ul>
                                 </div>
                             </div>
@@ -197,94 +194,7 @@
                                             class="ri-arrow-left-s-fill"></i></a>
                                 </div>
                                 <div class="mini-cart-products do-simplebar">
-                                    <div class="mini-cart-product">
-                                        <div class="mini-cart-product-thumbnail">
-                                            <a href="#"><img src="./theme-assets/images/products/01.jpg" alt=""></a>
-                                        </div>
-                                        <div class="mini-cart-product-detail">
-                                            <div class="mini-cart-product-brand"><a href="#">apple</a></div>
-                                            <div class="mini-cart-product-title">
-                                                <a href="product-v1.html">گوشی موبایل اپل مدل iPhone 13 A2634 دو
-                                                    سیم‌ کارت ظرفیت 128
-                                                    گیگابایت و رم 4 گیگابایت</a>
-                                            </div>
-                                            <div class="mini-cart-purchase-info">
-                                                <div class="mini-cart-product-meta">
-                                                    <span class="fa-num">1 عدد</span>
-                                                    <span class="color" style="background-color: #d4d4d4;"></span>
-                                                </div>
-                                                <div class="mini-cart-product-price fa-num">26,249,000 <span
-                                                        class="currency">تومان</span></div>
-                                            </div>
-                                            <button class="mini-cart-product-remove"></button>
-                                        </div>
-                                    </div>
-                                    <div class="mini-cart-product">
-                                        <div class="mini-cart-product-thumbnail">
-                                            <a href="#"><img src="./theme-assets/images/products/02.jpg" alt=""></a>
-                                        </div>
-                                        <div class="mini-cart-product-detail">
-                                            <div class="mini-cart-product-brand"><a href="#">xiaomi</a></div>
-                                            <div class="mini-cart-product-title">
-                                                <a href="product-v1.html">گوشی موبایل شیائومی مدل 11 lite 5G NE
-                                                    2109119DG دو سیم‌ کارت
-                                                    ظرفیت 256 گیگابایت و رم 8 گیگابایت</a>
-                                            </div>
-                                            <div class="mini-cart-purchase-info">
-                                                <div class="mini-cart-product-meta">
-                                                    <span class="fa-num">1 عدد</span>
-                                                    <span class="color" style="background-color: #d4d4d4;"></span>
-                                                </div>
-                                                <div class="mini-cart-product-price fa-num">8,239,000 <span
-                                                        class="currency">تومان</span></div>
-                                            </div>
-                                            <button class="mini-cart-product-remove"></button>
-                                        </div>
-                                    </div>
-                                    <div class="mini-cart-product">
-                                        <div class="mini-cart-product-thumbnail">
-                                            <a href="#"><img src="./theme-assets/images/products/05.jpg" alt=""></a>
-                                        </div>
-                                        <div class="mini-cart-product-detail">
-                                            <div class="mini-cart-product-brand"><a href="#">apple</a></div>
-                                            <div class="mini-cart-product-title">
-                                                <a href="product-v1.html">گوشی موبایل اپل مدل iPhone 12 Pro Max
-                                                    A2412 دو سیم‌ کارت ظرفیت
-                                                    256 گیگابایت</a>
-                                            </div>
-                                            <div class="mini-cart-purchase-info">
-                                                <div class="mini-cart-product-meta">
-                                                    <span class="fa-num">1 عدد</span>
-                                                    <span class="color" style="background-color: #d4d4d4;"></span>
-                                                </div>
-                                                <div class="mini-cart-product-price fa-num">36,300,000 <span
-                                                        class="currency">تومان</span></div>
-                                            </div>
-                                            <button class="mini-cart-product-remove"></button>
-                                        </div>
-                                    </div>
-                                    <div class="mini-cart-product">
-                                        <div class="mini-cart-product-thumbnail">
-                                            <a href="#"><img src="./theme-assets/images/products/07.jpg" alt=""></a>
-                                        </div>
-                                        <div class="mini-cart-product-detail">
-                                            <div class="mini-cart-product-brand"><a href="#">samsung</a></div>
-                                            <div class="mini-cart-product-title">
-                                                <a href="product-v1.html">گوشی موبایل سامسونگ مدل Galaxy S9 Plus دو
-                                                    سیم کارت ظرفیت 64
-                                                    گیگابایت</a>
-                                            </div>
-                                            <div class="mini-cart-purchase-info">
-                                                <div class="mini-cart-product-meta">
-                                                    <span class="fa-num">1 عدد</span>
-                                                    <span class="color" style="background-color: #d4d4d4;"></span>
-                                                </div>
-                                                <div class="mini-cart-product-price fa-num">12,890,000 <span
-                                                        class="currency">تومان</span></div>
-                                            </div>
-                                            <button class="mini-cart-product-remove"></button>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                                 <div class="mini-cart-footer">
                                     <div class="mini-cart-total">
@@ -292,7 +202,7 @@
                                         <span class="mini-cart-total-value fa-num">83,678,000 <span
                                                 class="currency">تومان</span></span>
                                     </div>
-                                    <a href="#" class="btn btn-primary">ورود و ثبت سفارش</a>
+                                    <a asp-action="Login" asp-controller="UserAuthentication" class="btn btn-primary">ورود و ثبت سفارش</a>
                                 </div>
                             </div>
                         </div>
@@ -408,7 +318,7 @@
                         <div class="navigation-header">
                             <div class="logo-container logo-box">
                                 <a href="#" class="logo">
-                                    <img src="./theme-assets/images/logo.svg" width="120" alt="">
+                                    <img src="/theme-assets/images/logo.svg" width="120" alt="">
                                     <span class="logo-text">بررسی،انتخاب و خرید آنلاین</span>
                                 </a>
                             </div>
@@ -486,7 +396,7 @@
                 </div>
                 <div class="logo">
                     <a href="#">
-                        <img src="./theme-assets/images/logo-dark.svg" alt="">
+                        <img src="/theme-assets/images/logo-dark.svg" alt="">
                     </a>
                 </div>
             </div>
@@ -545,21 +455,10 @@
             </div>
         </div>
     </header>
+    @RenderSection("UserPanel",false)
     @RenderBody()
 
-    <footer class="page-footer">
-        <div class="container footer-logo-area">
-            <div class="d-flex align-items-start">
-                <div class="logo-container logo-box">
-                    <a href="#" class="logo">
-                        <img src="./theme-assets/images/logo.svg" width="120" alt="">
-                        <span class="logo-text">بررسی،انتخاب و خرید آنلاین</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-    </footer>
+    
 </div>
 <partial name="_Footer"/>
 @await RenderSectionAsync("Scripts", false)
