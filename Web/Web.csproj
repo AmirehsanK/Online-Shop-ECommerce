@@ -7,30 +7,23 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\IOC\IOC.csproj"/>
+      <ProjectReference Include="..\IOC\IOC.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="wwwroot\theme-assets\.DS_Store"/>
+      <Content Include="wwwroot\theme-assets\.DS_Store" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7"/>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
     </ItemGroup>
 
     <ItemGroup>
-        <_ContentIncludedByDefault Remove="Pages\SignUp\SignUp.cshtml"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Areas\User\Controllers\" />
-      <Folder Include="Areas\User\ViewComponents\" />
-      <Folder Include="Areas\User\Views\" />
-      <Folder Include="Views\Dashboard\" />
+      <_ContentIncludedByDefault Remove="Pages\SignUp\SignUp.cshtml" />
     </ItemGroup>
 
 </Project>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Security;
 using Application.Services.Interfaces;
 using Domain.Entities.Account;
+using Domain.Enums;
 using Domain.Interface;
 using Domain.ViewModel;
 using Domain.ViewModel.User;
@@ -35,30 +36,33 @@ namespace Application.Services.Impelementation
             }).ToList();
         }
 
-        public async Task CreateUserAsync(CreateUserViewModel model)
+        public async Task<CreateUserEnums> CreateUserAsync(CreateUserViewModel model)
         {
-            // Validate input
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
-
-            if (await _userRepository.GetUserByEmailAsync(model.Email) != null)
-                throw new InvalidOperationException("Email is already registered.");
-
-            var user = new Users
+            model.Email = model.Email.ToLower().Trim();
+            var Exist = await _userRepository.GetUserByEmailAsync(model.Email);
+            if (Exist == null)
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                Password = PasswordHasher.HashPassword(model.Password),
-                IsAdmin = model.IsAdmin,
-                IsEmailActive = model.IsEmailActive,
-                CreateDate = DateTime.UtcNow,
-                EmailActiveCode = Guid.NewGuid().ToString("N"),
-                IsDeleted = false
-            };
+                var user = new User()
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    IsAdmin = model.IsAdmin,
+                    EmailActiveCode = Guid.NewGuid().ToString("N"),
+                    CreateDate = DateTime.Now,
+                    IsDeleted = false,
+                    IsEmailActive = model.IsEmailActive,
+                    Password = model.Password
+                };
+                await _userRepository.AddUserAsync(user);
+                await _userRepository.SaveChangesAsync();
+                return CreateUserEnums.Success;
 
-            await _userRepository.AddUserAsync(user);
-            await _userRepository.SaveChangesAsync();
+            }
+
+            return CreateUserEnums.EmailExist;
+
+
         }
 
         public async Task<LoginUserViewModel> LoginAsync(LoginUserViewModel loginUser)
@@ -86,7 +90,7 @@ namespace Application.Services.Impelementation
             if (await _userRepository.GetUserByEmailAsync(model.Email) != null)
                 throw new InvalidOperationException("Email is already registered.");
 
-            var user = new Users
+            var user = new User
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,

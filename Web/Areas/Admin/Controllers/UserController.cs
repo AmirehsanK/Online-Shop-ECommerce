@@ -1,4 +1,5 @@
 ﻿using Application.Services.Interfaces;
+using Domain.Enums;
 using Domain.ViewModel.User;
 using Domain.ViewModel.User.Admin;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace Web.Areas.Admin.Controllers
         #region USerList
         [HttpGet]
         public async Task<IActionResult> UserList()
-        
+
         {
             var models = await _userService.GetUserListAsync();
             return View(models);
@@ -31,7 +32,7 @@ namespace Web.Areas.Admin.Controllers
 
         #region CreateUser
 
-        
+
         [HttpGet]
 
         public async Task<IActionResult> CreateUser()
@@ -51,8 +52,27 @@ namespace Web.Areas.Admin.Controllers
 
             #endregion
 
-            await _userService.CreateUserAsync(model);
+            var res = await _userService.CreateUserAsync(model);
+            switch (res)
+            {
+                case CreateUserEnums.Success:
+                {
+                    TempData[SuccessMessage]="کاربر مورد نظر با موفقیت اضافه شد";
+                    return RedirectToAction(nameof(UserList));
+                }
+                case CreateUserEnums.EmailExist:
+                {
+                    TempData[ErrorMessage] = "ایمیل وارد شده موجود میباشد";
+                    return View();
+
+                }
+                   
+                
+            }
+
             return View();
+
+
         }
 
         #endregion
@@ -78,6 +98,7 @@ namespace Web.Areas.Admin.Controllers
             #endregion
 
             await _userService.EditUserAsync(model);
+            TempData[SuccessMessage] = "اطلاعات با موفیت ویرایش شد";
             return RedirectToAction(nameof(UserList));
 
         }
@@ -88,7 +109,7 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> UserDetail(int userId)
         {
-          var model=  await _userService.GetUserDetailAsync(userId);
+            var model = await _userService.GetUserDetailAsync(userId);
             return View(model);
         }
 

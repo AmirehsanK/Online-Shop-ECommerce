@@ -1,20 +1,28 @@
-﻿using Domain.Entities.Account;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Domain.Entities.Account;
+using Domain.ViewModel;
 
-namespace Domain.Interface;
-
-public interface IUserRepository
+namespace Domain.Interface
 {
-    Task<List<Users>> GetAllAsync();
+    public interface IUserRepository
+    {
+        Task<List<User>> GetAllAsync();
 
-    Task<Users> GetUserByIdAsync(int userid);
+        Task<User> GetUserByIdAsync(int userid);
 
-    Task<Users> GetUserByEmailAsync(string email);
+        Task<User> GetUserByEmailAsync(string email);
+     
 
+        Task<bool> IsEmailExistAsync(string email);
 
-    Task<bool> IsEmailExistAsync(string email);
+        Task AddUserAsync(User user);
+        void UpdateUser(User user);
 
-    Task AddUserAsync(Users user);
-    void UpdateUser(Users user);
+        Task SaveChangesAsync();
 
-    Task SaveChangesAsync();
+    }
 }

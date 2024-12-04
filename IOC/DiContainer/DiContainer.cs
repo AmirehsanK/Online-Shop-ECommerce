@@ -1,4 +1,6 @@
-﻿using Application.Services.Impelementation;
+﻿using System.Text.Encodings.Web;
+using System.Text.Unicode;
+using Application.Services.Impelementation;
 using Application.Services.Interfaces;
 using Domain.Interface;
 using Infra.Data.Repositories;
@@ -21,5 +23,9 @@ public static class DiContainer
         services.AddScoped<IUserService, UserService>();
 
         #endregion
+
+        services.AddSingleton<HtmlEncoder>(
+            HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin,
+                UnicodeRanges.Arabic }));
     }
 }

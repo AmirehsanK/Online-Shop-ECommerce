@@ -7,17 +7,17 @@ namespace Infra.Data.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    public async Task<List<Users>> GetAllAsync()
+    public async Task<List<User>> GetAllAsync()
     {
         return await _context.Users.ToListAsync();
     }
 
-    public async Task<Users> GetUserByIdAsync(int userid)
+    public async Task<User> GetUserByIdAsync(int userid)
     {
         return await _context.Users.FirstOrDefaultAsync(u => u.Id == userid);
     }
 
-    public async Task<Users> GetUserByEmailAsync(string email)
+    public async Task<User> GetUserByEmailAsync(string email)
     {
         return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
@@ -28,12 +28,12 @@ public class UserRepository : IUserRepository
         return await _context.Users.AnyAsync(u => u.Email == email);
     }
 
-    public async Task AddUserAsync(Users user)
+    public async Task AddUserAsync(User user)
     {
         await _context.Users.AddAsync(user);
     }
 
-    public void UpdateUser(Users user)
+    public void UpdateUser(User user)
     {
         _context.Update(user);
     }

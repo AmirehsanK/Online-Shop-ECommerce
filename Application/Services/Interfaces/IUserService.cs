@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Domain.Enums;
 using Domain.ViewModel.User;
 using Domain.ViewModel.User.Admin;
 
@@ -10,7 +11,7 @@ namespace Application.Services.Interfaces
         Task<List<UserListViewModel>> GetUserListAsync();
         Task RegisterUserAsync(RegisterUserViewModel model);
         Task<LoginUserViewModel> LoginAsync(LoginUserViewModel loginUser);
-        Task CreateUserAsync(CreateUserViewModel model);
+        Task<CreateUserEnums> CreateUserAsync(CreateUserViewModel model);
 
         Task EditUserAsync(EditUserViewModel model);
 

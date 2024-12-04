@@ -1,17 +1,42 @@
-﻿using Domain.Entities.Account;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Domain.Entities.Account;
+using Domain.Entities.Ticket;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infra.Data.Context;
-
-public class ApplicationDbContext : DbContext
+namespace Infra.Data.Context
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    public class ApplicationDbContext:DbContext
     {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options) { }
+
+        #region Dbsets
+
+        public DbSet<User> Users { get; set; }
+
+        #endregion
+
+        #region Ticket
+
+        public DbSet<TicketsMessage> TicketsMessages { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
+        
+
+        #endregion
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            foreach(var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+            base.OnModelCreating(modelBuilder);
+        }
+
+    
+
     }
-
-    #region Dbsets
-
-    public DbSet<Users> Users { get; set; }
-
-    #endregion
 }

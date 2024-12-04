@@ -10,6 +10,6 @@ namespace Domain.Enums
     public enum CreateUserEnums
     {
         Success,
-        Failed,
+        EmailExist,
     }
 }

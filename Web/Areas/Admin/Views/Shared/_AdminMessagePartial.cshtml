@@ -1,0 +1,207 @@
+﻿@{
+    // string message = (string)TempData["CreateUser"];
+    if (TempData["Error"] != null)
+    {
+        var message = TempData["Error"];
+        <script>
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'اخطار',
+                text:'@message'
+            });
+        </script>
+    }
+    else if (TempData["Success"] != null)
+    {
+
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'اعلان',
+                text: 'کاربر مورد نظر با موفقیت به لیست اضافه شد'
+
+            });
+        </script>
+
+    }
+
+}
+@if (TempData["RegisterResult"] != null)
+{
+    string Register = (string)TempData["RegisterResult"];
+    if (Register == "Error")
+    {
+        <script>
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'اخطار',
+                text: 'در قرایند ثبت نام مشکلی پیش امده'
+            });
+        </script>
+    }
+    else if (Register == "Success")
+    {
+        <script>
+
+            Swal.fire({
+                icon: 'success',
+                title: 'اعلان',
+                text: 'ایمیلی حاوی لینک فعال سازی برای شما ارسال شد'
+            });
+        </script>
+    }
+    else if (Register == "Invalid")
+    {
+        <script>
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'اخطار',
+                text: 'کاربری با ایمیل وارد شده موجود میباشد'
+            });
+        </script>
+    }
+
+}
+
+@if (TempData["LoginResult"] != null)
+{
+    string login = (string)TempData["LoginResult"];
+    if (login == "NotActive")
+    {
+        <script>
+
+            Swal.fire({
+                icon: 'error',
+                title: 'اعلان',
+                text: 'ایمیل شما فعال نیست:('
+            });
+        </script>
+    }
+    else if (login == "Success")
+    {
+        <script>
+
+            Swal.fire({
+                icon: 'success',
+                title: 'اعلان',
+                text: 'ثبت نام شما با موفقیت انجام شد'
+            });
+        </script>
+    }
+    else if (login == "InvalidPassword")
+    {
+        <script>
+
+            Swal.fire({
+                icon: 'error',
+                title: 'اعلان',
+                text: 'ایمیل یا پسوورد شما اشتباه میباشید'
+            });
+        </script>
+    }
+    else if (login == "Error")
+    {
+        <script>
+
+            Swal.fire({
+                icon: 'error',
+                title: 'اعلان',
+                text: 'ایمیل یا پسوورد شما اشتباه میباشید'
+
+            });
+        </script>
+    }
+
+
+}
+
+@if (TempData["Contactresult"] != null)
+{
+    string Contact = (string)TempData["Contactresult"];
+    if (Contact == "Error")
+    {
+        <script>
+
+            Swal.fire({
+                icon: 'error',
+                title: 'اعلان',
+                text: ''
+            });
+        </script>
+    }
+    else if (Contact == "Success")
+    {
+        <script>
+
+            Swal.fire({
+                icon: 'success',
+                title: 'اعلان',
+                text: 'پیام شما ارسال شد در اسرع وقت پاسخ به شما ایمیل خواهد شد :)'
+            });
+        </script>
+    }
+
+
+}
+
+@if (TempData["ForgotPassResult"] != null)
+{
+    string Forgot = (string)TempData["ForgotPassResult"];
+    if (Forgot == "Error")
+    {
+        <script>
+
+            Swal.fire({
+                icon: 'error',
+                title: 'اعلان',
+                text: 'آیمیل وارد شده معتبر موجود نیس'
+            });
+        </script>
+    }
+    else if (Forgot == "Success")
+    {
+        <script>
+
+            Swal.fire({
+                icon: 'success',
+                title: 'اعلان',
+                text: 'ایمیلی حاوی لینک برای بازیابی کلمه عبور برای شما ارسال شد '
+            });
+        </script>
+    }
+
+}
+
+
+@if (TempData["ResetPassResult"] != null)
+{
+    string Reset = (string)TempData["ResetPassResult"];
+    if (Reset == "Error")
+    {
+        <script>
+
+            Swal.fire({
+                icon: 'error',
+                title: 'اعلان',
+                text: 'خطایی رخ داد'
+            });
+        </script>
+    }
+    else if (Reset == "Success")
+    {
+        <script>
+
+            Swal.fire({
+                icon: 'success',
+                title: 'اعلان',
+                text: 'تغییر پسوورد شما با موفقیت انجلم شد :) '
+            });
+        </script>
+    }
+
+}
+
+
