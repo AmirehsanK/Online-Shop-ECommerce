@@ -95,7 +95,34 @@ namespace Application.Services.Impelementation
             _userRepository.UpdateUser(user) ;
             await _userRepository.SaveChangesAsync();
         }
-        
+
+
+        public async Task<ForgetPasswordEnum> ForgotPasswordEmailSenderAsync(string email)
+        {
+            var user = await _userRepository.GetUserByEmailAsync(email);
+            if (user == null)
+                return ForgetPasswordEnum.UserNotFound;
+            else
+            {
+                var domainLink = "https://localhost:7271";
+                string mailbody = $"<a href=\"{domainLink}/activate-account/{user.EmailActiveCode}\"> فعالسازی حساب کاربری </a>";
+                await EmailSender.SendEmail(user.Email,"فعال سازی حساب کاربری",mailbody );
+
+                return ForgetPasswordEnum.Success;
+            }
+        }
+
+        public async Task<ForgetPasswordTokenCheckEnum> ForgotPasswordTokenCheckerAsync(string token)
+        {
+            var user = _userRepository.GetUserByGUIDAsync(token);
+            if (user == null)
+                return ForgetPasswordTokenCheckEnum.Failed;
+            else
+            {
+                return ForgetPasswordTokenCheckEnum.Success;
+            }
+        }
+
         public async Task<bool> ComparePasswordAsync(string hashedPassword, string providedPassword)
         {
             return PasswordHasher.VerifyHashedPassword(hashedPassword, providedPassword);

@@ -16,6 +16,10 @@ namespace Application.Services.Interfaces
         Task<bool> ComparePasswordAsync(string hashedPassword, string providedPassword);
 
         Task ChangePasswordAsync(int userId, string newPassword);
+
+        Task<ForgetPasswordEnum> ForgotPasswordEmailSenderAsync(string email);
+        
+        Task<ForgetPasswordTokenCheckEnum> ForgotPasswordTokenCheckerAsync(string token);
         
         Task<User> GetUserByEmailAsync(string email);
 

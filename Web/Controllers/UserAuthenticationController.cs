@@ -12,7 +12,66 @@ public class UserAuthenticationController : SiteBaseController
 {
     //TODO Forgot Password
 
+    #region ForgotPassword
+    
+    [HttpPost]
+    public async Task<IActionResult> ForgotPassword(string email)
+    {
+        if (!ModelState.IsValid)
+            return View();
+        
+        var result = await _userService.ForgotPasswordEmailSenderAsync(email);
+        
+        switch (result)
+        {
+            case ForgetPasswordEnum.Success:
+                ViewData["IsSuccess"] = true;
+                TempData[SuccesMessage] = "لینک تغییر رمز عبور با موفقیت به ایمیل شما ارسال شد";
+                return View();
+                break;
 
+            case ForgetPasswordEnum.UserNotFound:
+                ViewData["IsFailed"] = false;
+                TempData[FailMessage] = "اکانتی با این ایمیل یافت نشد.";
+                return View();
+                break;
+
+            case ForgetPasswordEnum.EmailSendFailed:
+                ViewData["IsSuccess"] = false;
+                TempData[FailMessage] ="ایمیل ارسال نشد لطفا دوباره تلاش کنید";
+                return View();
+                break;
+
+            default:
+                ViewData["IsSuccess"] = false;
+                TempData[FailMessage] = "خطایی رخ داده است لطفا دوباره تلاش کنید";
+                return View();
+                break;
+        }
+
+        return View();
+    }
+    [HttpGet("ForgotPassword/{token}")]
+    public async Task<IActionResult> ForgotPasswordChangePassword(string token)
+    {
+        
+        {
+            
+        }   
+        return RedirectToAction();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ForgotPasswordChanger(string model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        return RedirectToAction("Login", "Account");
+    }
+    #endregion
     #region Logout
 
     public IActionResult LogOut()
