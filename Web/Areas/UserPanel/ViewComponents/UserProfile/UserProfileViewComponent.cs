@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Web.Areas.UserPanel.ViewComponents.UserProfile
+namespace Web.Areas.UserPanel.ViewComponents.UserProfile;
+
+public class UserProfileViewComponent : ViewComponent
 {
-    public class UserProfileViewComponent:ViewComponent
+    public async Task<IViewComponentResult> InvokeAsync()
     {
-        public async Task<IViewComponentResult> InvokeAsync()
-        {
-            return View("UserProfile");
-        }
+        return View("UserProfile");
     }
 }

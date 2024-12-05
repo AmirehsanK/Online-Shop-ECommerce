@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Web.Areas.UserPanel.Controllers
+namespace Web.Areas.UserPanel.Controllers;
+
+[Area("UserPanel")]
+public class UserPanelBaseController : Controller
 {
-    [Area("UserPanel")]
-    public class UserPanelBaseController : Controller
-    {
-      
-    }
 }

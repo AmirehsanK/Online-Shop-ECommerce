@@ -1,13 +1,15 @@
 @if (User.Identity.IsAuthenticated)
 {
     <div class="notification-content">
-        <div class="notification-item--text">@User.Identity.Name جان خوش آمدید 👋 </div>
+        <div class="notification-item--text">@User.Identity.Name جان خوش آمدید 👋</div>
     </div>
 }
 else
 {
     <div class="notification-content">
-        <a asp-action="Login" asp-controller="UserAuthentication" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">ورود</a>
-        <a asp-action="SignUp" asp-controller="UserAuthentication" class="btn btn-secondary btn-sm active" role="button" aria-pressed="true">ثبت نام</a>
+        <a asp-action="Login" asp-controller="UserAuthentication" class="btn btn-primary btn-sm active" role="button"
+           aria-pressed="true">ورود</a>
+        <a asp-action="SignUp" asp-controller="UserAuthentication" class="btn btn-secondary btn-sm active" role="button"
+           aria-pressed="true">ثبت نام</a>
     </div>
 }

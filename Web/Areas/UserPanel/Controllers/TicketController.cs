@@ -3,8 +3,7 @@ using Application.Tools;
 using Domain.ViewModel.Ticket;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Web.Areas.UserPanel.Controllers
-{
+namespace Web.Areas.UserPanel.Controllers;
 
     public class TicketController : UserPanelBaseController
     {

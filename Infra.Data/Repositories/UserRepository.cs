@@ -22,6 +22,11 @@ public class UserRepository : IUserRepository
         return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
 
+    public async Task<User> GetUserByGUIDAsync(string guid)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.EmailActiveCode == guid);
+    }
+
 
     public async Task<bool> IsEmailExistAsync(string email)
     {

@@ -1,0 +1,23 @@
+@if (TempData["Error"] != null)
+{
+    var message = TempData["Error"];
+    <script>
+
+        Swal.fire({
+            icon: 'warning',
+            title: 'اخطار',
+            text: '@message'
+        });
+    </script>
+}
+else if (TempData["Success"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'اعلان',
+            text: 'کاربر مورد نظر با موفقیت به لیست اضافه شد'
+
+        });
+    </script>
+}

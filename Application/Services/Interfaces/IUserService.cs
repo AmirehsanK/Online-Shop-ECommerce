@@ -10,14 +10,33 @@ namespace Application.Services.Interfaces
     public interface IUserService
     {
         Task<List<UserListViewModel>> GetUserListAsync();
+
+        Task<bool> IsPasswordCorrectAsync(string email, string password);
+
+        Task<bool> ComparePasswordAsync(string hashedPassword, string providedPassword);
+
+        Task ChangePasswordAsync(int userId, string newPassword);
+
+        Task<ForgetPasswordEnum> ForgotPasswordEmailSenderAsync(string email);
+        
+        Task<ForgetPasswordTokenCheckEnum> ForgotPasswordTokenCheckerAsync(string token);
+        
         Task<User> GetUserByEmailAsync(string email);
+
+        Task<bool> IsEmailExistAsync(string email);
         Task RegisterUserAsync(RegisterUserViewModel model);
-        Task<LoginUserViewModel> LoginAsync(LoginUserViewModel loginUser);
+        
         Task<CreateUserEnums> CreateUserAsync(CreateUserViewModel model);
 
         Task EditUserAsync(EditUserViewModel model);
 
         Task<EditUserViewModel> GetUsersByIDAsync(int userid);
+        
+        Task<ActiveEmailEnum> EmailActivatorAsync(string emailActiveCode);
+        
+        Task<LoginUserEnum> LoginUserAsync(LoginUserViewModel model);
+        
+        Task<RegisterUserEnum> RegisterUserValidationAsync(RegisterUserViewModel model);
 
         Task DeleteUserAsync(int userid);
 

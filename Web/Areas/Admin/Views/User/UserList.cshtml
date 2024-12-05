@@ -1,5 +1,4 @@
-﻿@using Microsoft.IdentityModel.Tokens
-@model List<Domain.ViewModel.User.Admin.UserListViewModel>
+﻿@model List<Domain.ViewModel.User.Admin.UserListViewModel>
 @{
     ViewData["Title"] = "لیست کاربران";
 }
@@ -11,13 +10,13 @@
         {
             <table class="table">
                 <thead>
-                    <tr>
-                        <th>کد</th>
-                        <th>نام</th>
-                        <th>نام خانوادگی</th>
-                        <th>ایمیل</th>
-                        <th>عملیات</th>
-                    </tr>
+                <tr>
+                    <th>کد</th>
+                    <th>نام</th>
+                    <th>نام خانوادگی</th>
+                    <th>ایمیل</th>
+                    <th>عملیات</th>
+                </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
                 @foreach (var user in Model)
@@ -30,18 +29,21 @@
                         </td>
                         <td><span class="badge bg-label-success me-1">@user.Email</span></td>
                         <td>
-                            <a asp-controller="User" asp-area="Admin" asp-action="EditUser" asp-route-UserId="@user.Id" class="btn btn-label-warning">ویرایش کاربر</a>
-                            <a asp-controller="User" asp-area="Admin" asp-action="DeleteUser" asp-route-UserId="@user.Id" class="btn btn-label-danger">حدف</a>
-                            <a asp-controller="User" asp-area="Admin" asp-action="UserDetail" asp-route-UserId="@user.Id" class="btn btn-label-primary">جزییات</a>
+                            <a asp-controller="User" asp-area="Admin" asp-action="EditUser" asp-route-UserId="@user.Id"
+                               class="btn btn-label-warning">ویرایش کاربر</a>
+                            <a asp-controller="User" asp-area="Admin" asp-action="DeleteUser"
+                               asp-route-UserId="@user.Id" class="btn btn-label-danger">حدف</a>
+                            <a asp-controller="User" asp-area="Admin" asp-action="UserDetail"
+                               asp-route-UserId="@user.Id" class="btn btn-label-primary">جزییات</a>
                         </td>
                     </tr>
                 }
-  
+
 
                 </tbody>
             </table>
         }
-      
+
     </div>
 </div>
 
