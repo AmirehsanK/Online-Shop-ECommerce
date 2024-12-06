@@ -12,7 +12,7 @@ using Domain.ViewModel;
 using Domain.ViewModel.User;
 using Domain.ViewModel.User.Admin;
 //using Microsoft.AspNetCore.Authentication;
-//using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using System.Linq;
 using Application.Tools;
 
@@ -42,10 +42,6 @@ namespace Application.Services.Impelementation
             }).ToList();
         }
 
-        public Task<User> GetUserByEmailAsync(string email)
-        {
-            throw new NotImplementedException();
-        }
 
 
         public async Task<CreateUserEnums> CreateUserAsync(CreateUserViewModel model)
@@ -227,7 +223,8 @@ namespace Application.Services.Impelementation
             var user = await _userRepository.GetUserByEmailAsync(model.Email);
             if (user != null)
             {
-                if (user.Password == PasswordHasher.HashPassword(model.Password))
+                //if (user.Password == PasswordHasher.HashPassword(model.Password))
+                if (PasswordHasher.VerifyHashedPassword(user.Password,model.Password))
                 {
                     if (user.IsEmailActive)
                     {

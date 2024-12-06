@@ -23,12 +23,18 @@ namespace Domain.Interface
 
         void UpdateTicketMessageAsync(TicketsMessage ticketsMessage);
 
-        Task<List<TicketsMessage>> GetTicketMessageCurrentAsync(int UserId,int TicketId);
+        Task<TicketsMessage> GetTicketMessageCurrentAsync(int TicketId);
 
         Task<Ticket> GetTicketAsync(int ticketid);
         Task<TicketsMessage> GetTicketMessageAsync(int ticketid); 
 
-        Task<List<Ticket>> GetAllAsync();
+        Task<Ticket> GetAllAsync(int ticketid);
+ 
+
+
+
+
+
 
 
 

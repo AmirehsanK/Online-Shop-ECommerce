@@ -13,5 +13,9 @@ namespace Application.Services.Interfaces
 
         Task AddNewTicket(AddTicketViewModel ticket, int userid);
 
+        Task<TicketDetailViewModel> GetTicketDetail(int ticketid);
+
+        Task AddMessageToCurrentTicket(TicketDetailViewModel model,int  ticketid,int userid);
+
     }
 }

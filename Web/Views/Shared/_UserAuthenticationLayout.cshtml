@@ -26,43 +26,46 @@
 
 <body>
 
-@RenderBody()
-<footer class="page-mini-footer">
+    @RenderBody()
+    <footer class="page-mini-footer">
 
-    <div class="copy-right bg-light py-3">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 mb-md-0 mb-4">
-                    <div class="text-muted text-md-start text-center">کليه حقوق اين سايت متعلق به amirehsan&aref
-                        می‌باشد.
+        <div class="copy-right bg-light py-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 mb-md-0 mb-4">
+                        <div class="text-muted text-md-start text-center">
+                            کليه حقوق اين سايت متعلق به amirehsan&aref
+                            می‌باشد.
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="text-muted text-md-end text-center">echo_designer - 2021 © Copyright</div>
+                    <div class="col-md-6">
+                        <div class="text-muted text-md-end text-center">echo_designer - 2021 © Copyright</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</footer>
-<script src="/theme-assets/js/dependencies/jquery-3.6.0.min.js"></script>
-<script src="/theme-assets/js/dependencies/bootstrap.bundle.min.js"></script>
-<script src="/theme-assets/js/dependencies/bootstrap-slider.min.js"></script>
-<script src="/theme-assets/js/dependencies/jquery.countdown.min.js"></script>
-<script src="/theme-assets/js/dependencies/jquery.simple.timer.min.js"></script>
-<script src="/theme-assets/js/dependencies/iziToast.min.js"></script>
-<script src="/theme-assets/js/dependencies/fancybox.umd.js"></script>
-<script src="/theme-assets/js/dependencies/nouislider.min.js"></script>
-<script src="/theme-assets/js/dependencies/wNumb.js"></script>
-<script src="/theme-assets/js/dependencies/remodal.min.js"></script>
-<script src="/theme-assets/js/dependencies/select2.min.js"></script>
-<script src="/theme-assets/js/dependencies/simplebar.min.js"></script>
-<script src="/theme-assets/js/dependencies/swiper-bundle.min.js"></script>
-<script src="/theme-assets/js/dependencies/zoomsl.min.js"></script>
-<script src="/theme-assets/js/theme.js"></script>
-<script src="/theme-assets/js/custom.js"></script>
-<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-@await RenderSectionAsync("Scripts", false)
+    </footer>
+    <script src="/theme-assets/js/dependencies/jquery-3.6.0.min.js"></script>
+    <script src="/theme-assets/js/dependencies/bootstrap.bundle.min.js"></script>
+    <script src="/theme-assets/js/dependencies/bootstrap-slider.min.js"></script>
+    <script src="/theme-assets/js/dependencies/jquery.countdown.min.js"></script>
+    <script src="/theme-assets/js/dependencies/jquery.simple.timer.min.js"></script>
+    <script src="/theme-assets/js/dependencies/iziToast.min.js"></script>
+    <script src="/theme-assets/js/dependencies/fancybox.umd.js"></script>
+    <script src="/theme-assets/js/dependencies/nouislider.min.js"></script>
+    <script src="/theme-assets/js/dependencies/wNumb.js"></script>
+    <script src="/theme-assets/js/dependencies/remodal.min.js"></script>
+    <script src="/theme-assets/js/dependencies/select2.min.js"></script>
+    <script src="/theme-assets/js/dependencies/simplebar.min.js"></script>
+    <script src="/theme-assets/js/dependencies/swiper-bundle.min.js"></script>
+    <script src="/theme-assets/js/dependencies/zoomsl.min.js"></script>
+    <script src="/theme-assets/js/theme.js"></script>
+    <script src="/theme-assets/js/custom.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    @await RenderSectionAsync("Scripts", false)
+    <partial name="_MessageBoxPartial" />
 </body>
 
 </html>

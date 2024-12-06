@@ -1,4 +1,5 @@
-﻿@model List<Domain.ViewModel.Ticket.TicketListViewModel>
+﻿@using Application.Tools
+@model List<Domain.ViewModel.Ticket.TicketListViewModel>
 @{
     ViewData["Title"] = "لیست تیکت ها";
 }
@@ -38,17 +39,17 @@
                         {
                             <tr>
                                 <td class="fa-num">@item.TicketId</td>
-                                <td class="fa-num">@item.CreateDate</td>
-                                <td class="fa-num">@item.Section</td>
+                                <td class="fa-num">@item.CreateDate.ToShamsi() @item.CreateDate.ToString("hh:mm:ss") </td>
+                                <td class="fa-num">@item.Section.GetDisplayName()</td>
                                 <td class="fa-num">@item.Title</td>
                                 <td class="fa-num">
                                     <span class="badge bg-warning rounded-pill">
-                                       @item.Status
+                                       @item.Status.GetDisplayName()
                                     </span>
                                 </td>
-                                <td class="fa-num">@item.UpdateDate</td>
+                                    <td class="fa-num">@item.UpdateDate.ToShamsi() @item.UpdateDate.ToString("hh:mm:ss")</td>
                                 <td>
-                                    <a href="#" class="btn btn-circle btn-info my-1"><i class="ri-eye-line"></i></a>
+                                    <a asp-area="UserPanel" asp-controller="Ticket" asp-action="TicketDetail" asp-route-ticketid="@item.TicketId" class="btn btn-circle btn-info my-1"><i class="ri-eye-line"></i></a>
                                     <a href="#" class="btn btn-circle btn-danger my-1"><i class="ri-close-line"></i></a>
                                 </td>
                             </tr>

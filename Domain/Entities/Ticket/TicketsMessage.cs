@@ -17,7 +17,7 @@ namespace Domain.Entities.Ticket
         [ForeignKey("User")]    
         public int SenderId { get; set; }
 
-        public string FileName { get; set; }
+        public string? FileName { get; set; }
 
         #region Relation
 

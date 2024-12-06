@@ -64,9 +64,9 @@ namespace Infra.Data.Repositories
         }
 
         
-        public async Task<List<TicketsMessage>> GetTicketMessageCurrentAsync(int UserId,int TicketId)
+        public async Task<TicketsMessage> GetTicketMessageCurrentAsync(int TicketId)
         {
-            return await _context.TicketsMessages.Where(u => u.SenderId == UserId && u.TicketId == TicketId).ToListAsync();
+            return await _context.TicketsMessages.Where(u => u.TicketId == TicketId).Include(u=> u.Ticket.Id==TicketId).FirstOrDefaultAsync();
         }
 
         public async Task<Ticket> GetTicketAsync(int ticketid)
@@ -79,9 +79,9 @@ namespace Infra.Data.Repositories
             return await _context.TicketsMessages.FindAsync(ticketid);
         }
 
-        public async Task<List<Ticket>> GetAllAsync()
+        public async Task<Ticket> GetAllAsync(int ticketid)
         {
-            return await _context.Tickets.ToListAsync();
+            return await _context.Tickets.Where(u => u.Id == ticketid).Include(u => u.TicketsMessages).ThenInclude(u=> u.User).FirstOrDefaultAsync();
         }
     }
 }

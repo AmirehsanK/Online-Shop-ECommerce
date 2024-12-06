@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Areas.UserPanel.Controllers;
 
-[Authorize]
+//[Authorize]
 public class HomeController(IUserService userService) : UserPanelBaseController
 {
     public IActionResult Index()

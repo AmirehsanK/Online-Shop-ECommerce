@@ -1,5 +1,16 @@
-﻿<div class="col-xl-9 col-lg-8 col-md-7">
-
+﻿@using Domain.Enums
+@using static System.Collections.Specialized.BitVector32
+@using static Domain.Enums.TicketsEnum
+@model Domain.ViewModel.Ticket.AddTicketViewModel
+@{
+    ViewData["Title"] = "تیکت جدید";
+}
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial"/>
+}
+<div class="col-xl-9 col-lg-8 col-md-7">
+    <input type="hidden" asp-for="UserId"/>
     <div class="ui-box bg-white mb-5">
         <div class="ui-box-title">ایجاد تیکت جدید</div>
         <div class="ui-box-subtitle">
@@ -9,13 +20,14 @@
         </div>
         <div class="ui-box-content">
             <!-- start of add-ticket-form -->
-            <form action="#" class="add-ticket-form">
+            <form asp-area="UserPanel" asp-controller="Ticket" asp-action="AddTicket" method="post" class="add-ticket-form" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-6">
                         <!-- start of form-element -->
                         <div class="form-element-row mb-5">
-                            <label class="label">موضوع</label>
-                            <input type="text" class="form-control" placeholder="">
+                            <label asp-for="Title" class="label">موضوع</label>
+                            <input asp-for="Title" type="text" class="form-control" placeholder="">
+                            <span asp-validation-for="Title" class="alert-danger"></span>
                         </div>
                         <!-- end of form-element -->
                     </div>
@@ -26,16 +38,9 @@
                             <!-- start of form-element -->
                             <div class="form-element-row mb-5">
                                 <label class="label">بخش</label>
-                                <select class="select2" name="department" id="department">
-                                    <option value="0">-</option>
-                                    <option value="0">پیشنهاد</option>
-                                    <option value="0">انتقاد یا شکایت</option>
-                                    <option value="0">پیگیری سفارش</option>
-                                    <option value="0">خدمات پس از فروش</option>
-                                    <option value="0">استعلام گارانتی</option>
-                                    <option value="0">مدیریت</option>
-                                    <option value="0">حسابداری و امور مالی</option>
-                                    <option value="0">سایر موضوعات</option>
+                                <select asp-for="Section" asp-items="@Html.GetEnumSelectList<TicketsEnum.Section>()"  class="select2" name="department" id="department">
+                              
+
                                 </select>
                             </div>
                             <!-- end of form-element -->
@@ -46,11 +51,7 @@
                         <!-- start of form-element -->
                         <div class="form-element-row mb-5">
                             <label class="label">اولویت</label>
-                            <select class="select2" name="priority" id="priority">
-                                <option value="0">انتخاب کنید</option>
-                                <option value="0">عادی</option>
-                                <option value="0">مهم</option>
-                                <option value="0">خیلی مهم</option>
+                            <select asp-for="Priority" asp-items="@Html.GetEnumSelectList<Priority>()" class="select2" name="priority" id="priority">
                             </select>
                         </div>
                         <!-- end of form-element -->
@@ -60,8 +61,9 @@
                     <div class="col-12">
                         <!-- start of form-element -->
                         <div class="form-element-row mb-5">
-                            <label class="label">پیام</label>
-                            <textarea rows="5" class="form-control" placeholder="متن پیام"></textarea>
+                            <label asp-for="Message" class="label">پیام</label>
+                            <textarea asp-for="Message" rows="5" class="form-control" placeholder="متن پیام"></textarea>
+                            <span asp-validation-for="Message" class="alert-danger"></span>
                         </div>
                         <!-- end of form-element -->
                     </div>
@@ -81,7 +83,7 @@
                                 </div>
                             </div>
                             <div class="custom-input-file">
-                                <input type="file" class="custom-input-file-input" name="attachment" id="attachment">
+                                <input asp-for="Image"  type="file" class="custom-input-file-input"  id="attachment">
                                 <label for="attachment" class="custom-input-file-label">
                                     <span class="label">
                                         <i class="ri-arrow-up-fill me-1"></i> انتخاب عکس یا ویدئو
@@ -89,10 +91,11 @@
                                 </label>
                             </div>
                         </div>
+                     @*    <input asp-for="Image" type="file"/> *@
                         <!-- end of form-element -->
                     </div>
                     <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-primary px-4">ثبت و ارسال <i class="ri-ball-pen-line ms-2"></i></button>
+                        <button asp-area="UserPanel" asp-controller="Ticket" asp-action="AddTicket" type="submit" class="btn btn-success px-4">ثبت و ارسال <i class="ri-ball-pen-line ms-2"></i></button>
                     </div>
                 </div>
             </form>
