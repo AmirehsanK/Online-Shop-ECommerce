@@ -6,3 +6,4 @@ riderModule.iml
 /.vs
 /Infra.Data/Migrations
 /Web/appsettings.json
+appsettings.json

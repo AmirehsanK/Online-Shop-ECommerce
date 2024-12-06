@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Account;
+using Domain.Entities.ContactUs;
 using Domain.Entities.Ticket;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,13 @@ namespace Infra.Data.Context
         
 
         #endregion
+
+        #region ContactUs
+
+        public DbSet<Subject> Subjects { get; set; }
+
+        #endregion
+        
         //For Conflict relation
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

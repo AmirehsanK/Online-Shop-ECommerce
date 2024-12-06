@@ -1,0 +1,12 @@
+@model List<Domain.Entities.ContactUs.Subject>
+
+<div class="form-element-row mb-5">
+    <label class="label">موضوع</label>
+    <select class="select2" name="subject" id="subject">
+        <option value="0">انتخاب موضوع</option>
+        @foreach (var subject in Model)
+        {
+            <option value="@subject.Id">@subject.Name</option>
+        }
+    </select>
+</div>
