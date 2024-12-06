@@ -52,4 +52,4 @@ namespace Web.Areas.UserPanel.Controllers;
             return View();
         }
     }
-}
+

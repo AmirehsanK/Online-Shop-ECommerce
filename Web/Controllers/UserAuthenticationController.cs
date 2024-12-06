@@ -5,13 +5,12 @@ using Domain.ViewModel.User;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 
 namespace Web.Controllers;
 
 public class UserAuthenticationController : SiteBaseController
 {
-    //TODO Forgot Password
-
     #region ForgotPassword
     
     [HttpPost]
@@ -54,22 +53,31 @@ public class UserAuthenticationController : SiteBaseController
     [HttpGet("ForgotPassword/{token}")]
     public async Task<IActionResult> ForgotPasswordChangePassword(string token)
     {
-        
+        var tokenEnum=await _userService.ForgotPasswordTokenCheckerAsync(token);
+        TempData["Token"] = token;
+        return tokenEnum switch
         {
-            
-        }   
-        return RedirectToAction();
+            ForgetPasswordTokenCheckEnum.Success => RedirectToAction("ForgotPasswordChanger"),
+            ForgetPasswordTokenCheckEnum.Failed => RedirectToAction("Login"),
+            _ => RedirectToAction("Login")
+        };
     }
-
-    [HttpPost]
-    public async Task<IActionResult> ForgotPasswordChanger(string model)
+    [HttpGet("ForgotPassword")]
+    public async Task<IActionResult> ForgotPasswordChanger()
     {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
+        var token = TempData["Token"] as string;
+        var user = await _userService.EmailActivatorAsync(token);
+        
+        
         return RedirectToAction("Login", "Account");
+    }
+    [HttpPost]
+    public async Task<IActionResult> ForgotPasswordChanger(ForgetPasswordUserViewModel model)
+    {
+        var token = TempData["Token"] as string;
+        await _userService.ResetPasswordAsync(token, model.NewPassword);
+        TempData["ForgetPassword"] = true;
+        return RedirectToAction("Login");
     }
     #endregion
     #region Logout
@@ -99,7 +107,7 @@ public class UserAuthenticationController : SiteBaseController
     public IActionResult Login()
     {
         if (User.Identity.IsAuthenticated) return RedirectToAction("Index", "Home");
-
+        ViewBag.ForgotPassword = TempData["ForgotPassword"];
         return View();
     }
 

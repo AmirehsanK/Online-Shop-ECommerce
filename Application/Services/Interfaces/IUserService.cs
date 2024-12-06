@@ -20,7 +20,7 @@ namespace Application.Services.Interfaces
         Task<ForgetPasswordEnum> ForgotPasswordEmailSenderAsync(string email);
         
         Task<ForgetPasswordTokenCheckEnum> ForgotPasswordTokenCheckerAsync(string token);
-        
+        Task ResetPasswordAsync(string token, string newPassword);        
         Task<User> GetUserByEmailAsync(string email);
 
         Task<bool> IsEmailExistAsync(string email);
@@ -41,8 +41,6 @@ namespace Application.Services.Interfaces
         Task DeleteUserAsync(int userid);
 
         Task<UserDetailViewModel> GetUserDetailAsync(int userid);
-        Task<bool> IsPasswordCorrectAsync(string email, string password);
 
-        Task<bool> IsEmailExistAsync(string email);
     }
 }
