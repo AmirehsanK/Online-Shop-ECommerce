@@ -21,7 +21,6 @@ namespace Application.Services.Impelementation
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
@@ -41,9 +40,7 @@ namespace Application.Services.Impelementation
                 
             }).ToList();
         }
-
-
-
+        
         public async Task<CreateUserEnums> CreateUserAsync(CreateUserViewModel model)
         {
             model.Email = model.Email.ToLower().Trim();
@@ -108,8 +105,8 @@ namespace Application.Services.Impelementation
             else
             {
                 var domainLink = "https://localhost:7271";
-                string mailbody = $"<a href=\"{domainLink}/activate-account/{user.EmailActiveCode}\"> فعالسازی حساب کاربری </a>";
-                await EmailSender.SendEmail(user.Email,"فعال سازی حساب کاربری",mailbody );
+                var mailbody = $"<a href=\"{domainLink}/activate-account/{user.EmailActiveCode}\"> فراموشی رمز عبور</a>";
+                await EmailSender.SendEmail(user.Email,"فراموشی رمز عبور",mailbody );
 
                 return ForgetPasswordEnum.Success;
             }
@@ -117,13 +114,32 @@ namespace Application.Services.Impelementation
 
         public async Task<ForgetPasswordTokenCheckEnum> ForgotPasswordTokenCheckerAsync(string token)
         {
-            var user = _userRepository.GetUserByGUIDAsync(token);
+            var user = await _userRepository.GetUserByGUIDAsync(token);
             if (user == null)
                 return ForgetPasswordTokenCheckEnum.Failed;
             else
             {
                 return ForgetPasswordTokenCheckEnum.Success;
             }
+        }
+
+        public async Task ResetPasswordAsync(string token, string newPassword)
+        {
+            var user = await _userRepository.GetUserByGUIDAsync(token);
+            User newUser = new User()
+            {   FirstName = user.FirstName,
+                CreateDate = user.CreateDate,
+                Email = user.Email,
+                IsAdmin = user.IsAdmin,
+                IsEmailActive = user.IsEmailActive, 
+                Id = user.Id,
+                Password = PasswordHasher.HashPassword(newPassword),
+                LastName = user.LastName,
+                IsDeleted = false,
+                EmailActiveCode = Guid.NewGuid().ToString("N"),
+            };
+            _userRepository.UpdateUser(newUser);
+            await _userRepository.SaveChangesAsync();
         }
 
         public async Task<bool> ComparePasswordAsync(string hashedPassword, string providedPassword)
@@ -141,12 +157,6 @@ namespace Application.Services.Impelementation
         
         public async Task RegisterUserAsync(RegisterUserViewModel model)
         {
-            if (model == null)
-                throw new ArgumentNullException(nameof(model));
-
-            if (await _userRepository.GetUserByEmailAsync(model.Email) != null)
-                throw new InvalidOperationException("Email is already registered.");
-
             var user = new User
             {
                 FirstName = model.FirstName,
@@ -164,7 +174,6 @@ namespace Application.Services.Impelementation
             await EmailSender.SendEmail(user.Email,"فعال سازی حساب کاربری",mailbody );
             await _userRepository.AddUserAsync(user);
             await _userRepository.SaveChangesAsync();
-
         }
         
         

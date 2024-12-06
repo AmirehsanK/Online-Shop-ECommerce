@@ -13,7 +13,7 @@ public class HomeController(IUserService userService) : UserPanelBaseController
     {
         return View();
     }
-
+    //TODO Fix Change Password logic
     [HttpPost("UserPanel/ChangePassword")]
     public async Task<IActionResult> ChangePassword(ChangePasswordUserViewModel changePassword)
     {

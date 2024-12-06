@@ -11,6 +11,12 @@
                 شما به این بخش دسترسی ندارید
             </div>
         }
+        @if (ViewBag.ForgotPassword == true)
+        {
+            <div class="alert alert-success">
+                رمز عبور با موفقیت تغییر یافت
+            </div>
+        }
         <!-- start of auth-container -->
         <div class="auth-container">
             <div class="auth-title mb-3">ورود</div>
