@@ -1,20 +1,14 @@
 using Domain.Entities.ContactUs;
+using Domain.Interface;
+using Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Data.Repositories;
 
-public class SubjectRepository
+public class SubjectRepository(ApplicationDbContext context) : ISubjectRepository
 {
-    private readonly DbContext _context;
-
-    public SubjectRepository(DbContext context)
-    {
-        _context = context;
-    }
-    //TODO Write the code
     public async Task<List<Subject>> GetSubjectsAsync()
     {
-        //return await _context.Subjects.ToListAsync();
-        throw new Exception();
+        return await context.Subjects.ToListAsync();
     }
 }

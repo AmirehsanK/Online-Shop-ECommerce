@@ -18,16 +18,18 @@ public static class DiContainer
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ITicketRepository, TicketRepository>();
-
+        services.AddScoped<ISubjectRepository, SubjectRepository>();
         #endregion
 
         #region Services
 
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ITicketService, TicketService>();
+        services.AddScoped<IContactUsService, ContactUsService>();
         services.AddSingleton<IAuthorizationHandler, AdminHandler>();
+        
         #endregion
-
+        
         services.AddSingleton<HtmlEncoder>(
             HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin,
                 UnicodeRanges.Arabic }));

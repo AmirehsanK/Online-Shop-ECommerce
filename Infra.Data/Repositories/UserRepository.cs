@@ -27,6 +27,11 @@ public class UserRepository : IUserRepository
         return await _context.Users.FirstOrDefaultAsync(u => u.EmailActiveCode == guid);
     }
 
+    public async Task<bool> IsExistUserByGuidAsync(string guid)
+    {
+        return await _context.Users.AnyAsync(u => u.EmailActiveCode == guid);
+    }
+
 
     public async Task<bool> IsEmailExistAsync(string email)
     {

@@ -102,43 +102,26 @@ namespace Application.Services.Impelementation
             var user = await _userRepository.GetUserByEmailAsync(email);
             if (user == null)
                 return ForgetPasswordEnum.UserNotFound;
-            else
-            {
-                var domainLink = "https://localhost:7271";
-                var mailbody = $"<a href=\"{domainLink}/activate-account/{user.EmailActiveCode}\"> فراموشی رمز عبور</a>";
-                await EmailSender.SendEmail(user.Email,"فراموشی رمز عبور",mailbody );
-
-                return ForgetPasswordEnum.Success;
-            }
+            var domainLink = "https://localhost:7271";
+            var mailbody = $"<a href=\"{domainLink}/ForgetPassword/{user.EmailActiveCode}\"> فراموشی رمز عبور</a>";
+            await EmailSender.SendEmail(user.Email,"فراموشی رمز عبور",mailbody );
+            return ForgetPasswordEnum.Success;
+            
         }
 
         public async Task<ForgetPasswordTokenCheckEnum> ForgotPasswordTokenCheckerAsync(string token)
         {
-            var user = await _userRepository.GetUserByGUIDAsync(token);
-            if (user == null)
-                return ForgetPasswordTokenCheckEnum.Failed;
-            else
-            {
+            var exist = await _userRepository.IsExistUserByGuidAsync(token);
+            if (exist)
                 return ForgetPasswordTokenCheckEnum.Success;
-            }
+            return ForgetPasswordTokenCheckEnum.Failed;
         }
 
         public async Task ResetPasswordAsync(string token, string newPassword)
         {
             var user = await _userRepository.GetUserByGUIDAsync(token);
-            User newUser = new User()
-            {   FirstName = user.FirstName,
-                CreateDate = user.CreateDate,
-                Email = user.Email,
-                IsAdmin = user.IsAdmin,
-                IsEmailActive = user.IsEmailActive, 
-                Id = user.Id,
-                Password = PasswordHasher.HashPassword(newPassword),
-                LastName = user.LastName,
-                IsDeleted = false,
-                EmailActiveCode = Guid.NewGuid().ToString("N"),
-            };
-            _userRepository.UpdateUser(newUser);
+            user.Password = PasswordHasher.HashPassword(newPassword);
+            _userRepository.UpdateUser(user);
             await _userRepository.SaveChangesAsync();
         }
 
@@ -170,7 +153,7 @@ namespace Application.Services.Impelementation
                 EmailActiveCode = Guid.NewGuid().ToString("N")
             };
             var domainLink = "https://localhost:7271";
-            string mailbody = $"<a href=\"{domainLink}/activate-account/{user.EmailActiveCode}\"> فعالسازی حساب کاربری </a>";
+            string mailbody = $"<a href=\"{domainLink}/EmailActive/{user.EmailActiveCode}\"> فعالسازی حساب کاربری </a>";
             await EmailSender.SendEmail(user.Email,"فعال سازی حساب کاربری",mailbody );
             await _userRepository.AddUserAsync(user);
             await _userRepository.SaveChangesAsync();
@@ -218,13 +201,11 @@ namespace Application.Services.Impelementation
             var user= await _userRepository.GetUserByGUIDAsync(emailActiveCode);
             if (user == null)
                 return ActiveEmailEnum.Failed;
-            else
-            {
-                user.IsEmailActive = true;
-                user.EmailActiveCode=Guid.NewGuid().ToString("N");
-                await _userRepository.SaveChangesAsync();
-                return ActiveEmailEnum.Success;
-            }
+            
+            user.IsEmailActive = true;
+            user.EmailActiveCode=Guid.NewGuid().ToString("N");
+            await _userRepository.SaveChangesAsync();
+            return ActiveEmailEnum.Success;
         }
         
         public async Task<LoginUserEnum> LoginUserAsync(LoginUserViewModel model)
