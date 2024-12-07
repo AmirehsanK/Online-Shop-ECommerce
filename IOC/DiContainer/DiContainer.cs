@@ -18,7 +18,7 @@ public static class DiContainer
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ITicketRepository, TicketRepository>();
-        services.AddScoped<ISubjectRepository, SubjectRepository>();
+        services.AddScoped<IContactUsRepository, ContactUsRepository>();
         #endregion
 
         #region Services
