@@ -6,85 +6,77 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Common;
+using NuGet.Protocol.Plugins;
 
 namespace Web.Controllers;
 
 public class UserAuthenticationController : SiteBaseController
 {
     #region ForgotPassword
-    
-    [HttpPost]
-    public async Task<IActionResult> ForgotPassword(string email)
+
+    [HttpGet("ForgotPassword")]
+    public async Task<IActionResult> ForgotPassword()
+    {
+        return View();
+    }
+    [HttpPost("ForgotPassword")]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordMailUserViewModel mailViewModel)
     {
         if (!ModelState.IsValid)
             return View();
         
-        var result = await _userService.ForgotPasswordEmailSenderAsync(email);
-        
+        var result = await _userService.ForgotPasswordEmailSenderAsync(mailViewModel.Email);
         switch (result)
         {
             case ForgetPasswordEnum.Success:
-                ViewData["IsSuccess"] = true;
-                TempData[SuccesMessage] = "لینک تغییر رمز عبور با موفقیت به ایمیل شما ارسال شد";
-                return View();
-                break;
+                TempData[SuccessMessage] = "لینک تغییر رمز عبور با موفقیت به ایمیل شما ارسال شد";
+                return RedirectToAction("Login");
 
             case ForgetPasswordEnum.UserNotFound:
-                ViewData["IsFailed"] = false;
-                TempData[FailMessage] = "اکانتی با این ایمیل یافت نشد.";
+                ViewBag.message = "حساب کاربری با این ایمیل یافت نشد";
                 return View();
-                break;
-
+            
             case ForgetPasswordEnum.EmailSendFailed:
-                ViewData["IsSuccess"] = false;
-                TempData[FailMessage] ="ایمیل ارسال نشد لطفا دوباره تلاش کنید";
+                ViewBag.message = "خطایی رخ داده است لطفا دوباره تلاش کنید";
                 return View();
-                break;
 
             default:
-                ViewData["IsSuccess"] = false;
-                TempData[FailMessage] = "خطایی رخ داده است لطفا دوباره تلاش کنید";
+                ViewBag.message = "خطایی رخ داده است لطفا دوباره تلاش کنید";
                 return View();
-                break;
         }
-
-        return View();
     }
-    [HttpGet("ForgotPassword/{token}")]
+    [HttpGet("ForgetPassword/{token}")]
     public async Task<IActionResult> ForgotPasswordChangePassword(string token)
     {
         var tokenEnum=await _userService.ForgotPasswordTokenCheckerAsync(token);
         TempData["Token"] = token;
         return tokenEnum switch
         {
-            ForgetPasswordTokenCheckEnum.Success => RedirectToAction("ForgotPasswordChanger"),
+            ForgetPasswordTokenCheckEnum.Success => View(),
             ForgetPasswordTokenCheckEnum.Failed => RedirectToAction("Login"),
             _ => RedirectToAction("Login")
         };
     }
-    [HttpGet("ForgotPassword")]
+    [HttpGet("ForgetPassword")]
     public async Task<IActionResult> ForgotPasswordChanger()
     {
         var token = TempData["Token"] as string;
         var user = await _userService.EmailActivatorAsync(token);
-        
-        
-        return RedirectToAction("Login", "Account");
+        return RedirectToAction("Login");
     }
-    [HttpPost]
+    [HttpPost("ForgetPassword")]
     public async Task<IActionResult> ForgotPasswordChanger(ForgetPasswordUserViewModel model)
     {
-        var token = TempData["Token"] as string;
-        await _userService.ResetPasswordAsync(token, model.NewPassword);
-        TempData["ForgetPassword"] = true;
+        await _userService.ResetPasswordAsync(model.ActivationCode, model.NewPassword);
+        TempData[SuccessMessage] = "رمز عبور با موفقیت تغییر یافت";
         return RedirectToAction("Login");
     }
     #endregion
     #region Logout
 
-    public IActionResult LogOut()
+    public async Task<IActionResult> LogOut()
     {
-        HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return Redirect("/");
     }
 
@@ -103,16 +95,16 @@ public class UserAuthenticationController : SiteBaseController
 
     #region Login
 
-    [Route("Login")]
-    public IActionResult Login()
+    [HttpGet("Login")]
+    public IActionResult Login(bool passwordChanged=false)
     {
         if (User.Identity.IsAuthenticated) return RedirectToAction("Index", "Home");
-        ViewBag.ForgotPassword = TempData["ForgotPassword"];
+        if(passwordChanged)
+            TempData["PasswordChanged"] = true;
         return View();
     }
-
-    [Route("Login")]
-    [HttpPost]
+    
+    [HttpPost("login")]
     public async Task<IActionResult> Login(LoginUserViewModel login)
     {
         #region Validation
@@ -126,13 +118,13 @@ public class UserAuthenticationController : SiteBaseController
         {
             case LoginUserEnum.PasswordInvalid:
             {
-                TempData[FailMessage] = "نام کاربری یا رمز عبور شما اشتباه است";
+                TempData[ErrorMessage] = "نام کاربری یا رمز عبور شما اشتباه است";
                 return View(login);
             }
                 break;
             case LoginUserEnum.EmailInvalid:
             {
-                TempData[FailMessage] = "نام کاربری یا رمز عبور شما اشتباه است";
+                TempData[ErrorMessage] = "نام کاربری یا رمز عبور شما اشتباه است";
                 return View(login);
             }
                 break;
@@ -155,19 +147,15 @@ public class UserAuthenticationController : SiteBaseController
                 };
 
                 await HttpContext.SignInAsync(principal, properties);
-                TempData[SuccesMessage] = "کاربر گرامی به سایت خوش امدید";
+                TempData[SuccessMessage] = "کاربر گرامی به سایت خوش امدید";
                 return Redirect("/");
             }
-                break;
             case LoginUserEnum.UserNotActive:
-                TempData[FailMessage] = "اکانت شما غیرفعال میباشد";
+                TempData[ErrorMessage] = "اکانت شما غیرفعال میباشد";
                 return View(login);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
+            default: 
+                return View(login);
         }
-
-        return View(login);
     }
 
     #endregion
@@ -192,10 +180,9 @@ public class UserAuthenticationController : SiteBaseController
         {
             case RegisterUserEnum.EmailUsed:
             {
-                TempData[FailMessage] = "ایمیل تکراری است";
+                TempData[ErrorMessage] = "ایمیل تکراری است";
                 return View("SignUp");
             }
-                break;
             case RegisterUserEnum.Success:
             {
                 TempData["Name"] = register.FirstName;
@@ -203,9 +190,8 @@ public class UserAuthenticationController : SiteBaseController
                 return RedirectToAction(nameof(Success));
             }
 
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
+            default: 
+                return View("SignUp");
         }
 
         #endregion
@@ -222,15 +208,10 @@ public class UserAuthenticationController : SiteBaseController
     public async Task<IActionResult> EmailActive(string emailActiveCode)
     {
         var result = await _userService.EmailActivatorAsync(emailActiveCode);
-        if (result == ActiveEmailEnum.Failed)
-        {
-            TempData[SuccesMessage] = "اکانت شما با موفقیت فعال سازی شد";
-            return RedirectToAction(nameof(Login));
-        }
-        else
-        {
-            return RedirectToAction(nameof(Login));
-        }
+        TempData[SuccessMessage] = result == ActiveEmailEnum.Failed 
+            ? "اکانت شما با موفقیت فعال سازی شد" 
+            : null;
+        return RedirectToAction(nameof(Login));
     }
     
     #endregion

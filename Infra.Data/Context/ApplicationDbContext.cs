@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Domain.Entities.Account;
 using Domain.Entities.ContactUs;
 using Domain.Entities.Ticket;
+using Infra.Data.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Data.Context
@@ -31,6 +32,7 @@ namespace Infra.Data.Context
         #region ContactUs
 
         public DbSet<Subject> Subjects { get; set; }
+        public DbSet<ContactMessage> ContactMessages { get; set; }
 
         #endregion
         
@@ -42,6 +44,7 @@ namespace Infra.Data.Context
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
             base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new ContactMessageConfiguration());
         }
 
     
