@@ -1,5 +1,6 @@
 using Application.DTO;
 using Application.Services.Interfaces;
+using Application.Tools;
 using Domain.Entities.ContactUs;
 using Domain.Interface;
 
@@ -11,6 +12,7 @@ public class ContactUsService(IContactUsRepository contactUsRepository) : IConta
     {
         return await contactUsRepository.GetSubjectsAsync();
     }
+    
     public async Task AddMessage(ContactMessageDto dto)
     {
         var message = new ContactMessage
@@ -25,7 +27,7 @@ public class ContactUsService(IContactUsRepository contactUsRepository) : IConta
         };
         await contactUsRepository.AddMessageAsync(message);
     }
-    public async Task<IEnumerable<ContactMessageDto>> GetMessagesAsync()
+    public async Task<IEnumerable<ContactMessageDto>> GetAllMessagesAsync()
     {
         var messages = await contactUsRepository.GetMessagesAsync();
         return messages.Select(m => new ContactMessageDto
@@ -37,17 +39,48 @@ public class ContactUsService(IContactUsRepository contactUsRepository) : IConta
             Subject = m.Subject,
             Phone = m.Phone,
             IsAnswered = m.IsAnswered,
-            CreatedAt = m.CreatedAt
+            CreatedAt = m.CreatedAt,
+            RespondedAt = m.RespondedAt
         });
     }
 
-    public async Task AnswerMessageAsync(int id)
+    public async Task AnswerMessageAsync(int id,string messageResponse)
     {
         var message = await contactUsRepository.GetMessageByIdAsync(id);
         if (message != null)
         {
             message.IsAnswered = true;
+            message.AdminResponse = messageResponse;
+            message.RespondedAt = DateTime.UtcNow;
             await contactUsRepository.UpdateMessageAsync(message);
+            await EmailSender.SendEmail(message.Email, message.Subject, messageResponse);
         }
+    }
+    
+    public async Task<ContactMessageDto> GetMessageByIdAsync(int id)
+    {
+        var message = await contactUsRepository.GetMessageByIdAsync(id);
+        
+        if (message ==null) return new ContactMessageDto
+        {
+            Id = 0,
+            Email = "not found",
+            Message = "not found",
+            IsAnswered =false,
+            CreatedAt = DateTime.UtcNow,
+        };
+        return new ContactMessageDto
+        {
+            Id = message.Id,
+            Phone = message.Phone,
+            FullName = message.FullName,
+            Subject = message.Subject,
+            Email = message.Email,
+            Message = message.Message,
+            IsAnswered = message.IsAnswered,
+            AdminResponse = message.AdminResponse,
+            CreatedAt = message.CreatedAt,
+            RespondedAt = message.RespondedAt
+        };
     }
 }

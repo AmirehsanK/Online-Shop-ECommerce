@@ -1,0 +1,82 @@
+@using Application.Tools
+@model Application.DTO.ContactMessageDto
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<!DOCTYPE html>
+
+<head>
+    <title>Contact Us</title>
+</head>
+@section Scripts{
+    <script src="/Admin/js/app-chat.js"></script>
+    <script src="/Admin/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="app-chat overflow-hidden card">
+        <div class="row g-0">
+            <!-- Message Details Section -->
+            <div class="col-12">
+                <div class="card-body">
+                    <h4 class="card-title">جزییات پیام</h4>
+                    <div class="mb-3">
+                        <strong> نام :</strong> @Model.FullName
+                    </div>
+                    <div class="mb-3">
+                        <strong>ایمیل :</strong> @Model.Email
+                    </div>
+                    <div class="mb-3">
+                        <strong>شماره تماس :</strong> @Model.Phone
+                    </div>
+                    <div class="mb-3">
+                        <strong>موضوع :</strong> @Model.Subject
+                    </div>
+                    <div class="mb-3">
+                        <strong>پیام :</strong>
+                        <p>@Model.Message</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong>تاریخ پیام :</strong> @Model.CreatedAt.ToShamsi()
+                    </div>
+                    @if (Model.IsAnswered && Model.AdminResponse != null)
+                    {
+                        <div class="mb-3">
+                            <strong>پاسخ ادمین :</strong>
+                            <p>@Model.AdminResponse</p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>زمان پاسخ :</strong> @Model.RespondedAt?.ToShamsi()
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Admin Response Section -->
+            @if (!Model.IsAnswered)
+            {
+                <div class="col-12">
+                    <div class="card-body">
+                        <h4 class="card-title">پاسخ به پیام</h4>
+                        <form method="post" asp-action="Respond" asp-controller="ContactUs" asp-area="Admin">
+                            <input type="hidden" name="Id" value="@Model.Id" />
+                            <div class="mb-3">
+                                <textarea asp-for="AdminResponse" class="form-control" name="AdminResponse" rows="5" placeholder="پیام خود را وارد کنید..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">ارسال</button>
+                        </form>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
+                        <div>این پیام پاسخ داده شده است</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

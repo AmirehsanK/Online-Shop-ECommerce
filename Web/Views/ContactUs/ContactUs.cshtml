@@ -22,15 +22,13 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <!-- Use ViewComponent for Subject -->
-                                
                                 <div class="form-element-row mb-5">
                                     <label class="label">موضوع</label>
                                     <select asp-for="Subject" class="select2" name="subject" id="subject">
-                                        <option value="0">انتخاب موضوع</option>
+                                        <option value="0">انتخاب موضوع</option>T
                                         @await Component.InvokeAsync("ContactUsSubject")
                                     </select>
                                 </div>
-                                
                             </div>
                             <div class="col-md-6">
                                 <!-- start of form-element -->
@@ -76,3 +74,8 @@
         </div>
     </main>
 </div>
+
+@section Scripts
+{
+        
+}

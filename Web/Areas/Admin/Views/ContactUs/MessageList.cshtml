@@ -1,0 +1,55 @@
+@using Application.Tools
+@using Domain.Enums
+@model IEnumerable<Application.DTO.ContactMessageDto>
+
+<div class="card">
+    <h5 class="card-header">لیست  پیام های کاربران</h5>
+    <div class="table-responsive text-nowrap">
+        <table class="table">
+            <thead class="table-light">
+                <tr>
+                    <th>ایدی</th>
+                    <th>زمان ایجاد</th>
+                    <th>موضوع</th>
+                    <th>وضعیت</th>
+                    <th>آخرین برزورسانی</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            @if (Model != null && Model.Any())
+            {
+                <tbody class="table-border-bottom-0">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.CreatedAt.ToShamsi() @item.CreatedAt.ToString("hh:mm:ss")</td>
+                            <td>@item.Subject</td>
+                            <td>
+                                @if (item.IsAnswered == true)
+                                {
+                                    <span class="badge bg-danger rounded-pill">بسته</span>
+                                }else if (item.IsAnswered==false)
+                                {
+                                    <span class="badge bg-warning rounded-pill">در حال
+                                        بررسی</span>
+                                }
+                            </td>
+                            <td>
+                                @item.RespondedAt?.ToShamsi()
+                            </td>
+                            <td>
+                                <a asp-area="Admin" asp-action="Details" asp-controller="ContactUs" asp-route-id="@item.Id" class="btn btn-success">جزییات</a>
+                            </td>
+                        </tr>
+
+                    }
+                    <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 310px;"></div>
+
+
+                </tbody>
+            }
+
+        </table>
+    </div>
+</div>

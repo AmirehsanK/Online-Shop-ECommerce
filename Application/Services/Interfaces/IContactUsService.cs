@@ -7,7 +7,8 @@ public interface IContactUsService
 {
     Task<List<Subject>> GetSubjectsAsync();
 
-    Task AnswerMessageAsync(int id);
-    Task<IEnumerable<ContactMessageDto>> GetMessagesAsync();
+    Task AnswerMessageAsync(int id, string messageResponse);
+    Task<IEnumerable<ContactMessageDto>> GetAllMessagesAsync();
     Task AddMessage(ContactMessageDto dto);
+    Task<ContactMessageDto> GetMessageByIdAsync(int id);
 }

@@ -12,6 +12,10 @@ public class ContactUsRepository(ApplicationDbContext _context) : IContactUsRepo
         return await _context.Subjects.ToListAsync();
     }
     
+    public async Task<Subject> GetSubjectByIdAsync(int id)
+    {
+        return await _context.Subjects.FirstOrDefaultAsync(idSubject => idSubject.Id == id);
+    }
 
     public async Task AddMessageAsync(ContactMessage message)
     {
