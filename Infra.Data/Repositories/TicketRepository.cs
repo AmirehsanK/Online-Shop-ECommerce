@@ -33,11 +33,6 @@ namespace Infra.Data.Repositories
             _context.Tickets.Update(ticket);
         }
 
-        public async Task DeleteTicketAsync(Ticket ticket)
-        {
-             _context.Tickets.Remove(ticket);
-        }
-
         public async Task<List<Ticket>> GetAllCurrentTicketAsync(int UserId)
         {
             return await _context.Tickets.Where(u => u.OwnerId == UserId).ToListAsync();
@@ -53,15 +48,6 @@ namespace Infra.Data.Repositories
             await _context.TicketsMessages.AddAsync(ticketsMessage);
         }
 
-        public async Task DeleteTicketMessageAsync(TicketsMessage ticketsMessage)
-        {
-            _context.TicketsMessages.Remove(ticketsMessage);
-        }
-
-        public void UpdateTicketMessageAsync(TicketsMessage ticketsMessage)
-        {
-            _context.TicketsMessages.Update(ticketsMessage);
-        }
 
         
         public async Task<TicketsMessage> GetTicketMessageCurrentAsync(int TicketId)
@@ -81,7 +67,18 @@ namespace Infra.Data.Repositories
 
         public async Task<Ticket> GetAllAsync(int ticketid)
         {
-            return await _context.Tickets.Where(u => u.Id == ticketid).Include(u => u.TicketsMessages).ThenInclude(u=> u.User).FirstOrDefaultAsync();
+            return await _context.Tickets.Where(u => u.Id == ticketid).Include(u => u.TicketsMessages).FirstOrDefaultAsync();
+
+        }
+
+        public async Task<List<Ticket>> GetAllTicketForAdminAsync()
+        {
+            return await _context.Tickets.ToListAsync();
+        }
+
+        public async Task<List<TicketsMessage>> GetMessages(int ticketid)
+        {
+            return await _context.TicketsMessages.Where(u => u.TicketId == ticketid).ToListAsync();
         }
     }
 }

@@ -10,12 +10,9 @@ namespace Application.Tools
     {
         #region Product
 
-        public static string ProductImageServerPath = Path.Join(Directory.GetCurrentDirectory(), "wwwroot/images/products/main/");
-        public static string ProductImagePath = "/images/products/main/";
-        public static string ProductThumbImageServerPath = Path.Join(Directory.GetCurrentDirectory(), "wwwroot/images/products/thumb/");
-        public static string ProductThumbImagePath = "/images/products/thumb/";
-        public static string SliderImage = Path.Join(Directory.GetCurrentDirectory(), "wwwroot/images/products/Slider/");
-        public static string SliderImageRoot = "/images/products/Slider/";
+        public static string FileServerPath = Path.Join(Directory.GetCurrentDirectory(), "wwwroot/images/products/main/");
+        public static string FilePath = "/images/products/main/";
+
 
         #endregion
 

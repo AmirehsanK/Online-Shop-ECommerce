@@ -19,7 +19,10 @@ namespace Application.Security
             {
                 if (Path.GetExtension(postedFile.FileName)?.ToLower() != ".rar" &&
                     Path.GetExtension(postedFile.FileName)?.ToLower() != ".zip" &&
-                    Path.GetExtension(postedFile.FileName)?.ToLower() != ".pdf")
+                    Path.GetExtension(postedFile.FileName)?.ToLower() != ".pdf"&&
+                    Path.GetExtension(postedFile.FileName).ToLower() != ".jpg"  &&
+                    Path.GetExtension(postedFile.FileName).ToLower() != ".png"  &&
+                     Path.GetExtension(postedFile.FileName).ToLower() != ".jpeg")
                 {
                     return false;
                 }

@@ -54,7 +54,7 @@ public class TicketController : UserPanelBaseController
         #endregion
 
         await _ticketService.AddNewTicket(model,User.GetCurrentUserId());
-        return View();
+        return RedirectToAction(nameof(TicketList));
     }
 
     #endregion

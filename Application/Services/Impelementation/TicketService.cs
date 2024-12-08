@@ -11,6 +11,7 @@ using Domain.Entities.Ticket;
 using Domain.Enums;
 using Domain.Interface;
 using Domain.ViewModel.Ticket;
+using Domain.ViewModel.Ticket.Admin;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Application.Services.Impelementation
@@ -52,80 +53,72 @@ namespace Application.Services.Impelementation
 
         public async Task AddNewTicket(AddTicketViewModel ticket, int userid)
         {
-            if (ticket.Image == null)
+            var newticket = new Ticket()
             {
-                var imagename = "nothing";
-                var newticket = new Ticket()
-                {
-                    IsDeleted = false,
-                    CreateDate = DateTime.Now,
-                    Section = ticket.Section,
-                    IsClosed = false,
-                    OwnerId = userid,
-                    Title = ticket.Title,
-                    Status = TicketsEnum.Status.InProgress,
-                    Priority = ticket.Priority,
-                    UpdateDate = DateTime.Now,
-                };
-                await _ticketRepository.AddTicketAsync(newticket);
-                await _ticketRepository.SaveChangeAsync();
-                var newtikcetmessage = new TicketsMessage()
-                {
-                    CreateDate = DateTime.Now,
-                    IsDeleted = false,
-                    SenderId = newticket.OwnerId,
-                    Text = ticket.Message,
-                    TicketId = newticket.Id,
-                    FileName = imagename
-
-                };
-                await _ticketRepository.AddTicketMessageAsync(newtikcetmessage);
-                await _ticketRepository.SaveChangeAsync();
-            }
-            else
+                IsDeleted = false,
+                CreateDate = DateTime.Now,
+                Section = ticket.Section,
+                OwnerId = userid,
+                Title = ticket.Title,
+                Status = TicketsEnum.Status.InProgress,
+                Priority = ticket.Priority,
+                UpdateDate = DateTime.Now,
+            };
+            await _ticketRepository.AddTicketAsync(newticket);
+            await _ticketRepository.SaveChangeAsync();
+            var newtikcetmessage = new TicketsMessage()
             {
-                var imagename = Guid.NewGuid().ToString("N") + Path.GetExtension(ticket.Image.FileName);
-                ticket.Image.AddImageToServer(imagename, PathTools.ProductImageServerPath, 100, 70,
-                    PathTools.ProductThumbImageServerPath);
-                var newticket = new Ticket()
-                {
-                    IsDeleted = false,
-                    CreateDate = DateTime.Now,
-                    Section = ticket.Section,
-                    IsClosed = false,
-                    OwnerId = userid,
-                    Title = ticket.Title,
-                    Status = TicketsEnum.Status.InProgress,
-                    Priority = ticket.Priority,
-                    UpdateDate = DateTime.Now,
-                };
-                await _ticketRepository.AddTicketAsync(newticket);
-                await _ticketRepository.SaveChangeAsync();
-                var newtikcetmessage = new TicketsMessage()
-                {
-                    CreateDate = DateTime.Now,
-                    IsDeleted = false,
-                    SenderId = newticket.OwnerId,
-                    Text = ticket.Message,
-                    TicketId = newticket.Id,
-                    FileName = imagename
+                CreateDate = DateTime.Now,
+                IsDeleted = false,
+                SenderId = newticket.OwnerId,
+                Text = ticket.Message,
+                TicketId = newticket.Id,
 
-                };
-                await _ticketRepository.AddTicketMessageAsync(newtikcetmessage);
-                await _ticketRepository.SaveChangeAsync();
+
+            };
+            if (ticket.Image != null)
+            {
+                var FileName = Guid.NewGuid().ToString("N") + Path.GetExtension(ticket.Image.FileName);
+                await ticket.Image.AddFilesToServer(FileName, PathTools.FileServerPath);
+                newtikcetmessage.FileName = FileName;
             }
-
+            await _ticketRepository.AddTicketMessageAsync(newtikcetmessage);
+            await _ticketRepository.SaveChangeAsync();
 
 
         }
 
+
+        #endregion
+
+        #region GetTicketDetail
+
         public async Task<TicketDetailViewModel> GetTicketDetail(int ticketid)
         {
             var ticket = await _ticketRepository.GetAllAsync(ticketid);
+            var TicketViewModel = new TicketViewModel()
+            {
+                OwnerID = ticket.OwnerId,
+                TicketId = ticketid,
+                Title = ticket.Title,
+                Status = ticket.Status
+            };
+            var ticketmessagge = await _ticketRepository.GetMessages(ticketid);
+            ticketmessagge.Select(u => new TicketMessageViewModel()
+            {
+                CreateDate = u.CreateDate,
+                Message = u.Text,
+                FileName = u.FileName,
+                SenderId = u.SenderId
+                
+            }).ToList();
+
+
+
             var ticketDetail = new TicketDetailViewModel()
             {
-                Ticket = ticket,
-                Messages = ticket.TicketsMessages
+                Messages = ticketmessagge,
+                Ticket = TicketViewModel
 
             };
             return ticketDetail;
@@ -135,13 +128,17 @@ namespace Application.Services.Impelementation
 
         }
 
+        #endregion
+
+        #region AddMessageToCurrentTicket
+
         public async Task AddMessageToCurrentTicket(TicketDetailViewModel model, int ticketid, int userId)
         {
 
             var Newmessage = new TicketsMessage();
 
             Newmessage.CreateDate = DateTime.Now;
-            if (model.FileName!=null)
+            if (model.FileName != null)
             {
                 Newmessage.FileName = model.FileName;
             }
@@ -149,12 +146,13 @@ namespace Application.Services.Impelementation
             Newmessage.SenderId = userId;
             Newmessage.Text = model.Message;
             Newmessage.TicketId = ticketid;
-            
-            
+
+
             await _ticketRepository.AddTicketMessageAsync(Newmessage);
             //Chnage ticket UpdateDate
 
             var Ticket = await _ticketRepository.GetTicketAsync(ticketid);
+            Ticket.Status = TicketsEnum.Status.InProgress;
             Ticket.UpdateDate = DateTime.Now;
             _ticketRepository.UpdateTicketAsync(Ticket);
 
@@ -163,6 +161,72 @@ namespace Application.Services.Impelementation
         }
 
         #endregion
+
+        #region GetAllTicketListForAdmin
+
+        public async Task<List<ShowAllTicketList>> GetAllTicketListForAdmin()
+        {
+            var allticket = await _ticketRepository.GetAllTicketForAdminAsync();
+            return allticket.Select(u => new ShowAllTicketList()
+            {
+                Ticketid = u.Id,
+                Section = u.Section,
+                Priority = u.Priority,
+                CreateDate = u.CreateDate,
+                OwnerId = u.OwnerId,
+                Status = u.Status,
+                Title = u.Title,
+                UpdateDate = u.UpdateDate
+            }).ToList();
+        }
+
+        #endregion
+
+        #region AddMessageToCurrentTicketFromAdmin
+
+        public async Task AddMessageToCurrentTicketFromAdmin(TicketDetailViewModel model, int ticketid, int userId)
+        {
+            var Newmessage = new TicketsMessage();
+
+
+            Newmessage.CreateDate = DateTime.Now;
+            if (model.FileName != null)
+            {
+                Newmessage.FileName = model.FileName;
+            }
+            Newmessage.IsDeleted = false;
+            Newmessage.SenderId = userId;
+            Newmessage.Text = model.Message;
+            Newmessage.TicketId = ticketid;
+
+
+            await _ticketRepository.AddTicketMessageAsync(Newmessage);
+            //Chnage ticket UpdateDate
+
+            var Ticket = await _ticketRepository.GetTicketAsync(ticketid);
+            Ticket.Status = TicketsEnum.Status.IsAnswered;
+            Ticket.UpdateDate = DateTime.Now;
+            _ticketRepository.UpdateTicketAsync(Ticket);
+
+            await _ticketRepository.SaveChangeAsync();
+        }
+
+        #endregion
+
+        #region CloseTicket
+
+        public async Task CloseTicket(int ticketid)
+        {
+            var ticket = await _ticketRepository.GetTicketAsync(ticketid);
+            ticket.Status = TicketsEnum.Status.IsClosed;
+            _ticketRepository.UpdateTicketAsync(ticket);
+            await _ticketRepository.SaveChangeAsync();
+        }
+
+        #endregion
+
+
+
 
 
     }

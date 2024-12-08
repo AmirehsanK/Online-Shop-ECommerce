@@ -18,8 +18,6 @@ namespace Domain.Entities.Ticket
 
         public string Title { get; set; }
 
-        public bool IsClosed { get; set; }
-
         public DateTime UpdateDate { get; set; }
 
         public Section Section { get; set; }

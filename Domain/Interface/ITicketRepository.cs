@@ -11,7 +11,7 @@ namespace Domain.Interface
     {
         Task AddTicketAsync(Ticket  ticket);
         void UpdateTicketAsync(Ticket ticket);
-        Task DeleteTicketAsync(Ticket ticket);
+    
 
         Task<List<Ticket>> GetAllCurrentTicketAsync(int UserId);
 
@@ -19,9 +19,7 @@ namespace Domain.Interface
 
         Task AddTicketMessageAsync(TicketsMessage ticketsMessage);
 
-        Task DeleteTicketMessageAsync(TicketsMessage ticketsMessage);
 
-        void UpdateTicketMessageAsync(TicketsMessage ticketsMessage);
 
         Task<TicketsMessage> GetTicketMessageCurrentAsync(int TicketId);
 
@@ -29,7 +27,9 @@ namespace Domain.Interface
         Task<TicketsMessage> GetTicketMessageAsync(int ticketid); 
 
         Task<Ticket> GetAllAsync(int ticketid);
- 
+
+        Task<List<Ticket>> GetAllTicketForAdminAsync();
+        Task<List<TicketsMessage>> GetMessages(int ticketid);
 
 
 

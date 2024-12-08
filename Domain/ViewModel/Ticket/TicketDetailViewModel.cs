@@ -16,8 +16,9 @@ namespace Domain.ViewModel.Ticket
         public string Message { get; set; }
 
         public string? FileName { get; set; }
-        public Entities.Ticket.Ticket? Ticket { get; set; }
+        public TicketViewModel Ticket { get; set; }
+
         
-        public ICollection<TicketsMessage>? Messages { get; set; }
+        public List<TicketsMessage> Messages { get; set; }
     }
 }

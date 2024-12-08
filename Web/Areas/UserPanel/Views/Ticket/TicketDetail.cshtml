@@ -1,4 +1,5 @@
 ﻿@using Application.Tools
+@using Domain.Enums
 @model Domain.ViewModel.Ticket.TicketDetailViewModel
 @{
     ViewData["Title"] = "جزییات تیکت";
@@ -32,9 +33,12 @@
                     @foreach (var item in Model.Messages)
                     {
 
-                    @if(!item.User.IsAdmin)
+                    @if(item.SenderId==Model.Ticket.OwnerID)
                     {
-               
+                        if (item.FileName!=null)
+                        {
+                            <a href="@(PathTools.FilePath+item.FileName)" download>دانلود فایل</a>
+                        }
                         <div class="ticket fa-num">
                             <div class="avatar"></div>
                             <div class="text">
@@ -45,7 +49,10 @@
                     }
                     else
                     {
-                 
+                        if (item.FileName!=null)
+                        {
+                                <a href="@(PathTools.FilePath+item.FileName)" download>دانلود فایل </a>
+                        }
                         <div class="ticket reply fa-num">
                             <div class="avatar staff"></div>
                             <div class="text">
@@ -65,53 +72,67 @@
                     <!-- end of ticket -->
                 </div>
                 <!-- end of tickets -->
-                <div class="border-bottom my-4"></div>
-                <div class="ui-box-title p-0 mb-4">
-                    ارسال پاسخ
-                </div>
+             
                 <!-- start of add-ticket-form -->
-                <form asp-area="UserPanel" asp-controller="Ticket" asp-action="TicketDetail" method="post" class="add-ticket-form" enctype="multipart/form-data">
-
-                    <div class="row">
-                        <div class="col-12">
-                            <!-- start of form-element -->
-                            <div class="form-element-row mb-5">
-                                <label class="label">پیام</label>
-                                <textarea asp-for="Message" rows="5" class="form-control" placeholder="متن پیام"></textarea>
-                            </div>
-                            <!-- end of form-element -->
-                        </div>
-                        <div class="col-12">
-                            <!-- start of form-element -->
-                            <div class="form-element-row form-element-row-file mb-5">
-                                <div class="text-center">
-                                    <div class="fs-6 fw-bold text-dark">
-                                        عکس یا ویدیو خود را بارگذاری
-                                        کنید.
-                                    </div>
-                                    <div class="fs-7 fw-bold text-muted mb-4">
-                                        ( حداکثر ۵ تصویر jpeg یا
-                                        PNG
-                                        حداکثر یک
-                                        مگابایت، یک ویدیو MP4 حداکثر ۵۰ مگابایت )
-                                    </div>
-                                </div>
-                                <div class="custom-input-file">
-                                    <input asp-for="FileName" type="file" class="custom-input-file-input" accept="" name="attachment" id="attachment">
-                                    <label for="attachment" class="custom-input-file-label">
-                                        <span class="label">
-                                            <i class="ri-arrow-up-fill me-1"></i> انتخاب عکس یا ویدئو
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <!-- end of form-element -->
-                        </div>
-                        <div class="col-12 text-end">
-                            <button asp-area="UserPanel" asp-controller="Ticket" asp-action="TicketDetail" type="submit" class="btn btn-primary">ارسال پاسخ <i class="ri-ball-pen-line ms-2"></i></button>
-                        </div>
+                @if (Model.Ticket.Status != TicketsEnum.Status.IsClosed)
+                {
+                    <div class="border-bottom my-4"></div>
+                    <div class="ui-box-title p-0 mb-4">
+                        ارسال پاسخ
                     </div>
-                </form>
+                    <form asp-area="UserPanel" asp-controller="Ticket" asp-action="TicketDetail" method="post" class="add-ticket-form" enctype="multipart/form-data">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <!-- start of form-element -->
+                                <div class="form-element-row mb-5">
+                                    <label class="label">پیام</label>
+                                    <textarea asp-for="Message" rows="5" class="form-control" placeholder="متن پیام"></textarea>
+                                </div>
+                                <!-- end of form-element -->
+                            </div>
+                            <div class="col-12">
+                                <!-- start of form-element -->
+                                <div class="form-element-row form-element-row-file mb-5">
+                                    <div class="text-center">
+                                        <div class="fs-6 fw-bold text-dark">
+                                            عکس یا ویدیو خود را بارگذاری
+                                            کنید.
+                                        </div>
+                                        <div class="fs-7 fw-bold text-muted mb-4">
+                                            ( حداکثر ۵ تصویر jpeg یا
+                                            PNG
+                                            حداکثر یک
+                                            مگابایت، یک ویدیو MP4 حداکثر ۵۰ مگابایت )
+                                        </div>
+                                    </div>
+                                    <div class="custom-input-file">
+                                        <input asp-for="FileName" type="file" class="custom-input-file-input" accept="" name="attachment" id="attachment">
+                                        <label for="attachment" class="custom-input-file-label">
+                                            <span class="label">
+                                                <i class="ri-arrow-up-fill me-1"></i> انتخاب عکس یا ویدئو
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- end of form-element -->
+                            </div>
+                            <div class="col-12 text-end">
+                                <button asp-area="UserPanel" asp-controller="Ticket" asp-action="TicketDetail" type="submit" class="btn btn-primary">ارسال پاسخ <i class="ri-ball-pen-line ms-2"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
+                        <div>
+                            این تیکت بسته شده است
+                        </div>
+                 
+                    </div>
+                }
+          
                 <!-- end of add-ticket-form -->
             </div>
     </div>

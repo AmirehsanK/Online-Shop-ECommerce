@@ -1,5 +1,4 @@
 ﻿@using Domain.Enums
-@using static System.Collections.Specialized.BitVector32
 @using static Domain.Enums.TicketsEnum
 @model Domain.ViewModel.Ticket.AddTicketViewModel
 @{
@@ -8,7 +7,15 @@
 @section Scripts
 {
     <partial name="_ValidationScriptsPartial"/>
+    <script>
+        CKEDITOR.replace('Content', {
+            language: 'fa',
+            contentsLangDirection: 'rtl',
+            font_names: 'Tahoma; IranSans; Arial;'
+        });
+    </script>
 }
+
 <div class="col-xl-9 col-lg-8 col-md-7">
     <input type="hidden" asp-for="UserId"/>
     <div class="ui-box bg-white mb-5">
@@ -38,7 +45,7 @@
                             <!-- start of form-element -->
                             <div class="form-element-row mb-5">
                                 <label class="label">بخش</label>
-                                <select asp-for="Section" asp-items="@Html.GetEnumSelectList<TicketsEnum.Section>()"  class="select2" name="department" id="department">
+                                <select asp-for="Section" asp-items="@Html.GetEnumSelectList<Section>()"  class="select2" id="department">
                               
 
                                 </select>
@@ -51,7 +58,7 @@
                         <!-- start of form-element -->
                         <div class="form-element-row mb-5">
                             <label class="label">اولویت</label>
-                            <select asp-for="Priority" asp-items="@Html.GetEnumSelectList<Priority>()" class="select2" name="priority" id="priority">
+                            <select asp-for="Priority" asp-items="@Html.GetEnumSelectList<Priority>()" class="select2"  id="priority">
                             </select>
                         </div>
                         <!-- end of form-element -->
@@ -62,7 +69,7 @@
                         <!-- start of form-element -->
                         <div class="form-element-row mb-5">
                             <label asp-for="Message" class="label">پیام</label>
-                            <textarea asp-for="Message" rows="5" class="form-control" placeholder="متن پیام"></textarea>
+                            <textarea asp-for="Message" rows="5" class="form-control"  id="Content" placeholder="متن پیام"></textarea>
                             <span asp-validation-for="Message" class="alert-danger"></span>
                         </div>
                         <!-- end of form-element -->
