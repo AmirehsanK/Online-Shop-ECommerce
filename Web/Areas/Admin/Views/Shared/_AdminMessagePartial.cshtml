@@ -14,11 +14,12 @@
     }
     else if (TempData["Success"] != null)
     {
+        var message = TempData["Success"];
         <script>
             Swal.fire({
                 icon: 'success',
                 title: 'اعلان',
-                text: 'کاربر مورد نظر با موفقیت به لیست اضافه شد'
+                text: @message
 
             });
         </script>

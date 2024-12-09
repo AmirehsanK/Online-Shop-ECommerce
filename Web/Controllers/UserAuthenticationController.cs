@@ -96,11 +96,9 @@ public class UserAuthenticationController : SiteBaseController
     #region Login
 
     [HttpGet("Login")]
-    public IActionResult Login(bool passwordChanged=false)
+    public IActionResult Login()
     {
         if (User.Identity.IsAuthenticated) return RedirectToAction("Index", "Home");
-        if(passwordChanged)
-            TempData["PasswordChanged"] = true;
         return View();
     }
     
@@ -121,13 +119,11 @@ public class UserAuthenticationController : SiteBaseController
                 TempData[ErrorMessage] = "نام کاربری یا رمز عبور شما اشتباه است";
                 return View(login);
             }
-                break;
             case LoginUserEnum.EmailInvalid:
             {
                 TempData[ErrorMessage] = "نام کاربری یا رمز عبور شما اشتباه است";
                 return View(login);
-            }
-                break;
+            } 
             case LoginUserEnum.Success:
             {
                 var user = await _userService.GetUserByEmailAsync(login.Email);

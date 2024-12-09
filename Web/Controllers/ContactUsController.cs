@@ -17,6 +17,6 @@ public class ContactUsController(IContactUsService contactUsService) : SiteBaseC
     {
         await contactUsService.AddMessage(dto);
         TempData[SuccessMessage] = "پیام شما با موفقیت ارسال شد";
-        return View();
+        return RedirectToAction("Index", "Home");
     }
 }

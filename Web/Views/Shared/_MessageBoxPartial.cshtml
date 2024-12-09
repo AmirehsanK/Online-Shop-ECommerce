@@ -2,23 +2,30 @@
 {
     var message = TempData["Error"];
     <script>
-
-        Swal.fire({
-            icon: 'warning',
-            title: 'اخطار',
-            text: '@message'
-        });
+        $(() => {
+            Swal.fire({
+                icon: 'warning',
+                title: 'اخطار',
+                text: '@message'
+            });
+        })
+    
     </script>
 }
 else if (TempData["Success"] != null)
 {
     var message = TempData["Success"];
     <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'اعلان',
-            text:'@message'
+        
+        
+       document.addEventListener("DOMContentLoaded", () => {
+           Swal.fire({
+               icon: 'success',
+               title: 'اعلان',
+               text:'@message'
 
-        });
+           });
+       })
+    
     </script>
 }

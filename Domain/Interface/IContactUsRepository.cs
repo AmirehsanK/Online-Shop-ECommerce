@@ -8,6 +8,7 @@ public interface IContactUsRepository
 
     Task<List<Subject>> GetSubjectsAsync();
 
+    Task<Subject> GetSubjectByIdAsync(int id);
         #endregion
     #region Main
 
