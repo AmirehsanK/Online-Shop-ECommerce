@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Account;
 using Domain.Entities.ContactUs;
+using Domain.Entities.Product;
 using Domain.Entities.Ticket;
 using Infra.Data.Configurations;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,13 @@ namespace Infra.Data.Context
 
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<ContactMessage> ContactMessages { get; set; }
+
+        #endregion
+
+        #region Product
+
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+
 
         #endregion
         

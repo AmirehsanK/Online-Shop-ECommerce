@@ -25,10 +25,14 @@
                                 
                                 <div class="form-element-row mb-5">
                                     <label class="label">موضوع</label>
-                                    <select asp-for="Subject" class="select2" name="subject" id="subject">
-                                        <option value="0">انتخاب موضوع</option>
-                                        @await Component.InvokeAsync("ContactUsSubject")
-                                    </select>
+                                    <div class="form-element-row mb-5">
+                                        <label class="label">بخش</label>
+                                        <select asp-for="Subject"   class="select2" id="department">
+                                            @await Component.InvokeAsync("ContactUsSubject")
+
+                                        </select>
+                                    </div>
+
                                 </div>
                                 
                             </div>

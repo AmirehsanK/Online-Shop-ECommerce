@@ -3,6 +3,7 @@ using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using Application.Services.Impelementation;
 using Application.Services.Interfaces;
+using Domain.Entities.Product;
 using Domain.Interface;
 using Infra.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +20,7 @@ public static class DiContainer
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ITicketRepository, TicketRepository>();
         services.AddScoped<IContactUsRepository, ContactUsRepository>();
+        services.AddScoped<IProductRepository,ProductRepository>();
         #endregion
 
         #region Services
@@ -26,6 +28,7 @@ public static class DiContainer
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ITicketService, TicketService>();
         services.AddScoped<IContactUsService, ContactUsService>();
+        services.AddScoped<IProductService, ProductService>();
         services.AddSingleton<IAuthorizationHandler, AdminHandler>();
         
         #endregion

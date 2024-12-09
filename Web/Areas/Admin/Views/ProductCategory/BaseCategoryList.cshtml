@@ -1,0 +1,57 @@
+﻿@model List<Domain.ViewModel.Product.CategoryListViewModel>
+@{
+    ViewData["Title"] = "لیست دسته بندی های لیست";
+    var id = ViewData["parentid"] as int?;
+}
+<div class="card">
+    <div class="d-flex justify-content-between me-3">
+        <h5 class="card-header">@ViewData["Title"]</h5>
+        
+        <a asp-controller="ProductCategory" asp-area="Admin" asp-action="CreateBaseCategory"
+           class="btn btn-label-success">افزودن</a>
+    </div>
+
+    <div class="table-responsive text-nowrap">
+        @if (Model != null && Model.Any())
+        {
+            <table class="table">
+                <thead>
+                <tr>
+                  
+                    <th>کد</th>
+                    <th>عنوان</th>
+                    <th>عملیات</th>
+
+                </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                @foreach (var category in Model)
+                {
+                    
+                    <tr>
+                        <td> <strong>@category.CategoryId</strong></td>
+                        <td>@category.Title</td>
+
+                        <td>
+
+                            <a asp-controller="ProductCategory" asp-area="Admin" asp-action="CreateSubCategory"
+                               asp-route-parentid="@category.CategoryId" class="btn btn-label-success">افزودن زیر مجموعه</a>
+                            <a asp-controller="ProductCategory" asp-area="Admin" asp-action="BaseCategoryList"
+                               asp-route-categoryid="@category.CategoryId" class="btn btn-label-primary">جزییات</a>
+                        </td>
+                    </tr>
+                }
+
+
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p> nothing</p>
+        }
+
+    </div>
+</div>
+
+
