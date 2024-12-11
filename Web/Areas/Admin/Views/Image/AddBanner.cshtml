@@ -1,0 +1,29 @@
+@model Domain.ViewModel.Image.BannerViewModel
+<head>
+    <title>اضافه کردن عکس</title>
+</head>
+
+<div class="container mt-5">
+    <h3 class="mb-4">اضافه کردن عکس</h3>
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="AddBanner" asp-controller="Image" asp-area="Admin" method="post"
+                  enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label asp-for="Image" class="form-label">عکس</label>
+                    <input asp-for="Image" type="file" class="form-control" required/>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ExpirationDate" class="form-label">تاریخ انقضا</label>
+                    <input asp-for="ExpirationDate" type="date" class="form-control"/>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Link" class="form-label">لینک</label>
+                    <input asp-for="Link" type="text" class="form-control" placeholder="آدرس لینک را وارد کنید"/>
+                </div>
+                <button type="submit" class="btn btn-success">اضافه کردن عکس</button>
+                <a asp-action="AddBanner" asp-controller="Image" asp-area="Admin" class="btn btn-secondary">لفو</a>
+            </form>
+        </div>
+    </div>
+</div>

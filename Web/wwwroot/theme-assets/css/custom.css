@@ -2,4 +2,10 @@
 .validation-summary-errors {
     color: red;
 }
+.banner-top{
+    height:60px;
+}
+.banner-slider-top,.banner-slider-bot{
+   height:220px; 
+}
 /*# sourceMappingURL=custom.css.map */

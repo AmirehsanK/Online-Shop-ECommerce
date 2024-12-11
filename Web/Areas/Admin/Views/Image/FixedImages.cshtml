@@ -1,0 +1,42 @@
+@using Application.Tools
+@using Microsoft.IdentityModel.Tokens
+@model System.Collections.Generic.IEnumerable<Domain.ViewModel.Image.BannerFixViewModel>
+@{
+    ViewData["Title"] = "مدیریت بتر ها";
+}
+
+<div class="container mt-5">
+    <h3 class="mb-4">مدیریت بنر ها</h3>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>عکس</th>
+            <th>نام</th>
+            <th>لینک عکس</th>
+            <th>عملیات</th>
+        </tr>
+        </thead>
+        <tbody>
+        <div class="d-flex justify-content-start mb-3">
+            <a asp-action="AddFixedBanner" asp-controller="Image" asp-area="Admin" class="btn btn-primary">اضافه کردن عکس</a>
+        </div>
+        @if (Model.IsNullOrEmpty())
+        {
+            <div class="alert alert-danger">عکس اضافه کنید</div>
+        }
+        @foreach (var banner in Model)
+        {
+            <tr>
+                <td>@banner.Id</td>
+                <td><img src="@PathTools.FixedBannerServerPath@banner.Title"/></td>
+                <td>@banner.Title</td>
+                <td>@banner.Link</td>
+                <td>
+                    <a asp-action="Edit" asp-route-guid="@banner.Title" class="btn btn-warning btn-sm">ویرایش</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

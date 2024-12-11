@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Application.Tools;
 
-namespace Application.Tools
+public class PathTools
 {
-    public class PathTools
-    {
-        #region Product
+    #region Product
 
-        public static string FileServerPath = Path.Join(Directory.GetCurrentDirectory(), "wwwroot/images/products/main/");
-        public static string FilePath = "/images/products/main/";
+    public static string FileServerPath = Path.Join(Directory.GetCurrentDirectory(), "wwwroot/images/products/main/");
+    public static string FilePath = "/images/products/main/";
 
+    #endregion
 
-        #endregion
+    #region Banners
 
-    
-    }
+    public static string BannerServerPath = Path.Join(Directory.GetCurrentDirectory(), "wwwroot/images/Banners/Slider/");
+    public static string BannerPath = "/images/Banners/Slider/";
+
+    public static string FixedBannerServerPath = Path.Join(Directory.GetCurrentDirectory(), "wwwroot/images/Banners/Fixed/");
+    public static string FixedBannerPath = "/images/Banners/Fixed/";
+
+    #endregion
 }

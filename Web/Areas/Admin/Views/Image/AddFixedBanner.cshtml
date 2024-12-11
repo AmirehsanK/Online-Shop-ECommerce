@@ -1,0 +1,35 @@
+@using Domain.Enums
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Domain.ViewModel.Image.BannerFixViewModel
+@{
+    ViewData["Title"] = "اضافه کردن عکس";
+}
+
+<div class="container mt-5">
+    <h3 class="mb-4">اضافه کردن عکس جدید</h3>
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="AddFixedBanner" asp-controller="Image" asp-area="Admin" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label asp-for="Position" class="form-label">Banner Type</label>
+                    <select asp-for="Position" class="form-select">
+                        @foreach (var banner in Enum.GetValues(typeof(Domain.Enums.ImageEnum.Banner)))
+                        {
+                            <option value="@banner">@ImageEnum.BannerHelper.GetBannerTitle((Domain.Enums.ImageEnum.Banner)banner)</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Image" class="form-label">Upload Image</label>
+                    <input asp-for="Image" type="file" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Link" class="form-label">Link</label>
+                    <input asp-for="Link" type="text" class="form-control" placeholder="Enter the link" required />
+                </div>
+                <button type="submit" class="btn btn-success">Add Banner</button>
+                <a asp-action="FixedImages" asp-controller="Image" asp-area="Admin" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

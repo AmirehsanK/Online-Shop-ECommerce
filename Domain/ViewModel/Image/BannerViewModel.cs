@@ -1,0 +1,16 @@
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
+
+namespace Domain.ViewModel.Image;
+
+public class BannerViewModel
+{
+    [Key] public int Id { get; set; }
+
+    [Required] public string Title { get; set; }
+
+    [Required] public string Link { get; set; }
+
+    public DateTime? ExpirationDate { get; set; }
+    public IFormFile? Image { get; set; }
+}

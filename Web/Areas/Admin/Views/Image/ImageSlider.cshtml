@@ -1,0 +1,84 @@
+@using Application.Tools
+@model IEnumerable<Domain.Entities.Images.Banner>
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<head>
+    <title>Image Slider</title>
+</head>
+
+<div class="container mt-5">
+    <h3 class="mb-4">مدیریت عکس های اسلایدر</h3>
+    <div class="d-flex justify-content-start mb-3">
+        <a asp-action="AddBanner" class="btn btn-primary">اضافه کردن عکس</a>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>عکس</th>
+                    <th>لینک عکس</th>
+                    <th>تاریخ انقضا</th>
+                    <th>وضعیت</th>
+                    <th>عملیات</th>
+                </tr>
+                </thead>
+                <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var banner in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@PathTools.BannerServerPath@banner.Title" alt="Banner Image"
+                                     class="img-thumbnail" style="max-height: 100px;"/>
+                            </td>
+                            <td>
+                                <a href="@banner.Link">لینک</a>
+                            </td>
+                            <td>
+                                @if (banner.ExpirationDate.HasValue)
+                                {
+                                    @banner.ExpirationDate.Value.ToShamsi()
+                                }
+                                else
+                                {
+                                    <span class="text-muted">بدون تاریخ انقضا</span>
+                                }
+                            </td>
+                            <td>
+                                @if (banner.ExpirationDate.HasValue && banner.ExpirationDate.Value < DateTime.Now)
+                                {
+                                    <span class="badge bg-danger">منقضی شده</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">فعال</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-Title="@banner.Title" class="btn btn-sm btn-warning">ویرایش</a>
+                                <form asp-action="Delete" asp-route-id="@banner.Title" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger"
+                                            onclick="return confirm('ایا از حذف محصول اطمنینان دارید؟');">
+                                        حذف
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center">عکسی موجود نیست</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

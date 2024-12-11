@@ -1,0 +1,6 @@
+@using Application.Tools
+@model Domain.ViewModel.Image.BannerFixViewModel
+@if (Model.Title != null)
+{
+    <a href="@Model.Link"><img src="@PathTools.FixedBannerServerPath@Model.Title" alt="banner"></a>
+}

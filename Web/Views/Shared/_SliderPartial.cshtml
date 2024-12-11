@@ -1,0 +1,27 @@
+@using Application.Tools
+@using Microsoft.IdentityModel.Tokens
+@model IEnumerable<Domain.Entities.Images.Banner>
+
+<div class="swiper main-swiper-slider">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+        @if (Model.IsNullOrEmpty() != true)
+        {
+            @foreach (var image in Model)
+            {
+                <div class="swiper-slide main-swiper-slide">
+                    <a href="@image.Link" target="_blank"
+                       style="background-image: url(@PathTools.BannerServerPath@image.Title);">
+                        <img src="@PathTools.BannerServerPath@image.Title" alt="">
+                    </a>
+                </div>
+            }
+        }
+    </div>
+    <!-- If we need pagination -->
+    <div class="swiper-pagination"></div>
+
+    <!-- If we need navigation buttons -->
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+</div>
