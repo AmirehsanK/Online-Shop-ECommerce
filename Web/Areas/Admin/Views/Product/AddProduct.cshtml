@@ -1,0 +1,82 @@
+﻿model YourNamespace.Models.ProductViewModel
+
+<h2>افزودن محصول</h2>
+
+<form asp-action="AddProduct" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="Title">عنوان</label>
+        <input type="text" id="Title" name="Title" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Image">تصویر</label>
+        <input type="file" id="Image" name="Image" class="form-control" accept="image/*" required />
+    </div>
+
+    <div class="form-group">
+        <label for="ShortDescription">توضیح کوتاه</label>
+        <textarea id="ShortDescription" name="ShortDescription" class="form-control" rows="3" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="Price">قیمت</label>
+        <input type="number" id="Price" name="Price" class="form-control" step="0.01" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Quantity">تعداد</label>
+        <input type="number" id="Quantity" name="Quantity" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Review">نقد و بررسی</label>
+        <textarea id="Review" name="Review" class="form-control" rows="5"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="DetailedReview">بررسی تخصصی</label>
+        <textarea id="DetailedReview" name="DetailedReview" class="form-control" rows="5"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="Category">دسته‌بندی</label>
+        <select id="Category" name="CategoryId" class="form-control" asp-items="Model.Categories" required>
+            <option value="">انتخاب دسته‌بندی</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="SubCategory">زیر دسته‌بندی</label>
+        <select id="SubCategory" name="SubCategoryId" class="form-control" asp-items="Model.SubCategories" required>
+            <option value="">انتخاب زیر دسته‌بندی</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">افزودن محصول</button>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#Category').change(function () {
+                const categoryId = $(this).val();
+                $.ajax({
+                    url: '/Admin/GetSubCategories',
+                    type: 'GET',
+                    data: { categoryId: categoryId },
+                    success: function (data) {
+                        const subCategoryDropdown = $('#SubCategory');
+                        subCategoryDropdown.empty();
+                        subCategoryDropdown.append('<option value="">انتخاب زیر دسته‌بندی</option>');
+                        data.forEach(subCategory => {
+                            subCategoryDropdown.append(`<option value="${subCategory.id}">${subCategory.name}</option>`);
+                        });
+                    },
+                    error: function () {
+                        alert('خطا در بارگذاری زیر دسته‌بندی‌ها');
+                    }
+                });
+            });
+        });
+    </script>
+}
