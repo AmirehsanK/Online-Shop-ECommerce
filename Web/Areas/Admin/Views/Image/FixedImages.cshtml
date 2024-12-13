@@ -1,5 +1,7 @@
 @using Application.Tools
+@using Domain.Enums
 @using Microsoft.IdentityModel.Tokens
+@using Application.Tools
 @model System.Collections.Generic.IEnumerable<Domain.ViewModel.Image.BannerFixViewModel>
 @{
     ViewData["Title"] = "مدیریت بتر ها";
@@ -12,7 +14,7 @@
         <tr>
             <th>#</th>
             <th>عکس</th>
-            <th>نام</th>
+            <th>مکان در صفحه</th>
             <th>لینک عکس</th>
             <th>عملیات</th>
         </tr>
@@ -29,11 +31,12 @@
         {
             <tr>
                 <td>@banner.Id</td>
-                <td><img src="@PathTools.FixedBannerServerPath@banner.Title"/></td>
-                <td>@banner.Title</td>
+                    <td><div class="banner-div"><img class="banner-img" src="@PathTools.FixedBannerPath@banner.Title" /></div></td>
+                    <td>@ImageEnum.BannerHelper.GetBannerTitle((Domain.Enums.ImageEnum.Banner)banner.Position)</td>
                 <td>@banner.Link</td>
                 <td>
-                    <a asp-action="Edit" asp-route-guid="@banner.Title" class="btn btn-warning btn-sm">ویرایش</a>
+                        <a asp-action="Edit" asp-controller="Image" asp-area="Admin" asp-route-title="@banner.Title" class="btn btn-warning btn-sm">ویرایش</a>
+                        <a asp-action="DeleteFixedImage" asp-controller="Image" asp-area="Admin" asp-route-title="@banner.Title" class="btn btn-danger btn-sm">حذف</a>
                 </td>
             </tr>
         }

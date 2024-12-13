@@ -1,0 +1,33 @@
+﻿@using Application.Tools
+@model Domain.ViewModel.Image.BannerFixViewModel
+
+<div class="container mt-4">
+    <h2>ویرایش بنر</h2>
+
+    <form asp-action="EditBanner" asp-controller="Image" asp-area="Admin" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="currentImage">عکس موجود</label>
+            <div>
+                <img src="@PathTools.FixedBannerPath@Model.Title" alt="Current Image" class="img-thumbnail" style="max-width: 300px; height: auto;">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="currentLink">لینک موجود</label>
+            <a href="@Model.Link">@Model.Link</a>
+        </div>
+
+        <div class="form-group mt-3">
+            <label asp-for="Image">اپلود عکس جدید</label>
+            <input asp-for="Image" type="file" class="form-control" >
+        </div>
+
+        <div class="form-group mt-3">
+            <label asp-for="Link">لینک جدید</label>
+            <input asp-for="Link"  type="text" class="form-control" placeholder="Enter new link" value="@Model.Link">
+        </div>
+        <input type="hidden" asp-for="Title"/>
+        <button type="submit" class="btn btn-primary mt-4">ویرایش</button>
+        <a asp-action="FixedImages" asp-controller="Image" asp-area="Admin" class="btn btn-secondary mt-4">لغو</a>
+    </form>
+</div>

@@ -21,14 +21,12 @@ public class ImageController : AdminBaseController
         var banners = await _fileHandleService.GetAllBanner();
         return View(banners);
     }
-
     [HttpGet]
     public async Task<IActionResult> AddBanner()
     {
         return View();
     }
 
-    [HttpPost]
     public async Task<IActionResult> AddBanner(BannerViewModel banner)
     {
         await _fileHandleService.AddBanner(banner);
@@ -45,26 +43,19 @@ public class ImageController : AdminBaseController
         return View(banner);
     }
 
-    public async Task<IActionResult> Update(string guid)
+    public async Task<IActionResult> Update(BannerViewModel model)
     {
         if (!ModelState.IsValid)
             return RedirectToAction("ImageSlider");
 
-        var banner = await _fileHandleService.GetBanner(guid);
-        await _fileHandleService.UpdateBanner(banner);
-        return View(banner);
+        await _fileHandleService.UpdateBanner(model);
+        TempData[SuccessMessage] = "ویرایش با موفقیت انجام شد";
+        return RedirectToAction(nameof(ImageSlider));
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Delete(string guid)
+    public async Task<IActionResult> Delete(string title)
     {
-        if (!ModelState.IsValid)
-        {
-            TempData["error"] = "فرایند با خطا مواجه شد";
-            return RedirectToAction("ImageSlider");
-        }
-
-        await _fileHandleService.DeleteBanner(guid);
+        await _fileHandleService.DeleteBanner(title);
         TempData[SuccessMessage] = "حذف عکس با موفقیت انجام شد";
         return RedirectToAction(nameof(ImageSlider));
     }
@@ -83,36 +74,43 @@ public class ImageController : AdminBaseController
     {
         return View();
     }
-    [HttpPost]
     public async Task<IActionResult> AddFixedBanner(BannerFixViewModel banner)
     {
+        #region Validation
         if (banner.Image == null)
         {
             TempData[ErrorMessage] = "فرایند با خطا مواجه شد";
             return View();
         };
+        if(await _fileHandleService.GetBannerByPosition(banner.Position)!=null)
+        {
+            TempData[ErrorMessage] = "مکان عکس تکراری میباشد";
+        }
+        #endregion
         await _fileHandleService.AddFixedBanner(banner);
-        return View();
+        TempData[SuccessMessage] = "عکس با موفقیت اضافه شد";
+        return RedirectToAction(nameof(FixedImages));
     }
-
-    public async Task<IActionResult> Edit(string guid)
+    [HttpGet]
+    public async Task<IActionResult> Edit(string title)
     {
-        var banner = await _fileHandleService.GetFixedBanner(guid);
-        if (banner == null)
+        var banner = await _fileHandleService.GetFixedBanner(title);
+        if (banner.Title == null)
         {
             TempData[ErrorMessage] = "عملیات با شکست مواجه شد";
-            return View();
+            return RedirectToAction(nameof(FixedImages));
         }
         
         return View(banner);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Edit(BannerFixViewModel banner)
+    public async Task<IActionResult> EditBanner(BannerFixViewModel banner)
     {
-        if (!ModelState.IsValid)
-            return View(banner);
-
+        if (banner.Image==null && banner.Link==null)
+        {
+            TempData[ErrorMessage] = "لطفا فیلد هارا با دقت پر کنید";
+            return RedirectToAction(nameof(FixedImages));
+        }
         var result = await _fileHandleService.UpdateFixedBanner(banner);
         if (result == ImageEnum.Status.Success)
         {
@@ -121,8 +119,13 @@ public class ImageController : AdminBaseController
         }
 
         TempData[ErrorMessage] = "عملیات با شکست مواجه شد";
-        return View(banner);
+        return RedirectToAction(nameof(FixedImages));
     }
-    
+    public async Task<IActionResult> DeleteFixedImage(string title)
+    {
+        await _fileHandleService.DeleteFixedBanner(title);
+        TempData[SuccessMessage] = "با موفقیت حذف شد";
+        return RedirectToAction(nameof(FixedImages));
+    }
     #endregion
 }

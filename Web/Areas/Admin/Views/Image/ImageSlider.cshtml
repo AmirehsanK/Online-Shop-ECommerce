@@ -33,8 +33,10 @@
                     {
                         <tr>
                             <td>
-                                <img src="@PathTools.BannerServerPath@banner.Title" alt="Banner Image"
-                                     class="img-thumbnail" style="max-height: 100px;"/>
+                                <div class="banner-div">
+                                <img src="@PathTools.BannerPath@banner.Title" alt="Banner Image"
+                                             class="img-thumbnail banner-img"/>
+                                    </div>
                             </td>
                             <td>
                                 <a href="@banner.Link">لینک</a>
@@ -61,7 +63,7 @@
                             </td>
                             <td>
                                 <a asp-action="Details" asp-route-Title="@banner.Title" class="btn btn-sm btn-warning">ویرایش</a>
-                                <form asp-action="Delete" asp-route-id="@banner.Title" method="post" class="d-inline">
+                                <form asp-action="Delete" asp-route-title="@banner.Title" method="post" class="d-inline">
                                     <button type="submit" class="btn btn-sm btn-danger"
                                             onclick="return confirm('ایا از حذف محصول اطمنینان دارید؟');">
                                         حذف

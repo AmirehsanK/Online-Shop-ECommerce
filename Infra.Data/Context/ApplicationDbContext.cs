@@ -17,7 +17,9 @@ public class ApplicationDbContext : DbContext
     #region Dbsets
 
     public DbSet<User> Users { get; set; }
+    public DbSet<Banner> Banners { get; set; }
 
+    public DbSet<BannerFix> BannerFix { get; set; }
     #endregion
 
     #region Product
@@ -33,6 +35,18 @@ public class ApplicationDbContext : DbContext
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new ContactMessageConfiguration());
+
+        modelBuilder.Entity<Subject>().HasData(
+            new Subject { Id = 1, Name = "پیشنهاد" },
+            new Subject { Id = 2, Name = "شکایت" },
+            new Subject { Id = 3, Name = "سفارش" },
+            new Subject { Id = 4, Name = "فروش" },
+            new Subject { Id = 5, Name = "گارانتی" },
+            new Subject { Id = 6, Name = "مدیریت" },
+            new Subject { Id = 7, Name = "مالی" },
+            new Subject { Id = 8, Name = "موضوعات" }
+
+        );
     }
 
     #region Ticket
@@ -51,9 +65,7 @@ public class ApplicationDbContext : DbContext
 
     #region Images
 
-    public DbSet<Banner> Banners { get; set; }
 
-    public DbSet<BannerFix> BannerFix { get; set; }
 
     #endregion
 }

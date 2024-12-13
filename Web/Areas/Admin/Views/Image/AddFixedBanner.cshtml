@@ -11,7 +11,7 @@
         <div class="card-body">
             <form asp-action="AddFixedBanner" asp-controller="Image" asp-area="Admin" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
-                    <label asp-for="Position" class="form-label">Banner Type</label>
+                    <label asp-for="Position" class="form-label">مکان مورد نظر</label>
                     <select asp-for="Position" class="form-select">
                         @foreach (var banner in Enum.GetValues(typeof(Domain.Enums.ImageEnum.Banner)))
                         {
@@ -20,14 +20,14 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="Image" class="form-label">Upload Image</label>
+                    <label asp-for="Image" class="form-label">اپلود کردن عکس</label>
                     <input asp-for="Image" type="file" class="form-control" required />
                 </div>
                 <div class="mb-3">
-                    <label asp-for="Link" class="form-label">Link</label>
+                    <label asp-for="Link" class="form-label">لینک</label>
                     <input asp-for="Link" type="text" class="form-control" placeholder="Enter the link" required />
                 </div>
-                <button type="submit" class="btn btn-success">Add Banner</button>
+                <button type="submit" class="btn btn-success">اضافه کردن</button>
                 <a asp-action="FixedImages" asp-controller="Image" asp-area="Admin" class="btn btn-secondary">Cancel</a>
             </form>
         </div>

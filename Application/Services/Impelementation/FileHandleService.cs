@@ -57,10 +57,12 @@ public class FileHandleService : IFileHandleService
             return ImageEnum.Status.Error;
 
         var title = Guid.NewGuid().ToString("N") + Path.GetExtension(banner.Image.FileName);
-        banner.Image.AddImageToServer(title, PathTools.BannerPath, null, null);
+        banner.Image.AddImageToServer(title, PathTools.BannerServerPath, null, null);
         await _fileHandleRepository.AddImageAsync(new Banner
         {
             Title = title,
+            CreateDate = DateTime.Now,
+            IsDeleted = false,
             Link = banner.Link,
             ExpirationDate = banner.ExpirationDate
         });
@@ -75,9 +77,11 @@ public class FileHandleService : IFileHandleService
             return ImageEnum.Status.Error;
 
         var title = Guid.NewGuid().ToString("N") + Path.GetExtension(banner.Image.FileName);
-
         banner.Image.AddImageToServer(title, PathTools.BannerServerPath, null, null);
         banner.Title.DeleteImage(PathTools.BannerServerPath, null);
+        existingBanner.Title = title;
+        existingBanner.ExpirationDate= banner.ExpirationDate;
+        existingBanner.Link = banner.Link;
         await _fileHandleRepository.UpdateImage(existingBanner);
         await _fileHandleRepository.SaveChangesAsync();
         return ImageEnum.Status.Success;
@@ -99,20 +103,15 @@ public class FileHandleService : IFileHandleService
             Link = f.Link
         });
     }
-    
-    public async Task<BannerFixViewModel> GetBannerByPosition(string position)
+
+    public async Task<BannerFixViewModel> GetBannerByPosition(ImageEnum.Banner position)
     {
+
         var banner = await _fileHandleRepository.GetFixedImageByPositionAsync(position);
-        if (banner == null) 
-            return new BannerFixViewModel()
+
+
+        if (banner != null) 
         {
-            Id = 0,
-            Position = "",
-            IsDeleted = false,
-            CreateDate = DateTime.Today,
-            Title = "",
-            Link = ""
-        };
         return new BannerFixViewModel()
         {
             Id = banner.Id,
@@ -121,7 +120,9 @@ public class FileHandleService : IFileHandleService
             CreateDate = banner.CreateDate,
             Title = banner.Title,
             Link = banner.Link
-        };
+        }; 
+        }
+        return null;
     }
     public async Task<BannerFixViewModel> GetFixedBanner(string guid)
     {
@@ -145,16 +146,19 @@ public class FileHandleService : IFileHandleService
         var existingBanner = await _fileHandleRepository.GetFixedImageAsync(banner.Title);
         if (existingBanner != null)
             return ImageEnum.Status.Error;
-        
+        var existingPosition=await _fileHandleRepository.GetFixedImageByPositionAsync(banner.Position);
+        if (existingPosition != null)
+            return ImageEnum.Status.Error;
+        var title = Guid.NewGuid().ToString("N") + Path.GetExtension(banner.Image.FileName);
+        banner.Image.AddImageToServer(title, PathTools.FixedBannerServerPath, null, null);
         await _fileHandleRepository.AddFixedImageAsync(new BannerFix
         {
-            Title = banner.Title,
+            Title = title,
             Link = banner.Link,
             Position = banner.Position,
             CreateDate = DateTime.Now,
             IsDeleted = false
         });
-
         await _fileHandleRepository.SaveChangesAsync();
         return ImageEnum.Status.Success;
     }
@@ -164,10 +168,12 @@ public class FileHandleService : IFileHandleService
         var existingBanner = await _fileHandleRepository.GetFixedImageAsync(banner.Title);
         if (existingBanner == null)
             return ImageEnum.Status.Error;
-
-        existingBanner.Title = banner.Title;
+        
+        var title = Guid.NewGuid().ToString("N") + Path.GetExtension(banner.Image.FileName);
+        banner.Title.DeleteImage(PathTools.FixedBannerServerPath, null);
+        banner.Image.AddImageToServer(title, PathTools.FixedBannerServerPath, null, null);
         existingBanner.Link = banner.Link;
-
+        existingBanner.Title = title;
         await _fileHandleRepository.UpdateFixedImage(existingBanner);
         await _fileHandleRepository.SaveChangesAsync();
         return ImageEnum.Status.Success;
@@ -178,7 +184,7 @@ public class FileHandleService : IFileHandleService
         var banner = await _fileHandleRepository.GetFixedImageAsync(guid);
         if (banner == null)
             return ImageEnum.Status.Error;
-
+        banner.Title.DeleteImage(PathTools.FixedBannerPath, null);
         await _fileHandleRepository.DeleteFixedImage(banner);
         await _fileHandleRepository.SaveChangesAsync();
         return ImageEnum.Status.Success;

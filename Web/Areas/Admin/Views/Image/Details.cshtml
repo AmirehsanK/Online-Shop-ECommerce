@@ -1,5 +1,5 @@
 @model Domain.ViewModel.Image.BannerViewModel
-
+@using Application.Tools;
 <head>
     <title>ویرایش عکس</title>
 </head>
@@ -15,7 +15,7 @@
                 @if (!string.IsNullOrEmpty(Model.Link))
                 {
                     <div>
-                        <img src="@Model.Link" alt="Current Image" class="img-fluid" style="max-width: 300px;"/>
+                        <img src="@PathTools.BannerPath@Model.Title" alt="Current Image" class="img-fluid" style="max-width: 300px;"/>
                     </div>
                 }
                 else
@@ -40,10 +40,9 @@
             </div>
 
             <!-- Edit Form -->
-            <form asp-action="Update" asp-controller="Image" asp-area="Admin" method="post"
-                  enctype="multipart/form-data">
+            <form asp-action="Update" asp-controller="Image" asp-area="Admin" method="post" enctype="multipart/form-data">
                 <!-- Hidden Field for Banner ID -->
-                <input type="hidden" asp-for="Id"/>
+                <input type="hidden" asp-for="Title"/>
 
                 <div class="mb-3">
                     <label asp-for="Image" class="form-label">تغییر عکس</label>

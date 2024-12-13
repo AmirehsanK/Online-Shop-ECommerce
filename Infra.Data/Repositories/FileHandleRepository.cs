@@ -1,4 +1,5 @@
 using Domain.Entities.Images;
+using Domain.Enums;
 using Domain.Interface;
 using Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
@@ -68,7 +69,7 @@ public class FileHandleRepository(ApplicationDbContext context) : IFileHandleRep
         context.BannerFix.Update(banner);
     }
 
-    public async Task<BannerFix> GetFixedImageByPositionAsync(string position)
+    public async Task<BannerFix> GetFixedImageByPositionAsync(ImageEnum.Banner position)
     {
         return await context.BannerFix.FirstOrDefaultAsync(x => x.Position == position);
     }

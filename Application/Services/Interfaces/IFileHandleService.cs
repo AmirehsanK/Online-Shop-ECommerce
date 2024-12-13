@@ -23,7 +23,7 @@ public interface IFileHandleService
 
     #region Fixed Images
 
-    Task<BannerFixViewModel> GetBannerByPosition(string position);
+    Task<BannerFixViewModel> GetBannerByPosition(ImageEnum.Banner position);
     Task<IEnumerable<BannerFixViewModel>> GetAllFixedBanners();
 
     Task<BannerFixViewModel> GetFixedBanner(string guid);

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Domain.Enums;
 using Microsoft.AspNetCore.Http;
 
 namespace Domain.ViewModel.Image;
@@ -17,5 +18,5 @@ public class BannerFixViewModel
     
     public IFormFile? Image { get; set; }
     
-    public string Position{get;set;}
+    public ImageEnum.Banner Position {get;set;}
 }

@@ -1,4 +1,5 @@
-﻿
+﻿@using Domain.Enums
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -9,7 +10,7 @@
     <header class="page-header d-md-block d-none">
         <!-- start banner -->
         <div class="alert banner-container alert-dismissible fade show banner-top" role="alert">
-            <a href="#" class="banner-placement rounded-0"; style="height: 60px;"></a>
+                <a class="banner-placement rounded-0" ; style="height: 60px;">@await Component.InvokeAsync("FixedImages", new { banner = ImageEnum.Banner.TopClosable })</a>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         <!-- end banner -->

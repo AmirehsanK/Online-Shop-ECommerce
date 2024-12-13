@@ -15,7 +15,7 @@ public class FixedImagesViewComponent : ViewComponent
 
     public async Task<IViewComponentResult> InvokeAsync(ImageEnum.Banner banner)
     {
-        var subjects = await _fileHandleService.GetBannerByPosition(banner.ToString());
+        var subjects = await _fileHandleService.GetBannerByPosition(banner);
         return View(subjects);
     }
 }

@@ -1,4 +1,5 @@
 using Domain.Entities.Images;
+using Domain.Enums;
 
 namespace Domain.Interface;
 
@@ -32,7 +33,7 @@ public interface IFileHandleRepository
 
     Task UpdateFixedImage(BannerFix banner);
     
-    Task<BannerFix> GetFixedImageByPositionAsync(string position);
+    Task<BannerFix> GetFixedImageByPositionAsync(ImageEnum.Banner position);
 
     #endregion
 }

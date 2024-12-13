@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Domain.Entities.Common;
+using Domain.Enums;
 
 namespace Domain.Entities.Images;
 
@@ -9,6 +10,6 @@ public class BannerFix : BaseEntity
 
     public string Link { get; set; }
     
-    public string Position{get;set;}
+    public ImageEnum.Banner Position{get;set;}
 
 }
