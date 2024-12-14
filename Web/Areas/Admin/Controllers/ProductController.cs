@@ -6,12 +6,15 @@ namespace Web.Areas.Admin.Controllers
 {
     public class ProductController : AdminBaseController
     {
+        private readonly IProductService _productService;
         #region Ctor
 
+        //public ProductController(IProductService productService)
         private readonly IProductGalleryService _galleryService;
 
         public ProductController(IProductGalleryService galleryService)
         {
+            //_productService = productService;
             _galleryService = galleryService;
         }
 
@@ -20,6 +23,7 @@ namespace Web.Areas.Admin.Controllers
         #region ShowProductGallery
 
         [HttpGet]
+        //public async Task<IActionResult> AddProduct()
         public async Task<IActionResult> ShowProductGallery(int id = 5)
         {
 
@@ -27,22 +31,35 @@ namespace Web.Areas.Admin.Controllers
 
             return View();
         }
+        [HttpGet]
+        //public async Task<IActionResult> GetCategories()
 
         [HttpPost]
         public async Task<IActionResult> ShowProductGallery(ShowProductGalleryViewModel model)
         {
-            model.ProductId = 5;
+            //var categories = await _productService.GetAllCategories(null); 
+            //return Json(categories.Select(c => new { c.CategoryId, c.Title }));
 
+            model.ProductId = 5;
             #region Validation
 
-            await _galleryService.AddProductGalleries(model);
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
 
             #endregion
 
-
+            await _galleryService.AddProductGalleries(model);
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetSubCategories(int categoryId)
+        {
+            var subCategories = await _productService.GetAllCategories(categoryId); 
+            return Json(subCategories.Select(sc => new { sc.CategoryId, sc.Title }));
+        }
         #endregion
 
 

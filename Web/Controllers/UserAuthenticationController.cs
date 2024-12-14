@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Common;
 using NuGet.Protocol.Plugins;
+using Application.Tools;
+using System.Configuration;
 
 namespace Web.Controllers;
 
@@ -15,11 +17,12 @@ public class UserAuthenticationController : SiteBaseController
     #region ctor
 
     private readonly IUserService _userService;
+    private readonly IConfiguration _configuration;
 
-
-    public UserAuthenticationController(IUserService userService)
+    public UserAuthenticationController(IUserService userService, IConfiguration configuration)
     {
         _userService = userService;
+        _configuration = configuration;
     }
 
     #endregion
@@ -95,7 +98,7 @@ public class UserAuthenticationController : SiteBaseController
 
     #endregion
 
- 
+
 
     #region Login
 
@@ -112,6 +115,18 @@ public class UserAuthenticationController : SiteBaseController
         #region Validation
 
         if (!ModelState.IsValid) return View(login);
+        
+        string googleRecaptchaToken = Request.Form["g-recaptcha-response"].ToString();
+
+        //verify the token
+        string secretkey = _configuration["ReCaptchaSettings:SecrectKey"]!;
+        string verificationUrl = _configuration["ReCaptchaSettings:VerificationUrl"]!;
+        bool isValid = await VerifyRecaptcha.VerifyRecaptchaV3(googleRecaptchaToken, secretkey, verificationUrl);
+        if (!isValid)
+        {
+            TempData[ErrorMessage] = "کپچا را کامل کنید";
+            return View();
+        }
 
         #endregion
         

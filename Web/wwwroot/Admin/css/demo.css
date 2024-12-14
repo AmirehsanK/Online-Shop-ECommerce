@@ -116,3 +116,14 @@
     text-align: center;
     margin-top: 1rem;
 }
+
+.banner-img {
+    width: 100%; /* Fixed width */
+    height: 100%; /* Fixed height */
+    
+    border-radius: 5px; /* Optional: Adds rounded corners */
+}
+.banner-div {
+    width: 100px; /* Fixed width */
+    height: 100px; /* Fixed height */
+}

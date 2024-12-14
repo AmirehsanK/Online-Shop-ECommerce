@@ -3031,9 +3031,7 @@ body.loaded .product-card .product-thumbnail a::before {
     border-radius: 10px;
 }
 
-.banner-img.banner-side-main-slider img {
-    display: none;
-}
+
 
 .banner-img.banner-side-main-slider.bg-position-right a {
     background-position: right;

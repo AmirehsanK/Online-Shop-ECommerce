@@ -1,9 +1,17 @@
-
 @{
     Layout = "_UserAuthenticationLayout";
 }
 @model Domain.ViewModel.User.LoginUserViewModel
-
+@inject IConfiguration configuration
+@{
+    var siteKey = configuration["ReCaptchaSettings:SiteKey"];
+}
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<script>
+    function onSubmit(token) {
+      document.getElementById("LoginForm_id").submit();
+    }
+</script>
 <div class="page-wrapper">
     <main class="page-content page-auth">
         @if (User.Identity.IsAuthenticated)
@@ -12,10 +20,10 @@
                 شما به این بخش دسترسی ندارید
             </div>
         }
-
+        
         <!-- start of auth-container -->
         <div class="auth-container">
-            @if (@TempData["PasswordChanged"] != null)
+            @if (@TempData["PasswordChanged"]!= null)
             {
                 <div class="alert alert-success">
                     رمزعبور با موفقیت تغییر یافت!
@@ -25,8 +33,7 @@
             <!-- start of auth-box -->
             <div class="auth-box ui-box">
                 <!-- start of auth-form -->
-                <form asp-action="Login" asp-controller="UserAuthentication" method="post" id="loginForm">
-               
+                <form id="LoginForm_id" asp-action="Login" asp-controller="UserAuthentication" method="post" class="auth-form">
                     @Html.AntiForgeryToken()
                     <!-- start of form-element -->
                     <div class="form-element-row mb-5">
@@ -34,16 +41,17 @@
                         <span asp-validation-for="Email" class="text-danger"></span>
                         <input asp-for="Password" type="password" class="form-control" placeholder="رمز عبور">
                         <span asp-validation-for="Password" class="text-danger"></span>
-                        <label><input type="checkbox" asp-for="RememberMe" />مرا به خاطر بسپار</label>
+                        <label><input type="checkbox" asp-for="RememberMe"/>مرا به خاطر بسپار</label>
                     </div>
-                    <!-- end of form-element -->
+                     <!-- end of form-element -->
                     <!-- start of form-element -->
                     <div class="form-element-row mb-3">
-                        <div id="html_element"></div>
-                        <hr/>
-                    </div>
-                    <div class="form-element-row mb-3">
-                        <button type="submit" onclick="onSubmit()" class="btn btn-primary">ورود</button>
+                        <button class="g-recaptcha btn btn-primary"
+                                data-sitekey="@siteKey"
+                                data-callback='onSubmit'
+                                data-action='submit'>
+                            ورود
+                        </button>
                     </div>
                     <a asp-action="ForgotPassword">رمز عبور خود را فراموش کرده اید؟</a>
                     <div class="form-element-row">
@@ -52,17 +60,16 @@
                     <!-- end of form-element -->
                     <!-- start of form-element -->
                     <div class="form-element-row">
-                        <div>
-                            با ورود و یا ثبت نام در سایت شما
-                            <a href="#" class="link">
-                                شرایط و
-                                قوانین
-                            </a> استفاده
+                        <div>با ورود و یا ثبت نام در سایت شما
+                            <a href="#" class="link">شرایط و
+                                قوانین</a> استفاده
                             از تمام سرویس های
                             سایت و <a href="#" class="link">قوانین حریم خصوصی</a> آن را می‌پذیرید.
                         </div>
                     </div>
                     <!-- end of form-element -->
+                    <input type="hidden" id="foo" name="foo" />
+
                 </form>
                 <!-- end of auth-form -->
             </div>
@@ -71,8 +78,3 @@
         <!-- end of auth-container -->
     </main>
 </div>
-
-
-
-
-

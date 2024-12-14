@@ -10,6 +10,7 @@ namespace Domain.ViewModel.User
         [Required(ErrorMessage = "{0} را وارد کنید")]
         [DataType(DataType.EmailAddress, ErrorMessage = "ایمیل وارد شده معتبر نمیباشد")]
         public string Email { get; set; }
+
         [DataType(dataType: DataType.Password)]
         [MaxLength(200)]
         [Display(Name = "رمز عبور")]
@@ -18,6 +19,5 @@ namespace Domain.ViewModel.User
         
         public bool RememberMe { get; set; }
 
-       
     }
 }
