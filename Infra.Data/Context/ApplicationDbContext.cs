@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Account;
 using Domain.Entities.ContactUs;
+using Domain.Entities.Faq;
 using Domain.Entities.Product;
 using Domain.Entities.Ticket;
 using Infra.Data.Configurations;
@@ -41,6 +42,18 @@ namespace Infra.Data.Context
 
         public DbSet<ProductCategory> ProductCategories { get; set; }
 
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<ProductGallery> ProductGalleries { get; set; }
+
+
+        #endregion
+
+        #region faq
+
+        public DbSet<FaqCategory> FaqCategories { get; set; }
+
+        public DbSet<FaqQuestion> FaqQuestions { get; set; }
 
         #endregion
         

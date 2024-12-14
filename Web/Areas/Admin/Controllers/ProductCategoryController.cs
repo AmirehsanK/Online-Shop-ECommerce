@@ -1,5 +1,5 @@
 ﻿using Application.Services.Interfaces;
-using Domain.ViewModel.Product;
+using Domain.ViewModel.Product.CategoryAdmin;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Areas.Admin.Controllers
@@ -40,6 +40,34 @@ namespace Web.Areas.Admin.Controllers
             await _productService.AddBaseCategory(model);
             return RedirectToAction(nameof(BaseCategoryList));
         }
+
+        #endregion
+
+        #region EditBaseCategory
+        
+        [HttpGet]
+        public async Task<IActionResult> EditBaseCategory(int categoryid)
+        {
+            var model = await _productService.GetBaseCategoryForEdit(categoryid);
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditBaseCategory(EditBaseCategoryViewModel model)
+        {
+            #region Validation
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            #endregion
+
+            await _productService.EditBaseCategory(model);
+            return RedirectToAction(nameof(BaseCategoryList));
+        }
+        
+
 
         #endregion
 
@@ -87,6 +115,19 @@ namespace Web.Areas.Admin.Controllers
 
 
         #endregion
+
+        #region DeleteBaseCategory
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteBaseCategory(int Categoryid)
+        {
+            await _productService.DeleteBaseCategory(Categoryid);
+            return RedirectToAction(nameof(BaseCategoryList));
+        }
+
+        #endregion
+
+
 
 
    

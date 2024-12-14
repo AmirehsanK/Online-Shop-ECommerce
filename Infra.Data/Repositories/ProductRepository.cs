@@ -42,9 +42,24 @@ namespace Infra.Data.Repositories
         {
             if (parentid.HasValue)
             {
-                return await _context.ProductCategories.Where(u => u.ParentId == parentid).ToListAsync();
+                return await _context.ProductCategories.Where(u => u.ParentId == parentid&&u.IsDeleted==false).ToListAsync();
             }
-            return await _context.ProductCategories.Where(u=> u.ParentId==null).ToListAsync();
+            return await _context.ProductCategories.Where(u=> u.ParentId==null&&u.IsDeleted==false).ToListAsync();
+        }
+
+        public async Task<ProductCategory> GetBaseCategory(int CategoryId)
+        {
+            return await _context.ProductCategories.Where(u=>u.IsDeleted==false).FirstOrDefaultAsync(u=> u.Id==CategoryId);
+        }
+
+        public async Task<List<ProductCategory>> GetSubCategory(int CategoryId)
+        {
+            return await _context.ProductCategories.Where(u => u.ParentId == CategoryId).ToListAsync();
+        }
+
+        public void UpdateCategoryList(List<ProductCategory> model)
+        {
+            _context.ProductCategories.UpdateRange(model);
         }
     }
 }

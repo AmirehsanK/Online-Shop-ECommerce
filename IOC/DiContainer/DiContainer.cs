@@ -21,6 +21,8 @@ public static class DiContainer
         services.AddScoped<ITicketRepository, TicketRepository>();
         services.AddScoped<IContactUsRepository, ContactUsRepository>();
         services.AddScoped<IProductRepository,ProductRepository>();
+        services.AddScoped<IFaqRepository,FaqRepository>();
+        services.AddScoped<IProductGalleryRepository, ProductGalleryRepository>();
         #endregion
 
         #region Services
@@ -30,7 +32,9 @@ public static class DiContainer
         services.AddScoped<IContactUsService, ContactUsService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddSingleton<IAuthorizationHandler, AdminHandler>();
-        
+        services.AddScoped<IFaqService, FaqService>();
+    
+        services.AddScoped<IProductGalleryService, ProductGalleryService>();
         #endregion
         
         services.AddSingleton<HtmlEncoder>(

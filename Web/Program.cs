@@ -1,4 +1,6 @@
 using Application.Security;
+using Application.Services.Impelementation;
+using Application.Services.Interfaces;
 using Infra.Data.Context;
 using IOC.DiContainer;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -8,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient();
+
 builder.Services.IOcContainer();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {

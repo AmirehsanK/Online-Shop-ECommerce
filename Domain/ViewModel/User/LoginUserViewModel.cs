@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Domain.ViewModel.Security;
 
 namespace Domain.ViewModel.User
 {
@@ -16,5 +17,7 @@ namespace Domain.ViewModel.User
         public string Password { get; set; }
         
         public bool RememberMe { get; set; }
+
+       
     }
 }

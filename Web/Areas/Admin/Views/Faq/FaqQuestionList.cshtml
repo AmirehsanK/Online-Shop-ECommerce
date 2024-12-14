@@ -1,0 +1,63 @@
+﻿@using Application.Tools
+@model List<Domain.ViewModel.Faq.Admin.FaqQuestionListViewModel>
+@{
+    ViewData["Title"] = "لیست سوال ها";
+}
+<div class="card">
+    <div class="d-flex justify-content-between me-3">
+        <h5 class="card-header">@ViewData["Title"]</h5>
+
+    </div>
+
+    <div class="table-responsive text-nowrap">
+        @if (Model != null && Model.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th>کد</th>
+                        <th>سوال</th>
+                        <th>جواب</th>
+                        <th>زمان ایجاد</th>
+                        <th>عملیات</th>
+
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @foreach (var question in Model)
+                    {
+
+                        <tr>
+                            <td> <strong>@question.Id</strong></td>
+                            <td>@question.Question</td>
+                            <td>@question.Answer</td>
+                            <td>@question.CreateDate.ToShamsi() @question.CreateDate.ToString("hh:mm:ss")</td>
+
+                            <td>
+
+                                <a asp-controller="Faq" asp-area="Admin" asp-action="DeleteFaqQuestion" asp-route-queestionid="@question.Id" class="btn btn-label-danger">حدف</a>
+                                <a asp-controller="Faq" asp-area="Admin" asp-action="EditFaqQuestion" asp-route-questionId="@question.Id" class="btn btn-label-warning">ویرایش</a>
+                                
+
+                            </td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
+                <div>
+                   سوالی هنوز ثبت نشده است
+                </div>
+                 
+            </div>
+        }
+
+    </div>
+</div>
+

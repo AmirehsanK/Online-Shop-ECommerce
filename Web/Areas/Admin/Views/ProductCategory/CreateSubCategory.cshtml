@@ -1,10 +1,8 @@
-﻿@model Domain.ViewModel.Product.SubCategoryViewModel
+﻿@model Domain.ViewModel.Product.CategoryAdmin.SubCategoryViewModel
 @{
-    ViewData["Title"] = "CreateSubCategory";
+    ViewData["Title"] = "افزودن زیر مجموعه";
 
 }
-
-
 @section Scripts{
     <partial name="_ValidationScriptsPartial"/>
 }
@@ -13,7 +11,7 @@
     <div class="col-xl-6">
         <!-- HTML5 Inputs -->
         <div class="card mb-4">
-            <h5 class="card-header">ایجاد زیر مجموعه</h5>
+            <h5 class="card-header">@ViewData["Title"]</h5>
             <div class="card-body">
                 <div class="mb-3 row">
                     <label asp-for="Title" for="html5-text-input" class="col-md-2 col-form-label"></label>

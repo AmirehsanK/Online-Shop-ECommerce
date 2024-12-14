@@ -1,0 +1,84 @@
+﻿@model Domain.ViewModel.User.Admin.EditUserViewModel
+@{
+    ViewData["Title"] = "اطلاعات شخصی";
+}
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial"/>
+    <script>
+        CKEDITOR.replace('Content', {
+            language: 'fa',
+            contentsLangDirection: 'rtl',
+            font_names: 'Tahoma; IranSans; Arial;'
+        });
+    </script>
+}
+<div class="col-xl-9 col-lg-8 col-md-7">
+    <div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
+        <div>
+            سفارش شما در انتظار پرداخت است. برای جلوگیری از لغو سفارش، لطفا پرداخت را انجام دهید.
+            <a href="#" class="btn btn-sm btn-primary mx-3">سفارش های من</a>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <form asp-area="UserPanel" asp-controller="Home" asp-action="UserInfo">
+        <div class="ui-box bg-white mb-5">
+            <div class="ui-box-title">اطلاعات شخصی</div>
+            <div class="ui-box-content">
+                <div class="row">
+                    <div class="col-lg-6 mb-3">
+                        <div class="border-bottom py-2">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <label asp-for="FirstName"></label>
+
+                            </div>
+                            <input class="fs-6 fw-bold text-muted p-2 w-100" asp-for="FirstName"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="border-bottom py-2">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <label asp-for="LastName"></label>
+
+                            </div>
+                            <input class="fs-6 fw-bold text-muted p-2 w-100" asp-for="LastName"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="border-bottom py-2">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <label asp-for="Email"></label>
+
+                            </div>
+                            <input readonly="readonly" class="fs-6 fw-bold text-muted p-2 w-100" asp-for="Email"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="border-bottom py-2">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <label asp-for="PhoneNumber"></label>
+
+                            </div>
+                            <input class="fs-6 fw-bold text-muted p-2 w-100" asp-for="PhoneNumber"/>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <div class="border-bottom py-2">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <label asp-for="Address" class="label"></label>
+
+                            </div>
+
+                            <textarea asp-for="Address" rows="5" class="fs-6 fw-bold text-muted p-2 w-100" id="Content" placeholder="متن پیام"></textarea>
+                            <span asp-validation-for="Address" class="alert-danger"></span>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" type="submit"> ویرایش</button>
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+

@@ -127,12 +127,12 @@
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user"></i>
-                <div data-i18n="Users">Users</div>
+                <div data-i18n="تماس با ما"></div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="app-user-list.html" class="menu-link">
-                        <div data-i18n="List">List</div>
+                    <a asp-area="Admin" asp-controller="ContactUs" asp-action="MessageList" class="menu-link">
+                        <div data-i18n="لیست پیام ها"></div>
                     </a>
                 </li>
                 <li class="menu-item">
@@ -172,12 +172,12 @@
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-check-shield"></i>
-                <div data-i18n="Roles & Permissions">Roles & Permissions</div>
+                <div data-i18n="سوالات متداول"></div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="app-access-roles.html" class="menu-link">
-                        <div data-i18n="Roles">Roles</div>
+                    <a asp-area="Admin" asp-controller="Faq" asp-action="FaqCategoryList" class="menu-link">
+                        <div data-i18n="دسته بندی ها"></div>
                     </a>
                 </li>
                 <li class="menu-item">

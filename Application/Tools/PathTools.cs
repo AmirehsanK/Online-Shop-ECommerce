@@ -16,6 +16,15 @@ namespace Application.Tools
 
         #endregion
 
+        #region ProductGallery
+
+        public static string ProductGalleryImageServerPath = Path.Join(Directory.GetCurrentDirectory(), "wwwroot/images/product-galleries/main/");
+        public static string ProductGalleryImagePath = "/images/product-galleries/main/";
+        public static string ProductGalleryThumbImageServerPath = Path.Join(Directory.GetCurrentDirectory(), "wwwroot/images/product-galleries/thumb/");
+        public static string ProductGalleryThumbImagePath = "/images/product-galleries/thumb/";
+
+        #endregion
+
     
     }
 }

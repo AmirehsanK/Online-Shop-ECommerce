@@ -41,6 +41,7 @@ namespace Application.Services.Interfaces
         Task DeleteUserAsync(int userid);
 
         Task<UserDetailViewModel> GetUserDetailAsync(int userid);
+        Task<User> GetUserById(int userid);
 
     }
 }

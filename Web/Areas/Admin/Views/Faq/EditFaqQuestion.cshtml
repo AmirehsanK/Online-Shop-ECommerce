@@ -1,0 +1,46 @@
+﻿@using Domain.Entities.Faq
+@model Domain.ViewModel.Faq.Admin.EditFaqQuestionViewModel
+@{
+    ViewData["Title"] = "ویرایش سوال";
+    var categorie = ViewData["Categories"] as List<FaqCategory>;
+}
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
+<div class="col-xl">
+    <div class="card mb-4">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Basic Layout</h5>
+            <small class="text-muted float-end">Default label</small>
+        </div>
+        <div class="card-body">
+            <form asp-area="Admin" asp-controller="Faq" asp-action="EditFaqQuestion" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="mb-3">
+                    <label asp-for="Question" class="form-label" for="basic-default-fullname"> </label>
+                    <input asp-for="Question" type="text" class="form-control" id="basic-default-fullname" placeholder="John Doe">
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Answer" class="form-label" for="basic-default-company">Company</label>
+                    <input asp-for="Answer" type="text" class="form-control" id="basic-default-company" placeholder="ACME Inc.">
+                </div>
+                <div class="mb-3">
+                    <label> انتخاب دسته بندی</label>
+                    <select asp-for="CategoryId" id="multicol-country" class="select2 form-select select2-hidden-accessible" data-allow-clear="true" data-select2-id="multicol-country" tabindex="-1" aria-hidden="true">
+                        @foreach (var item in categorie)
+                        {
+                            <option value="@item.Id" data-select2-id="2">@item.Title</option>
+                        }
+
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">ثبت</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

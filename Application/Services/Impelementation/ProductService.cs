@@ -3,7 +3,7 @@
 using Application.Services.Interfaces;
 using Domain.Entities.Product;
 using Domain.Interface;
-using Domain.ViewModel.Product;
+using Domain.ViewModel.Product.CategoryAdmin;
 
 namespace Application.Services.Impelementation
 {
@@ -62,6 +62,49 @@ namespace Application.Services.Impelementation
             };
             await _productRepository.AddCategoryAsync(subCategory);
             await _productRepository.SaveChangeAsync();
+        }
+
+        public async Task<EditBaseCategoryViewModel> GetBaseCategoryForEdit(int categoryid)
+        {
+            var category = await _productRepository.GetBaseCategory(categoryid);
+            var viewmodel = new EditBaseCategoryViewModel()
+            {
+                CategoryId = category.Id,
+                CategoryTitle = category.Title
+            };
+            return viewmodel;
+        }
+
+        public async Task EditBaseCategory(EditBaseCategoryViewModel model)
+        {
+            var category = await _productRepository.GetBaseCategory(model.CategoryId);
+            category.Title = model.CategoryTitle;
+            _productRepository.UpdateCategoryAsync(category);
+            await _productRepository.SaveChangeAsync();
+        }
+
+        public async Task DeleteBaseCategory(int categoryid)
+        {
+           var mainCategory= await _productRepository.GetBaseCategory(categoryid);
+           mainCategory.IsDeleted = true;
+           var SubCategory = await _productRepository.GetSubCategory(categoryid);
+           if (SubCategory!=null)
+           {
+               foreach (var item in SubCategory)
+               {
+                   item.IsDeleted = true;
+                   
+               }
+               _productRepository.UpdateCategoryList(SubCategory);
+           }
+        
+           _productRepository.UpdateCategoryAsync(mainCategory);
+   
+            await _productRepository.SaveChangeAsync();
+
+
+
+
         }
     }
 }

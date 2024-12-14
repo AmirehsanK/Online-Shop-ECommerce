@@ -1,6 +1,4 @@
-﻿
-
-namespace Domain.ViewModel.Product
+﻿namespace Domain.ViewModel.Product.CategoryAdmin
 {
     public class CategoryListViewModel
     {

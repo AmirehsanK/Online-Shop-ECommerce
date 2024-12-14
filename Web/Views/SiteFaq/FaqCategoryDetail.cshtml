@@ -1,0 +1,83 @@
+﻿@model Domain.ViewModel.Faq.Site.GetFaqCategoryAndChildViewModel
+@{
+    ViewData["Title"] = "سوالات متداول";
+}
+@section Scripts
+{
+    <script>
+        document.querySelectorAll('.accordion-button').forEach(button => {
+        button.addEventListener('click', function () {
+        const targetId = this.getAttribute('data-bs-target');
+        const targetElement = document.querySelector(targetId);
+
+        // بررسی وضعیت آیتم (آیا باز است یا بسته)
+        const isOpen = targetElement.classList.contains('show');
+
+        // بستن تمامی آیتم‌ها
+        document.querySelectorAll('.accordion-collapse').forEach(item => {
+        item.classList.remove('show');
+        });
+
+        // اگر آیتم انتخاب‌شده بسته بود، آن را باز کن
+        if (!isOpen) {
+        targetElement.classList.add('show');
+        }
+        });
+        })
+    </script>
+
+}
+
+<main class="page-content">
+    <div class="container">
+        <!-- start of box => faqs -->
+        <div class="ui-box bg-white">
+            <div class="ui-box-content">
+                <div class="fs-4 fw-bold text-center mb-4">پاسخ پرسش های پرتکرار</div>
+                <div class="row mb-3">
+                    <div class="col-lg-6 mx-auto">
+                        <!-- start of search-in-questions -->
+                        <form action="#" class="search-in-questions">
+                            <!-- start of form-element -->
+                            <div class="form-element-row with-btn">
+                                <input type="text" class="form-control w-100" placeholder="پرسش خود را جستجو کنید">
+                                <button class="btn btn-primary">جستجو</button>
+                            </div>
+                            <!-- end of form-element -->
+                        </form>
+                        <!-- end of search-in-questions -->
+                    </div>
+                </div>
+                <input type="hidden" asp-for="Id" />
+                <h5 class="mb-5">@Model.Title</h5>
+                <!-- start of accordion -->
+                <div class="accordion" id="accordionExample">
+                    <!-- start of accordion-item -->
+                    @foreach (var item in Model.ChildCategories)
+                    {
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading-@item.Id">
+                                <button class="accordion-button " type="button" data-bs-target="#collapse-@item.Id" aria-expanded="false" aria-controls="collapse-@item.Id">
+                                    @item.Question
+                                </button>
+                            </h2>
+                            <div id="collapse-@item.Id" class="accordion-collapse collapse" aria-labelledby="heading-@item.Id" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p>
+                                        @item.Description
+                                    </p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <!-- end of accordion-item -->
+                </div>
+                <!-- end of accordion -->
+            </div>
+        </div>
+        <!-- end of box => faqs -->
+    </div>
+</main>
+
+
