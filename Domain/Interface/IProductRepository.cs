@@ -16,5 +16,11 @@ namespace Domain.Interface
         Task SaveChangeAsync();
 
         Task<List<ProductCategory>> GetAllCategory(int? parentid=null);
+
+        Task<ProductCategory> GetBaseCategory(int CategoryId);
+
+        Task<List<ProductCategory>> GetSubCategory(int CategoryId);
+
+        void UpdateCategoryList(List<ProductCategory> model);
     }
 }

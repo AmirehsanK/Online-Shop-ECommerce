@@ -35,5 +35,12 @@ namespace Domain.ViewModel.User.Admin
         public bool IsAdmin { get; set; }
         [Display(Name = "فعال است")]
         public bool IsEmailActive { get; set; }
+
+        [Display(Name = "ادرس")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public string Address { get; set; }
+
+        [MaxLength(11)]
+        public string PhoneNumber { get; set; }
     }
 }

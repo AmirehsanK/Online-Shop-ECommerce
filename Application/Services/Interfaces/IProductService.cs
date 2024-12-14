@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Product;
-using Domain.ViewModel.Product;
+using Domain.ViewModel.Product.CategoryAdmin;
 
 namespace Application.Services.Interfaces
 {
@@ -15,6 +15,13 @@ namespace Application.Services.Interfaces
         Task<List<CategoryListViewModel>> GetAllCategories(int? parentid);
 
         Task AddSubCategory(SubCategoryViewModel model);
+
+        Task<EditBaseCategoryViewModel> GetBaseCategoryForEdit(int categoryid);
+
+
+        Task EditBaseCategory(EditBaseCategoryViewModel model);
+
+        Task DeleteBaseCategory(int categoryid);
 
 
     }

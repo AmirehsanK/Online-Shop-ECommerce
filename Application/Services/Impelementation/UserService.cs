@@ -151,6 +151,7 @@ namespace Application.Services.Impelementation
                 IsDeleted = false,
                 CreateDate = DateTime.UtcNow,
                 EmailActiveCode = Guid.NewGuid().ToString("N")
+
             };
             var domainLink = "https://localhost:7271";
             string mailbody = $"<a href=\"{domainLink}/EmailActive/{user.EmailActiveCode}\"> فعالسازی حساب کاربری </a>";
@@ -172,6 +173,8 @@ namespace Application.Services.Impelementation
             user.Email = model.Email;
             user.IsAdmin= model.IsAdmin;
             user.IsEmailActive= model.IsEmailActive;
+            user.Address = model.Address;
+            user.Address=model.Address;
             user.Password = !string.IsNullOrEmpty(model.Password?.Trim())
                 ? PasswordHasher.HashPassword(model.Password) : user.Password;
             _userRepository.UpdateUser(user);
@@ -191,6 +194,8 @@ namespace Application.Services.Impelementation
                 IsEmailActive = user.IsEmailActive,
                 Password = user.Password,
                 Id = userid,
+                Address = user.Address,
+                PhoneNumber = user.PhoneNumber,
 
             };
             return edit;
@@ -273,6 +278,11 @@ namespace Application.Services.Impelementation
                 IsActive = user.IsEmailActive
             };
             return Detail;
+        }
+
+        public async Task<User> GetUserById(int userid)
+        {
+            return await _userRepository.GetUserByIdAsync(userid);
         }
     }
 }

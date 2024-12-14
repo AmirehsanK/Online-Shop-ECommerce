@@ -1,0 +1,62 @@
+﻿@using Application.Tools
+@model List<Domain.ViewModel.Faq.Admin.GetAllFaqCategoryViewModel>
+@{
+    ViewData["Title"] = "دسته بندی سوالات متداول";
+}
+
+<div class="card">
+    <div class="d-flex justify-content-between me-3">
+        <h5 class="card-header">@ViewData["Title"]</h5>
+        <a asp-controller="Faq" asp-area="Admin" asp-action="AddFaqCategory" class="btn btn-label-success"> افزودن دسته بندی</a>
+    </div>
+
+    <div class="table-responsive text-nowrap">
+        @if (Model != null && Model.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th>کد</th>
+                        <th>عنوان</th>
+                        <th>زمان ایجاد</th>
+                        <th>عملیات</th>
+
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @foreach (var category in Model)
+                    {
+
+                        <tr>
+                            <td> <strong>@category.Id</strong></td>
+                            <td>@category.Title</td>
+                            <td>@category.CreateDate.ToShamsi() @category.CreateDate.ToString("hh:mm:ss")</td>
+
+                            <td>
+
+                                <a asp-controller="Faq" asp-area="Admin" asp-action="CreateFaqQuestion" class="btn btn-label-success">افزودن سوال </a>
+                                <a asp-controller="Faq" asp-area="Admin" asp-action="DeleteFaqCategory" asp-route-categoryid="@category.Id" class="btn btn-label-danger">حدف دسته بندی و سوال ها</a>
+                                <a asp-controller="Faq" asp-area="Admin" asp-action="EditFaqCategory" asp-route-categoryid="@category.Id" class="btn btn-label-warning">ویرایش دسته بندی</a>
+                                <a asp-controller="Faq" asp-area="Admin" asp-action="FaqQuestionList" asp-route-categoryid="@category.Id" class="btn btn-label-info">سوال های مربوطه</a>
+                     
+                            </td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
+                <div>
+                    دسته بندی وجود ندارد
+                </div>
+                 
+            </div>
+        }
+
+    </div>
+</div>

@@ -1,6 +1,7 @@
 ﻿using Domain.Entities.Account;
 using Domain.Entities.ContactUs;
 using Domain.Entities.Images;
+using Domain.Entities.Faq;
 using Domain.Entities.Product;
 using Domain.Entities.Ticket;
 using Infra.Data.Configurations;
@@ -90,6 +91,18 @@ public class ApplicationDbContext : DbContext
     #region Images
 
 
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<ProductGallery> ProductGalleries { get; set; }
+
+
+        #endregion
+
+        #region faq
+
+        public DbSet<FaqCategory> FaqCategories { get; set; }
+
+        public DbSet<FaqQuestion> FaqQuestions { get; set; }
 
     #endregion
 }

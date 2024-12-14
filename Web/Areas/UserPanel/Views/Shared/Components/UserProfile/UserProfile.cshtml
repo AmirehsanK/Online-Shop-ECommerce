@@ -1,4 +1,9 @@
-﻿<div class="ui-sticky ui-sticky-top">
+﻿@using Domain.Entities.Account
+@{
+    var user = ViewData["User"] as User;
+}
+
+<div class="ui-sticky ui-sticky-top">
 
 
     <div class="profile-user-info py-3 ui-box bg-white">
@@ -9,8 +14,7 @@
                 </div>
                 <div class="profile-info">
                     <a href="#" class="text-decoration-none text-dark fw-bold mb-2">
-                        جلال بهرامی
-                        راد
+                       @user.FirstName @user.LastName
                     </a>
                     <div class="text-muted fs-7 fw-bold">۰۹xxxxxxxxx</div>
                 </div>
@@ -93,13 +97,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" asp-area="UserPanel" asp-controller="Home" asp-action="UserInfo">
                     <i class="nav-link-icon ri-user-line"></i> اطلاعات
                     حساب
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" asp-controller="UserAuthentication" asp-area="" asp-action="LogOut">
                     <i class="nav-link-icon ri-logout-box-r-line"></i>
                     خروج
                 </a>

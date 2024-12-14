@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Domain.ViewModel.Security;
 
 namespace Domain.ViewModel.User
 {

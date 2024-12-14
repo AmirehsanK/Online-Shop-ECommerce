@@ -1,0 +1,59 @@
+﻿@using Application.Tools
+@using Domain.Entities.Product
+@using Domain.ViewModel.Product.ProductGallery
+@model ShowProductGalleryViewModel
+@{
+    ViewData["Title"] = "گالری محصول";
+    var Gallery = ViewData["Gallery"] as List<ProductGallery>;
+}
+@section Style
+{
+    <style>
+        div.gallery {
+            margin: 5px;
+            border: 1px solid #ccc;
+            float: left;
+            width: 180px;
+        }
+
+        div.gallery:hover {
+            border: 1px solid #777;
+        }
+
+        div.gallery img {
+            width: 100%;
+            height: auto;
+        }
+
+        div.desc {
+            padding: 15px;
+            text-align: center;
+        }
+    </style>
+}
+
+<form asp-area="Admin" asp-action="ShowProductGallery" asp-controller="Product" enctype="multipart/form-data">
+    <div class="container mt-5">
+        <input  asp-for="Gallery" />
+        <button type="submit" asp-action="ShowProductGallery" class="btn btn-success">افزودن عکس</button>
+        @if (Gallery != null && Gallery.Any())
+        {
+            @foreach (var item in Gallery)
+            {
+                <div class="gallery">
+                    <a target="_blank" href="img_5terre.jpg">
+                        <img src="/images/product-galleries/main/1b1ef6e414564b1c9b348a684c93d92b.jpg" alt="Cinque Terre" width="600" height="400">
+                    </a>
+                    
+                </div>
+            }
+         
+        }
+        else
+        {
+            <p> nothing</p>
+        }
+     
+    </div>
+
+</form>

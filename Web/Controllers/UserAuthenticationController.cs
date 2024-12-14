@@ -14,6 +14,19 @@ namespace Web.Controllers;
 
 public class UserAuthenticationController : SiteBaseController
 {
+    #region ctor
+
+    private readonly IUserService _userService;
+    private readonly IConfiguration _configuration;
+
+    public UserAuthenticationController(IUserService userService, IConfiguration configuration)
+    {
+        _userService = userService;
+        _configuration = configuration;
+    }
+
+    #endregion
+
     #region ForgotPassword
 
     [HttpGet("ForgotPassword")]
@@ -74,6 +87,7 @@ public class UserAuthenticationController : SiteBaseController
         return RedirectToAction("Login");
     }
     #endregion
+
     #region Logout
 
     public async Task<IActionResult> LogOut()
@@ -84,18 +98,7 @@ public class UserAuthenticationController : SiteBaseController
 
     #endregion
 
-    #region ctor
 
-    private readonly IUserService _userService;
-    private readonly IConfiguration _configuration;
-
-    public UserAuthenticationController(IUserService userService, IConfiguration configuration)
-    {
-        _userService = userService;
-        _configuration = configuration;
-    }
-
-    #endregion
 
     #region Login
 
@@ -126,7 +129,9 @@ public class UserAuthenticationController : SiteBaseController
         }
 
         #endregion
-
+        
+     
+  
         var result = await _userService.LoginUserAsync(login);
         switch (result)
         {
