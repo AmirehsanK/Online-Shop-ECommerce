@@ -14,6 +14,17 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> AddProduct()
         {
+            //var model = new ProductViewModel
+            //{
+            //    Categories = await _productService.GetAllCategories(null)
+            //        .Select(c => new SelectListItem
+            //        {
+            //            Value = c.CategoryId.ToString(),
+            //            Text = c.Title
+            //        }).ToListAsync()
+            //};
+
+            //return View(model);
             return View();
         }
         [HttpGet]

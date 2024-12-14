@@ -51,7 +51,8 @@ namespace Application.Security
                 if (postedFile.ContentType.ToLower() != "image/jpg" &&
                             postedFile.ContentType.ToLower() != "image/jpeg" &&
                             postedFile.ContentType.ToLower() != "image/x-png" &&
-                            postedFile.ContentType.ToLower() != "image/png")
+                            postedFile.ContentType.ToLower() != "image/png"&&
+                            postedFile.ContentType.ToLower() != "image/gif")
                 {
                     return false;
                 }
