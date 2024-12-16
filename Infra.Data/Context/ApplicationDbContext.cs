@@ -35,7 +35,7 @@ public class ApplicationDbContext : DbContext
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new ContactMessageConfiguration());
-
+        #region Subject
         modelBuilder.Entity<Subject>().HasData(
             new Subject { Id = 1, Name = "پیشنهاد" },
             new Subject { Id = 2, Name = "شکایت" },
@@ -47,7 +47,30 @@ public class ApplicationDbContext : DbContext
             new Subject { Id = 8, Name = "موضوعات" }
 
         );
-        
+        #endregion
+        #region Category
+        modelBuilder.Entity<ProductCategory>().HasData(
+            new ProductCategory { Id = 1, Title = "مد و پوشاک", ParentId = null },
+            new ProductCategory { Id = 2, Title = "لباس مردانه", ParentId = 1 },
+            new ProductCategory { Id = 3, Title = "لباس زنانه", ParentId = 1 },
+            new ProductCategory { Id = 4, Title = "لباس بچگانه", ParentId = 1 },
+            new ProductCategory { Id = 5, Title = "کالای دیجیتال", ParentId = null },
+            new ProductCategory { Id = 6, Title = "موبایل و تبلت", ParentId = 5 },
+            new ProductCategory { Id = 7, Title = "لپ‌تاپ", ParentId = 5 },
+            new ProductCategory { Id = 8, Title = "لوازم جانبی", ParentId = 5 },
+            new ProductCategory { Id = 9, Title = "خانه و آشپزخانه", ParentId = null },
+            new ProductCategory { Id = 10, Title = "لوازم آشپزخانه", ParentId = 9 },
+            new ProductCategory { Id = 11, Title = "دکوراسیون", ParentId = 9 },
+            new ProductCategory { Id = 12, Title = "ابزار و وسایل", ParentId = 9 },
+            new ProductCategory { Id = 13, Title = "زیبایی و سلامت", ParentId = null },
+            new ProductCategory { Id = 14, Title = "محصولات مراقبتی", ParentId = 13 },
+            new ProductCategory { Id = 15, Title = "عطر و ادکلن", ParentId = 13 },
+            new ProductCategory { Id = 16, Title = "لوازم آرایشی", ParentId = 13 },
+            new ProductCategory { Id = 17, Title = "ورزش و سفر", ParentId = null },
+            new ProductCategory { Id = 18, Title = "تجهیزات ورزشی", ParentId = 17 },
+            new ProductCategory { Id = 19, Title = "کیف و کوله", ParentId = 17 },
+            new ProductCategory { Id = 20, Title = "لوازم کمپینگ", ParentId = 17 });
+        #endregion
     }
 
     #region Ticket

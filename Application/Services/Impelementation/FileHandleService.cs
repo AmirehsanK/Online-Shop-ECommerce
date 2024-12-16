@@ -101,6 +101,7 @@ public class FileHandleService : IFileHandleService
             CreateDate = f.CreateDate,
             Title = f.Title,
             Link = f.Link
+            ,Position=f.Position
         });
     }
 
