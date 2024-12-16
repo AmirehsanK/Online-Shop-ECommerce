@@ -1,0 +1,56 @@
+﻿@using Application.Tools
+@model List<Domain.ViewModel.Product.ProductColor.ColorListViewModel>
+@{
+    ViewData["Title"] = "لیست رنگ های موجود";
+}
+<div class="card">
+
+    <div class="d-flex justify-content-between me-3">
+        <h5 class="card-header">@ViewData["Title"]</h5>
+        
+            <a asp-controller="ProductColor" asp-area="Admin" asp-action="CreateColor"
+               class="btn btn-label-success">افزودن رنگ جدید</a>
+        
+
+    </div>
+    <div class="table-responsive text-nowrap">
+        @if (Model != null && Model.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>کد</th>
+                        <th>عنوان رنگ</th>
+                        <th>کد رنگ</th>
+                        <th>تاریخ ایجاد</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @foreach (var color in Model)
+                    {
+                        <tr>
+                            <td><strong>@color.Id</strong></td>
+                            <td>@color.Title</td>
+                            <td>
+                                @color.ColorCode
+                            </td>
+                            <td><span class="badge bg-label-success me-1">@color.CreateDate.ToShamsi() @color.CreateDate.ToString("hh:mm:ss")</span></td>
+                            <td>
+
+                                <a asp-controller="ProductColor" asp-area="Admin" asp-action="DeleteColor" asp-route-colorId="@color.Id"
+                                   class="btn btn-label-danger">حدف</a>
+
+                            </td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        }
+
+    </div>
+</div>
+
+

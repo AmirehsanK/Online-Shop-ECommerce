@@ -26,6 +26,10 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<ProductCategory> ProductCategories { get; set; }
 
+    public DbSet<Color> Colors { get; set; }
+
+    public DbSet<ProductColor> ProductColors { get; set; }
+
     #endregion
 
     //For Conflict relation
@@ -48,6 +52,7 @@ public class ApplicationDbContext : DbContext
 
         );
         #endregion
+
         #region Category
         modelBuilder.Entity<ProductCategory>().HasData(
             new ProductCategory { Id = 1, Title = "مد و پوشاک", ParentId = null },

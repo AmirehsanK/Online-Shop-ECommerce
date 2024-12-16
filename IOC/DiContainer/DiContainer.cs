@@ -26,6 +26,7 @@ public static class DiContainer
         services.AddScoped<IFaqRepository,FaqRepository>();
         services.AddScoped<IProductGalleryRepository, ProductGalleryRepository>();
         services.AddScoped<INotificationRepository, NotificationRepository>();
+        services.AddScoped<IProductColorRepository, ProductColorRepository>();
         #endregion
 
         #region Services
@@ -40,6 +41,7 @@ public static class DiContainer
         services.AddScoped<IFaqService, FaqService>();
     
         services.AddScoped<IProductGalleryService, ProductGalleryService>();
+        services.AddScoped<IProductColorService, ProductColorService>();
         #endregion
 
         services.AddSingleton<HtmlEncoder>(

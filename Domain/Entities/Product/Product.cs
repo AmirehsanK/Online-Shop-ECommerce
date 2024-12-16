@@ -33,6 +33,9 @@ namespace Domain.Entities.Product
 
         public ICollection<ProductGallery> ProductGalleries { get; set; }
 
+        public ICollection<ProductColor> ProductColors { get; set; }
+
+
         #endregion
     }
 }
