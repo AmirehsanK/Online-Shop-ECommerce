@@ -74,7 +74,7 @@ namespace Infra.Data.Repositories
 
         public async Task<List<Product>> GetProductsAsync()
         {
-            return await _context.Product.ToListAsync();
+            return await _context.Product.Include(p => p.Category).ToListAsync();
         }
 
         public async Task<Product> GetProductById(int ProductId)

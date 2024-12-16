@@ -1,38 +1,9 @@
-﻿@model Domain.ViewModel.Product.Product.ProductViewModel
+﻿@using Application.Tools
+@model IEnumerable<Domain.ViewModel.Product.Product.ProductViewModel>
 
 <h2>مدیریت محصولات</h2>
 
-<div class="form-group">
-    <label for="SubCategory">انتخاب زیر دسته‌بندی</label>
-    <select id="SubCategory" name="SubCategoryId" class="form-control">
-        <option value="">انتخاب زیر دسته‌بندی</option>
-        @foreach (var subCategory in Model.SubCategories)
-        {
-            <option value="@subCategory.CategoryId">@subCategory.Title</option>
-        }
-    </select>
-</div>
-
-<div class="form-group">
-    <button id="LoadAllProducts" class="btn btn-primary">بارگذاری تمام محصولات</button>
-</div>
-
-<table class="table table-bordered mt-4" id="ProductsTable">
-    <thead>
-        <tr>
-            <th>نام محصول</th>
-            <th>تصویر</th>
-            <th>دسته‌بندی</th>
-            <th>قیمت</th>
-            <th>موجودی</th>
-            <th>جزئیات</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Products will be dynamically loaded here -->
-    </tbody>
-</table>
-@if (Model.ProductName != null && Model.ProductName.Any())
+@if (Model.Count() != 0 && Model.Any())
 {
     <table class="table table-bordered mt-4">
         <thead>
@@ -46,21 +17,21 @@
             </tr>
         </thead>
         <tbody>
-           @* @foreach (var product in Model.Products)
+           @foreach (var product in Model)
             {
                 <tr>
-                    <td>@product.Name</td>
+                    <td>@product.ProductName</td>
                     <td>
-                        <img src="@Url.Content($"~/images/products/{product.Image}")" alt="@product.Name" style="width: 50px; height: 50px;" />
+                        <img src="@PathTools.FilePath@product.ImageName" alt="@product.ProductName" style="width: 75px; height: 75px;" />
                     </td>
-                    <td>@product.CategoryTitle</td>
+                    <td>@product.SubCategoryTitle</td>
                     <td>@product.Price</td>
                     <td>@product.Inventory</td>
                     <td>
                         <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-info btn-sm">مشاهده جزئیات</a>
                     </td>
                 </tr>
-            }*@
+            }
         </tbody>
     </table>
 }

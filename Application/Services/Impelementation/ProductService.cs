@@ -135,10 +135,12 @@ namespace Application.Services.Impelementation
         public async Task<List<ProductViewModel>> GetAllProductsAsync()
         {
             var products = await _productRepository.GetProductsAsync();
+
             return products
                 .Where(p => !p.IsDeleted)
                 .Select(p => new ProductViewModel
                 {
+                    Id = p.Id,
                     ProductName = p.ProductName,
                     ShortDescription = p.ShortDescription,
                     Review = p.Review,
@@ -146,9 +148,9 @@ namespace Application.Services.Impelementation
                     ImageName = p.ImageName,
                     Price = p.Price,
                     Inventory = p.Inventory,
-                    CategoryId = p.CategoryId,
-                    ProductGalleries = p.ProductGalleries,
-                    IsDeleted = p.IsDeleted,
+                    SubCategoryId = p.CategoryId, 
+                    SubCategoryTitle=p.Category.Title,
+                    ProductGalleries = p.ProductGalleries
                 })
                 .ToList();
         }
@@ -167,7 +169,7 @@ namespace Application.Services.Impelementation
                 ImageName = product.ImageName,
                 Price = product.Price,
                 Inventory = product.Inventory,
-                CategoryId = product.CategoryId,
+                SubCategoryId = product.CategoryId,
                 ProductGalleries = product.ProductGalleries
                 , IsDeleted = product.IsDeleted
             };
@@ -183,7 +185,7 @@ namespace Application.Services.Impelementation
                 ShortDescription = model.ShortDescription,
                 Review = model.Review,
                 ExpertReview = model.ExpertReview,
-                ImageName = model.ImageName,
+                ImageName = imageName,
                 Price = model.Price,
                 CategoryId = model.SubCategoryId
                 ,IsDeleted=false,

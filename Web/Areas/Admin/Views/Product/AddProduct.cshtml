@@ -4,38 +4,33 @@
 
 <form asp-action="AddProduct" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="ProductName">عنوان</label>
-        <input type="text" id="ProductName" name="ProductName" class="form-control" required />
+        <label asp-for="ProductName">عنوان</label>
+        <input asp-for="ProductName" type="text" class="form-control" required />
     </div>
 
     <div class="form-group">
-        <label for="Image">تصویر</label>
-        <input type="file" id="Image" name="Image" class="form-control" accept="image/*" required />
+        <label asp-for="Image">تصویر</label>
+        <input type="file" asp-for="Image" class="form-control" accept="image/*" required />
     </div>
 
     <div class="form-group">
-        <label for="ShortDescription">توضیح کوتاه</label>
-        <textarea id="ShortDescription" name="ShortDescription" class="form-control" rows="3" required></textarea>
+        <label asp-for="ShortDescription">توضیح کوتاه</label>
+        <textarea  asp-for="ShortDescription" class="form-control" rows="3" required></textarea>
     </div>
 
     <div class="form-group">
-        <label for="Price">قیمت</label>
-        <input type="number" id="Price" name="Price" class="form-control" step="0.01" required />
+        <label asp-for="Price">قیمت</label>
+        <input type="number" asp-for="Price" class="form-control" step="0.01" required />
     </div>
 
     <div class="form-group">
-        <label for="Inventory">تعداد</label>
-        <input type="number" id="Inventory" name="Inventory" class="form-control" required />
+        <label asp-for="Review">نقد و بررسی</label>
+        <textarea asp-for="Review" name="Review" id="ReviewCk" class="form-control" rows="5"></textarea>
     </div>
 
     <div class="form-group">
-        <label for="Review">نقد و بررسی</label>
-        <textarea  name="Review" id="ReviewCk" class="form-control" rows="5"></textarea>
-    </div>
-
-    <div class="form-group">
-        <label for="ExpertReview">بررسی تخصصی</label>
-        <textarea id="ExpertReviewCk" name="ExpertReview" class="form-control" rows="5"></textarea>
+        <label asp-for="ExpertReview">بررسی تخصصی</label>
+        <textarea asp-for="ExpertReview" id="ExpertReviewCk" name="ExpertReview" class="form-control" rows="5"></textarea>
     </div>
 
     <div class="form-group">
@@ -68,6 +63,5 @@
             contentsLangDirection: 'rtl',
             font_names: 'Tahoma; IranSans; Arial;'
         });
-    </script>
     </script>
 }

@@ -14,20 +14,15 @@ namespace Domain.ViewModel.Product.Product
         [MaxLength(200)]
         public string ProductName { get; set; }
 
-        [MaxLength(200)]
         public string ShortDescription { get; set; }
 
-        public string Review { get; set; }
+        public string? Review { get; set; }
 
-        public string ExpertReview { get; set; }
-
-        [MaxLength(200)]
-        public string ImageName { get; set; }
+        public string? ExpertReview { get; set; }
 
         public IFormFile Image { get; set; }
 
-        [MaxLength(200)]
-        public int Price { get; set; }
+        public int Price { get; set; } = 0;
 
         public int SubCategoryId {  get; set; }
 

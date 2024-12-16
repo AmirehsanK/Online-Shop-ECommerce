@@ -8,7 +8,6 @@ namespace Domain.Entities.Product
     public class ProductCategory:BaseEntity
     {
         public int?  ParentId { get; set; }
-        //public int ProductId { get; set; }
 
         public string Title { get; set; }
 
@@ -18,6 +17,9 @@ namespace Domain.Entities.Product
         public ProductCategory Parent { get; set; }
 
         public ICollection<ProductCategory> Children { get; set; }
+
+        public ICollection<Product> Products { get; set; }
+
 
         #endregion
 

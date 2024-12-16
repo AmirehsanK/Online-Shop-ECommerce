@@ -36,6 +36,7 @@ namespace Web.Areas.Admin.Controllers
                 .Select(c => new CategoryListViewModel
                    {
                       Title = c.Title
+                      ,CategoryId=c.CategoryId
                     })
                     .ToList(), 
             };
@@ -46,8 +47,9 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProduct(AddProductViewModel model, IFormFile Image)
         {
-            if (!ModelState.IsValid)
+            if (model.ProductName == null || model.ShortDescription==null)
             {
+
                 var categories = await _productService.GetAllCategories(null);
                 model = new AddProductViewModel
                 {
@@ -59,7 +61,7 @@ namespace Web.Areas.Admin.Controllers
                     })
                         .ToList(),
                 };
-
+                TempData[ErrorMessage] = "اضافه کردن محصول با مشکل مواجه شد";
                 return View(model);
             }
 
@@ -79,7 +81,12 @@ namespace Web.Areas.Admin.Controllers
             var products = await _productService.GetAllProductsAsync();
             return View(products);
         }
-
+        [HttpGet]
+        public async Task<IActionResult> ProductDetails(int productid)
+        {
+            var product=await _productService.GetProductByIdAsync(productid);
+            return View(product);
+        }
         #endregion
 
         #region ShowProductGallery
