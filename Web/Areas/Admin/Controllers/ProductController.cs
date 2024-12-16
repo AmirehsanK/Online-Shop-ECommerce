@@ -23,22 +23,27 @@ namespace Web.Areas.Admin.Controllers
         #region ShowProductGallery
 
         [HttpGet]
-        //public async Task<IActionResult> AddProduct()
+       
         public async Task<IActionResult> ShowProductGallery(int id = 5)
         {
-
             ViewData["Gallery"] = await _galleryService.GetGalleryListAsync(id);
-
             return View();
         }
+
         [HttpGet]
-        //public async Task<IActionResult> GetCategories()
+        public async Task<IActionResult> RemoveProductGallery(int galleryid)
+        {
+            await _galleryService.RemoveProductGallery(galleryid);
+            return RedirectToRefererUrl();
+
+        }
+
+
 
         [HttpPost]
         public async Task<IActionResult> ShowProductGallery(ShowProductGalleryViewModel model)
         {
-            //var categories = await _productService.GetAllCategories(null); 
-            //return Json(categories.Select(c => new { c.CategoryId, c.Title }));
+            
 
             model.ProductId = 5;
             #region Validation
@@ -62,7 +67,7 @@ namespace Web.Areas.Admin.Controllers
         }
         #endregion
 
-
+        
 
 
 

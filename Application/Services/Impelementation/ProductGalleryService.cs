@@ -55,5 +55,13 @@ namespace Application.Services.Impelementation
 
             }
         }
+
+        public async Task RemoveProductGallery(int galleryid)
+        {
+            var photo = await _productGalleryRepository.GetOneGalleryWithIdAsync(galleryid);
+            photo.Image.DeleteImage(PathTools.ProductGalleryImageServerPath, PathTools.ProductGalleryThumbImageServerPath);
+             _productGalleryRepository.RemoveProductGallery(photo);
+             await _productGalleryRepository.SaveChangeAsync();
+        }
     }
 }

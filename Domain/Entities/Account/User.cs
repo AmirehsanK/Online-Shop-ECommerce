@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Domain.Entities.Common;
+using Domain.Entities.Notification;
 using Domain.Entities.Ticket;
 
 namespace Domain.Entities.Account;
@@ -33,6 +34,8 @@ public class User : BaseEntity
     public ICollection<Ticket.Ticket> Ticket { get; set; }
 
     public ICollection<TicketsMessage> TicketsMessage { get; set; }
+
+    public ICollection<UserNotification> UserNotification { get; set; }
 
 
     #endregion

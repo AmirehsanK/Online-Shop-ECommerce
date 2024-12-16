@@ -35,5 +35,16 @@ namespace Infra.Data.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<ProductGallery> GetOneGalleryWithIdAsync(int id)
+        {
+            return await _context.ProductGalleries.FindAsync(id);
+
+        }
+
+        public void RemoveProductGallery(ProductGallery gallery)
+        {
+             _context.ProductGalleries.Remove(gallery);
+        }
     }
 }

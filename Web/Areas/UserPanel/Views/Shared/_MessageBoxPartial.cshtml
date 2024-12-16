@@ -1,0 +1,48 @@
+@if (TempData["Error"] != null)
+{
+    var message = TempData["Error"];
+    <script>
+        $(() => {
+            Swal.fire({
+                icon: 'warning',
+                title: 'اخطار',
+                text: '@message'
+            });
+        })
+    
+    </script>
+}
+else if (TempData["Success"] != null)
+{
+    var message = TempData["Success"];
+    <script>
+        
+        
+       document.addEventListener("DOMContentLoaded", () => {
+           Swal.fire({
+               icon: 'success',
+               title: 'اعلان',
+               text:'@message'
+
+           });
+       })
+    
+    </script>
+}
+else if (TempData["Warning"] != null)
+{
+    var message = TempData["Warning"];
+    <script>
+        
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            Swal.fire({
+                icon: 'warning',
+                title: 'اعلان',
+                html:'<b>@message</b>'
+
+            });
+        })
+    
+    </script>
+}

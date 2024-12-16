@@ -11,5 +11,7 @@ namespace Application.Services.Interfaces
         Task<List<ProductGallery>> GetGalleryListAsync(int productid);
 
         Task AddProductGalleries(ShowProductGalleryViewModel galleries);
+
+        Task RemoveProductGallery(int galleryid);
     }
 }

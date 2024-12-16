@@ -8,11 +8,18 @@
 {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        CKEDITOR.replace('Content', {
-            language: 'fa',
-            contentsLangDirection: 'rtl',
-            font_names: 'Tahoma; IranSans; Arial;'
-        });
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                // تنظیمات اضافی
+            })
+            .then(editor => {
+                // تغییر ارتفاع ویرایشگر
+                editor.ui.view.editable.element.style.minHeight = '300px';
+                editor.ui.view.editable.element.style.maxHeight = '600px';
+            })
+            .catch(error => {
+                console.error('Error initializing CKEditor:', error);
+            });
     </script>
 }
 <div class="col-xl">
@@ -29,7 +36,7 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="Description" class="form-label" for="basic-default-company">Company</label>
-                    <textarea asp-for="Description" rows="5" class="form-control" id="Content" placeholder="متن پیام"></textarea>
+                    <textarea asp-for="Description" rows="5" class="form-control" id="editor" placeholder="متن پیام"></textarea>
                 </div>
 
                 <label> انتخاب دسته بندی</label>

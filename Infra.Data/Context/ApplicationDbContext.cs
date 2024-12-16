@@ -2,6 +2,7 @@
 using Domain.Entities.ContactUs;
 using Domain.Entities.Images;
 using Domain.Entities.Faq;
+using Domain.Entities.Notification;
 using Domain.Entities.Product;
 using Domain.Entities.Ticket;
 using Infra.Data.Configurations;
@@ -11,9 +12,7 @@ namespace Infra.Data.Context;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-    {
-    }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){ }
 
     #region Dbsets
 
@@ -48,6 +47,7 @@ public class ApplicationDbContext : DbContext
             new Subject { Id = 8, Name = "موضوعات" }
 
         );
+        
     }
 
     #region Ticket
@@ -67,18 +67,26 @@ public class ApplicationDbContext : DbContext
     #region Images
 
 
-        public DbSet<Product> Products { get; set; }
+    public DbSet<Product> Products { get; set; }
 
-        public DbSet<ProductGallery> ProductGalleries { get; set; }
+    public DbSet<ProductGallery> ProductGalleries { get; set; }
 
 
-        #endregion
+    #endregion
 
-        #region faq
+    #region faq
 
-        public DbSet<FaqCategory> FaqCategories { get; set; }
+    public DbSet<FaqCategory> FaqCategories { get; set; }
 
-        public DbSet<FaqQuestion> FaqQuestions { get; set; }
+    public DbSet<FaqQuestion> FaqQuestions { get; set; }
+
+    #endregion
+
+    #region Notification
+
+    public DbSet<Notification> Notifications { get; set; }
+
+    public DbSet<UserNotification> UserNotifications { get; set; }
 
     #endregion
 }

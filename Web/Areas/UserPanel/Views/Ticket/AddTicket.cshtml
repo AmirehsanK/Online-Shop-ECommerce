@@ -8,11 +8,18 @@
 {
     <partial name="_ValidationScriptsPartial"/>
     <script>
-        CKEDITOR.replace('Content', {
-            language: 'fa',
-            contentsLangDirection: 'rtl',
-            font_names: 'Tahoma; IranSans; Arial;'
-        });
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                // تنظیمات اضافی
+            })
+            .then(editor => {
+                // تغییر ارتفاع ویرایشگر
+                editor.ui.view.editable.element.style.minHeight = '300px';
+                editor.ui.view.editable.element.style.maxHeight = '400px';
+            })
+            .catch(error => {
+                console.error('Error initializing CKEditor:', error);
+            });
     </script>
 }
 
@@ -69,7 +76,7 @@
                         <!-- start of form-element -->
                         <div class="form-element-row mb-5">
                             <label asp-for="Message" class="label">پیام</label>
-                            <textarea asp-for="Message" rows="5" class="form-control"  id="Content" placeholder="متن پیام"></textarea>
+                            <textarea asp-for="Message" rows="5" class="form-control" id="editor" placeholder="متن پیام"></textarea>
                             <span asp-validation-for="Message" class="alert-danger"></span>
                         </div>
                         <!-- end of form-element -->
