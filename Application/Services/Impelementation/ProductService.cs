@@ -1,9 +1,15 @@
 ﻿
 
+using Application.Extention;
 using Application.Services.Interfaces;
+using Application.Tools;
 using Domain.Entities.Product;
+using Domain.Enums;
 using Domain.Interface;
 using Domain.ViewModel.Product.CategoryAdmin;
+using Domain.ViewModel.Product.Product;
+using Infra.Data.Repositories;
+using System;
 
 namespace Application.Services.Impelementation
 {
@@ -12,13 +18,17 @@ namespace Application.Services.Impelementation
         #region Ctor
 
         private readonly IProductRepository _productRepository;
+        private readonly IProductGalleryRepository _productGalleryRepository;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IProductRepository productRepository, IProductGalleryRepository productGalleryRepository)
         {
             _productRepository = productRepository;
+            _productGalleryRepository = productGalleryRepository;
         }
 
         #endregion
+
+        #region Category
         public async Task AddBaseCategory(BaseCategoryViewModel model,int? parentid=null)
         {
             var category = new ProductCategory()
@@ -46,6 +56,18 @@ namespace Application.Services.Impelementation
             {
                 Title = u.Title,
                 ParentId = parentid,
+                CategoryId = u.Id
+            }).ToList();
+
+        }
+
+        public async Task<List<CategoryListViewModel>> GetAllSubCategories()
+        {
+            var Subcategory = await _productRepository.GetAllSubCategory();
+            return Subcategory.Select(u => new CategoryListViewModel()
+            {
+                Title = u.Title,
+                ParentId = u.ParentId,
                 CategoryId = u.Id
             }).ToList();
 
@@ -106,5 +128,89 @@ namespace Application.Services.Impelementation
 
 
         }
+        #endregion
+
+        #region Product
+
+        public async Task<List<ProductViewModel>> GetAllProductsAsync()
+        {
+            var products = await _productRepository.GetProductsAsync();
+            return products
+                .Where(p => !p.IsDeleted)
+                .Select(p => new ProductViewModel
+                {
+                    ProductName = p.ProductName,
+                    ShortDescription = p.ShortDescription,
+                    Review = p.Review,
+                    ExpertReview = p.ExpertReview,
+                    ImageName = p.ImageName,
+                    Price = p.Price,
+                    Inventory = p.Inventory,
+                    CategoryId = p.CategoryId,
+                    ProductGalleries = p.ProductGalleries,
+                    IsDeleted = p.IsDeleted,
+                })
+                .ToList();
+        }
+
+        public async Task<ProductViewModel> GetProductByIdAsync(int productId)
+        {
+            var product = await _productRepository.GetProductById(productId);
+            if (product == null) return null;
+
+            return new ProductViewModel
+            {
+                ProductName = product.ProductName,
+                ShortDescription = product.ShortDescription,
+                Review = product.Review,
+                ExpertReview = product.ExpertReview,
+                ImageName = product.ImageName,
+                Price = product.Price,
+                Inventory = product.Inventory,
+                CategoryId = product.CategoryId,
+                ProductGalleries = product.ProductGalleries
+                , IsDeleted = product.IsDeleted
+            };
+        }
+
+        public async Task AddProductAsync(AddProductViewModel model)
+        {
+            var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(model.Image.FileName);
+            model.Image.AddImageToServer(imageName, PathTools.FileServerPath, null, null);
+            var product = new Product
+            {
+                ProductName = model.ProductName,
+                ShortDescription = model.ShortDescription,
+                Review = model.Review,
+                ExpertReview = model.ExpertReview,
+                ImageName = model.ImageName,
+                Price = model.Price,
+                CategoryId = model.SubCategoryId
+                ,IsDeleted=false,
+                CreateDate = DateTime.Now,
+                Inventory=0
+            };
+
+            await _productRepository.AddProductAsync(product);
+            await _productRepository.SaveChangeAsync();
+        }
+        //TODO Update
+        public async Task UpdateProductAsync(Product product)
+        {
+            await _productRepository.UpdateProduct(product);
+            await _productRepository.SaveChangeAsync();
+        }
+
+        public async Task DeleteProductAsync(int productId)
+        {
+            var imageName = await _productRepository.GetProductById(productId);   
+            imageName.ImageName.DeleteImage(PathTools.FilePath, null);
+            imageName.IsDeleted = true;
+            await _productRepository.UpdateProduct(imageName);
+            await _productRepository.SaveChangeAsync();
+        }
+
+        #endregion
+
     }
 }

@@ -1,11 +1,11 @@
-﻿model YourNamespace.Models.ProductViewModel
+﻿@model Domain.ViewModel.Product.Product.AddProductViewModel
 
 <h2>افزودن محصول</h2>
 
 <form asp-action="AddProduct" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="Title">عنوان</label>
-        <input type="text" id="Title" name="Title" class="form-control" required />
+        <label for="ProductName">عنوان</label>
+        <input type="text" id="ProductName" name="ProductName" class="form-control" required />
     </div>
 
     <div class="form-group">
@@ -24,59 +24,50 @@
     </div>
 
     <div class="form-group">
-        <label for="Quantity">تعداد</label>
-        <input type="number" id="Quantity" name="Quantity" class="form-control" required />
+        <label for="Inventory">تعداد</label>
+        <input type="number" id="Inventory" name="Inventory" class="form-control" required />
     </div>
 
     <div class="form-group">
         <label for="Review">نقد و بررسی</label>
-        <textarea id="Review" name="Review" class="form-control" rows="5"></textarea>
+        <textarea  name="Review" id="ReviewCk" class="form-control" rows="5"></textarea>
     </div>
 
     <div class="form-group">
-        <label for="DetailedReview">بررسی تخصصی</label>
-        <textarea id="DetailedReview" name="DetailedReview" class="form-control" rows="5"></textarea>
+        <label for="ExpertReview">بررسی تخصصی</label>
+        <textarea id="ExpertReviewCk" name="ExpertReview" class="form-control" rows="5"></textarea>
     </div>
 
     <div class="form-group">
-        <label for="Category">دسته‌بندی</label>
-        <select id="Category" name="CategoryId" class="form-control" asp-items="Model.Categories" required>
-            <option value="">انتخاب دسته‌بندی</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="SubCategory">زیر دسته‌بندی</label>
-        <select id="SubCategory" name="SubCategoryId" class="form-control" asp-items="Model.SubCategories" required>
+        <label for="SubCategoryId">زیر دسته‌بندی</label>
+        <select id="SubCategoryId" name="SubCategoryId" class="form-control">
             <option value="">انتخاب زیر دسته‌بندی</option>
+            @foreach (var subCategory in Model.SubCategories)
+            {
+                <option value="@subCategory.CategoryId">@subCategory.Title</option>
+            }
         </select>
     </div>
-
+<br />
     <button type="submit" class="btn btn-primary">افزودن محصول</button>
+<br />
 </form>
 
 @section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('#Category').change(function () {
-                const categoryId = $(this).val();
-                $.ajax({
-                    url: '/Admin/GetSubCategories',
-                    type: 'GET',
-                    data: { categoryId: categoryId },
-                    success: function (data) {
-                        const subCategoryDropdown = $('#SubCategory');
-                        subCategoryDropdown.empty();
-                        subCategoryDropdown.append('<option value="">انتخاب زیر دسته‌بندی</option>');
-                        data.forEach(subCategory => {
-                            subCategoryDropdown.append(`<option value="${subCategory.id}">${subCategory.name}</option>`);
-                        });
-                    },
-                    error: function () {
-                        alert('خطا در بارگذاری زیر دسته‌بندی‌ها');
-                    }
-                });
-            });
+    
+        <script>
+        CKEDITOR.replace('ReviewCk', {
+            language: 'fa',
+            contentsLangDirection: 'rtl',
+            font_names: 'Tahoma; IranSans; Arial;'
         });
+    </script>
+    <script>
+        CKEDITOR.replace('ExpertReviewCk', {
+            language: 'fa',
+            contentsLangDirection: 'rtl',
+            font_names: 'Tahoma; IranSans; Arial;'
+        });
+    </script>
     </script>
 }

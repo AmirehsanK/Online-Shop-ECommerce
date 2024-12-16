@@ -22,7 +22,7 @@ namespace Infra.Data.Repositories
 
         #endregion
 
-      
+        #region Category
         public async Task AddCategoryAsync(ProductCategory product)
         {
             await _context.ProductCategories.AddAsync(product);
@@ -47,6 +47,11 @@ namespace Infra.Data.Repositories
             return await _context.ProductCategories.Where(u=> u.ParentId==null&&u.IsDeleted==false).ToListAsync();
         }
 
+        public async Task<List<ProductCategory>> GetAllSubCategory()
+        { 
+            return await _context.ProductCategories.Where(u => u.ParentId != null && u.IsDeleted == false).ToListAsync();
+        }
+
         public async Task<ProductCategory> GetBaseCategory(int CategoryId)
         {
             return await _context.ProductCategories.Where(u=>u.IsDeleted==false).FirstOrDefaultAsync(u=> u.Id==CategoryId);
@@ -61,5 +66,37 @@ namespace Infra.Data.Repositories
         {
             _context.ProductCategories.UpdateRange(model);
         }
+
+
+        #endregion
+
+        #region Product
+
+        public async Task<List<Product>> GetProductsAsync()
+        {
+            return await _context.Product.ToListAsync();
+        }
+
+        public async Task<Product> GetProductById(int ProductId)
+        {
+            return await _context.Product.FirstOrDefaultAsync(u => u.Id == ProductId);
+        }
+
+        public async Task AddProductAsync(Product product)
+        {
+           await _context.AddAsync(product);
+        }
+
+        public async Task UpdateProduct(Product product)
+        {
+            _context.Update(product);
+        }
+        //TODO
+        public async Task DeleteProduct(int ProductId)
+        {
+            
+        }
+
+        #endregion
     }
 }

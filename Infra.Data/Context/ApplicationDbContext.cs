@@ -26,6 +26,7 @@ public class ApplicationDbContext : DbContext
     #region Product
 
     public DbSet<ProductCategory> ProductCategories { get; set; }
+    public DbSet<Product> Product { get; set; }
 
     #endregion
 

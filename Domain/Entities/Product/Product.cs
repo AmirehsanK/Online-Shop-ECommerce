@@ -12,22 +12,19 @@ namespace Domain.Entities.Product
         [MaxLength(200)]
         public string ShortDescription { get; set; }
 
-      
         public string Review{ get; set; }
     
         public string ExpertReview{ get; set; }
 
         [MaxLength(200)]
-        public string Image { get; set; }
-
-        [MaxLength(200)]
-        public string Tags { get; set; }
+        public string ImageName { get; set; }
 
         [MaxLength(200)]
         public int Price { get; set; }
-
     
         public int Inventory { get; set; }
+
+        public int CategoryId {  get; set; }
 
         #region Relation
 
