@@ -1,0 +1,40 @@
+﻿@model Domain.ViewModel.Notification.AddNotificationViewModel
+@{
+    ViewData["Title"] = "افزودن پیام";
+    var id = ViewData["Id"] as int?;
+}
+@section Scripts{
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                // تنظیمات اضافی
+            })
+            .then(editor => {
+                // تغییر ارتفاع ویرایشگر
+                editor.ui.view.editable.element.style.minHeight = '300px';
+                editor.ui.view.editable.element.style.maxHeight = '600px';
+            })
+            .catch(error => {
+                console.error('Error initializing CKEditor:', error);
+            });
+    </script>
+}
+<form asp-area="Admin" asp-controller="Notification" asp-action="AddNewNotification">
+    <input asp-for="UserId" type="hidden"/>
+
+    <div class="row">
+        <div class="card mb-4">
+
+            <h5 class="card-header">افزودن مسیج</h5>
+            <div class="card-body">
+                <div class="form-floating">
+                    <label asp-for="Message" class="label">پیام</label>
+                    <textarea asp-for="Message" rows="5" class="form-control"  id="editor" placeholder="متن پیام"></textarea>
+                    <span asp-validation-for="Message" class="alert-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-success">ثبت</button>
+            </div>
+        </div>
+    </div>
+
+</form>

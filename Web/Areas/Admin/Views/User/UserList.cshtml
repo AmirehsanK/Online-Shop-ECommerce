@@ -35,6 +35,8 @@
                                asp-route-UserId="@user.Id" class="btn btn-label-danger">حدف</a>
                             <a asp-controller="User" asp-area="Admin" asp-action="UserDetail"
                                asp-route-UserId="@user.Id" class="btn btn-label-primary">جزییات</a>
+                                <a asp-controller="Notification" asp-area="Admin" asp-action="AddNewNotification"
+                                   asp-route-userId="@user.Id" class="btn btn-label-primary">ارسال پیام</a>
                         </td>
                     </tr>
                 }

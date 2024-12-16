@@ -11,7 +11,7 @@
             <a asp-controller="ProductCategory" asp-area="Admin" asp-action="CreateBaseCategory"
                class="btn btn-label-success">افزودن</a>
         }
-    
+
     </div>
 
     <div class="table-responsive text-nowrap">
@@ -19,36 +19,40 @@
         {
             <table class="table">
                 <thead>
-                <tr>
-                  
-                    <th>کد</th>
-                    <th>عنوان</th>
-                    <th>عملیات</th>
+                    <tr>
 
-                </tr>
+                        <th>کد</th>
+                        <th>عنوان</th>
+                        <th>عملیات</th>
+
+                    </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                @foreach (var category in Model)
-                {
-                    
-                    <tr>
-                        <td> <strong>@category.CategoryId</strong></td>
-                        <td>@category.Title</td>
+                    @foreach (var category in Model)
+                    {
 
-                        <td>
+                        <tr>
+                            <td> <strong>@category.CategoryId</strong></td>
+                            <td>@category.Title</td>
 
-                            <a asp-controller="ProductCategory" asp-area="Admin" asp-action="CreateSubCategory"
-                               asp-route-parentid="@category.CategoryId" class="btn btn-label-success">افزودن زیر مجموعه</a>
-                            <a asp-controller="ProductCategory" asp-area="Admin" asp-action="EditBaseCategory"
-                               asp-route-categoryid="@category.CategoryId" class="btn btn-label-warning">ویرایش</a>
-                            <a asp-controller="ProductCategory" asp-area="Admin" asp-action="BaseCategoryList"
-                               asp-route-categoryid="@category.CategoryId" class="btn btn-label-primary">جزییات</a>
+                            <td>
+                                @if (id == null)
+                                {
+                                    <a asp-controller="ProductCategory" asp-area="Admin" asp-action="CreateSubCategory"
+                                       asp-route-parentid="@category.CategoryId" class="btn btn-label-success">افزودن زیر مجموعه</a>
+                                }
 
-                            <a asp-controller="ProductCategory" asp-area="Admin" asp-action="DeleteBaseCategory"
-                               asp-route-categoryid="@category.CategoryId" class="btn btn-label-danger">حدف دسته بندی </a>
-                        </td>
-                    </tr>
-                }
+
+                                <a asp-controller="ProductCategory" asp-area="Admin" asp-action="EditBaseCategory"
+                                   asp-route-categoryid="@category.CategoryId" class="btn btn-label-warning">ویرایش</a>
+                                <a asp-controller="ProductCategory" asp-area="Admin" asp-action="BaseCategoryList"
+                                   asp-route-categoryid="@category.CategoryId" class="btn btn-label-primary">جزییات</a>
+
+                                <a asp-controller="ProductCategory" asp-area="Admin" asp-action="DeleteBaseCategory"
+                                   asp-route-categoryid="@category.CategoryId" class="btn btn-label-danger">حدف دسته بندی </a>
+                            </td>
+                        </tr>
+                    }
 
 
                 </tbody>

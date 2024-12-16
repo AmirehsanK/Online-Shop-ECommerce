@@ -92,11 +92,20 @@ namespace Web.Areas.Admin.Controllers
         #region ShowProductGallery
 
         [HttpGet]
+       
         
         public async Task<IActionResult> ShowProductGallery(int id = 5)
         {
-
             ViewData["Gallery"] = await _galleryService.GetGalleryListAsync(id);
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RemoveProductGallery(int galleryid)
+        {
+            await _galleryService.RemoveProductGallery(galleryid);
+            return RedirectToRefererUrl();
+
             return View();
         }
 

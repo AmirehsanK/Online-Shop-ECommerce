@@ -1,0 +1,56 @@
+﻿@model Domain.ViewModel.Notification.ShowNotificationViewModel
+@{
+    ViewData["Title"] = "پیام ها";
+}
+
+<div class="col-xl-9 col-lg-8 col-md-7">
+    <div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
+        <div>
+            سفارش شما در انتظار پرداخت است. برای جلوگیری از لغو سفارش، لطفا پرداخت را انجام دهید.
+            <a href="#" class="btn btn-sm btn-primary mx-3">سفارش های من</a>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @if (Model != null)
+    {
+        <div class="ui-box bg-white mb-5">
+            <div class="ui-box-title">
+                @ViewData["Titel"]
+            </div>
+            <div class="ui-box-content">
+                <!-- start of tickets -->
+                <div class="tickets">
+                    <!-- start of ticket -->
+                    <div class="ticket fa-num">
+                        <div class="avatar"></div>
+                        <div class="text">
+                            @Html.Raw(Model.Message)
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- end of tickets -->
+                <div class="border-bottom my-4"></div>
+
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="ui-box bg-white mb-5">
+            <div class="ui-box-title">
+                پیغام
+            </div>
+            <div class="ui-box-empty-content">
+                <div class="ui-box-empty-content-icon">
+                    <img src="./theme-assets/images/theme/notification.svg" alt="">
+                </div>
+                <div class="ui-box-empty-content-message">
+                    پیامی برای نمایش وجود ندارد
+                </div>
+            </div>
+        </div>
+    }
+  
+</div>

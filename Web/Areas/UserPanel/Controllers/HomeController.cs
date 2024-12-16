@@ -1,10 +1,12 @@
 ﻿using System.Security.Claims;
 using Application.Services.Interfaces;
 using Application.Tools;
+using Domain.Enums;
 using Domain.ViewModel.User;
 using Domain.ViewModel.User.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 namespace Web.Areas.UserPanel.Controllers;
 
@@ -14,16 +16,44 @@ public class HomeController : UserPanelBaseController
     #region Ctor
 
     private readonly IUserService _userService;
+    private readonly INotificationService _notificationService;
 
-    public HomeController(IUserService userService)
+
+
+    public HomeController(IUserService userService, INotificationService notificationService)
     {
         _userService = userService;
+        _notificationService = notificationService;
     }
 
     #endregion
-    public IActionResult Index()
+
+
+    public async Task<IActionResult> Index()
     {
+        var res = await _notificationService.GetNotificationById(User.GetCurrentUserId());
+        var publicmessage = await _notificationService.GetpublicMessage(User.GetCurrentUserId());
+        switch (res)
+        {
+            case NotificationEnum.HasMessage:
+                TempData[WarningMessage] = "کاربر عزیز یک پیام دارید";
+                return View();
+
+            case NotificationEnum.NotFound:
+                if (publicmessage != null)
+                {
+                    TempData[WarningMessage] =  publicmessage.Message;
+                    await _notificationService.markSeenForPrivateMessage(User.GetCurrentUserId(), publicmessage.Id);
+                    return View();
+                }
+                return View();
+
+        }
+
+
+
         return View();
+
     }
 
     //TODO Fix Change Password logic
@@ -49,7 +79,7 @@ public class HomeController : UserPanelBaseController
         ViewBag.IsSuccess = true;
         return View();
 
-       
+
     }
     #region Profile-Info
 
@@ -74,6 +104,25 @@ public class HomeController : UserPanelBaseController
 
         await _userService.EditUserAsync(model);
         return View();
+    }
+
+
+
+    #endregion
+
+
+    #region UserNotification
+
+    [HttpGet]
+    public async Task<IActionResult> UserNotification()
+    {
+        var message = await _notificationService.GetShowNotificationById(User.GetCurrentUserId());
+        if (message != null)
+        {
+            await _notificationService.markSeenForPrivateMessage(User.GetCurrentUserId(), message.MessageId);
+        }
+
+        return View(message);
     }
 
     #endregion

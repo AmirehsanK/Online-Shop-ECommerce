@@ -19,7 +19,6 @@
                 <div class="col-xl-3 col-lg-4 col-md-5 mb-md-0 mb-4">
                     @await Component.InvokeAsync("UserProfile")
                 </div>
-
                 @RenderBody()
             </div>
         </div>
@@ -31,7 +30,7 @@
 
 <partial name="_UserPAnelFooterReferences"/>
 @await RenderSectionAsync("Scripts",false)
-
+<partial name="_MessageBoxPartial"/>
 </body>
 
 </html> 
