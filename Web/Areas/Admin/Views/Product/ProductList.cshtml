@@ -1,4 +1,7 @@
 ﻿@using Application.Tools
+@{
+    ViewData["Title"] = "لیست محصولات";
+}
 @model Domain.ViewModel.Product.Product.FilterProductViewModel
 
 <h2>مدیریت محصولات</h2>
@@ -29,6 +32,9 @@
                     <td>@product.Inventory</td>
                     <td>
                         <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-info btn-sm">مشاهده جزئیات</a>
+                        <a asp-area="Admin" asp-controller="Product" asp-action="ShowProductGallery" asp-route-Productid="@product.Id" class="btn btn-warning btn-sm">مشاهده گالری محصول</a>
+                        <a asp-controller="ProductColor" asp-area="Admin" asp-action="AddProductColor" asp-route-productId="@product.Id" class="btn btn-success btn-sm">افزودن رنگ به محصول</a>
+
                     </td>
                 </tr>
             }

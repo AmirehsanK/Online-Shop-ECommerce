@@ -40,6 +40,11 @@ namespace Infra.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<ProductCategory>> GetAllCategoriesAsync()
+        {
+            return await _context.ProductCategories.Where(u => u.IsDeleted == false).ToListAsync();
+        }
+
         public async Task<List<ProductCategory>> GetAllCategory(int? parentid = null)
         {
             if (parentid.HasValue)

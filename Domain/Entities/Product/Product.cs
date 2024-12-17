@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Entities.Common;
 
 namespace Domain.Entities.Product
@@ -22,6 +23,7 @@ namespace Domain.Entities.Product
 
         public int Inventory { get; set; } = 0;
 
+        [ForeignKey(nameof(Category))]
         public int CategoryId {  get; set; }
 
         #region Relation

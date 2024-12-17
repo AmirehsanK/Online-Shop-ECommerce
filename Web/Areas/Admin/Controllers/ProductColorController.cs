@@ -71,7 +71,17 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProductColor(AddProductColorViewModel model,int productId)
         {
-            return View();
+            #region Validation
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            #endregion
+
+            await _productColorService.AddProductToGallery(model, productId);
+            return RedirectToAction("Productlist","Product");
         }
 
 

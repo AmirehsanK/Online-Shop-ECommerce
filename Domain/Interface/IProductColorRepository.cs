@@ -12,7 +12,7 @@ namespace Domain.Interface
 
         Task SaveChangeAsync();
 
-        Task ProductColorAsync(ProductColor color);
+        Task AddProductColorAsync(ProductColor color);
 
         void UpdateProductColor(ProductColor color);
 

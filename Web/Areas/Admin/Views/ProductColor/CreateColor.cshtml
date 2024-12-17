@@ -8,19 +8,19 @@
 }
 <form asp-area="Admin" asp-controller="ProductColor" asp-action="CreateColor" method="post">
     <div class="card mb-4">
-        <h5 class="card-header">افزودن کاربر</h5>
+        <h5 class="card-header">افزودن رنگ</h5>
         <div class="card-body">
             <div class="mb-3 row">
                 <label asp-for="Title" for="html5-text-input" class="col-md-2 col-form-label"></label>
                 <div class="col-md-10">
-                    <input asp-for="Title" class="form-control" type="text" id="html5-text-input">
+                    <input asp-for="Title" class="form-control" style="width:150px" type="text" id="html5-text-input">
                     <span asp-validation-for="Title"></span>
                 </div>
             </div>
             <div class="mb-3 row">
                 <label asp-for="ColorCode" for="html5-text-input" class="col-md-2 col-form-label"></label>
                 <div class="col-md-10">
-                    <input asp-for="ColorCode" class="form-control" type="color" id="html5-text-input">
+                    <input asp-for="ColorCode" class="form-control" style="width:50px" type="color" id="html5-text-input">
                     <span asp-validation-for="ColorCode"></span>
                 </div>
             </div>

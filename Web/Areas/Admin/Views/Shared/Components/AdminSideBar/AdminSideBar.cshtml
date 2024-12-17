@@ -109,13 +109,18 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="app-invoice-edit.html" class="menu-link">
-                        <div data-i18n="Edit">Edit</div>
+                    <a asp-area="Admin" asp-controller="Product" asp-action="ProductList" class="menu-link">
+                        <div data-i18n="لیست محصولات">لیست محصولات</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="app-invoice-add.html" class="menu-link">
-                        <div data-i18n="Add">Add</div>
+                    <a asp-area="Admin" asp-controller="ProductColor" asp-action="CreateColor" class="menu-link">
+                        <div data-i18n="افزودن رنگ جدید">افزودن رنگ جدید</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a asp-area="Admin" asp-controller="ProductColor" asp-action="ColorList" class="menu-link">
+                        <div data-i18n="لیست رنگ های پیش فرض">لیست رنگ های پیش فرض</div>
                     </a>
                 </li>
             </ul>

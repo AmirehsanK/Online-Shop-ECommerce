@@ -20,6 +20,8 @@ namespace Application.Services.Impelementation
 
         #endregion
 
+        #region AddNewColor
+
         public async Task AddNewColor(CreateProductColorViewModel color)
         {
             var newColor = new Color()
@@ -33,6 +35,10 @@ namespace Application.Services.Impelementation
             await _productColorRepository.AddColorAsync(newColor);
             await _productColorRepository.SaveChangeAsync();
         }
+
+        #endregion
+
+        #region ColorList
 
         public async Task<List<ColorListViewModel>> GetColorList()
         {
@@ -48,6 +54,10 @@ namespace Application.Services.Impelementation
             }).ToList();
         }
 
+        #endregion
+
+        #region DeleteColor
+
         public async Task DeleteColorAsync(int colorId)
         {
             var color = await _productColorRepository.GetColorById(colorId);
@@ -55,5 +65,28 @@ namespace Application.Services.Impelementation
             _productColorRepository.UpdateColor(color);
             await _productColorRepository.SaveChangeAsync();
         }
+
+        #endregion
+
+        #region AddColorToProduct
+
+        public async Task AddProductToGallery(AddProductColorViewModel productColor,int productid)
+        {
+            var newproductColor = new ProductColor()
+            {
+                CreateDate = DateTime.Now,
+                ColorId = productColor.Colorid,
+                IsDeleted = false,
+                Count = productColor.Count,
+                Price = productColor.Price,
+                ProductId = productid
+            };
+            await _productColorRepository.AddProductColorAsync(newproductColor);
+            await _productColorRepository.SaveChangeAsync();
+        }
+
+        #endregion
+ 
+  
     }
 }

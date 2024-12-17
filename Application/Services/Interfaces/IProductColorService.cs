@@ -10,5 +10,6 @@ namespace Application.Services.Interfaces
         Task<List<ColorListViewModel>> GetColorList();
 
         Task DeleteColorAsync(int  colorId);
+        Task AddProductToGallery(AddProductColorViewModel productColor,int productid);
     }
 }

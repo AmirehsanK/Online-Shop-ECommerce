@@ -16,6 +16,8 @@ namespace Application.Services.Interfaces
 
         Task<List<CategoryListViewModel>> GetAllCategories(int? parentid);
 
+        Task<List<CategoriesListViewModel>> GetAllCategoriesForMegaMenu();
+
         Task<List<CategoryListViewModel>> GetAllSubCategories();
 
         Task AddSubCategory(SubCategoryViewModel model);

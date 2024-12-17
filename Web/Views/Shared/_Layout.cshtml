@@ -1,4 +1,5 @@
 ﻿@using Domain.Enums
+@using Domain.Entities.Product
 
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
@@ -21,7 +22,7 @@
         <partial name="_HeaderMiddlePartial"/>
         <!-- end of page-header-middle -->
         <!-- start of page-header-bottom -->
-        <partial name="_HeaderBottomPartial"/>
+        @await Component.InvokeAsync("HeaderBottom")
         <!-- end of page-header-bottom -->
     </header>
     <!-- end of page-header -->

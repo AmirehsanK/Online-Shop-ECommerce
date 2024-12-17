@@ -94,9 +94,9 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet]
        
         
-        public async Task<IActionResult> ShowProductGallery(int id = 5)
+        public async Task<IActionResult> ShowProductGallery(int Productid)
         {
-            ViewData["Gallery"] = await _galleryService.GetGalleryListAsync(id);
+            ViewData["Gallery"] = await _galleryService.GetGalleryListAsync(Productid);
             return View();
         }
 
@@ -110,14 +110,14 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> ShowProductGallery(ShowProductGalleryViewModel model)
         {
-            model.ProductId = 5;
+            
             #region Validation
 
             if (!ModelState.IsValid)
             {
                 return View();
             }
-
+            
             #endregion
 
             await _galleryService.AddProductGalleries(model);

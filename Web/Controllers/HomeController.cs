@@ -13,6 +13,7 @@ public class HomeController : SiteBaseController
 
     public IActionResult Index()
     {
+
         return View();
     }
 
