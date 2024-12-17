@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Common;
+using Domain.Shared;
 using Domain.ViewModel.Product.CategoryAdmin;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -47,6 +48,17 @@ namespace Domain.ViewModel.Product.Product
         public ICollection<Domain.Entities.Product.ProductGallery> ProductGalleries { get; set; }
 
         #endregion
+    }
+
+    public class FilterProductViewModel : Paging.BasePaging<ProductViewModel>
+    {
+        public int? Inventory { get; set; }
+
+        public string? SubCategoryTitle { get; set; }
+        public int? Price { get; set; }
+
+        public string? ProductName { get; set;  }
+
     }
 }
 

@@ -76,9 +76,9 @@ namespace Web.Areas.Admin.Controllers
         #endregion
 
         [HttpGet]
-        public async Task<IActionResult> ProductList()
+        public async Task<IActionResult> ProductList(FilterProductViewModel filter)
         {
-            var products = await _productService.GetAllProductsAsync();
+            var products = await _productService.GetAllProductsAsync(filter);
             return View(products);
         }
         [HttpGet]
@@ -105,8 +105,6 @@ namespace Web.Areas.Admin.Controllers
         {
             await _galleryService.RemoveProductGallery(galleryid);
             return RedirectToRefererUrl();
-
-            return View();
         }
 
         [HttpPost]

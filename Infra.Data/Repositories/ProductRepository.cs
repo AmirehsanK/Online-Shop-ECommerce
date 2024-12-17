@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Product;
 using Domain.Interface;
+using Domain.ViewModel.Product.Product;
 using Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace Infra.Data.Repositories
 {
@@ -72,9 +74,28 @@ namespace Infra.Data.Repositories
 
         #region Product
 
-        public async Task<List<Product>> GetProductsAsync()
+        public async Task<FilterProductViewModel> GetProductsAsync(FilterProductViewModel filter)
         {
-            return await _context.Product.Include(p => p.Category).ToListAsync();
+            var query = _context.Product.Include(p => p.Category).Where(p => !p.IsDeleted).AsQueryable();
+            if (filter.Inventory.HasValue)
+            {
+                query = query.Where(_ => _.Inventory == filter.Inventory);
+            }
+            if (!string.IsNullOrEmpty(filter.ProductName))
+            {
+                query = query.Where(_ => _.ProductName.Contains(filter.ProductName.Trim()));
+            }
+            if (filter.Price.HasValue) {
+                query = query.Where(_ => _.ProductName.Contains(filter.ProductName.Trim()));
+            }
+            await filter.Paging(query.Select(p => new ProductViewModel()
+            {
+                Inventory = p.Inventory,
+                ProductName = p.ProductName,
+                SubCategoryTitle = p.Category.Title,
+                Price = p.Price,
+            }));
+            return filter;
         }
 
         public async Task<Product> GetProductById(int ProductId)

@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Product;
+using Domain.Shared;
+using Domain.ViewModel.Product.Product;
+using static Domain.Shared.Paging;
 
 namespace Domain.Interface
 {
@@ -27,8 +30,7 @@ namespace Domain.Interface
         #endregion
 
         #region Product
-
-        Task<List<Product>> GetProductsAsync();
+        Task<FilterProductViewModel> GetProductsAsync(FilterProductViewModel pagingModel);
         Task<Product> GetProductById(int ProductId);
         Task AddProductAsync(Product product);
         Task UpdateProduct(Product product);

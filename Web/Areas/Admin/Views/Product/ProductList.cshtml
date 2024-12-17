@@ -1,9 +1,9 @@
 ﻿@using Application.Tools
-@model IEnumerable<Domain.ViewModel.Product.Product.ProductViewModel>
+@model Domain.ViewModel.Product.Product.FilterProductViewModel
 
 <h2>مدیریت محصولات</h2>
 
-@if (Model.Count() != 0 && Model.Any())
+@if (Model.Entities.Count() != 0 && Model.Entities.Any())
 {
     <table class="table table-bordered mt-4">
         <thead>
@@ -17,7 +17,7 @@
             </tr>
         </thead>
         <tbody>
-           @foreach (var product in Model)
+           @foreach (var product in Model.Entities)
             {
                 <tr>
                     <td>@product.ProductName</td>

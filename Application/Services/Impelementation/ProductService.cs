@@ -6,6 +6,7 @@ using Application.Tools;
 using Domain.Entities.Product;
 using Domain.Enums;
 using Domain.Interface;
+using Domain.Shared;
 using Domain.ViewModel.Product.CategoryAdmin;
 using Domain.ViewModel.Product.Product;
 using Infra.Data.Repositories;
@@ -132,27 +133,12 @@ namespace Application.Services.Impelementation
 
         #region Product
 
-        public async Task<List<ProductViewModel>> GetAllProductsAsync()
+        public async Task<FilterProductViewModel> GetAllProductsAsync(FilterProductViewModel product)
         {
-            var products = await _productRepository.GetProductsAsync();
 
-            return products
-                .Where(p => !p.IsDeleted)
-                .Select(p => new ProductViewModel
-                {
-                    Id = p.Id,
-                    ProductName = p.ProductName,
-                    ShortDescription = p.ShortDescription,
-                    Review = p.Review,
-                    ExpertReview = p.ExpertReview,
-                    ImageName = p.ImageName,
-                    Price = p.Price,
-                    Inventory = p.Inventory,
-                    SubCategoryId = p.CategoryId, 
-                    SubCategoryTitle=p.Category.Title,
-                    ProductGalleries = p.ProductGalleries
-                })
-                .ToList();
+            var products = await _productRepository.GetProductsAsync(product);
+
+            return products;
         }
 
         public async Task<ProductViewModel> GetProductByIdAsync(int productId)
