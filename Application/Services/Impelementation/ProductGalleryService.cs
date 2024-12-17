@@ -3,6 +3,7 @@ using Application.Services.Interfaces;
 using Application.Tools;
 using Domain.Entities.Product;
 using Domain.Interface;
+using Domain.ViewModel.Product.ProductColor;
 using Domain.ViewModel.Product.ProductGallery;
 using Microsoft.AspNetCore.Http;
 
@@ -63,5 +64,7 @@ namespace Application.Services.Impelementation
              _productGalleryRepository.RemoveProductGallery(photo);
              await _productGalleryRepository.SaveChangeAsync();
         }
+
+     
     }
 }

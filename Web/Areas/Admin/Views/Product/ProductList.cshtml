@@ -1,6 +1,8 @@
 ﻿@using Application.Tools
 @model IEnumerable<Domain.ViewModel.Product.Product.ProductViewModel>
-
+@{
+    ViewData["Title"] = "لیست محصولات";
+}
 <h2>مدیریت محصولات</h2>
 
 @if (Model.Count() != 0 && Model.Any())
@@ -29,6 +31,9 @@
                     <td>@product.Inventory</td>
                     <td>
                         <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-info btn-sm">مشاهده جزئیات</a>
+                        <a asp-area="Admin" asp-controller="Product" asp-action="ShowProductGallery" asp-route-Productid="@product.Id" class="btn btn-warning btn-sm">مشاهده گالری محصول</a>
+                        <a asp-controller="ProductColor" asp-area="Admin" asp-action="AddProductColor" asp-route-productId="@product.Id" class="btn btn-success btn-sm">افزودن رنگ به محصول</a>
+
                     </td>
                 </tr>
             }

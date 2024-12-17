@@ -146,6 +146,7 @@ namespace Application.Services.Impelementation
                 LastName = model.LastName,
                 Email = model.Email,
                 Password = PasswordHasher.HashPassword(model.Password),
+                PhoneNumber = model.PhoneNumber,
                 IsAdmin = false,
                 IsEmailActive = false,
                 IsDeleted = false,

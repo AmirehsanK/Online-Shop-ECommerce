@@ -10,7 +10,7 @@
 <div class="container-fluid">
 
 <form asp-area="Admin" asp-action="ShowProductGallery" asp-controller="Product" enctype="multipart/form-data">
-
+    <input type="hidden" asp-for="ProductId"/>
     <input asp-for="Gallery" accept=".png,.jpeg" />
     <button type="submit" asp-action="ShowProductGallery" class="btn btn-success">افزودن عکس</button>
 

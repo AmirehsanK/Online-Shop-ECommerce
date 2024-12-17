@@ -61,6 +61,17 @@ namespace Application.Services.Impelementation
 
         }
 
+        public async Task<List<CategoriesListViewModel>> GetAllCategoriesForMegaMenu()
+        {
+            var Category= await _productRepository.GetAllCategoriesAsync();
+            return Category.Select(u => new CategoriesListViewModel()
+            {
+                Title = u.Title,
+                Id = u.Id,
+                ParentId = u.ParentId
+            }).ToList();
+        }
+
         public async Task<List<CategoryListViewModel>> GetAllSubCategories()
         {
             var Subcategory = await _productRepository.GetAllSubCategory();

@@ -35,7 +35,7 @@ namespace Infra.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task ProductColorAsync(ProductColor color)
+        public async Task AddProductColorAsync(ProductColor color)
         {
             await _context.ProductColors.AddAsync(color);
         }

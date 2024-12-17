@@ -19,6 +19,12 @@ public class RegisterUserViewModel
     [DataType(dataType: DataType.Password)]
     [Display(Name = "رمز عبور")]
     [Required(ErrorMessage = "{0} الزامی است")]
+
+    public string PhoneNumber { get; set; }
+    [MaxLength(50)]
+    [DataType(dataType: DataType.Password)]
+    [Display(Name = "رمز عبور")]
+    [Required(ErrorMessage = "{0} الزامی است")]
     public string Password { get; set; }
     [MaxLength(50)]
     [DataType(dataType: DataType.Password)]

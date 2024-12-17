@@ -15,6 +15,7 @@ namespace Domain.Interface
 
         Task SaveChangeAsync();
 
+        Task<List<ProductCategory>> GetAllCategoriesAsync();
         Task<List<ProductCategory>> GetAllCategory(int? parentid=null);
 
         Task<List<ProductCategory>> GetAllSubCategory();

@@ -1,7 +1,46 @@
-﻿
+﻿@using Domain.ViewModel.Product.ProductColor
+@model Domain.ViewModel.Product.ProductColor.AddProductColorViewModel
 @{
-    ViewData["Title"] = "AddProductColor";
+    ViewData["Title"] = "افزودن رنگ به محصول";
+    var colors = ViewData["Colors"] as List<ColorListViewModel>;
 }
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial"/>
+}
+<div class="col-xl">
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">افزودن رنگ به محصول</h5>
+            <small class="text-muted float-end">Default label</small>
+        </div>
+        <div class="card-body">
+            <form asp-area="Admin" asp-controller="ProductColor" asp-action="AddProductColor" method="post">
+                <input asp-for="productId"type="hidden"/>
+                <div class="mb-3">
+                    <label asp-for="Count" class="form-label" for="basic-default-fullname">تعداد</label>
+                    <input asp-for="Count" type="text" class="form-control" id="basic-default-fullname" placeholder="تعداد موجود از این رنگ">
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Price" class="form-label" for="basic-default-company">قیمت</label>
+                    <textarea asp-for="Price"  class="form-control"  placeholder="قیمت اضافه برای این رنگ"></textarea>
+                </div>
+
+                <label>انتخاب رنگ</label>
+                <select asp-for="Colorid" id="multicol-country" class="select2 form-select select2-hidden-accessible" data-allow-clear="true" data-select2-id="multicol-country" tabindex="-1" aria-hidden="true">
+                    @foreach (var item in colors)
+                    {
+                        <option value="@item.Id" data-select2-id="2">@item.Title</option>
+                    }
+
+                </select>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">ثبت</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 
 
