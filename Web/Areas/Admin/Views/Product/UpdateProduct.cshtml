@@ -1,51 +1,83 @@
-﻿@model Domain.ViewModel.Product.Product.AddProductViewModel
+﻿@using Application.Tools
+@using Domain.ViewModel.Product.Product
+@model Domain.ViewModel.Product.Product.ProductViewModel
 
-<h2>افزودن محصول</h2>
+@* @{
+    ViewData["Title"] = "مدیریت محصول";
+}
+ *@
+@{
+    var categories = ViewData["Category"] as ProductViewModel;
+}
 
-<form asp-action="AddProduct" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-        <label asp-for="ProductName">عنوان</label>
-        <input asp-for="ProductName" type="text" class="form-control" required />
+<h2 class="mb-4">مدیریت محصول</h2>
+
+<!-- دکمه‌های مدیریت رنگ و گالری تصاویر -->
+<div class="mb-3">
+    <a asp-controller="ProductColor" asp-area="Admin" asp-action="AddProductColor" asp-route-productId="@Model.Id" class="btn btn-primary">مدیریت رنگ‌ها</a>
+    <a asp-area="Admin" asp-controller="Product" asp-action="ShowProductGallery" asp-route-Productid="@Model.Id" class="btn btn-secondary">مدیریت گالری تصاویر</a>
+</div>
+
+<!-- فرم محصول -->
+<form method="post" asp-area="Admin" asp-controller="Product" asp-action="UpdateProduct" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="ImageName" />
+    <div class="form-group mb-3">
+        <label asp-for="ProductName" class="form-label">نام محصول</label>
+        <input asp-for="ProductName" class="form-control" placeholder="نام محصول را وارد کنید" />
     </div>
 
-    <div class="form-group">
-        <label asp-for="Image">تصویر</label>
-        <input type="file" asp-for="Image" class="form-control" accept="image/*" required />
+    <div class="form-group mb-3">
+        <label asp-for="ShortDescription" class="form-label">توضیح کوتاه</label>
+        <input asp-for="ShortDescription" class="form-control" placeholder="توضیح کوتاه محصول را وارد کنید" />
     </div>
 
-    <div class="form-group">
-        <label asp-for="ShortDescription">توضیح کوتاه</label>
-        <textarea  asp-for="ShortDescription" class="form-control" rows="3" required></textarea>
+    <div class="form-group mb-3">
+        <label asp-for="Review" class="form-label">نقد و بررسی</label>
+        <textarea asp-for="Review" id="ReviewCk" class="form-control" rows="3" placeholder="نقد و بررسی محصول"></textarea>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Price">قیمت</label>
-        <input type="number" asp-for="Price" class="form-control" step="0.01" required />
+    <div class="form-group mb-3">
+        <label asp-for="ExpertReview" class="form-label">نقد تخصصی</label>
+        <textarea asp-for="ExpertReview" id="ExpertReviewCk" class="form-control" rows="3" placeholder="نقد تخصصی محصول"></textarea>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Review">نقد و بررسی</label>
-        <textarea asp-for="Review" name="Review" id="ReviewCk" class="form-control" rows="5"></textarea>
+    <div class="form-group mb-3">
+        <label asp-for="Price" class="form-label">قیمت</label>
+        <input asp-for="Price" type="number" class="form-control" placeholder="قیمت محصول را وارد کنید" />
     </div>
 
-    <div class="form-group">
-        <label asp-for="ExpertReview">بررسی تخصصی</label>
-        <textarea asp-for="ExpertReview" id="ExpertReviewCk" name="ExpertReview" class="form-control" rows="5"></textarea>
+    <div class="form-group mb-3">
+        <label asp-for="Inventory" class="form-label">موجودی</label>
+        <input asp-for="Inventory" type="number" class="form-control" placeholder="تعداد موجودی محصول را وارد کنید" />
     </div>
 
     <div class="form-group">
         <label for="SubCategoryId">زیر دسته‌بندی</label>
         <select id="SubCategoryId" name="SubCategoryId" class="form-control">
-            <option value="">انتخاب زیر دسته‌بندی</option>
-            @foreach (var subCategory in Model.SubCategories)
+            @if (categories?.SubCategories != null)
             {
-                <option value="@subCategory.CategoryId">@subCategory.Title</option>
+                foreach (var subCategory in categories.SubCategories)
+                {
+                    <!option value="@subCategory.CategoryId" @(subCategory.CategoryId == Model.SubCategoryId ? "selected" : "")>@subCategory.Title</!option>
+                }
             }
         </select>
     </div>
-<br />
-    <button type="submit" class="btn btn-primary">افزودن محصول</button>
-<br />
+
+    <div class="form-group mb-3">
+        <label asp-for="Image" class="form-label">تصویر محصول</label>
+        <input asp-for="Image" type="file" class="form-control" />
+        @if (!string.IsNullOrEmpty(Model.ImageName))
+        {
+            <div class="mt-2">
+                <p>تصویر فعلی: @Model.ImageName</p>
+                <img src="@PathTools.FilePath@Model.ImageName" alt="تصویر محصول" style="max-width: 200px;" />
+            </div>
+        }
+    </div>
+    <!-- دکمه ذخیره -->
+    <button type="submit" class="btn btn-success">ذخیره محصول</button>
 </form>
 
 @section Scripts {

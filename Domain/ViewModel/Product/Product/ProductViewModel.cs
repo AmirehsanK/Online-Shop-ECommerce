@@ -13,7 +13,7 @@ namespace Domain.ViewModel.Product.Product
 {
     public class ProductViewModel
     {
-            [Key]
+    
             public int Id { get; set; }
             [MaxLength(200)]
             public string ProductName { get; set; }
@@ -32,7 +32,6 @@ namespace Domain.ViewModel.Product.Product
 
             public IFormFile Image { get; set; }
 
-            [MaxLength(200)]
             public int Price { get; set; }
 
             public int Inventory { get; set; }
@@ -41,7 +40,7 @@ namespace Domain.ViewModel.Product.Product
 
             public string SubCategoryTitle { get; set; }
 
-        // public List<CategoryListViewModel> SubCategories { get; set; }
+            public List<CategoryListViewModel> SubCategories { get; set; }
 
         #region Relation
 

@@ -10,6 +10,8 @@ public interface IFileHandleService
 
     Task<IEnumerable<Banner>> GetAllBanner();
 
+    Task<IEnumerable<Banner>> GetAllWorkingBanner();
+
     Task<BannerViewModel> GetBanner(string guid);
 
     Task<ImageEnum.Status> AddBanner(BannerViewModel banner);

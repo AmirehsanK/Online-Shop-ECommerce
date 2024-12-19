@@ -191,7 +191,17 @@ public class UserAuthenticationController : SiteBaseController
     public async Task<IActionResult> SignupUser(RegisterUserViewModel register)
     {
         #region Validation
+        string googleRecaptchaToken = Request.Form["g-recaptcha-response"].ToString();
 
+        //verify the token
+        string secretkey = _configuration["ReCaptchaSettings:SecrectKey"]!;
+        string verificationUrl = _configuration["ReCaptchaSettings:VerificationUrl"]!;
+        bool isValid = await VerifyRecaptcha.VerifyRecaptchaV3(googleRecaptchaToken, secretkey, verificationUrl);
+        if (!isValid)
+        {
+            TempData[ErrorMessage] = "کپچا را کامل کنید";
+            return View();
+        }
         var result = await _userService.RegisterUserValidationAsync(register);
         switch (result)
         {

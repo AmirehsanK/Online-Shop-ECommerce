@@ -24,6 +24,11 @@ public class FileHandleService : IFileHandleService
         return await _fileHandleRepository.GetAllImagesAsync();
     }
 
+    public async Task<IEnumerable<Banner>> GetAllWorkingBanner()
+    {
+        return await _fileHandleRepository.GetAllImagesAsync();
+    }
+
     public async Task<BannerViewModel> GetBanner(string guid)
     {
         var banner = await _fileHandleRepository.GetImageAsync(guid);
@@ -44,7 +49,7 @@ public class FileHandleService : IFileHandleService
         var banner = await _fileHandleRepository.GetImageAsync(guid);
         if (banner == null)
             return ImageEnum.Status.Error;
-        await _fileHandleRepository.DeleteImage(banner);
+        _fileHandleRepository.DeleteImage(banner);
         banner.Title.DeleteImage(PathTools.BannerServerPath, null);
         await _fileHandleRepository.SaveChangesAsync();
         return ImageEnum.Status.Success;
@@ -82,7 +87,7 @@ public class FileHandleService : IFileHandleService
         existingBanner.Title = title;
         existingBanner.ExpirationDate= banner.ExpirationDate;
         existingBanner.Link = banner.Link;
-        await _fileHandleRepository.UpdateImage(existingBanner);
+        _fileHandleRepository.UpdateImage(existingBanner);
         await _fileHandleRepository.SaveChangesAsync();
         return ImageEnum.Status.Success;
     }
@@ -175,7 +180,7 @@ public class FileHandleService : IFileHandleService
         banner.Image.AddImageToServer(title, PathTools.FixedBannerServerPath, null, null);
         existingBanner.Link = banner.Link;
         existingBanner.Title = title;
-        await _fileHandleRepository.UpdateFixedImage(existingBanner);
+        _fileHandleRepository.UpdateFixedImage(existingBanner);
         await _fileHandleRepository.SaveChangesAsync();
         return ImageEnum.Status.Success;
     }
@@ -186,7 +191,7 @@ public class FileHandleService : IFileHandleService
         if (banner == null)
             return ImageEnum.Status.Error;
         banner.Title.DeleteImage(PathTools.FixedBannerPath, null);
-        await _fileHandleRepository.DeleteFixedImage(banner);
+        _fileHandleRepository.DeleteFixedImage(banner);
         await _fileHandleRepository.SaveChangesAsync();
         return ImageEnum.Status.Success;
     }

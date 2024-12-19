@@ -2,7 +2,16 @@
 @{
     Layout = "_UserAuthenticationLayout";
 }
-
+@inject IConfiguration configuration
+@{
+    var siteKey = configuration["ReCaptchaSettings:SiteKey"];
+}
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<script>
+    function onSubmit(token) {
+      document.getElementById("LoginForm_id").submit();
+    }
+</script>
 <div class="page-wrapper">
 
     <main class="page-content page-auth">
@@ -41,7 +50,12 @@
                     <!-- end of form-element -->
                     <!-- start of form-element -->
                     <div class="form-element-row mb-3">
-                        <button type="submit" asp-action="SignupUser" class="btn btn-primary">ثبت نام</button>
+                        <button class="g-recaptcha btn btn-primary"
+                                data-sitekey="@siteKey"
+                                data-callback='onSubmit'
+                                data-action='submit'>
+                            ثبت نام
+                        </button>
                     </div>
                     <!-- end of form-element -->
                     <!-- start of form-element -->

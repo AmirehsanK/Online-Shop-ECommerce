@@ -7,6 +7,7 @@ using Domain.Entities.Product;
 using Domain.Entities.Ticket;
 using Infra.Data.Configurations;
 using Microsoft.EntityFrameworkCore;
+using Domain.Entities.Discount;
 
 namespace Infra.Data.Context;
 
@@ -116,6 +117,13 @@ public class ApplicationDbContext : DbContext
     public DbSet<Notification> Notifications { get; set; }
 
     public DbSet<UserNotification> UserNotifications { get; set; }
+
+    #endregion
+
+    #region Discount
+    public DbSet<Discount> Discounts { get; set; }
+    public DbSet<UserDiscount> UserDiscounts { get; set; }
+    public DbSet<ProductDiscount> ProductDiscounts { get; set; }
 
     #endregion
 }

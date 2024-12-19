@@ -13,7 +13,7 @@ namespace Domain.Shared
         {
             public List<T> Entities { get; set; }
             public int Skip { get; set; }
-            public int Page { get; set; }
+            public int Page { get; set; } = 1;
             public int PageCount { get; set; }
 
             public int TakeEntity { get; set; } = 10;
@@ -31,7 +31,7 @@ namespace Domain.Shared
         public class PagingViewModel
         {
             public int StartPage { get; set; } = 1;
-            public int Page { get; set; }
+            public int Page { get; set; } 
 
             public int EndPage { get; set; }
         }

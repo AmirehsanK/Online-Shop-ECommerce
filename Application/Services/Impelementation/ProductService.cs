@@ -159,6 +159,7 @@ namespace Application.Services.Impelementation
 
             return new ProductViewModel
             {
+                Id = product.Id,
                 ProductName = product.ProductName,
                 ShortDescription = product.ShortDescription,
                 Review = product.Review,
@@ -194,9 +195,24 @@ namespace Application.Services.Impelementation
             await _productRepository.SaveChangeAsync();
         }
         //TODO Update
-        public async Task UpdateProductAsync(Product product)
+        public async Task UpdateProductAsync(ProductViewModel product)
         {
-            await _productRepository.UpdateProduct(product);
+            var newProduct = await _productRepository.GetProductById(product.Id);
+            if (product.Image != null)
+            {
+                var title = Guid.NewGuid().ToString("N") + Path.GetExtension(product.Image.FileName);
+                product.ImageName.DeleteImage(PathTools.FileServerPath, null);
+                product.Image.AddImageToServer(title, PathTools.FileServerPath, null, null);
+                newProduct.ImageName = title;
+            }
+            newProduct.ProductName = product.ProductName;
+            newProduct.ShortDescription = product.ShortDescription;
+            newProduct.Review = product.Review;
+            newProduct.Price = product.Price;
+            newProduct.CategoryId = product.SubCategoryId;
+            newProduct.ExpertReview = product.ExpertReview;
+            newProduct.Inventory = product.Inventory;
+            _productRepository.UpdateProduct(newProduct);
             await _productRepository.SaveChangeAsync();
         }
 
@@ -205,7 +221,7 @@ namespace Application.Services.Impelementation
             var imageName = await _productRepository.GetProductById(productId);   
             imageName.ImageName.DeleteImage(PathTools.FilePath, null);
             imageName.IsDeleted = true;
-            await _productRepository.UpdateProduct(imageName);
+            _productRepository.UpdateProduct(imageName);
             await _productRepository.SaveChangeAsync();
         }
 

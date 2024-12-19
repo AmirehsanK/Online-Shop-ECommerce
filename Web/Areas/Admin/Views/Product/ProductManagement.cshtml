@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "مدیریت محصولات";
+}
+
+<div class="container mt-5">
+    <h3 class="text-center mb-4">مدیریت محصولات</h3>
+
+    <!-- بخش محصولات -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4>محصولات</h4>
+        </div>
+        <div class="card-body">
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    <a asp-action="AddProduct" asp-controller="Product" class="btn btn-success btn-block">افزودن محصول</a>
+                </div>
+                <div class="col-md-4">
+                    <a asp-action="ProductList" asp-controller="Product" class="btn btn-info btn-block">لیست محصولات</a>
+                </div>
+                <div class="col-md-4">
+                    <a asp-action="ShowProductGallery" asp-controller="Product" class="btn btn-warning btn-block">گالری محصولات</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- بخش رنگ محصولات -->
+    <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h4>رنگ محصولات</h4>
+        </div>
+        <div class="card-body">
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    <a asp-action="AddProductColor" asp-controller="ProductColor" class="btn btn-success btn-block">افزودن رنگ محصول</a>
+                </div>
+                <div class="col-md-4">
+                    <a asp-action="CreateColor" asp-controller="ProductColor" class="btn btn-info btn-block">ایجاد رنگ محصول</a>
+                </div>
+                <div class="col-md-4">
+                    <a asp-action="ColorList" asp-controller="ProductColor" class="btn btn-warning btn-block">لیست رنگ‌ها</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- بخش دسته‌بندی محصولات -->
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white">
+            <h4>دسته‌بندی محصولات</h4>
+        </div>
+        <div class="card-body">
+            <br />
+            <div class="row">
+                <div class="col-md-6">
+                    <a asp-action="BaseCategoryList" asp-controller="ProductCategory" class="btn btn-info btn-block">لیست دسته‌بندی‌ها</a>
+                </div>
+                <div class="col-md-6">
+                    <a asp-action="CreateBaseCategory" asp-controller="ProductCategory" class="btn btn-success btn-block">افزودن دسته‌بندی</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
