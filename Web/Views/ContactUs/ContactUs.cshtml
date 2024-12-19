@@ -2,6 +2,16 @@
     Layout = "_Layout";
 }
 @model Application.DTO.ContactMessageDto
+@inject IConfiguration configuration
+@{
+    var siteKey = configuration["ReCaptchaSettings:SiteKey"];
+}
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<script>
+    function onSubmit(token) {
+      document.getElementById("LoginForm_id").submit();
+    }
+</script>
 <div class="page-wrapper">
     <main class="page-content">
         <div class="container">
@@ -63,7 +73,14 @@
                                 <!-- end of form-element -->
                             </div>
                             <div class="col-12 text-end">
-                                <button type="submit" class="btn btn-primary px-4">ثبت و ارسال</button>
+                                <div class="btn btn-primary px-4">
+                                    <button class="g-recaptcha btn btn-primary"
+                                            data-sitekey="@siteKey"
+                                            data-callback='onSubmit'
+                                            data-action='submit'>
+                                        ثبت و ارسال
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </form>

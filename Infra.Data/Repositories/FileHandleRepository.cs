@@ -20,7 +20,7 @@ public class FileHandleRepository(ApplicationDbContext context) : IFileHandleRep
         await context.Banners.AddAsync(banner);
     }
 
-    public async Task DeleteImage(Banner banner)
+    public void DeleteImage(Banner banner)
     {
         context.Banners.Remove(banner);
     }
@@ -29,13 +29,19 @@ public class FileHandleRepository(ApplicationDbContext context) : IFileHandleRep
     {
         return await context.Banners.ToListAsync();
     }
-
+    public async Task<IEnumerable<Banner>> GetAllWorkingImagesAsync()
+    {
+        var currentTime = DateTime.UtcNow;
+        return await context.Banners
+            .Where(b => b.ExpirationDate == null || b.ExpirationDate > currentTime)
+            .ToListAsync();
+    }
     public async Task<Banner> GetImageAsync(string guid)
     {
         return await context.Banners.FirstOrDefaultAsync(x => x.Title == guid);
     }
 
-    public async Task UpdateImage(Banner banner)
+    public void UpdateImage(Banner banner)
     {
         context.Banners.Update(banner);
     }
@@ -49,7 +55,7 @@ public class FileHandleRepository(ApplicationDbContext context) : IFileHandleRep
         await context.BannerFix.AddAsync(banner);
     }
 
-    public async Task DeleteFixedImage(BannerFix banner)
+    public void DeleteFixedImage(BannerFix banner)
     {
         context.BannerFix.Remove(banner);
     }
@@ -64,7 +70,7 @@ public class FileHandleRepository(ApplicationDbContext context) : IFileHandleRep
         return await context.BannerFix.FirstOrDefaultAsync(x => x.Title == guid);
     }
 
-    public async Task UpdateFixedImage(BannerFix banner)
+    public void UpdateFixedImage(BannerFix banner)
     {
         context.BannerFix.Update(banner);
     }

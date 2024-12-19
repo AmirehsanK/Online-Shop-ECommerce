@@ -125,7 +125,7 @@ namespace Application.Services.Impelementation
             await _userRepository.SaveChangesAsync();
         }
 
-        public async Task<bool> ComparePasswordAsync(string hashedPassword, string providedPassword)
+        public bool ComparePasswordAsync(string hashedPassword, string providedPassword)
         {
             return PasswordHasher.VerifyHashedPassword(hashedPassword, providedPassword);
         }

@@ -1,4 +1,5 @@
-﻿using Application.Services.Interfaces;
+﻿using Application.Security;
+using Application.Services.Interfaces;
 using Domain.ViewModel.Product.CategoryAdmin;
 using Domain.ViewModel.Product.Product;
 using Domain.ViewModel.Product.ProductGallery;
@@ -21,6 +22,11 @@ namespace Web.Areas.Admin.Controllers
         }
 
         #endregion
+
+        public IActionResult ProductManagement()
+        {
+            return View();
+        }
 
         #region Product
 
@@ -82,10 +88,48 @@ namespace Web.Areas.Admin.Controllers
             return View(products);
         }
         [HttpGet]
-        public async Task<IActionResult> ProductDetails(int productid)
+        public async Task<IActionResult> UpdateProduct(int Productid)
         {
-            var product=await _productService.GetProductByIdAsync(productid);
+            var categories = await _productService.GetAllSubCategories();
+
+            ViewData["Category"] = new ProductViewModel
+            {
+                SubCategories = categories
+                .Where(c => c.ParentId != null)
+                .Select(c => new CategoryListViewModel
+                {
+                    Title = c.Title
+                      ,
+                    CategoryId = c.CategoryId
+                })
+                    .ToList(),
+            };
+            var product=await _productService.GetProductByIdAsync(Productid);
             return View(product);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateProduct(ProductViewModel model)
+        {
+            if (model.ProductName == null || model.ShortDescription == null)
+            {
+
+                var categories = await _productService.GetAllCategories(null);
+                model = new ProductViewModel
+                {
+                    SubCategories = categories
+                    .Where(c => c.ParentId != null)
+                    .Select(c => new CategoryListViewModel
+                    {
+                        Title = c.Title
+                    })
+                        .ToList(),
+                };
+                TempData[ErrorMessage] = "ویرایش محصول با مشکل مواجه شد";
+                return View(model);
+            }
+            await _productService.UpdateProductAsync(model);
+            TempData[SuccessMessage] = "محصول با موفقیت ویرایش شد";
+            return RedirectToAction("ProductList");
         }
         #endregion
 
@@ -123,8 +167,33 @@ namespace Web.Areas.Admin.Controllers
             await _galleryService.AddProductGalleries(model);
             return View();
         }
+        [HttpPost("UploadCkeditorImage")]
+        public async Task<JsonResult> UploadCkeditorImage(IFormFile upload)
+        {
+            if (upload.Length <= 0 || !upload.IsImage()) { return null; }
 
-        
+            string fileName = Guid.NewGuid() +
+                  Path.GetExtension(upload.FileName).ToLower();
+
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/docs/images/ckeditor");
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            path = Path.Combine(path, fileName);
+
+            using (FileStream stream = new(path, FileMode.Create))
+            {
+                await upload.CopyToAsync(stream);
+            }
+
+            string url = $"{"/docs/images/ckeditor/"}{fileName}";
+
+            return Json(new { uploaded = true, url });
+        }
+
         #endregion
     }
 }

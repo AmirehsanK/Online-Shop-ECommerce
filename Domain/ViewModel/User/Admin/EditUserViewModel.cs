@@ -24,7 +24,7 @@ namespace Domain.ViewModel.User.Admin
         [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر داشته باشد")]
         [DataType(DataType.EmailAddress, ErrorMessage = "ایمیل وارد شده معتبر نمیباشد")]
 
-        public string Email { get; set; }
+        public required string Email { get; set; }
 
         [Display(Name = "کلمه عبور")]
         [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر داشته باشد")]
@@ -38,9 +38,10 @@ namespace Domain.ViewModel.User.Admin
 
         [Display(Name = "ادرس")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         [MaxLength(11)]
-        public string PhoneNumber { get; set; }
+        [Required]
+        public required string PhoneNumber { get; set; }
     }
 }

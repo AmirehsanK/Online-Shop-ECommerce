@@ -14,7 +14,7 @@ namespace Web.ViewComponents.SliderViewComponent
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var images =await _fileHandleService.GetAllBanner();
+            var images =await _fileHandleService.GetAllWorkingBanner();
             return View(images);
         }
     }

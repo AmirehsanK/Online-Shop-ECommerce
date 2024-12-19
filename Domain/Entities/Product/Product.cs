@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Entities.Common;
+using Domain.Entities.Discount;
 
 namespace Domain.Entities.Product
 {
@@ -35,6 +36,7 @@ namespace Domain.Entities.Product
 
         public ICollection<ProductSpecification> ProductSpecifications { get; set; }
 
+        public ICollection<ProductDiscount> ProductDiscount { get; set; }
 
         #endregion
     }

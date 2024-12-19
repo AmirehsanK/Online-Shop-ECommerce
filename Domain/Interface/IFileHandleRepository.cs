@@ -11,13 +11,15 @@ public interface IFileHandleRepository
 
     Task AddImageAsync(Banner banner);
 
-    Task DeleteImage(Banner banner);
+    void DeleteImage(Banner banner);
 
     Task<IEnumerable<Banner>> GetAllImagesAsync();
 
+    Task<IEnumerable<Banner>> GetAllWorkingImagesAsync();
+
     Task<Banner> GetImageAsync(string guid);
 
-    Task UpdateImage(Banner banner);
+    void UpdateImage(Banner banner);
 
     #endregion
 
@@ -25,13 +27,13 @@ public interface IFileHandleRepository
 
     Task AddFixedImageAsync(BannerFix banner);
 
-    Task DeleteFixedImage(BannerFix banner);
+    void DeleteFixedImage(BannerFix banner);
 
     Task<IEnumerable<BannerFix>> GetAllFixedImagesAsync();
 
     Task<BannerFix> GetFixedImageAsync(string guid);
 
-    Task UpdateFixedImage(BannerFix banner);
+    void UpdateFixedImage(BannerFix banner);
     
     Task<BannerFix> GetFixedImageByPositionAsync(ImageEnum.Banner position);
 

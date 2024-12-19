@@ -68,7 +68,7 @@ public class HomeController : UserPanelBaseController
         var user = await _userService.GetUsersByIDAsync(currentUserId);
 
 
-        if (!await _userService.ComparePasswordAsync(user.Password, changePassword.OldPassword))
+        if (!_userService.ComparePasswordAsync(user.Password, changePassword.OldPassword))
         {
             ModelState.AddModelError("oldPassword", "کلمه عبور فعلی صحیح نمیباشد");
             return View(changePassword);

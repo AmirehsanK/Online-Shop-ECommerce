@@ -13,7 +13,7 @@ namespace Application.Services.Interfaces
 
         Task<bool> IsPasswordCorrectAsync(string email, string password);
 
-        Task<bool> ComparePasswordAsync(string hashedPassword, string providedPassword);
+        bool ComparePasswordAsync(string hashedPassword, string providedPassword);
 
         Task ChangePasswordAsync(int userId, string newPassword);
 

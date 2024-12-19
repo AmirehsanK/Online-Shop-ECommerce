@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Data.Repositories
 {
-    public class ProductRepository:IProductRepository
+    public class ProductRepository : IProductRepository
     {
         #region Ctor
 
@@ -103,6 +103,7 @@ namespace Infra.Data.Repositories
             await filter.Paging(query.Select(p => new ProductViewModel()
             {
                 ImageName = p.ImageName,
+                Id  = p.Id , 
                 Inventory = p.Inventory,
                 ProductName = p.ProductName,
                 SubCategoryTitle = p.Category.Title,
@@ -121,14 +122,14 @@ namespace Infra.Data.Repositories
            await _context.AddAsync(product);
         }
 
-        public async Task UpdateProduct(Product product)
+        public void UpdateProduct(Product product)
         {
             _context.Update(product);
         }
-        //TODO
-        public async Task DeleteProduct(int ProductId)
+
+        public void DeleteProduct(Product product)
         {
-            
+            _context.Update(product);
         }
 
         #endregion
