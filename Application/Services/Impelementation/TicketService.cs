@@ -110,7 +110,7 @@ namespace Application.Services.Impelementation
                 Message = u.Text,
                 FileName = u.FileName,
                 SenderId = u.SenderId
-                
+
             }).ToList();
 
 
@@ -222,6 +222,7 @@ namespace Application.Services.Impelementation
             _ticketRepository.UpdateTicketAsync(ticket);
             await _ticketRepository.SaveChangeAsync();
         }
+
 
         #endregion
 

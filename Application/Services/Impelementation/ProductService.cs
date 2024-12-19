@@ -36,6 +36,7 @@ namespace Application.Services.Impelementation
             {
                 CreateDate = DateTime.Now,
                 IsDeleted = false,
+
                
                 Title = model.Title,
             };
@@ -87,12 +88,15 @@ namespace Application.Services.Impelementation
 
         public async Task AddSubCategory(SubCategoryViewModel model)
         {
+            var category = await _productRepository.GetBaseCategory(model.ParentId);
             var subCategory = new ProductCategory()
             {
                 CreateDate = DateTime.Now,
                 Title = model.Title,
                 IsDeleted = false,
-                ParentId = model.ParentId
+                ParentId = model.ParentId,
+                
+                
             };
             await _productRepository.AddCategoryAsync(subCategory);
             await _productRepository.SaveChangeAsync();

@@ -31,6 +31,9 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<ProductColor> ProductColors { get; set; }
 
+    public DbSet<ProductSpecification> ProductSpecifications { get; set; }
+
+    public DbSet<ProductSpecificationValues> ProductSpecificationValuesEnumerable { get; set; }
     #endregion
 
     //For Conflict relation

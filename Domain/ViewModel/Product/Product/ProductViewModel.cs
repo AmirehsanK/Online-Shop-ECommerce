@@ -54,6 +54,9 @@ namespace Domain.ViewModel.Product.Product
     {
         public int? Inventory { get; set; }
 
+        public int? StartPrice { get; set; }
+
+        public int? EndPrice { get; set; }
         public string? SubCategoryTitle { get; set; }
         public int? Price { get; set; }
 

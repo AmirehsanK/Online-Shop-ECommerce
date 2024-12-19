@@ -93,8 +93,16 @@ namespace Infra.Data.Repositories
             if (filter.Price.HasValue) {
                 query = query.Where(_ => _.ProductName.Contains(filter.ProductName.Trim()));
             }
+            if (filter.StartPrice != null)
+                query = query.Where(p => p.Price >= filter.StartPrice);
+
+            if (filter.EndPrice != null)
+                query = query.Where(p => p.Price <= filter.EndPrice);
+            if (!string.IsNullOrEmpty(filter.SubCategoryTitle))
+                query = query.Where(u => u.Category.Title == filter.SubCategoryTitle);
             await filter.Paging(query.Select(p => new ProductViewModel()
             {
+                ImageName = p.ImageName,
                 Inventory = p.Inventory,
                 ProductName = p.ProductName,
                 SubCategoryTitle = p.Category.Title,
