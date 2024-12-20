@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Entities.Ticket;
 using Domain.ViewModel.Ticket;
 using Domain.ViewModel.Ticket.Admin;
 
@@ -23,6 +24,8 @@ namespace Application.Services.Interfaces
         Task AddMessageToCurrentTicketFromAdmin(TicketDetailViewModel model, int ticketid, int userId);
 
         Task CloseTicket(int ticketid);
+
+
 
     }
 }

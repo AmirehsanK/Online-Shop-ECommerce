@@ -5,8 +5,10 @@ using Application.Services.Impelementation;
 using Application.Services.Interfaces;
 using Domain.Interface;
 using Infra.Data.Repositories;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+
 
 namespace IOC.DiContainer;
 
@@ -22,8 +24,10 @@ public static class DiContainer
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IFileHandleRepository, FileHandleRepository>();
         services.AddScoped<IDiscountRepository, DiscountRepository>();
-        services.AddScoped<IProductRepository,ProductRepository>();
-        services.AddScoped<IFaqRepository,FaqRepository>();
+        services.AddScoped<IProductSpecificationRepository, ProductSpecificationRepository>();
+
+        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IFaqRepository, FaqRepository>();
         services.AddScoped<IProductGalleryRepository, ProductGalleryRepository>();
         services.AddScoped<INotificationRepository, NotificationRepository>();
         services.AddScoped<IProductColorRepository, ProductColorRepository>();
@@ -40,9 +44,15 @@ public static class DiContainer
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IFaqService, FaqService>();
         services.AddScoped<IDiscountService, DiscountService>();
+
         services.AddScoped<IProductGalleryService, ProductGalleryService>();
         services.AddScoped<IProductColorService, ProductColorService>();
+        services.AddScoped<IProductSpecificationService, ProductSpecificationService>();
         #endregion
+
+
+
+
 
         services.AddSingleton<HtmlEncoder>(
             HtmlEncoder.Create(new[]

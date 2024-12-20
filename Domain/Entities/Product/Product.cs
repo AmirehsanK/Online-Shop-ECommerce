@@ -34,6 +34,8 @@ namespace Domain.Entities.Product
 
         public ICollection<ProductColor> ProductColors { get; set; }
 
+        public ICollection<ProductSpecification> ProductSpecifications { get; set; }
+
         public ICollection<ProductDiscount> ProductDiscount { get; set; }
 
         #endregion

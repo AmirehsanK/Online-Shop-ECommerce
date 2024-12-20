@@ -1,0 +1,73 @@
+﻿@model Domain.Shared.Paging.PagingViewModel
+@* <ul class="pagination">
+    @if (Model.Page != 1)
+    {
+        <li>
+            <a onclick="FillPageNumber(@(Model.Page-1))">قبلی</a>
+        </li>
+    }
+    @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+    {
+        <li class="@(Model.Page == i ? "active" : "")">
+            <a onclick="FillPageNumber(@i)">@i</a>
+        </li>
+    }
+    @if (Model.EndPage != Model.Page)
+    {
+        <li>
+            <a onclick="FillPageNumber(@(Model.Page + 1))">بعدی</a>
+        </li>
+    }
+</ul>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <!-- Previous Page -->
+        @if (Model.Page != 1)
+        {
+            <li class="page-item disabled">
+                <a onclick="FillPageNumber(@(Model.Page-1))" class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a>
+            </li>
+        }
+        @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+        {
+            <li class="@(Model.Page == i ? "active" : "")">
+                <a onclick="FillPageNumber(@i)">@i</a>
+            </li>
+        }
+        @if (Model.EndPage != Model.Page)
+        {
+            <!-- Next Page -->
+            <li class="page-item">
+                <a onclick="FillPageNumber(@(Model.Page + 1)) class="page-link" href="#">&raquo;</a>
+            </li>
+        }
+    </ul>
+</nav> *@
+<nav class="border-top py-4">
+    <!-- start of pagination -->
+    <ul class="pagination justify-content-center fa-num">
+    @if (Model.Page != 1)
+    {
+        <li class="page-item">
+                <a onclick="FillPageNumber(@(Model.Page-1))"  class="page-link" aria-label="Previous">
+                <i class="ri-arrow-right-s-line"></i>
+            </a>
+        </li>
+    }
+    @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+    {
+            <li class="@(Model.Page == i ? "active" : "")" class="page-item"><a onclick="FillPageNumber(@i)" class="page-link">@i</a></li>
+
+    }
+    @if (Model.EndPage != Model.Page)
+    {
+        <li class="page-item">
+                <a onclick="FillPageNumber(@(Model.Page + 1))" class="page-link" href="#" aria-label="Next">
+                <i class="ri-arrow-left-s-line"></i>
+            </a>
+        </li>
+    }
+    </ul>
+    <!-- end of pagination -->
+</nav>
