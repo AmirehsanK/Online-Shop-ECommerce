@@ -1,0 +1,31 @@
+﻿@model List<Domain.ViewModel.Discount.DiscountViewModel>
+
+<h1>لیست تخفیف‌ها</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>کد</th>
+            <th>نوع</th>
+            <th>مقدار</th>
+            <th>فعال</th>
+            <th>عملیات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var discount in Model)
+        {
+            <tr>
+                <td>@discount.Code</td>
+                <td>@(discount.IsPercentage ? "درصدی" : "مقدار ثابت")</td>
+                <td>@discount.Value</td>
+                <td>@(discount.IsActive.HasValue && discount.IsActive.Value ? "بله" : "خیر")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@discount.Id">ویرایش</a> |
+                    <a asp-action="Delete" asp-route-id="@discount.Id">حذف</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Add" class="btn btn-primary">اضافه کردن تخفیف</a>

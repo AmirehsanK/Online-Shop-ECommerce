@@ -21,7 +21,7 @@ public static class DiContainer
         services.AddScoped<IContactUsRepository, ContactUsRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IFileHandleRepository, FileHandleRepository>();
-
+        services.AddScoped<IDiscountRepository, DiscountRepository>();
         services.AddScoped<IProductRepository,ProductRepository>();
         services.AddScoped<IFaqRepository,FaqRepository>();
         services.AddScoped<IProductGalleryRepository, ProductGalleryRepository>();
@@ -39,7 +39,7 @@ public static class DiContainer
         services.AddSingleton<IAuthorizationHandler, AdminHandler>();
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IFaqService, FaqService>();
-    
+        services.AddScoped<IDiscountService, DiscountService>();
         services.AddScoped<IProductGalleryService, ProductGalleryService>();
         services.AddScoped<IProductColorService, ProductColorService>();
         #endregion

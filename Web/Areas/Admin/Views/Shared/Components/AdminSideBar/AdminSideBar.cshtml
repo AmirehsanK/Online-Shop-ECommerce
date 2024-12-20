@@ -73,6 +73,23 @@
                     </a>
                 </li>
             </ul>
+        </li><li class="menu-item active open">
+            <a class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="مدیریت تخفیفات"></div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item active">
+                    <a asp-area="Admin" asp-controller="Discount" asp-action="DiscountList" class="menu-link">
+                        <div data-i18n="لیست تخفیفات"></div>
+                    </a>
+                </li>
+                <li class="menu-item active">
+                    <a asp-area="Admin" asp-controller="Discount" asp-action="AddDiscount" class="menu-link">
+                        <div data-i18n="افزودن تخفیف جدید"></div>
+                    </a>
+                </li>
+            </ul>
         </li>
 
         <!-- Layouts -->
