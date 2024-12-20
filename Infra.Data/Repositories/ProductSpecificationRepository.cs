@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Domain.Entities.Product;
 using Domain.Interface;
 using Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Data.Repositories
 {
@@ -35,6 +36,12 @@ namespace Infra.Data.Repositories
         public void UpdateSpecification(ProductSpecification productSpecification)
         {
             _context.ProductSpecifications.Update(productSpecification);
+        }
+
+        public async Task<List<ProductSpecificationValues>> GetSpecificationAsync(int productId)
+        {
+            return await _context.ProductSpecificationValuesEnumerable.Include(u => u.ProductSpecification)
+                .Where(u => u.ProductSpecification.ProductId == productId).ToListAsync();
         }
 
         public async Task SaveChangeAsync()

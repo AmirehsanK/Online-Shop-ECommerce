@@ -1,0 +1,33 @@
+﻿@model List<Domain.ViewModel.Product.ProductSpecification.ShowProductSpecificationViewModel>
+@{
+    ViewData["Title"] = "مشخصات محصول";
+}
+
+<div class="card">
+    <h5 class="card-header">Table Dark</h5>
+    <div class="table-responsive text-nowrap">
+        <table class="table table-dark">
+            <thead>
+                <tr>
+
+                    <th>عنوان</th>
+                    <th>مقدار</th>
+
+
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+
+                        <td>@item.Title</td>
+                        <td>@string.Join(",",@item.Values.Split())</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,6 +1,7 @@
 ﻿using Application.Services.Interfaces;
 using Domain.ViewModel.Product.ProductSpecification;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace Web.Areas.Admin.Controllers
 {
@@ -17,8 +18,10 @@ namespace Web.Areas.Admin.Controllers
 
         #endregion
 
+        #region AddNewSpecificationForProduct
+
         [HttpGet]
-        public IActionResult AddNewSpecification()
+        public IActionResult AddNewSpecification(int productId)
         {
             return View();
         }
@@ -35,9 +38,29 @@ namespace Web.Areas.Admin.Controllers
 
             #endregion
 
-            await _productSpecificationService.AddNewSpecification(productSpecification);
+            var list = new List<string>(productSpecification.Values.Split(","));
+           
 
-            return View();
+            await _productSpecificationService.AddNewSpecification(productSpecification,list);
+            ViewBag.Referer = HttpContext.Request.Headers.Referer;
+            TempData[SuccessMessage] = $"@{productSpecification.Title}به محصول اضافه شد";
+            return Redirect(ViewBag.Referer);
         }
+
+        #endregion
+
+        #region ShowProductSpecification
+
+
+        [HttpGet]
+        public async Task<IActionResult> ShowProductSpecification(int productid)
+        {
+            var model = await _productSpecificationService.GetProductSpecificationList(productid);
+            return View(model);
+        }
+
+
+        #endregion
+
     }
 }

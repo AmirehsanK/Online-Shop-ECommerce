@@ -34,6 +34,7 @@
                         <a asp-action="UpdateProduct" asp-area="Admin" asp-controller="Product" asp-route-Productid="@product.Id" class="btn btn-info btn-sm">مشاهده جزئیات</a>
                         <a asp-area="Admin" asp-controller="Product" asp-action="ShowProductGallery" asp-route-Productid="@product.Id" class="btn btn-warning btn-sm">مشاهده گالری محصول</a>
                         <a asp-controller="ProductColor" asp-area="Admin" asp-action="AddProductColor" asp-route-productId="@product.Id" class="btn btn-success btn-sm">افزودن رنگ به محصول</a>
+                        <a asp-controller="ProductSpecification" asp-area="Admin" asp-action="AddNewSpecification" asp-route-productId="@product.Id" class="btn btn-instagram btn-sm">افزودن مشخصات به محصول</a>
 
                     </td>
                 </tr>

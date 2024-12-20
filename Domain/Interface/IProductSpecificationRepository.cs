@@ -15,6 +15,8 @@ namespace Domain.Interface
 
         void UpdateSpecification(ProductSpecification productSpecification);
 
+        Task<List<ProductSpecificationValues>> GetSpecificationAsync(int productId);
+
 
         Task SaveChangeAsync();
     }
