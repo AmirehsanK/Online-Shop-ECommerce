@@ -155,6 +155,30 @@ namespace Application.Services.Impelementation
 
             return products;
         }
+        public async Task<List<ProductViewModel>> GetAllProductsNoFilter()
+        {
+
+            var products = await _productRepository.GetAllProductsNoFilterAsync();
+
+            return products
+                .Where(p => !p.IsDeleted)
+                .Select(p => new ProductViewModel
+                {
+                    Id = p.Id,
+                    ProductName = p.ProductName,
+                    ShortDescription = p.ShortDescription,
+                    Review = p.Review,
+                    ExpertReview = p.ExpertReview,
+                    ImageName = p.ImageName,
+                    Price = p.Price,
+                    Inventory = p.Inventory,
+                    SubCategoryId = p.CategoryId,
+                    SubCategoryTitle = p.Category.Title,
+                    ProductGalleries = p.ProductGalleries
+                })
+                .ToList();
+
+        }
 
         public async Task<ProductViewModel> GetProductByIdAsync(int productId)
         {
@@ -176,7 +200,27 @@ namespace Application.Services.Impelementation
                 , IsDeleted = product.IsDeleted
             };
         }
-
+        public async Task<List<ProductViewModel>> GetProductsByCategoryAsync(int categoryId)
+        {
+            var products= await _productRepository.GetProductsByCategoryAsync (categoryId);
+            return products
+                .Where(p => !p.IsDeleted)
+                .Select(p => new ProductViewModel
+                {
+                    Id = p.Id,
+                    ProductName = p.ProductName,
+                    ShortDescription = p.ShortDescription,
+                    Review = p.Review,
+                    ExpertReview = p.ExpertReview,
+                    ImageName = p.ImageName,
+                    Price = p.Price,
+                    Inventory = p.Inventory,
+                    SubCategoryId = p.CategoryId,
+                    SubCategoryTitle = p.Category.Title,
+                    ProductGalleries = p.ProductGalleries
+                })
+                .ToList();
+        }
         public async Task AddProductAsync(AddProductViewModel model)
         {
             var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(model.Image.FileName);
@@ -198,7 +242,6 @@ namespace Application.Services.Impelementation
             await _productRepository.AddProductAsync(product);
             await _productRepository.SaveChangeAsync();
         }
-        //TODO Update
         public async Task UpdateProductAsync(ProductViewModel product)
         {
             var newProduct = await _productRepository.GetProductById(product.Id);

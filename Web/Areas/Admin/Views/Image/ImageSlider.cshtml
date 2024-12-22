@@ -62,11 +62,11 @@
                                 }
                             </td>
                             <td>
-                                <a asp-action="Details" asp-route-Title="@banner.Title" class="btn btn-sm btn-warning">ویرایش</a>
+                                    <a asp-action="Details" asp-route-Title="@banner.Title" class="btn m-1 btn-sm btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
                                 <form asp-action="Delete" asp-route-title="@banner.Title" method="post" class="d-inline">
-                                    <button type="submit" class="btn btn-sm btn-danger"
+                                    <button type="submit" class="btn m-1 btn-sm btn-danger"
                                             onclick="return confirm('ایا از حذف محصول اطمنینان دارید؟');">
-                                        حذف
+                                            <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </form>
                             </td>

@@ -1,0 +1,63 @@
+﻿@model Domain.ViewModel.Discount.DiscountProductViewModel
+
+<h2>اختصاص تخفیف به محصولات</h2>
+
+<form asp-action="AssignDiscountToProducts" asp-controller="Discount" asp-area="Admin" method="post">
+    <input asp-for="DiscountId" type="hidden" name="discountId" value="@Model.DiscountId" />
+
+@*     <!-- Category Filter -->
+    <div class="form-group">
+        <label for="categoryFilter">فیلتر دسته‌بندی</label>
+        <select id="categoryFilter" class="form-control" onchange="filterProducts(this.value)">
+            <option value="">همه دسته‌ها</option>
+            @foreach (var category in Model.Categories)
+            {
+                <option value="@category.Value">@category.Text</option>
+            }
+        </select>
+    </div>
+ *@
+    <!-- Products List -->
+    <div id="productList">
+        <h3>لیست محصولات</h3>
+        @foreach (var product in Model.Products)
+        {
+            <div class="form-check">
+                <input  type="checkbox" class="form-check-input" name="ProductIds" value="@product.Value"
+                @(Model.SelectedProductIds.Contains(int.Parse(product.Value)) ? "checked" : "") />
+                <label class="form-check-label">@product.Text</label>
+            </div>
+        }
+    </div>
+    <button type="submit" class="btn btn-success mt-3">ذخیره تغییرات</button>
+</form>
+@* 
+@section Scripts {
+    <script>
+        function filterProducts(categoryId) {
+            $.ajax({
+                url: '@Url.Action("GetProductsByCategory", "Discount", new { area = "Admin" })',
+                type: 'GET',
+                data: { categoryId: categoryId },
+                success: function (response) {
+                    // Clear the current product list
+                    $("#productList").empty();
+
+                    // Add the filtered products
+                    response.forEach(product => {
+                        const isChecked = product.isSelected ? 'checked' : '';
+                        const productHtml = `
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="userIds" value="${product.value}" ${isChecked} />
+                                <label class="form-check-label">${product.text}</label>
+                            </div>`;
+                        $("#productList").append(productHtml);
+                    });
+                },
+                error: function () {
+                    alert("خطا در دریافت لیست محصولات");
+                }
+            });
+        }
+    </script>
+} *@

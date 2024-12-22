@@ -33,9 +33,12 @@ namespace Domain.Interface
         #region Product
         Task<FilterProductViewModel> GetProductsAsync(FilterProductViewModel pagingModel);
         Task<Product> GetProductById(int ProductId);
+        Task<List<Product>> GetAllProductsNoFilterAsync();
         Task AddProductAsync(Product product);
         void UpdateProduct(Product product);
         void DeleteProduct(Product product);
+
+        Task<List<Product>> GetProductsByCategoryAsync(int categoryId);
 
         #endregion
     }

@@ -55,7 +55,7 @@ public class UserController : AdminBaseController
     #region CreateUser
 
     [HttpGet]
-    public async Task<IActionResult> CreateUser()
+    public IActionResult CreateUser()
     {
         return View();
     }

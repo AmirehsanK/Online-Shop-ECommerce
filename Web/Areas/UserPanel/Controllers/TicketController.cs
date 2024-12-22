@@ -37,7 +37,7 @@ public class TicketController : UserPanelBaseController
     #region َAddTicket
 
     [HttpGet]
-    public async Task<IActionResult> AddTicket()
+    public IActionResult AddTicket()
     {
         return View();
     }

@@ -30,7 +30,7 @@ namespace Web.Areas.Admin.Controllers
         #region AddFaqCategory
 
         [HttpGet]
-        public async Task<IActionResult> AddFaqCategory()
+        public IActionResult AddFaqCategory()
         {
 
             return View();

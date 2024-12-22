@@ -22,7 +22,7 @@ public class ImageController : AdminBaseController
         return View(banners);
     }
     [HttpGet]
-    public async Task<IActionResult> AddBanner()
+    public IActionResult AddBanner()
     {
         return View();
     }
@@ -70,7 +70,7 @@ public class ImageController : AdminBaseController
         return View(banners);
     }
     [HttpGet]
-    public async Task<IActionResult> AddFixedBanner()
+    public IActionResult AddFixedBanner()
     {
         return View();
     }
