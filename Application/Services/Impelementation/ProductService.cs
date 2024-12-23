@@ -3,6 +3,7 @@
 using Application.Extention;
 using Application.Services.Interfaces;
 using Application.Tools;
+using Domain.Entities.Discount;
 using Domain.Entities.Product;
 using Domain.Enums;
 using Domain.Interface;
@@ -10,7 +11,9 @@ using Domain.Shared;
 using Domain.ViewModel.Product.CategoryAdmin;
 using Domain.ViewModel.Product.Product;
 using Infra.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Application.Services.Impelementation
 {
@@ -20,11 +23,13 @@ namespace Application.Services.Impelementation
 
         private readonly IProductRepository _productRepository;
         private readonly IProductGalleryRepository _productGalleryRepository;
+        private readonly IDiscountRepository _discountRepository;
 
-        public ProductService(IProductRepository productRepository, IProductGalleryRepository productGalleryRepository)
+        public ProductService(IProductRepository productRepository, IProductGalleryRepository productGalleryRepository, IDiscountRepository discountRepository)
         {
             _productRepository = productRepository;
             _productGalleryRepository = productGalleryRepository;
+            _discountRepository = discountRepository;
         }
 
         #endregion
@@ -148,12 +153,94 @@ namespace Application.Services.Impelementation
 
         #region Product
 
-        public async Task<FilterProductViewModel> GetAllProductsAsync(FilterProductViewModel product)
+        public async Task<FilterProductViewModel> GetAllProductsAsync(FilterProductViewModel filter)
         {
 
-            var products = await _productRepository.GetProductsAsync(product);
+            var query = _productRepository.GetProducts();
 
-            return products;
+            if (filter.Inventory.HasValue)
+            {
+                query = query.Where(_ => _.Inventory == filter.Inventory);
+            }
+            if (!string.IsNullOrEmpty(filter.ProductName))
+            {
+                query = query.Where(_ => _.ProductName.Contains(filter.ProductName.Trim()));
+            }
+            if (filter.Price.HasValue)
+            {
+                query = query.Where(_ => _.ProductName.Contains(filter.ProductName.Trim()));
+            }
+            if (filter.StartPrice != null)
+                query = query.Where(p => p.Price >= filter.StartPrice);
+
+            if (filter.EndPrice != null)
+                query = query.Where(p => p.Price <= filter.EndPrice);
+            if (!string.IsNullOrEmpty(filter.SubCategoryTitle))
+                query = query.Where(u => u.Category.Title == filter.SubCategoryTitle);
+            var activeDiscounts = await _discountRepository.GetActiveDiscounts();
+            var products = await query.ToListAsync(); 
+
+            var productViewModels = new List<ProductViewModel>();
+
+            foreach (var product in products)
+            {
+                var productDiscount = await _discountRepository.GetHighestDiscountForProductAsync(product.Id);
+
+                var discount = productDiscount != null
+                    ? activeDiscounts.FirstOrDefault(d =>
+                        d.Id == productDiscount.Id &&
+                        (!d.StartDate.HasValue || d.StartDate <= DateTime.UtcNow) &&
+                        (!d.EndDate.HasValue || d.EndDate >= DateTime.UtcNow))
+                    : null;
+
+                var offPrice = discount != null
+                    ? discount.IsPercentage
+                        ? product.Price * (1 - (discount.Value / 100.0))
+                        : product.Price - discount.Value
+                    : 0;
+
+                productViewModels.Add(new ProductViewModel
+                {
+                    ImageName = product.ImageName,
+                    Id = product.Id,
+                    Inventory = product.Inventory,
+                    ProductName = product.ProductName,
+                    SubCategoryTitle = product.Category.Title,
+                    Price = product.Price,
+                    OffPrice = (int)Math.Max(0, offPrice),
+                });
+            }
+
+            await filter.Paging(productViewModels.AsQueryable());
+
+            //await filter.Paging(query.Select(p =>
+            //{
+            //    var productDiscount = _discountRepository.GetHighestDiscountForProductAsync(p.Id);
+
+            //    var discount = productDiscount != null
+            //        ? activeDiscounts.FirstOrDefault(d =>
+            //            d.Id == productDiscount.Id &&
+            //            (!d.StartDate.HasValue || d.StartDate <= DateTime.UtcNow) &&
+            //            (!d.EndDate.HasValue || d.EndDate >= DateTime.UtcNow))
+            //        : null;
+
+            //    var offPrice = discount != null
+            //        ? discount.IsPercentage
+            //            ? p.Price * (1 - (discount.Value / 100.0))
+            //            : p.Price - discount.Value
+            //        : 0;
+            //    new ProductViewModel()
+            //    {
+            //        ImageName = p.ImageName,
+            //        Id = p.Id,
+            //        Inventory = p.Inventory,
+            //        ProductName = p.ProductName,
+            //        SubCategoryTitle = p.Category.Title,
+            //        Price = p.Price,
+            //        OffPrice = (int)(Math.Max(0, (double)offPrice)),
+            //    };
+            //}));
+            return filter;
         }
         public async Task<List<ProductViewModel>> GetAllProductsNoFilter()
         {

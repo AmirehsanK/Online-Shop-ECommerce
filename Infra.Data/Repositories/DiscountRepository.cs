@@ -28,6 +28,12 @@ namespace Infra.Data.Repositories
             return await _context.Discounts.FindAsync(id);
         }
 
+        public async Task<List<Discount>> GetActiveDiscounts()
+        {
+            return await _context.Discounts.Where(d => d.IsActive && !d.IsDeleted)
+                                            .ToListAsync();
+        }
+
         public async Task AddAsync(Discount discount)
         {
             await _context.Discounts.AddAsync(discount);
@@ -54,7 +60,20 @@ namespace Infra.Data.Repositories
         {
             return await _context.ProductDiscounts.Where(ud => ud.DiscountId == discountId).Select(ud => ud.ProductId).ToListAsync();
         }
+        public async Task<Discount?> GetHighestDiscountForProductAsync(int productId)
+        {
+            var activeDiscounts = await (from pd in _context.ProductDiscounts
+                                         join d in _context.Discounts on pd.DiscountId equals d.Id
+                                         where pd.ProductId == productId &&
+                                               d.IsActive &&
+                                               !d.IsDeleted &&
+                                               (!d.StartDate.HasValue || d.StartDate <= DateTime.UtcNow) &&
+                                               (!d.EndDate.HasValue || d.EndDate >= DateTime.UtcNow)
+                                         orderby d.IsPercentage descending, d.Value descending
+                                         select d).FirstOrDefaultAsync();
 
+            return activeDiscounts;
+        }
         public async Task AssignProductDiscountAsync(int productId, int discountId)
         {
             await _context.ProductDiscounts.AddAsync(new ProductDiscount() {

@@ -1,4 +1,5 @@
 using Application.Extention;
+using Application.Security;
 using Application.Services.Interfaces;
 using Application.Tools;
 using Domain.Entities.Images;
@@ -40,7 +41,7 @@ public class FileHandleService : IFileHandleService
         {
             Link = banner.Link,
             Title = banner.Title,
-            ExpirationDate = banner.ExpirationDate
+            ExpirationDate = banner.ExpirationDate?.ToShamsi().ToString()
         };
     }
 
@@ -69,7 +70,7 @@ public class FileHandleService : IFileHandleService
             CreateDate = DateTime.Now,
             IsDeleted = false,
             Link = banner.Link,
-            ExpirationDate = banner.ExpirationDate
+            ExpirationDate = banner.ExpirationDate.ToMiladiString(),
         });
         await _fileHandleRepository.SaveChangesAsync();
         return ImageEnum.Status.Success;
@@ -80,12 +81,14 @@ public class FileHandleService : IFileHandleService
         var existingBanner = await _fileHandleRepository.GetImageAsync(banner.Title);
         if (existingBanner == null)
             return ImageEnum.Status.Error;
-
-        var title = Guid.NewGuid().ToString("N") + Path.GetExtension(banner.Image.FileName);
-        banner.Image.AddImageToServer(title, PathTools.BannerServerPath, null, null);
-        banner.Title.DeleteImage(PathTools.BannerServerPath, null);
-        existingBanner.Title = title;
-        existingBanner.ExpirationDate= banner.ExpirationDate;
+        if (banner.Image != null)
+        {
+            var title = Guid.NewGuid().ToString("N") + Path.GetExtension(banner.Image.FileName);
+            banner.Image.AddImageToServer(title, PathTools.BannerServerPath, null, null);
+            banner.Title.DeleteImage(PathTools.BannerServerPath, null);
+            existingBanner.Title = title;
+        }
+        existingBanner.ExpirationDate= banner.ExpirationDate.ToMiladiString();
         existingBanner.Link = banner.Link;
         _fileHandleRepository.UpdateImage(existingBanner);
         await _fileHandleRepository.SaveChangesAsync();

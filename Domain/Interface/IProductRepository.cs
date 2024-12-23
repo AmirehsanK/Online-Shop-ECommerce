@@ -31,7 +31,7 @@ namespace Domain.Interface
         #endregion
 
         #region Product
-        Task<FilterProductViewModel> GetProductsAsync(FilterProductViewModel pagingModel);
+        public IQueryable<Product> GetProducts();
         Task<Product> GetProductById(int ProductId);
         Task<List<Product>> GetAllProductsNoFilterAsync();
         Task AddProductAsync(Product product);

@@ -24,8 +24,8 @@
                 <td>@(discount.IsPercentage ? "درصدی" : "مقدار ثابت")</td>
                 <td>@discount.Value</td>
                 <td>@discount.UsageLimit</td>
-                <td>@discount.StartDate?.ToShamsi()</td>
-                <td>@discount.EndDate?.ToShamsi()</td>
+                <td>@discount.StartDate?</td>
+                <td>@discount.EndDate?</td>
                 <td>@(discount.IsActive ? "بله" : "خیر")</td>
                 <td>
                     <a asp-action="AssignDiscountToUsers" asp-controller="Discount" asp-area="Admin" asp-route-Id="@discount.Id" class="btn m-1 btn-success"><i class="fa-solid fa-user-plus"></i></a>

@@ -1,6 +1,6 @@
 @model Domain.ViewModel.Image.BannerViewModel
 <head>
-    <title>اضافه کردن عکس</title>
+    <title>اضافه کردن عکس</title> 
 </head>
 
 <div class="container mt-5">
@@ -15,7 +15,7 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="ExpirationDate" class="form-label">تاریخ انقضا</label>
-                    <input asp-for="ExpirationDate" id="test-date-id" type="text" class="form-control" />
+                    <input asp-for="ExpirationDate" id="test-date-id" type="text" class="form-control persianDate" readonly />
                 </div>
                 <div class="mb-3">
                     <label asp-for="Link" class="form-label">لینک</label>

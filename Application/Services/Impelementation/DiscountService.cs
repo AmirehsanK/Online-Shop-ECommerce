@@ -1,12 +1,15 @@
 ﻿using Application.Services.Interfaces;
+using Application.Tools;
 using Domain.Entities.Discount;
 using Domain.Interface;
 using Domain.ViewModel.Discount;
+using Infra.Data.Migrations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Discount = Domain.Entities.Discount.Discount;
 
 namespace Application.Services.Impelementation
 {
@@ -28,8 +31,8 @@ namespace Application.Services.Impelementation
                 Code = d.Code,
                 IsPercentage = d.IsPercentage,
                 Value = d.Value,
-                StartDate = d.StartDate,
-                EndDate = d.EndDate,
+                StartDate = d.StartDate?.ToShamsi().ToString(),
+                EndDate = d.EndDate?.ToShamsi().ToString(),
                 IsActive = d.IsActive,
                 UsageLimit = d.UsageLimit,
                 IsDeleted=false
@@ -49,8 +52,8 @@ namespace Application.Services.Impelementation
                 ,IsDeleted = discount.IsDeleted,
                 IsPercentage = discount.IsPercentage,
                 Value = discount.Value,
-                StartDate = discount.StartDate,
-                EndDate = discount.EndDate,
+                StartDate = discount.StartDate?.ToShamsi().ToString(),
+                EndDate = discount.EndDate?.ToShamsi().ToString(),
                 IsActive = discount.IsActive,
                 UsageLimit = discount.UsageLimit
             };
@@ -66,8 +69,8 @@ namespace Application.Services.Impelementation
                 Code = viewModel.Code,
                 IsPercentage = viewModel.IsPercentage,
                 Value = viewModel.Value,
-                StartDate = viewModel.StartDate,
-                EndDate = viewModel.EndDate,
+                StartDate = viewModel.StartDate.ToMiladiString(),
+                EndDate = viewModel.EndDate.ToMiladiString(),
                 IsActive = viewModel.IsActive,
                 UsageLimit = viewModel.UsageLimit
             };
@@ -84,8 +87,8 @@ namespace Application.Services.Impelementation
             discount.Code = viewModel.Code;
             discount.IsPercentage = viewModel.IsPercentage;
             //discount.Value = viewModel.Value;
-            discount.StartDate = viewModel.StartDate;
-            discount.EndDate = viewModel.EndDate;
+            discount.StartDate = viewModel.StartDate.ToMiladiString();
+            discount.EndDate = viewModel.EndDate.ToMiladiString();
             discount.IsActive = (bool)viewModel.IsActive;
             discount.UsageLimit = viewModel.UsageLimit;
 

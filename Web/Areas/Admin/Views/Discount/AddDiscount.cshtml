@@ -34,14 +34,15 @@
     <!-- Start Date -->
     <div class="form-group mb-3">
         <label asp-for="StartDate" class="form-label"></label>
-        <input asp-for="StartDate" class="form-control" type="date" />
+        <input asp-for="StartDate" class="form-control persianDate" type="text" readonly/>
+
         <span asp-validation-for="StartDate" class="text-danger"></span>
     </div>
 
     <!-- End Date -->
     <div class="form-group mb-3">
         <label asp-for="EndDate" class="form-label"></label>
-        <input asp-for="EndDate" class="form-control" type="date" />
+        <input asp-for="EndDate" class="form-control persianDate" type="text" readonly/>
         <span asp-validation-for="EndDate" class="text-danger"></span>
     </div>
 

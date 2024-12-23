@@ -12,7 +12,7 @@ public class BannerViewModel
     
     [Required] public string Link { get; set; }
 
-    public DateTime? ExpirationDate { get; set; }
+    public string? ExpirationDate { get; set; }
     public IFormFile? Image { get; set; }
 }
 

@@ -27,10 +27,10 @@ namespace Domain.ViewModel.Discount
             public decimal Value { get; set; }
 
             [Display(Name = "تاریخ شروع")]
-            public DateTime? StartDate { get; set; }
+            public string? StartDate { get; set; }
 
             [Display(Name = "تاریخ پایان")]
-            public DateTime? EndDate { get; set; }
+            public string? EndDate { get; set; }
 
             [Display(Name = "وضعیت فعال بودن")]
             public bool IsActive { get; set; } = true;
