@@ -1,4 +1,5 @@
-﻿using Domain.ViewModel.Discount;
+﻿using Domain.Entities.Discount;
+using Domain.ViewModel.Discount;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,12 @@ namespace Application.Services.Interfaces
         Task<List<DiscountViewModel>> GetAllAsync();
         Task<DiscountViewModel?> GetByIdAsync(int id);
         Task AddAsync(DiscountViewModel viewModel);
-        Task UpdateAsync(int id, DiscountViewModel viewModel);
+        Task UpdateAsync(int id, DiscountEditViewModel viewModel);
         Task DeleteAsync(int id);
+
+        Task<List<int>> GetUserDiscount(int discountId);
+        Task<List<int>> GetProductDiscount(int discountId);
+        Task AssignProductDiscountAsync(List<int> productId, int discountId);
+        Task AssignUserDiscountAsync(List<int> userId, int discountId);
     }
 }

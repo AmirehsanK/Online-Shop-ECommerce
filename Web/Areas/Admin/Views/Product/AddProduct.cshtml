@@ -25,12 +25,12 @@
 
     <div class="form-group">
         <label asp-for="Review">نقد و بررسی</label>
-        <textarea asp-for="Review" name="Review" id="ReviewCk" class="form-control" rows="5"></textarea>
+        <textarea asp-for="Review" name="Review" id="ReviewCk" class="form-control ckeditor" rows="5"></textarea>
     </div>
 
     <div class="form-group">
         <label asp-for="ExpertReview">بررسی تخصصی</label>
-        <textarea asp-for="ExpertReview" id="ExpertReviewCk" name="ExpertReview" class="form-control" rows="5"></textarea>
+        <textarea asp-for="ExpertReview" id="ExpertReviewCk" name="ExpertReview" class="form-control ckeditor" rows="5"></textarea>
     </div>
 
     <div class="form-group">
@@ -51,74 +51,7 @@
 @section Scripts {
 
     <script>
-        CKEDITOR.replace('ReviewCk',  {
-                            image: {
-                                types: ['png', 'jpeg'],
-                                upload: {
-                                    types: ['png', 'jpeg'],
-                                    minimumSize: 10
-                                }
-                            },
-                            toolbar: {
-                                items: [
-                                    'heading',
-                                    '|',
-                                    'bold',
-                                    'italic',
-                                    'underline',
-                                    'blockQuote',
-                                    'link',
-                                    '|',
-                                    'fontColor',
-                                    'fontSize',
-                                    '|',
-                                    'alignment',
-                                    'numberedList',
-                                    'bulletedList',
-                                    'indent',
-                                    'outdent',
-                                    '|',
-                                    'imageUpload',
-                                    'insertTable',
-                                    '|',
-                                    'codeBlock',
-                                    'removeFormat',
-                                ]
-                            },
-                            language: 'fa',
-                            image: {
-                                toolbar: [
-                                    'imageTextAlternative',
-                                    'imageStyle:full',
-                                    'imageStyle:side'
-                                ]
-                            },
-                            table: {
-                                contentToolbar: [
-                                    'tableColumn',
-                                    'tableRow',
-                                    'mergeTableCells',
-                                    'tableCellProperties',
-                                    'tableProperties'
-                                ]
-                            },
-                            simpleUpload: {
-                                uploadUrl: '/UploadCkeditorImage'
-                            },
-                            licenseKey: '',
-                            autoGrow: true,
-                            autoGrow_minHeight: '800px'
-                        })
-                        .then(editor => {
-                            window.editor = editor;
-                            editorsList.push(editor);
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        });
-    </script>
-    <script>
-        CKEDITOR.replace('ExpertReviewCk', {
+        CKEDITOR.replace('.ckeditor',  {
                             image: {
                                 types: ['png', 'jpeg'],
                                 upload: {

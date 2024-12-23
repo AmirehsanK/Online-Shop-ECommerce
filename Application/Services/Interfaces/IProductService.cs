@@ -41,6 +41,8 @@ namespace Application.Services.Interfaces
 
         Task<ProductDetailViewModel> GetProductDetailForSite(int productid);
 
+        Task<List<ProductViewModel>> GetProductsByCategoryAsync(int categoryId);
+        Task<List<ProductViewModel>> GetAllProductsNoFilter();
         #endregion
     }
 }

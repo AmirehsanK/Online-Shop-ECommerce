@@ -30,9 +30,11 @@ namespace Domain.ViewModel.Discount
         public DateTime? EndDate { get; set; } 
 
         [Display(Name = "وضعیت فعال بودن")]
-        public bool? IsActive { get; set; } = true; 
+        public bool IsActive { get; set; } = true; 
 
         [Display(Name = "تعداد استفاده")]
-        public int? UsageLimit { get; set; } 
+        public int? UsageLimit { get; set; }
+
+        
     }
 }

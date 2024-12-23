@@ -14,5 +14,13 @@ namespace Domain.Interface
         Task AddAsync(Discount discount);
         Task UpdateAsync(Discount discount);
         Task DeleteAsync(int id);
+
+        Task<List<int>> GetUserDiscount(int discountId);
+        Task<List<int>> GetProductDiscount(int discountId);
+        Task AssignProductDiscountAsync(int productId, int discountId);
+        Task AssignUserDiscountAsync(int userId, int discountId);
+        Task RemoveUserDiscountAsync(int userId, int discountId);
+        Task RemoveProductDiscountAsync(int productId, int discountId);
+        Task SaveChangesAsync();
     }
 }

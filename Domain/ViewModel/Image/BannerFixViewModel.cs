@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Domain.Enums;
 using Microsoft.AspNetCore.Http;
-
 namespace Domain.ViewModel.Image;
 
 public class BannerFixViewModel

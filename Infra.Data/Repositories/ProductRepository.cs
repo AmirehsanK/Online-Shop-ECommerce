@@ -111,8 +111,15 @@ namespace Infra.Data.Repositories
             }));
             return filter;
         }
-
-        public async Task<Product?> GetProductById(int ProductId)
+        public async Task<List<Product>> GetAllProductsNoFilterAsync()
+        {
+            return await _context.Product.Include(p => p.Category).ToListAsync();
+        }
+        public async Task<List<Product>> GetProductsByCategoryAsync(int categoryId)
+        {
+            return await _context.Product.Where(p => p.CategoryId == categoryId).ToListAsync();
+        }
+        public async Task<Product> GetProductById(int ProductId)
         {
             return await _context.Product.Where(u=>u.Id==ProductId)
                 .Include(u => u.ProductColors)

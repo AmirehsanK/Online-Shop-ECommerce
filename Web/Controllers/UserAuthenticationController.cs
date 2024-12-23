@@ -30,7 +30,7 @@ public class UserAuthenticationController : SiteBaseController
     #region ForgotPassword
 
     [HttpGet("ForgotPassword")]
-    public async Task<IActionResult> ForgotPassword()
+    public IActionResult ForgotPassword()
     {
         return View();
     }
