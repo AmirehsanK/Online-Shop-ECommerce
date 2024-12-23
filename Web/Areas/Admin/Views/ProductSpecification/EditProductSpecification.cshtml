@@ -1,9 +1,7 @@
-﻿@model Domain.ViewModel.Product.ProductSpecification.AddNewProductSpecification
-
+﻿@model Domain.ViewModel.Product.ProductSpecification.EditProductSpecificationViewModel
 @{
-    ViewData["Title"] = "اضافه کردن مشخصات محصول";
+    ViewData["Title"] = "ویرایش ویژگی";
 }
-
 @section Style
 {
     <link rel="stylesheet" href="/Admin/vendor/libs/tagify/tagify.css" />
@@ -18,7 +16,7 @@
         const tagInput = document.getElementById('tagInput');
         const tagify = new Tagify(tagInput, {
             placeholder: "تگ‌های خود را وارد کنید...",
-            delimiters: ", ",
+            delimiters: ",",
             maxTags: 10,
             whitelist: ["قهوه", "چای", "لاته", "موکا"]
         });
@@ -30,21 +28,23 @@
         });
     </script>
 }
-<form asp-controller="ProductSpecification" asp-action="AddNewSpecification" asp-area="Admin" method="post">
+<form asp-controller="ProductSpecification" asp-action="EditProductSpecification" asp-area="Admin" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <input asp-for="ProductId" type="hidden" />
+    <input asp-for="Id" type="hidden" />
     <div class="form-group">
-        <label asp-for="Title"></label>
-        <input asp-for="Title" type="text" id="simpleInput" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
+        <label asp-for="Key"></label>
+        <input asp-for="Key" type="text" id="simpleInput" class="form-control" />
+        <span asp-validation-for="Key" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="Value"></label>
+        <input asp-for="Value" type="text" id="tagInput" class="form-control" />
+
+        <span asp-validation-for="Value" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Values"></label>
-        <input asp-for="Values" type="text" id="tagInput" class="form-control" />
-        <span asp-validation-for="Values" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">ارسال</button>
+    <button type="submit" class="btn btn-primary">@ViewData["Title"]</button>
 </form>
+

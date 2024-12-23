@@ -1,5 +1,6 @@
 ﻿using Application.Services.Interfaces;
 using Domain.Entities.Product;
+using Domain.Enums;
 using Domain.Interface;
 using Domain.ViewModel.Product.ProductColor;
 
@@ -24,6 +25,7 @@ namespace Application.Services.Impelementation
 
         public async Task AddNewColor(CreateProductColorViewModel color)
         {
+         
             var newColor = new Color()
             {
                 CreateDate = DateTime.Now,
@@ -70,8 +72,13 @@ namespace Application.Services.Impelementation
 
         #region AddColorToProduct
 
-        public async Task AddProductToGallery(AddProductColorViewModel productColor,int productid)
+        public async Task<ProductExistColor> AddColorToProduct(AddProductColorViewModel productColor,int productid)
         {
+            var color = await _productColorRepository.GetColorById(productColor.Colorid);
+            if (await _productColorRepository.CheckIsColorExistForProduct(productid, color.ColorCode))
+            {
+                return ProductExistColor.Exist;
+            }
             var newproductColor = new ProductColor()
             {
                 CreateDate = DateTime.Now,
@@ -83,6 +90,7 @@ namespace Application.Services.Impelementation
             };
             await _productColorRepository.AddProductColorAsync(newproductColor);
             await _productColorRepository.SaveChangeAsync();
+            return ProductExistColor.NotFound;
         }
 
         #endregion

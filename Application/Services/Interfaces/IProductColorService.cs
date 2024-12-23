@@ -1,4 +1,5 @@
 ﻿
+using Domain.Enums;
 using Domain.ViewModel.Product.ProductColor;
 
 namespace Application.Services.Interfaces
@@ -10,6 +11,6 @@ namespace Application.Services.Interfaces
         Task<List<ColorListViewModel>> GetColorList();
 
         Task DeleteColorAsync(int  colorId);
-        Task AddProductToGallery(AddProductColorViewModel productColor,int productid);
+        Task<ProductExistColor> AddColorToProduct(AddProductColorViewModel productColor,int productid);
     }
 }

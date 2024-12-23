@@ -94,7 +94,10 @@ namespace Infra.Data.Repositories
         }
         public async Task<Product> GetProductById(int ProductId)
         {
-            return await _context.Product.FirstOrDefaultAsync(u => u.Id == ProductId);
+            return await _context.Product.Where(u=>u.Id==ProductId)
+                .Include(u => u.ProductColors)
+                .ThenInclude(u => u.Color)
+                .Include(u=> u.ProductGalleries).FirstOrDefaultAsync();
         }
 
         public async Task AddProductAsync(Product product)

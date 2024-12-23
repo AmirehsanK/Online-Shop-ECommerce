@@ -1,4 +1,5 @@
 ﻿using Application.Services.Interfaces;
+using Domain.Enums;
 using Domain.ViewModel.Product.ProductColor;
 using Microsoft.AspNetCore.Mvc;
 
@@ -79,9 +80,21 @@ namespace Web.Areas.Admin.Controllers
             }
 
             #endregion
+            var res=await _productColorService.AddColorToProduct(model, productId);
+            switch (res)
+            {
+                case ProductExistColor.Exist:
+                    TempData[ErrorMessage] = "رنگ وارد شده موجود میباشد";
+                    return RedirectToAction("Productlist","Product");
+                case ProductExistColor.NotFound:
+                    return RedirectToAction("Productlist","Product");
+                    break;
+            
+            }
 
-            await _productColorService.AddProductToGallery(model, productId);
-            return RedirectToAction("Productlist","Product");
+            return View();
+
+
         }
 
 

@@ -38,6 +38,9 @@ namespace Application.Services.Interfaces
         Task AddProductAsync(AddProductViewModel model);
         Task UpdateProductAsync(ProductViewModel product);
         Task DeleteProductAsync(int productId);
+
+        Task<ProductDetailViewModel> GetProductDetailForSite(int productid);
+
         Task<List<ProductViewModel>> GetProductsByCategoryAsync(int categoryId);
         Task<List<ProductViewModel>> GetAllProductsNoFilter();
         #endregion
