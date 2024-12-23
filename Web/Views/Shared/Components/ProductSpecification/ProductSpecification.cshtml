@@ -1,0 +1,34 @@
+﻿@model List<Domain.ViewModel.Product.ProductSpecification.ProductSpecificationViewModel>
+
+
+<div class="expandable-text pt-1" style="height: 540px;">
+    <div class="expandable-text_text fa-num">
+        <!-- start of params-list -->
+        <div class="params-list">
+            <div class="params-list-title">مشخصات کلی</div>
+            <ul>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach(var item in Model)
+                    {
+                        <li>
+                            <span class="param-title">@item.key</span>
+                            <span class="param-value">@item.Value</span>
+                        </li>
+                    }
+                }
+            </ul>
+      
+
+        </div>
+        <!-- end of params-list -->
+    </div>
+    <div class="expandable-text-expand-btn justify-content-start text-sm">
+        <span class="show-more active">
+            نمایش همه مشخصات کالا <i class="ri-arrow-down-s-line ms-2"></i>
+        </span>
+        <span class="show-less d-none">
+            فقط نمایش مشخصات کلی کالا <i class="ri-arrow-up-s-line ms-2"></i>
+        </span>
+    </div>
+</div>

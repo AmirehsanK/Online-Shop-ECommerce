@@ -20,42 +20,55 @@ namespace Application.Services.Impelementation
         }
 
         #endregion
-        public async Task AddNewSpecification(AddNewProductSpecification productSpecification, List<string> list)
+        public async Task AddNewSpecification(AddNewProductSpecification productSpecification)
         {
             var productSpeci = new ProductSpecification()
             {
                 CreateDate = DateTime.Now,
                 IsDeleted = false,
                 Key = productSpecification.Title,
-                ProductId = productSpecification.ProductId
-
+                ProductId = productSpecification.ProductId,
+                Value = productSpecification.Values
             };
             await _productSpecificationRepository.AddSpecificationAsync(productSpeci);
-            await _productSpecificationRepository.SaveChangeAsync();
-            foreach (var item in list)
-            {
-                var product = new ProductSpecificationValues()
-                {
-                    CreateDate = DateTime.Now,
-                    ProductSpecificationId = productSpeci.Id,
-                    Value = item,
-                    IsDeleted = false
-                };
-                await _productSpecificationRepository.AddSpecificationValues(product);
-
-            }
-
             await _productSpecificationRepository.SaveChangeAsync();
 
         }
 
-        public async Task<List<ShowProductSpecificationViewModel>> GetProductSpecificationList(int productId)
+        public async Task<FilterProductSpecification> GetAllProductSpecificationAsync(FilterProductSpecification specification, int productid)
         {
-            var spec = await _productSpecificationRepository.GetSpecificationAsync(productId);
-            return spec.Select(u => new ShowProductSpecificationViewModel()
+            return await _productSpecificationRepository.GetProductSpecification(productid, specification);
+        }
+
+        public async Task EditProductSpecification(EditProductSpecificationViewModel model)
+        {
+            var specification = await _productSpecificationRepository.GetSpecificationById(model.Id);
+            specification.Key = model.Key;
+            specification.Value=model.Value;
+            _productSpecificationRepository.UpdateSpecification(specification);
+            await _productSpecificationRepository.SaveChangeAsync();
+
+        }
+
+        public async Task<EditProductSpecificationViewModel> GetSpecificationForShow(int SpecificationId)
+        {
+            var Spec = await _productSpecificationRepository.GetSpecificationById(SpecificationId);
+            var viewmodel = new EditProductSpecificationViewModel()
             {
-                Title = u.ProductSpecification.Key,
-                Values = string.Join(",",u.Value)
+                Key = Spec.Key,
+                Value = Spec.Value,
+                Id = Spec.Id
+            };
+            return viewmodel;
+        }
+
+        public async Task<List<ProductSpecificationViewModel>> GetProductSpecification(int productId)
+        {
+            var Specification = await _productSpecificationRepository.GetSpecificationAsync(productId);
+            return Specification.Select(u => new ProductSpecificationViewModel()
+            {
+                Value = u.Value,
+                key = u.Key
             }).ToList();
         }
     }

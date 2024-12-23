@@ -39,6 +39,8 @@ namespace Application.Services.Interfaces
         Task UpdateProductAsync(ProductViewModel product);
         Task DeleteProductAsync(int productId);
 
+        Task<ProductDetailViewModel> GetProductDetailForSite(int productid);
+
         #endregion
     }
 }

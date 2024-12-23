@@ -11,6 +11,7 @@ using Domain.ViewModel.Product.CategoryAdmin;
 using Domain.ViewModel.Product.Product;
 using Infra.Data.Repositories;
 using System;
+using Domain.ViewModel.Product.ProductGallery;
 
 namespace Application.Services.Impelementation
 {
@@ -155,6 +156,7 @@ namespace Application.Services.Impelementation
 
             return products;
         }
+        
 
         public async Task<ProductViewModel> GetProductByIdAsync(int productId)
         {
@@ -227,6 +229,27 @@ namespace Application.Services.Impelementation
             imageName.IsDeleted = true;
             _productRepository.UpdateProduct(imageName);
             await _productRepository.SaveChangeAsync();
+        }
+
+        public async Task<ProductDetailViewModel> GetProductDetailForSite(int productid)
+        {
+            var product = await _productRepository.GetProductById(productid);
+          
+            var viewmodel = new ProductDetailViewModel()
+            {
+                ExpertReview = product.ExpertReview,
+                ImageName = product.ImageName,
+                Inventory = product.Inventory,
+                Price = product.Price,
+                ProductName = product.ProductName,
+                Review = product.Review,
+                ShortDescription = product.ShortDescription,
+                ProductId = productid,
+                ProductGalleries = product.ProductGalleries,
+                ProductColors = product.ProductColors
+            };
+            return viewmodel;
+
         }
 
         #endregion

@@ -9,7 +9,9 @@ namespace Domain.ViewModel.Discount
 {
     public class DiscountViewModel
     {
+        public int Id { get; set; }
         [Display(Name = "کد تخفیف")]
+        public bool IsDeleted { get; set; }
         public string? Code { get; set; } 
 
         [Required(ErrorMessage = "لطفاً نوع تخفیف را مشخص کنید")]
@@ -19,7 +21,7 @@ namespace Domain.ViewModel.Discount
         [Required(ErrorMessage = "لطفاً مقدار تخفیف را وارد کنید")]
         [Range(0.01, double.MaxValue, ErrorMessage = "مقدار تخفیف باید بیشتر از صفر باشد")]
         [Display(Name = "مقدار تخفیف")]
-        public decimal Value { get; set; } 
+        public int Value { get; set; } 
 
         [Display(Name = "تاریخ شروع")]
         public DateTime? StartDate { get; set; } 

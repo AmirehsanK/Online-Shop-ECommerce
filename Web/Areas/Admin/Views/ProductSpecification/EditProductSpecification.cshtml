@@ -1,0 +1,50 @@
+﻿@model Domain.ViewModel.Product.ProductSpecification.EditProductSpecificationViewModel
+@{
+    ViewData["Title"] = "ویرایش ویژگی";
+}
+@section Style
+{
+    <link rel="stylesheet" href="/Admin/vendor/libs/tagify/tagify.css" />
+    <link href="https://cdn.jsdelivr.net/npm/@@yaireo/tagify/dist/tagify.css" rel="stylesheet" />
+}
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/@@yaireo/tagify"></script>
+    <script>
+        // تبدیل فیلد "tagInput" به TagInput
+        const tagInput = document.getElementById('tagInput');
+        const tagify = new Tagify(tagInput, {
+            placeholder: "تگ‌های خود را وارد کنید...",
+            delimiters: ",",
+            maxTags: 10,
+            whitelist: ["قهوه", "چای", "لاته", "موکا"]
+        });
+
+        // تبدیل مقدار به رشته پیش از ارسال فرم
+        const form = document.querySelector('form');
+        form.addEventListener('submit', () => {
+            tagInput.value = tagify.value.map(tag => tag.value).join(',');
+        });
+    </script>
+}
+<form asp-controller="ProductSpecification" asp-action="EditProductSpecification" asp-area="Admin" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input asp-for="Id" type="hidden" />
+    <div class="form-group">
+        <label asp-for="Key"></label>
+        <input asp-for="Key" type="text" id="simpleInput" class="form-control" />
+        <span asp-validation-for="Key" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="Value"></label>
+        <input asp-for="Value" type="text" id="tagInput" class="form-control" />
+
+        <span asp-validation-for="Value" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">@ViewData["Title"]</button>
+</form>
+

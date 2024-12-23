@@ -50,6 +50,21 @@ namespace Infra.Data.Repositories
            return await _context.Colors.Where(u=> u.IsDeleted==false).ToListAsync();
         }
 
+        public async Task<bool> CheckIsColorExistForProduct(int productId, string colorCode)
+        {
+            return await _context.ProductColors.Where(u => u.ProductId == productId)
+                .Include(u => u.Color)
+                .Where(u => u.Color.ColorCode == colorCode).AnyAsync();
+        }
+
+        public async Task<List<ProductColor>> GetProductColorAsync(int productId)
+        {
+            return await _context.ProductColors.Where(u => u.ProductId == productId).Include(u => u.Color)
+                .ToListAsync();
+        }
+
+        
+
         public async Task<Color> GetColorById(int id)
         {
             return await _context.Colors.FindAsync(id);

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using Domain.Entities.Product;
+using Domain.ViewModel.Product.ProductSpecification;
 
 namespace Domain.Interface
 {
@@ -11,11 +8,14 @@ namespace Domain.Interface
     {
         Task AddSpecificationAsync(ProductSpecification productSpecification);
 
-        Task AddSpecificationValues(ProductSpecificationValues productSpecificationValues);
 
         void UpdateSpecification(ProductSpecification productSpecification);
 
-        Task<List<ProductSpecificationValues>> GetSpecificationAsync(int productId);
+        Task<List<ProductSpecification>> GetSpecificationAsync(int productId);
+
+        Task<FilterProductSpecification> GetProductSpecification(int productid,FilterProductSpecification filter);
+
+        Task<ProductSpecification> GetSpecificationById(int SpecificationId);
 
 
         Task SaveChangeAsync();

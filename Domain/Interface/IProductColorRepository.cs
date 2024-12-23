@@ -18,6 +18,11 @@ namespace Domain.Interface
 
         Task<List<Color>> GetAllColorAsync();
 
+        Task<bool> CheckIsColorExistForProduct(int productId, string colorCode);
+
+        
+        Task<List<ProductColor>> GetProductColorAsync(int productId);
+
         Task<Color> GetColorById(int id);
     }
 }

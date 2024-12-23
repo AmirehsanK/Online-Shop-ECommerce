@@ -14,7 +14,7 @@ namespace Domain.Entities.Product
         public int  ProductId { get; set; }
         public string Key { get; set; }
 
-        public List<ProductSpecificationValues> Values { get; set; }
+        public string Value { get; set; }
 
         #region Relation
 

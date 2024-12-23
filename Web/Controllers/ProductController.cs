@@ -4,24 +4,33 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers
 {
-    public class ProductController : SiteBaseController
+    public class ProductController(IProductService productService) : SiteBaseController
     {
-        #region Ctor
+        #region ProductList
 
-        private readonly IProductService _productService;
-
-        public ProductController(IProductService productService)
+        [HttpGet("ProductList/")]
+        public async Task<IActionResult> ProductList(FilterProductViewModel filter, int SubCategoryId)
         {
-            _productService = productService;
+            
+            var model = await productService.GetAllProductsAsync(filter);
+            return View(model);
+
+        }
+
+
+        #endregion
+
+        #region ProductDetail
+        [HttpGet("ProductDetail/{productid}")]
+        public async Task<IActionResult> ProductDetail(int productid)
+        {
+           var model= await productService.GetProductDetailForSite(productid);
+            return View(model);
         }
 
         #endregion
-    
-        [HttpGet()]
-        public async Task<IActionResult> ProductList(FilterProductViewModel filter,string SubCategoryTitle)
-        {
-            var model = await _productService.GetAllProductsAsync(filter);
-            return View(model);
-        }
+   
     }
+
+
 }

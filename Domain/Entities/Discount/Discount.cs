@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Entities.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.Discount
 {
-    public class Discount
+    public class Discount:BaseEntity
     {
-        public int Id { get; set; } 
         public string? Code { get; set; }
         public bool IsPercentage { get; set; } 
         public int Value { get; set; } 

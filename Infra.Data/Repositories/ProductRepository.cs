@@ -98,23 +98,26 @@ namespace Infra.Data.Repositories
 
             if (filter.EndPrice != null)
                 query = query.Where(p => p.Price <= filter.EndPrice);
-            if (!string.IsNullOrEmpty(filter.SubCategoryTitle))
-                query = query.Where(u => u.Category.Title == filter.SubCategoryTitle);
+            if (filter.SubCategoryId.HasValue)
+                query = query.Where(u => u.Category.Id== filter.SubCategoryId);
             await filter.Paging(query.Select(p => new ProductViewModel()
             {
                 ImageName = p.ImageName,
                 Id  = p.Id , 
                 Inventory = p.Inventory,
                 ProductName = p.ProductName,
-                SubCategoryTitle = p.Category.Title,
+                SubCategoryId = p.CategoryId,
                 Price = p.Price,
             }));
             return filter;
         }
 
-        public async Task<Product> GetProductById(int ProductId)
+        public async Task<Product?> GetProductById(int ProductId)
         {
-            return await _context.Product.FirstOrDefaultAsync(u => u.Id == ProductId);
+            return await _context.Product.Where(u=>u.Id==ProductId)
+                .Include(u => u.ProductColors)
+                .ThenInclude(u => u.Color)
+                .Include(u=> u.ProductGalleries).FirstOrDefaultAsync();
         }
 
         public async Task AddProductAsync(Product product)

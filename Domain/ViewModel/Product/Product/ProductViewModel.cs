@@ -56,7 +56,7 @@ namespace Domain.ViewModel.Product.Product
         public int? StartPrice { get; set; }
 
         public int? EndPrice { get; set; }
-        public string? SubCategoryTitle { get; set; }
+        public int? SubCategoryId { get; set; }
         public int? Price { get; set; }
 
         public string? ProductName { get; set;  }

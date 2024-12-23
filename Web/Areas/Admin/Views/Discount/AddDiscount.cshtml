@@ -6,7 +6,7 @@
 
 <h1>اضافه کردن تخفیف</h1>
 
-<form asp-action="" asp-controller="" method="post" class="needs-validation" novalidate>
+<form asp-action="AddDiscount" asp-controller="Discount" asp-area="Admin" method="post" class="needs-validation" novalidate>
     <!-- Discount Code -->
     <div class="form-group mb-3">
         <label asp-for="Code" class="form-label"></label>
@@ -47,7 +47,7 @@
 
     <!-- Is Active -->
     <div class="form-group form-check mb-3">
-        <input asp-for="IsActive" class="form-check-input" type="checkbox" checked />
+        <input asp-for="IsActive"  class="form-check-input" type="checkbox" checked />
         <label asp-for="IsActive" class="form-check-label"></label>
         <span asp-validation-for="IsActive" class="text-danger"></span>
     </div>
