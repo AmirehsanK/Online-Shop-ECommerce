@@ -36,6 +36,8 @@ namespace Domain.ViewModel.Product.Product
 
             public int OffPrice { get; set; } = 0;
 
+        public int DiscountValue { get; set; } = 0;
+
             public int Inventory { get; set; }
 
             public int SubCategoryId { get; set; }

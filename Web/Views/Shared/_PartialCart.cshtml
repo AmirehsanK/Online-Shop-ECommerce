@@ -9,7 +9,7 @@
         <div class="product-card">
             <div class="product-thumbnail">
                 <a asp-area="" asp-controller="Product" asp-action="ProductDetail" asp-route-productid="@item.Id">
-                    <img src="@(PathTools.FilePath + item.ImageName)" alt="product title">
+                    <img src="@(PathTools.FilePath + item.ImageName)" style="height:120px" alt="product title">
                 </a>
             </div>
             <div class="product-card-body">
@@ -24,13 +24,23 @@
                     <span class="color" style="background-color: #b82c32;"></span>
                     <span>+</span>
                 </div>
-                <div class="product-price fa-num">
-                    <div class="d-flex align-items-center">
-                        <del class="price-old">26,900,000</del>
-                        <span class="discount ms-2">%2</span>
+                @if (item.OffPrice > 0)
+                {
+                    <div class="product-price fa-num">
+                        <div class="d-flex align-items-center">
+                            <del class="price-old">@item.Price</del>
+                        <span class="discount ms-2">%@item.DiscountValue</span>
                     </div>
-                    <span class="price-now">@item.Price <span class="currency">تومان</span></span>
+                    <span class="price-now">@item.OffPrice <span class="currency">تومان</span></span>
                 </div>
+                }
+                else{
+                    <div class="product-price fa-num">
+                        <span class="price-now">
+                           @item.Price <span class="currency">تومان</span>
+                        </span>
+                    </div>
+                }
             </div>
             <div class="product-card-footer">
                 <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
@@ -56,5 +66,5 @@
             </div>
         </div>
         <!-- end of product-card -->
-    </div>
+       </div>
 }

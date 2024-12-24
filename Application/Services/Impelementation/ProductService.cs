@@ -154,39 +154,14 @@ namespace Application.Services.Impelementation
 
         #region Product
 
-        public async Task<FilterProductViewModel> GetAllProductsAsync(FilterProductViewModel filter)
+        public async Task<FilterProductViewModel> GetAllProductsAsync(FilterProductViewModel product)
         {
-
-            var query = _productRepository.GetProducts();
-
-            if (filter.Inventory.HasValue)
-            {
-                query = query.Where(_ => _.Inventory == filter.Inventory);
-            }
-            if (!string.IsNullOrEmpty(filter.ProductName))
-            {
-                query = query.Where(_ => _.ProductName.Contains(filter.ProductName.Trim()));
-            }
-            if (filter.Price.HasValue)
-            {
-                query = query.Where(_ => _.ProductName.Contains(filter.ProductName.Trim()));
-            }
-            if (filter.StartPrice != null)
-                query = query.Where(p => p.Price >= filter.StartPrice);
-
-            if (filter.EndPrice != null)
-                query = query.Where(p => p.Price <= filter.EndPrice);
-            if (!string.IsNullOrEmpty(filter.SubCategoryTitle))
-                query = query.Where(u => u.Category.Title == filter.SubCategoryTitle);
             var activeDiscounts = await _discountRepository.GetActiveDiscounts();
-            var products = await query.ToListAsync(); 
+            var products = await _productRepository.GetProductsAsync(product);
 
-            var productViewModels = new List<ProductViewModel>();
-
-            foreach (var product in products)
+            foreach (var item in products.Entities)
             {
-                var productDiscount = await _discountRepository.GetHighestDiscountForProductAsync(product.Id);
-
+                var productDiscount = await _discountRepository.GetHighestDiscountForProductAsync(item.Id);
                 var discount = productDiscount != null
                     ? activeDiscounts.FirstOrDefault(d =>
                         d.Id == productDiscount.Id &&
@@ -194,54 +169,32 @@ namespace Application.Services.Impelementation
                         (!d.EndDate.HasValue || d.EndDate >= DateTime.UtcNow))
                     : null;
 
-                var offPrice = discount != null
-                    ? discount.IsPercentage
-                        ? product.Price * (1 - (discount.Value / 100.0))
-                        : product.Price - discount.Value
-                    : 0;
-
-                productViewModels.Add(new ProductViewModel
+                if (discount != null)
                 {
-                    ImageName = product.ImageName,
-                    Id = product.Id,
-                    Inventory = product.Inventory,
-                    ProductName = product.ProductName,
-                    SubCategoryTitle = product.Category.Title,
-                    Price = product.Price,
-                    OffPrice = (int)Math.Max(0, offPrice),
-                });
+                    if (discount.IsPercentage)
+                    {
+                        item.DiscountValue = discount.Value;
+                    }
+                    else
+                    {
+                        item.DiscountValue = (int)Math.Ceiling(((double)discount.Value / item.Price) * 100);
+                    }
+
+                    
+                    var offPrice = discount.IsPercentage
+                        ? item.Price * (1 - (discount.Value / 100.0))
+                        : item.Price - discount.Value;
+
+                    item.OffPrice = (int)Math.Max(0, offPrice);
+                }
+                else
+                {
+                   
+                    item.OffPrice = 0;
+                    item.DiscountValue = 0;
+                }
             }
-
-            await filter.Paging(productViewModels.AsQueryable());
-
-            //await filter.Paging(query.Select(p =>
-            //{
-            //    var productDiscount = _discountRepository.GetHighestDiscountForProductAsync(p.Id);
-
-            //    var discount = productDiscount != null
-            //        ? activeDiscounts.FirstOrDefault(d =>
-            //            d.Id == productDiscount.Id &&
-            //            (!d.StartDate.HasValue || d.StartDate <= DateTime.UtcNow) &&
-            //            (!d.EndDate.HasValue || d.EndDate >= DateTime.UtcNow))
-            //        : null;
-
-            //    var offPrice = discount != null
-            //        ? discount.IsPercentage
-            //            ? p.Price * (1 - (discount.Value / 100.0))
-            //            : p.Price - discount.Value
-            //        : 0;
-            //    new ProductViewModel()
-            //    {
-            //        ImageName = p.ImageName,
-            //        Id = p.Id,
-            //        Inventory = p.Inventory,
-            //        ProductName = p.ProductName,
-            //        SubCategoryTitle = p.Category.Title,
-            //        Price = p.Price,
-            //        OffPrice = (int)(Math.Max(0, (double)offPrice)),
-            //    };
-            //}));
-            return filter;
+            return products;
         }
         public async Task<List<ProductViewModel>> GetAllProductsNoFilter()
         {
