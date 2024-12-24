@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewData["Title"] = "لیست سوال های درباره محصول";
+}
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    فیلتر ها
+                </h2>
+            </div>
+            <div class="body">
+                <form method="get" asp-action="" id="filter-search">
+                    @* <input type="hidden" asp-for="Page" /> *@
+                    <div class="row clearfix">
+                        <div class="col-sm-12  col-md-4">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" >
+                                    <label class="form-label" ></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" >
+                                    <label class="form-label" ></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <button class="btn btn-success">جستجو</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    @ViewData["Title"]
+                </h2>
+            </div>
+            <div class="body table-responsive">
+               
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>آیدی</th>
+                                <th>سوال</th>
+                                <th>وضعیت</th>
+                                <th>آیدی محصول </th>
+                                <th>آیدی کاربر </th>
+                                <th>وضعیت</th>
+                                <th>تاریخ ایجاد</th>
+                                <th>وضعیت</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            
+                                <tr>
+                                    <th scope="row"></th>
+                              
+                                    <td></td>
+                                    @* <td>
+                                        <a  class="text-warning" asp-route-id="@user.Id">
+                                            <i class="fa fa-pen"></i>
+                                        </a>
+                                    </td> *@
+                                </tr>
+                            
+                        </tbody>
+                    </table>
+
+                    
+                
+             
+            </div>
+        </div>
+    </div>
+</div>
+

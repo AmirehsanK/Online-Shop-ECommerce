@@ -1,0 +1,17 @@
+﻿@model Domain.ViewModel.Question.QuestionAnswerViewModel 
+<div class="remodal-content">
+    <form asp-area="" asp-controller="Product" asp-action="AddQuestionToProduct" method="post">
+        <input type="hidden" asp-for="ProductId"/>
+        <div class="form-element-row mb-3">
+            <textarea asp-for="Question"  rows="3" class="form-control" placeholder="متن سوال"></textarea>
+        </div>
+        <div class="fs-7 fw-bold">
+            ثبت پرسش به معنی موافقت با <a href="#" class="link border-bottom-0">قوانین انتشار</a>
+            است.
+        </div>
+        <div class="remodal-footer">
+            <button type="submit" class="btn btn-sm btn-primary px-3">ثبت پرسش</button>
+        </div>
+    </form>
+                                    
+</div>

@@ -8,6 +8,7 @@ using Domain.Entities.Ticket;
 using Infra.Data.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Domain.Entities.Discount;
+using Domain.Entities.Question;
 
 namespace Infra.Data.Context;
 
@@ -37,8 +38,9 @@ public class ApplicationDbContext : DbContext
 
     #endregion
 
-    //For Conflict relation
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    #region ForConflictrelation
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
@@ -82,6 +84,8 @@ public class ApplicationDbContext : DbContext
             new ProductCategory { Id = 20, Title = "لوازم کمپینگ", ParentId = 17 });
         #endregion
     }
+    #endregion 
+
 
     #region Ticket
 
@@ -127,6 +131,14 @@ public class ApplicationDbContext : DbContext
     public DbSet<Discount> Discounts { get; set; }
     public DbSet<UserDiscount> UserDiscounts { get; set; }
     public DbSet<ProductDiscount> ProductDiscounts { get; set; }
+
+    #endregion
+
+    #region QuestionAnswer
+
+    public DbSet<QuestionAnswer> QuestionAnswers { get; set; }
+
+    public DbSet<QuestionLiked> QuestionLikes { get; set; }
 
     #endregion
 }

@@ -2,6 +2,7 @@
 using Domain.Entities.Common;
 using Domain.Entities.Discount;
 using Domain.Entities.Notification;
+using Domain.Entities.Question;
 using Domain.Entities.Ticket;
 
 namespace Domain.Entities.Account;
@@ -39,6 +40,8 @@ public class User : BaseEntity
     public ICollection<UserNotification> UserNotification { get; set; }
 
     public ICollection<UserDiscount> UserDiscount { get; set; }
+
+    public ICollection<QuestionAnswer> QuestionAnswers { get; set; }
 
     #endregion
 

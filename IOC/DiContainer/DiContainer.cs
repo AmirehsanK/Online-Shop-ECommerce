@@ -31,6 +31,8 @@ public static class DiContainer
         services.AddScoped<IProductGalleryRepository, ProductGalleryRepository>();
         services.AddScoped<INotificationRepository, NotificationRepository>();
         services.AddScoped<IProductColorRepository, ProductColorRepository>();
+
+        services.AddScoped<IQuestionRepository, QuestionRepository>();
         #endregion
 
         #region Services
@@ -48,6 +50,7 @@ public static class DiContainer
         services.AddScoped<IProductGalleryService, ProductGalleryService>();
         services.AddScoped<IProductColorService, ProductColorService>();
         services.AddScoped<IProductSpecificationService, ProductSpecificationService>();
+        services.AddScoped<IQuestionService, QuestionService>();
         #endregion
 
 

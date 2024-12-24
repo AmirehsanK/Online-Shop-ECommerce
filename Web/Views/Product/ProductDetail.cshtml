@@ -1,12 +1,12 @@
 ﻿@using Application.Tools
 @using Domain.ViewModel.Product.Product
 @using Domain.ViewModel.Product.ProductSpecification
+@using Domain.ViewModel.Question
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Domain.ViewModel.Product.Product.ProductDetailViewModel
 @{
     ViewData["Title"] = "جزییات محصول";
 }
-
 <main class="page-content">
             <div class="container">
                 <!-- start of breadcrumb -->
@@ -1484,6 +1484,14 @@
                                 </div>
                                 <a href="#" class="btn btn-block btn-primary fw-bold">افزودن به
                                     سبد خرید</a>
+                            </div>
+                            <div class="remodal remodal-sm remodal-is-initialized remodal-is-opened" data-remodal-id="add-question-modal" data-remodal-options="hashTracking: false" tabindex="-1">
+                                <div class="remodal-header">
+                                    <div class="remodal-title">پرسش خود را در مورد کالا مطرح کنید</div>
+                                    <button data-remodal-action="close" class="remodal-close"></button>
+                                </div>
+                            <partial name="_AddQuestionToProduct" model="new QuestionAnswerViewModel{ProductId=Model.ProductId}"/>
+                              
                             </div>
                             <!-- end of mini-buy-box -->
                         </div>

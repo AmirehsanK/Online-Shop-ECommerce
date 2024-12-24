@@ -18,7 +18,7 @@ using Domain.ViewModel.Product.ProductGallery;
 
 namespace Application.Services.Impelementation
 {
-    public class ProductService:IProductService
+    public class ProductService : IProductService
     {
         #region Ctor
 
@@ -36,21 +36,21 @@ namespace Application.Services.Impelementation
         #endregion
 
         #region Category
-        public async Task AddBaseCategory(BaseCategoryViewModel model,int? parentid=null)
+        public async Task AddBaseCategory(BaseCategoryViewModel model, int? parentid = null)
         {
             var category = new ProductCategory()
             {
                 CreateDate = DateTime.Now,
                 IsDeleted = false,
 
-               
+
                 Title = model.Title,
             };
             if (parentid.HasValue)
             {
-                category.ParentId= parentid.Value;
+                category.ParentId = parentid.Value;
             }
-         
+
             await _productRepository.AddCategoryAsync(category);
             await _productRepository.SaveChangeAsync();
         }
@@ -71,7 +71,7 @@ namespace Application.Services.Impelementation
 
         public async Task<List<CategoriesListViewModel>> GetAllCategoriesForMegaMenu()
         {
-            var Category= await _productRepository.GetAllCategoriesAsync();
+            var Category = await _productRepository.GetAllCategoriesAsync();
             return Category.Select(u => new CategoriesListViewModel()
             {
                 Title = u.Title,
@@ -101,8 +101,8 @@ namespace Application.Services.Impelementation
                 Title = model.Title,
                 IsDeleted = false,
                 ParentId = model.ParentId,
-                
-                
+
+
             };
             await _productRepository.AddCategoryAsync(subCategory);
             await _productRepository.SaveChangeAsync();
@@ -129,21 +129,21 @@ namespace Application.Services.Impelementation
 
         public async Task DeleteBaseCategory(int categoryid)
         {
-           var mainCategory= await _productRepository.GetBaseCategory(categoryid);
-           mainCategory.IsDeleted = true;
-           var SubCategory = await _productRepository.GetSubCategory(categoryid);
-           if (SubCategory!=null)
-           {
-               foreach (var item in SubCategory)
-               {
-                   item.IsDeleted = true;
-                   
-               }
-               _productRepository.UpdateCategoryList(SubCategory);
-           }
-        
-           _productRepository.UpdateCategoryAsync(mainCategory);
-   
+            var mainCategory = await _productRepository.GetBaseCategory(categoryid);
+            mainCategory.IsDeleted = true;
+            var SubCategory = await _productRepository.GetSubCategory(categoryid);
+            if (SubCategory != null)
+            {
+                foreach (var item in SubCategory)
+                {
+                    item.IsDeleted = true;
+
+                }
+                _productRepository.UpdateCategoryList(SubCategory);
+            }
+
+            _productRepository.UpdateCategoryAsync(mainCategory);
+
             await _productRepository.SaveChangeAsync();
 
 
@@ -176,47 +176,16 @@ namespace Application.Services.Impelementation
 
             if (filter.EndPrice != null)
                 query = query.Where(p => p.Price <= filter.EndPrice);
-            if (!string.IsNullOrEmpty(filter.SubCategoryTitle))
-                query = query.Where(u => u.Category.Title == filter.SubCategoryTitle);
-            var activeDiscounts = await _discountRepository.GetActiveDiscounts();
-            var products = await query.ToListAsync(); 
+            if (filter.SubCategoryId.HasValue)
+                query = query.Where(u => u.Category.Id == filter.SubCategoryId);
+            //var activeDiscounts = await _discountRepository.GetActiveDiscounts();
+            //var products = await query.ToListAsync();
 
-            var productViewModels = new List<ProductViewModel>();
+            //var productViewModels = new List<ProductViewModel>();
 
-            foreach (var product in products)
-            {
-                var productDiscount = await _discountRepository.GetHighestDiscountForProductAsync(product.Id);
-
-                var discount = productDiscount != null
-                    ? activeDiscounts.FirstOrDefault(d =>
-                        d.Id == productDiscount.Id &&
-                        (!d.StartDate.HasValue || d.StartDate <= DateTime.UtcNow) &&
-                        (!d.EndDate.HasValue || d.EndDate >= DateTime.UtcNow))
-                    : null;
-
-                var offPrice = discount != null
-                    ? discount.IsPercentage
-                        ? product.Price * (1 - (discount.Value / 100.0))
-                        : product.Price - discount.Value
-                    : 0;
-
-                productViewModels.Add(new ProductViewModel
-                {
-                    ImageName = product.ImageName,
-                    Id = product.Id,
-                    Inventory = product.Inventory,
-                    ProductName = product.ProductName,
-                    SubCategoryTitle = product.Category.Title,
-                    Price = product.Price,
-                    OffPrice = (int)Math.Max(0, offPrice),
-                });
-            }
-
-            await filter.Paging(productViewModels.AsQueryable());
-
-            //await filter.Paging(query.Select(p =>
+            //foreach (var product in products)
             //{
-            //    var productDiscount = _discountRepository.GetHighestDiscountForProductAsync(p.Id);
+            //    var productDiscount = await _discountRepository.GetHighestDiscountForProductAsync(product.Id);
 
             //    var discount = productDiscount != null
             //        ? activeDiscounts.FirstOrDefault(d =>
@@ -227,21 +196,36 @@ namespace Application.Services.Impelementation
 
             //    var offPrice = discount != null
             //        ? discount.IsPercentage
-            //            ? p.Price * (1 - (discount.Value / 100.0))
-            //            : p.Price - discount.Value
+            //            ? product.Price * (1 - (discount.Value / 100.0))
+            //            : product.Price - discount.Value
             //        : 0;
-            //    new ProductViewModel()
+
+            //    productViewModels.Add(new ProductViewModel
             //    {
-            //        ImageName = p.ImageName,
-            //        Id = p.Id,
-            //        Inventory = p.Inventory,
-            //        ProductName = p.ProductName,
-            //        SubCategoryTitle = p.Category.Title,
-            //        Price = p.Price,
-            //        OffPrice = (int)(Math.Max(0, (double)offPrice)),
-            //    };
-            //}));
+            //        ImageName = product.ImageName,
+            //        Id = product.Id,
+            //        Inventory = product.Inventory,
+            //        ProductName = product.ProductName,
+            //        SubCategoryTitle = product.Category.Title,
+            //        Price = product.Price,
+            //        OffPrice = (int)Math.Max(0, offPrice),
+            //    });
+            //}
+
+            //await filter.Paging(productViewModels.AsQueryable());
+            //;
+            await filter.Paging(query.Select(p => new ProductViewModel()
+            {
+                ImageName = p.ImageName,
+                Inventory = p.Inventory,
+                ProductName = p.ProductName,
+                Id = p.Id,
+                SubCategoryTitle = p.Category.Title,
+                Price = p.Price,
+                SubCategoryId = p.CategoryId
+            }));
             return filter;
+            
         }
         public async Task<List<ProductViewModel>> GetAllProductsNoFilter()
         {
@@ -268,7 +252,7 @@ namespace Application.Services.Impelementation
 
         }
 
-        
+
 
         public async Task<ProductViewModel> GetProductByIdAsync(int productId)
         {
@@ -287,12 +271,13 @@ namespace Application.Services.Impelementation
                 Inventory = product.Inventory,
                 SubCategoryId = product.CategoryId,
                 ProductGalleries = product.ProductGalleries
-                , IsDeleted = product.IsDeleted
+                ,
+                IsDeleted = product.IsDeleted
             };
         }
         public async Task<List<ProductViewModel>> GetProductsByCategoryAsync(int categoryId)
         {
-            var products= await _productRepository.GetProductsByCategoryAsync (categoryId);
+            var products = await _productRepository.GetProductsByCategoryAsync(categoryId);
             return products
                 .Where(p => !p.IsDeleted)
                 .Select(p => new ProductViewModel
@@ -324,9 +309,10 @@ namespace Application.Services.Impelementation
                 ImageName = imageName,
                 Price = model.Price,
                 CategoryId = model.SubCategoryId
-                ,IsDeleted=false,
+                ,
+                IsDeleted = false,
                 CreateDate = DateTime.Now,
-                Inventory=0
+                Inventory = 0
             };
 
             await _productRepository.AddProductAsync(product);
@@ -355,7 +341,7 @@ namespace Application.Services.Impelementation
 
         public async Task DeleteProductAsync(int productId)
         {
-            var imageName = await _productRepository.GetProductById(productId);   
+            var imageName = await _productRepository.GetProductById(productId);
             imageName.ImageName.DeleteImage(PathTools.FilePath, null);
             imageName.IsDeleted = true;
             _productRepository.UpdateProduct(imageName);
@@ -365,7 +351,7 @@ namespace Application.Services.Impelementation
         public async Task<ProductDetailViewModel> GetProductDetailForSite(int productid)
         {
             var product = await _productRepository.GetProductById(productid);
-          
+
             var viewmodel = new ProductDetailViewModel()
             {
                 ExpertReview = product.ExpertReview,
