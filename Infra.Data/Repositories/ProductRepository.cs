@@ -79,10 +79,38 @@ namespace Infra.Data.Repositories
 
         #region Product
 
-        public IQueryable<Product> GetProducts()
+        public async Task<FilterProductViewModel> GetProductsAsync(FilterProductViewModel filter)
         {
             var query = _context.Product.Include(p => p.Category).Where(p => !p.IsDeleted).AsQueryable();
-            return query;
+            if (filter.Inventory.HasValue)
+            {
+                query = query.Where(_ => _.Inventory == filter.Inventory);
+            }
+            if (!string.IsNullOrEmpty(filter.ProductName))
+            {
+                query = query.Where(_ => _.ProductName.Contains(filter.ProductName.Trim()));
+            }
+            if (filter.Price.HasValue)
+            {
+                query = query.Where(_ => _.ProductName.Contains(filter.ProductName.Trim()));
+            }
+            if (filter.StartPrice != null)
+                query = query.Where(p => p.Price >= filter.StartPrice);
+
+            if (filter.EndPrice != null)
+                query = query.Where(p => p.Price <= filter.EndPrice);
+            if (filter.SubCategoryId.HasValue)
+                query = query.Where(u => u.Category.Id == filter.SubCategoryId);
+            await filter.Paging(query.Select(p => new ProductViewModel()
+            {
+                ImageName = p.ImageName,
+                Id = p.Id,
+                Inventory = p.Inventory,
+                ProductName = p.ProductName,
+                SubCategoryTitle = p.Category.Title,
+                Price = p.Price,
+            }));
+            return filter;
         }
         public async Task<List<Product>> GetAllProductsNoFilterAsync()
         {
