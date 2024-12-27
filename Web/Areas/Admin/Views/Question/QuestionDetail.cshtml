@@ -1,0 +1,34 @@
+﻿@using Domain.Entities.Question
+@model Domain.ViewModel.Question.QuestionDetailViewModel
+@{
+    ViewData["Title"] = "جزییات سوال";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="QuestionDetail" method="post" enctype="multipart/form-data">
+    <input asp-for="QuestionId" type="hidden"/>
+    <div class="form-group">
+        <label asp-for="UserId">ایدی کاربر ارسالر کننده</label>
+        <input readonly="readonly" asp-for="UserId" type="text" class="form-control" required/>
+    </div>
+    <div class="form-group">
+        <label asp-for="Question">سوال</label>
+        <textarea readonly="readonly" asp-for="Question" class="form-control" rows="3" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Answer">پاسخ</label>
+        <textarea type="number" asp-for="Answer" class="form-control" step="0.01" required ></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ProductId">ایدی محصول</label>
+        <input readonly="readonly" asp-for="ProductId" name="Review" class="form-control ">
+    </div>
+
+  
+    <br/>
+    <button type="submit" class="btn btn-success"> پاسخ</button>
+    <br/>
+</form>

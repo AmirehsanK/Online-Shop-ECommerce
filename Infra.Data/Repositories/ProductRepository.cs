@@ -91,7 +91,7 @@ namespace Infra.Data.Repositories
                 query = query.Where(_ => _.ProductName.Contains(filter.ProductName.Trim()));
             }
             if (filter.Price.HasValue)
-            {
+            {   
                 query = query.Where(_ => _.ProductName.Contains(filter.ProductName.Trim()));
             }
             if (filter.StartPrice != null)

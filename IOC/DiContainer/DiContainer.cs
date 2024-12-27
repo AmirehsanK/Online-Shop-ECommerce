@@ -51,6 +51,7 @@ public static class DiContainer
         services.AddScoped<IProductColorService, ProductColorService>();
         services.AddScoped<IProductSpecificationService, ProductSpecificationService>();
         services.AddScoped<IQuestionService, QuestionService>();
+     
         #endregion
 
 
