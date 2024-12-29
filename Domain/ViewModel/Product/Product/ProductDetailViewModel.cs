@@ -23,6 +23,10 @@ namespace Domain.ViewModel.Product.Product
 
         public int Price { get; set; }
 
+        public int OffPrice { get; set; } = 0;
+
+        public int DiscountValue { get; set; } = 0;
+
         public int Inventory { get; set; } = 0;
 
         public ICollection<Entities.Product.ProductColor> ProductColors { get; set; }

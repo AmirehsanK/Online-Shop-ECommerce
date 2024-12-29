@@ -319,21 +319,52 @@ namespace Application.Services.Impelementation
 
         public async Task<ProductDetailViewModel> GetProductDetailForSite(int productid)
         {
-            var product = await _productRepository.GetProductById(productid);
-
+            var activeDiscounts = await _discountRepository.GetActiveDiscounts();
+            var item = await _productRepository.GetProductById(productid);
+            Discount? productDiscount = await _discountRepository.GetHighestDiscountForProductAsync(productid);
+            var discount = productDiscount != null
+                ? activeDiscounts.FirstOrDefault(d =>
+                    d.Id == productDiscount.Id &&
+                    (!d.StartDate.HasValue || d.StartDate <= DateTime.UtcNow) &&
+                    (!d.EndDate.HasValue || d.EndDate >= DateTime.UtcNow))
+                : null;
             var viewmodel = new ProductDetailViewModel()
             {
-                ExpertReview = product.ExpertReview,
-                ImageName = product.ImageName,
-                Inventory = product.Inventory,
-                Price = product.Price,
-                ProductName = product.ProductName,
-                Review = product.Review,
-                ShortDescription = product.ShortDescription,
+                ExpertReview = item.ExpertReview,
+                ImageName = item.ImageName,
+                Inventory = item.Inventory,
+                Price = item.Price,
+                ProductName = item.ProductName,
+                Review = item.Review,
+                ShortDescription = item.ShortDescription,
                 ProductId = productid,
-                ProductGalleries = product.ProductGalleries,
-                ProductColors = product.ProductColors
+                ProductGalleries = item.ProductGalleries,
+                ProductColors = item.ProductColors
             };
+            if (discount != null)
+            {
+                if (discount.IsPercentage)
+                {
+                    viewmodel.DiscountValue = discount.Value;
+                }
+                else
+                {
+                    viewmodel.DiscountValue = (int)Math.Ceiling(((double)discount.Value / item.Price) * 100);
+                }
+
+
+                var offPrice = discount.IsPercentage
+                    ? item.Price * (1 - (discount.Value / 100.0))
+                    : item.Price - discount.Value;
+
+                viewmodel.OffPrice = (int)Math.Max(0, offPrice);
+            }
+            else
+            {
+
+                viewmodel.OffPrice = 0;
+                viewmodel.DiscountValue = 0;
+            }
             return viewmodel;
 
         }
