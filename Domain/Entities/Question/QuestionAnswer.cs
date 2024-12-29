@@ -1,5 +1,6 @@
 ﻿
 
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Entities.Account;
 using Domain.Entities.Common;
@@ -16,9 +17,11 @@ namespace Domain.Entities.Question
 
         public string? Answer { get; set; }
 
+        
+        public bool IsConfirmed { get; set; }
 
+        public bool IsClosed { get; set; }
 
-        public QuestionStatus QuestionAnswers { get; set; }
 
         #region Relation
 
@@ -34,9 +37,13 @@ namespace Domain.Entities.Question
 
     public enum QuestionStatus
     {
+        [Display(Name = "پاسخ داده شده")]
         Answered,
+        [Display(Name = "تایید نشده")]
         NotConfirmed,
+        [Display(Name = "تایید شده")]
         Confirmed,
+        [Display(Name = "بسته شده")]
         IsClosed
     }
 

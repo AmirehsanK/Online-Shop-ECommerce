@@ -1,5 +1,6 @@
 ﻿using Application.Services.Interfaces;
 using Application.Tools;
+using Domain.Entities.Question;
 using Domain.ViewModel.Product.Product;
 using Domain.ViewModel.Question;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,7 @@ namespace Web.Controllers
         [HttpGet("ProductDetail/{productid}")]
         public async Task<IActionResult> ProductDetail(int productid)
         {
+            ViewData["Question"] = await questionService.GetProductQuestionsById(productid);
            var model= await productService.GetProductDetailForSite(productid);
             return View(model);
         }
@@ -58,6 +60,12 @@ namespace Web.Controllers
 
         #endregion
    
+        [HttpPost]
+        public async Task<IActionResult> ToggleQuestionLike(int productId, int userId, QuestionLike questionLike)
+        {
+            bool isSuccess = await questionService.ToggleQuestionLike(productId, userId, questionLike);
+            return Json(new { success = isSuccess });
+        }
     }
 
 

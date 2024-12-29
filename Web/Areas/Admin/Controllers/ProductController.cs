@@ -129,7 +129,7 @@ namespace Web.Areas.Admin.Controllers
             }
             await _productService.UpdateProductAsync(model);
             TempData[SuccessMessage] = "محصول با موفقیت ویرایش شد";
-            return RedirectToAction("ProductList");
+            return RedirectToAction(nameof(ProductList));
         }
         #endregion
 

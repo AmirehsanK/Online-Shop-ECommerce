@@ -1,8 +1,14 @@
-﻿
+﻿@using Application.Tools
+@using Domain.ViewModel.Question
+@using Microsoft.IdentityModel.Tokens
+@model Domain.ViewModel.Question.FilterQuestionListViewModel
 @{
     ViewData["Title"] = "لیست سوال های درباره محصول";
 }
-
+@section Scripts
+{
+    <script src="/js/site.js"></script>
+}
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
         <div class="card">
@@ -12,22 +18,31 @@
                 </h2>
             </div>
             <div class="body">
-                <form method="get" asp-action="" id="filter-search">
-                    @* <input type="hidden" asp-for="Page" /> *@
+                <form method="get" asp-action="QuestionList" id="filter-form">
+                    <input type="hidden" asp-for="Page" />
                     <div class="row clearfix">
                         <div class="col-sm-12  col-md-4">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" >
-                                    <label class="form-label" ></label>
+                                    <input asp-for="ProductId" placeholder="جستجو بر اساس ایدی کالا" type="text" class="form-control">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-md-4">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <select asp-for="ConfirmQuestion" class="form-control" asp-items="Html.GetEnumSelectList<ConfirmQuestion>()"></select>
+
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-4">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" >
-                                    <label class="form-label" ></label>
+                                    <select asp-for="CloseQuestion" class="form-control" asp-items="Html.GetEnumSelectList<CloseQuestion>()"></select>
+
                                 </div>
                             </div>
                         </div>
@@ -39,52 +54,61 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="card">
-            <div class="header">
-                <h2>
-                    @ViewData["Title"]
-                </h2>
-            </div>
-            <div class="body table-responsive">
-               
+    @if (Model.Entities != null && Model.Entities.Any())
+    {
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        @ViewData["Title"]
+                    </h2>
+                </div>
+                <div class="body table-responsive">
+
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>آیدی</th>
                                 <th>سوال</th>
                                 <th>وضعیت</th>
-                                <th>آیدی محصول </th>
-                                <th>آیدی کاربر </th>
-                                <th>وضعیت</th>
                                 <th>تاریخ ایجاد</th>
-                                <th>وضعیت</th>
+                                <th>عملیات</th>
 
 
                             </tr>
                         </thead>
                         <tbody>
 
-                            
+                            @foreach (var item in Model.Entities)
+                            {
                                 <tr>
-                                    <th scope="row"></th>
-                              
-                                    <td></td>
-                                    @* <td>
-                                        <a  class="text-warning" asp-route-id="@user.Id">
-                                            <i class="fa fa-pen"></i>
-                                        </a>
-                                    </td> *@
+
+                                    <th scope="row">@item.Id</th>
+                                    <th>@item.Question</th>
+                                    <th>@item.QuestionStatus.GetDisplayName()</th>
+                                    <th>@item.DateTime</th>
+                                    <th>
+                                        <a class="btn btn-waning" asp-area="Admin" asp-controller="Question" asp-action="QuestionDetail" asp-route-QuestionId="@item.Id">جزییات</a>
+                                        <a class="btn btn-waning" asp-area="Admin" asp-controller="Question" asp-action="CloseQuestion" asp-route-QuestionId="@item.Id">بستن</a>
+                                        <a class="btn btn-waning" asp-area="Admin" asp-controller="Question" asp-action="ConfirmQuestion" asp-route-QuestionId="@item.Id">تایید کردن</a>
+
+                                    </th>
+
+
+
                                 </tr>
-                            
+                            }
+
                         </tbody>
                     </table>
 
-                    
-                
-             
+
+                    <partial name="_PagingPartial" model="@Model.GetCurrentPaging()" />
+
+                </div>
             </div>
         </div>
-    </div>
+    }
+
 </div>
 
