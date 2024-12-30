@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Account;
+using Domain.Entities.Comment;
 using Domain.Entities.ContactUs;
 using Domain.Entities.Images;
 using Domain.Entities.Faq;
@@ -139,6 +140,15 @@ public class ApplicationDbContext : DbContext
     public DbSet<QuestionAnswer> QuestionAnswers { get; set; }
 
     public DbSet<QuestionLiked> QuestionLikes { get; set; }
+
+    #endregion
+
+    #region Comment
+
+    public DbSet<Comment> Comments { get; set; }
+    public DbSet<CommentRating> CommentRatings { get; set; }
+
+    public DbSet<UserInteraction> UserInteraction { get; set; }
 
     #endregion
 }
