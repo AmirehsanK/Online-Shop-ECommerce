@@ -9,14 +9,8 @@ using Discount = Domain.Entities.Discount.Discount;
 
 namespace Infra.Data.Repositories
 {
-    public class DiscountRepository : IDiscountRepository
+    public class DiscountRepository(ApplicationDbContext _context) : IDiscountRepository
     {
-        private readonly ApplicationDbContext _context;
-
-        public DiscountRepository(ApplicationDbContext context)
-        {
-            _context = context;
-        }
 
         public async Task<List<Discount>> GetAllAsync()
         {
@@ -39,7 +33,7 @@ namespace Infra.Data.Repositories
             await _context.Discounts.AddAsync(discount);
         }
 
-        public async Task UpdateAsync(Discount discount)
+        public void Update(Discount discount)
         {
             _context.Discounts.Update(discount);
         }
@@ -62,17 +56,34 @@ namespace Infra.Data.Repositories
         }
         public async Task<Discount?> GetHighestDiscountForProductAsync(int productId)
         {
-            var activeDiscounts =await  (from pd in _context.ProductDiscounts
-                                         join d in _context.Discounts on pd.DiscountId equals d.Id
-                                         where pd.ProductId == productId &&
-                                               d.IsActive &&
-                                               !d.IsDeleted &&
-                                               (!d.StartDate.HasValue || d.StartDate <= DateTime.UtcNow) &&
-                                               (!d.EndDate.HasValue || d.EndDate >= DateTime.UtcNow)
-                                         orderby d.IsPercentage descending, d.Value descending
-                                         select d).FirstOrDefaultAsync();
-            return activeDiscounts;
+            var exclusiveDiscount = await (from pd in _context.ProductDiscounts
+                join d in _context.Discounts on pd.DiscountId equals d.Id
+                where pd.ProductId == productId &&
+                      d.IsActive &&
+                      !d.IsDeleted &&
+                      d.Code == null && 
+                      (!d.StartDate.HasValue || d.StartDate <= DateTime.UtcNow) &&
+                      (!d.EndDate.HasValue || d.EndDate >= DateTime.UtcNow)
+                orderby d.IsPercentage descending, d.Value descending
+                select d).FirstOrDefaultAsync();
+
+            if (exclusiveDiscount != null)
+            {
+                return exclusiveDiscount;
+            }
+            var overallDiscount = await (from d in _context.Discounts
+                where d.IsActive &&
+                      !d.IsDeleted &&
+                      d.Code == null && 
+                      (!d.StartDate.HasValue || d.StartDate <= DateTime.UtcNow) &&
+                      (!d.EndDate.HasValue || d.EndDate >= DateTime.UtcNow)
+                orderby d.IsPercentage descending, d.Value descending
+                select d).FirstOrDefaultAsync();
+
+            return overallDiscount;
         }
+
+
         public async Task AssignProductDiscountAsync(int productId, int discountId)
         {
             await _context.ProductDiscounts.AddAsync(new ProductDiscount() {

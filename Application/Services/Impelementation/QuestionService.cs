@@ -108,7 +108,7 @@ namespace Application.Services.Impelementation
                 questionRepository.UpdateLike(existingLike);
             }
 
-            questionRepository.SaveAsync();
+            await questionRepository.SaveAsync();
             return true;
         }
     }

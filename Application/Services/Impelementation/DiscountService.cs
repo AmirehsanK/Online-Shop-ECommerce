@@ -92,7 +92,7 @@ namespace Application.Services.Impelementation
             discount.IsActive = (bool)viewModel.IsActive;
             discount.UsageLimit = viewModel.UsageLimit;
 
-            await _repository.UpdateAsync(discount);
+            _repository.Update(discount);
             await _repository.SaveChangesAsync();
         }
 
@@ -102,7 +102,7 @@ namespace Application.Services.Impelementation
             if (discount == null) return;
 
             discount.IsDeleted=true;
-            await _repository.UpdateAsync(discount);
+            _repository.Update(discount);
             await _repository.SaveChangesAsync();
         }
 
