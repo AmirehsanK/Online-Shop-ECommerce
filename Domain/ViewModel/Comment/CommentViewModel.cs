@@ -10,6 +10,8 @@ namespace Domain.ViewModel.Comment
     {
         public int Id { get; set; }
         public int ProductId { get; set; }
+        public int UserId { get;set; }
+        public string? UserName { get; set; }
 
         [Display(Name = "عنوان نظر")]
         [Required(ErrorMessage = "وارد کردن عنوان نظر اجباری است.")]
@@ -32,26 +34,18 @@ namespace Domain.ViewModel.Comment
         [Display(Name = "تاریخ ثبت")]
         public DateTime CreateDate { get; set; }
 
-        [Display(Name = "امتیازات")]
-        public List<CommentRatingViewModel> Ratings { get; set; }
+        public int BuildQuality { get; set; }
+        public int ValueForMoney { get; set; }
+        public int Innovation { get; set; }
+        public int Features { get; set; }
+        public int EaseOfUse { get; set; }
+        public int DesignAndAppearance { get; set; }
 
         [Display(Name = "تعداد پسندها")] 
         public int Likes { get; set; } = 0;
 
         [Display(Name = "تعداد نپسندها")]
         public int Dislikes { get; set; } = 0;
-    }
-
-    public class CommentRatingViewModel
-    {
-        [Display(Name = "دسته‌بندی")]
-        [Required(ErrorMessage = "دسته‌بندی امتیاز اجباری است.")]
-        public RatingCategory Category { get; set; } 
-
-        [Display(Name = "امتیاز")]
-        [Required(ErrorMessage = "وارد کردن امتیاز اجباری است.")]
-        [Range(1, 5, ErrorMessage = "امتیاز باید بین 1 تا 5 باشد.")]
-        public int Score { get; set; } 
     }
 
     public class FilterCommentViewModel : Paging.BasePaging<CommentViewModel>

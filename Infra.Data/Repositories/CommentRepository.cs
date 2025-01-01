@@ -3,6 +3,7 @@ using Domain.Interface;
 using Domain.ViewModel.Comment;
 using Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.Design;
 
 
 namespace Infra.Data.Repositories
@@ -15,7 +16,7 @@ namespace Infra.Data.Repositories
         }
         public async Task<FilterCommentViewModel> GetAllCommentsAsync(FilterCommentViewModel filter)
         {
-            var query = context.Comments.Include(p => p.Ratings).Where(p => !p.IsDeleted).AsQueryable();
+            var query = context.Comments.Where(p => !p.IsDeleted).AsQueryable();
             var filteredComments = filter.Filter switch
             {
                 "approved" => context.Comments.Where(c => c.IsApproved),
@@ -30,8 +31,7 @@ namespace Infra.Data.Repositories
                 ,ProductId = p.ProductId
                 ,Title = p.Title
                 ,Strengths = p.Strengths
-                ,Weaknesses = p.Weaknesses
-                ,Ratings = (List<CommentRatingViewModel>)p.Ratings,
+                ,Weaknesses = p.Weaknesses,
                 CreateDate = p.CreateDate
             }));
             return filter;
@@ -39,7 +39,7 @@ namespace Infra.Data.Repositories
 
         public async Task<Comment> GetCommentByIdAsync(int id)
         {
-            return await context.Comments.Include(c => c.Ratings)
+            return await context.Comments
                 .Include(c => c.Interactions).Where(c => !c.IsDeleted)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
@@ -89,6 +89,22 @@ namespace Infra.Data.Repositories
             context.Comments.Update(comment);
 
             await context.SaveChangesAsync();
+        }
+
+        public async Task<List<Comment>> GetCommentByProductIdAsync(int productId)
+        {
+            return await context.Comments.Where(u => u.ProductId == productId).ToListAsync();
+        }
+        public async Task<int> GetCommentLikesByIdAsync(int commentId)
+        {
+            var list= await context.UserInteraction.Where(u => u.CommentId == commentId).ToListAsync();
+
+            return list.Count(item => item.IsLike);
+        }
+        public async Task<int> GetCommentDislikesByIdAsync(int commentId)
+        {
+            var list= await context.UserInteraction.Where(u => u.CommentId == commentId).ToListAsync();
+            return list.Count(item => !item.IsLike);
         }
     }
 }

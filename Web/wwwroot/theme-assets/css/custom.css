@@ -2,5 +2,8 @@
 .validation-summary-errors {
     color: red;
 }
-
+.offprice {
+    text-decoration-color: red;
+    text-decoration: line-through;s
+}
 /*# sourceMappingURL=custom.css.map */

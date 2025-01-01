@@ -7,7 +7,9 @@ namespace Domain.Interface
     {
         Task<List<Comment>> GetAllPendingCommentsAsync();
         Task<FilterCommentViewModel> GetAllCommentsAsync(FilterCommentViewModel filter);
-
+        Task<List<Comment>> GetCommentByProductIdAsync(int productId);
+        Task<int> GetCommentLikesByIdAsync(int commentId);
+        Task<int> GetCommentDislikesByIdAsync(int commentId);
         Task<Comment> GetCommentByIdAsync(int id);
         Task AddCommentAsync(Comment comment);
         Task ApproveCommentAsync(int id);

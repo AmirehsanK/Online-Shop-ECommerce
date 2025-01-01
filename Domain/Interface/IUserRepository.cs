@@ -13,6 +13,7 @@ namespace Domain.Interface
         Task<List<User>> GetAllAsync();
 
         Task<User> GetUserByIdAsync(int userid);
+        Task<string> GetUserNameByIdAsync(int userid);
 
         Task<User> GetUserByEmailAsync(string email);
         

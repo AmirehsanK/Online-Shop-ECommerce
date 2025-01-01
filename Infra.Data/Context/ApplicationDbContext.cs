@@ -146,8 +146,6 @@ public class ApplicationDbContext : DbContext
     #region Comment
 
     public DbSet<Comment> Comments { get; set; }
-    public DbSet<CommentRating> CommentRatings { get; set; }
-
     public DbSet<UserInteraction> UserInteraction { get; set; }
 
     #endregion

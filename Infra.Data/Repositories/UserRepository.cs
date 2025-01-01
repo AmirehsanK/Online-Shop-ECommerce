@@ -53,6 +53,12 @@ public class UserRepository : IUserRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task<string> GetUserNameByIdAsync(int userid)
+    {
+        var user= await _context.Users.FirstOrDefaultAsync(u=> u.Id==userid);
+        return user.FirstName + " " + user.LastName;
+    }
+
     #region Ctor
 
     private readonly ApplicationDbContext _context;

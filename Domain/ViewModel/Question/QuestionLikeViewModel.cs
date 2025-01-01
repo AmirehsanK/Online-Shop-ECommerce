@@ -11,13 +11,9 @@ namespace Domain.ViewModel.Question
 
         public string? Answer { get; set; }
 
-
-
         public int LikeCount { get; set; }
 
         public int DissLikeCount { get; set; }
-         
-        
  
         public QuestionLike QuestionLike { get; set; }
 
