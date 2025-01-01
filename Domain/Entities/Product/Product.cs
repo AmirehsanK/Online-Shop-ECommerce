@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Entities.Common;
 using Domain.Entities.Discount;
+using Domain.Entities.Orders;
 using Domain.Entities.Question;
 
 namespace Domain.Entities.Product
@@ -40,6 +41,8 @@ namespace Domain.Entities.Product
         public ICollection<ProductDiscount> ProductDiscount { get; set; }
 
         public ICollection<QuestionAnswer> QuestionAnswers { get; set; }
+
+        public ICollection<OrderDetail> OrderDetails { get; set; }
 
 
         #endregion

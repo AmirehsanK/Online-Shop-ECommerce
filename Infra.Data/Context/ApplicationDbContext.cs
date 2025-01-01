@@ -8,6 +8,7 @@ using Domain.Entities.Ticket;
 using Infra.Data.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Domain.Entities.Discount;
+using Domain.Entities.Orders;
 using Domain.Entities.Question;
 
 namespace Infra.Data.Context;
@@ -124,6 +125,14 @@ public class ApplicationDbContext : DbContext
     public DbSet<Notification> Notifications { get; set; }
 
     public DbSet<UserNotification> UserNotifications { get; set; }
+
+    #endregion
+
+    #region Order
+
+    public DbSet<OrderDetail> OrderDetails { get; set; }
+
+    public DbSet<Order> Orders { get; set; }
 
     #endregion
 

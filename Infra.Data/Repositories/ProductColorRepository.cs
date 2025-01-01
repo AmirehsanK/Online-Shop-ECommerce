@@ -57,6 +57,11 @@ namespace Infra.Data.Repositories
                 .Where(u => u.Color.ColorCode == colorCode).AnyAsync();
         }
 
+        public async Task<ProductColor> GetProductColorWithid(int productColorid)
+        {
+            return await _context.ProductColors.Include(u=> u.Color).FirstOrDefaultAsync(u=> u.Id==productColorid);
+        }
+
         public async Task<List<ProductColor>> GetProductColorAsync(int productId)
         {
             return await _context.ProductColors.Where(u => u.ProductId == productId).Include(u => u.Color)

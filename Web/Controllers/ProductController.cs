@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Web.Controllers
 {
     public class ProductController(IProductService productService,
-    IQuestionService questionService) : SiteBaseController
+    IQuestionService questionService,
+    IOrderService orderService) : SiteBaseController
     {
         #region ProductList
 
@@ -60,12 +61,22 @@ namespace Web.Controllers
 
         #endregion
    
+
         [HttpPost]
         public async Task<IActionResult> ToggleQuestionLike(int productId, int userId, QuestionLike questionLike)
         {
             bool isSuccess = await questionService.ToggleQuestionLike(productId, userId, questionLike);
             return Json(new { success = isSuccess });
         }
+
+        #region AddToBasket
+      
+
+
+
+        #endregion
+
+ 
     }
 
 
