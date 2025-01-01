@@ -26,7 +26,5 @@ namespace Domain.Entities.Product
 
 
 
-
-
     }
 }

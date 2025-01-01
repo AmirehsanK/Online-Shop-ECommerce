@@ -1,4 +1,5 @@
-﻿using Application.Services.Interfaces;
+﻿using Application.Services.Impelementation;
+using Application.Services.Interfaces;
 using Application.Tools;
 using Azure.Core;
 using Domain.Entities.Question;
@@ -11,7 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Web.Controllers
 {
     public class ProductController(IProductService productService,
-    IQuestionService questionService,ICommentService commentService) : SiteBaseController
+    IQuestionService questionService,ICommentService commentService,IOrderService orderService) : SiteBaseController
+     
     {
         #region ProductList
 
@@ -98,6 +100,14 @@ namespace Web.Controllers
             TempData[SuccessMessage] = "سوال شما با موفیقیت ثبت شد پس از تایید پاسخ داده میشود";
             return Redirect(ViewBag.referer);
         }
+
+        #endregion
+
+        #region MyRegion
+
+        
+
+     
         [HttpPost]
         public async Task<IActionResult> ToggleQuestionLike(int productId, int userId, QuestionLike questionLike)
         {
@@ -131,6 +141,16 @@ namespace Web.Controllers
         }
         #endregion
 
+        #endregion
+
+        #region AddToBasket
+      
+
+
+
+        #endregion
+
+ 
     }
 
 

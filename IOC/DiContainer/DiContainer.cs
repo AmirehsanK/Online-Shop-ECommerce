@@ -32,11 +32,14 @@ public static class DiContainer
         services.AddScoped<IProductColorRepository, ProductColorRepository>();
         services.AddScoped<IQuestionRepository, QuestionRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
 
         #endregion
 
         #region Services
 
+        services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ITicketService, TicketService>();
         services.AddScoped<IContactUsService, ContactUsService>();

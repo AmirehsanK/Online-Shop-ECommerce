@@ -29,7 +29,7 @@
             display: inline-block;
         }
     </style>
-  
+
 }
 
 @section Scripts
@@ -83,29 +83,46 @@
         });
 
     </script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // قیمت اصلی محصول
-        const basePrice = @Model.Price; // قیمت پایه که از مدل به صورت مستقیم وارد می‌شود
 
-        // گرفتن همه رادیو باتن‌ها
-        const colorRadios = document.querySelectorAll('input[name="productColor"]');
+        <script>
+                let selectedProductColorId = null;
+        let finalPrice = @Model.Price; // قیمت اولیه محصول
 
-        colorRadios.forEach(radio => {
-            radio.addEventListener("click", function () {
-                // دریافت قیمت اضافی برای رنگ انتخاب‌شده
-                const additionalPrice = parseInt(radio.getAttribute("data-additional-price"));
+        // تابع برای گرفتن انتخاب رنگ
+        function setProductColorId(productColorId, additionalPrice) {
+            selectedProductColorId = productColorId;
+            finalPrice = @Model.Price + additionalPrice; // محاسبه قیمت جدید
 
-                // محاسبه قیمت نهایی
-                const finalPrice = basePrice + additionalPrice;
+            // به روز رسانی نمایش قیمت نهایی
+            document.getElementById('finalPrice').innerText = finalPrice.toLocaleString();
+        }
 
-                // بروزرسانی قیمت نهایی در بخش مربوطه
-                const finalPriceElement = document.querySelector(".product-seller-row--price-now .price");
-                finalPriceElement.textContent = finalPrice.toLocaleString(); // نمایش قیمت جدید
+        // ارسال اطلاعات به کنترلر وقتی که روی دکمه "افزودن به سبد خرید" کلیک می‌شود
+        document.getElementById("addToCartButton").addEventListener("click", function() {
+            if (selectedProductColorId === null) {
+                alert("لطفاً رنگی را انتخاب کنید.");
+                return;
+            }
+
+            // ارسال درخواست به کنترلر
+            $.ajax({
+                type: "POST",
+                url: "/UserPanel/Order/AddToCart", // اکشن شما در کنترلر
+                data: {
+                    productId: @Model.ProductId, // شناسه محصول
+                    productColorId: selectedProductColorId
+                },
+                success: function(response) {
+                    alert("محصول با موفقیت به سبد خرید اضافه شد!");
+                },
+                error: function() {
+                    alert("خطا در افزودن به سبد خرید!");
+                }
             });
         });
-    });
-</script>
+    </script>
+
+
 
 }
 
@@ -198,42 +215,46 @@
                     </div>
 
                     <div class="product-variants-container mb-3">
-                      
+
                         <div class="product-variant-selected-container">
 
 
                             <span class="product-variant-selected-label">رنگ:</span>
                             <span class="product-variant-selected"></span>
                         </div>
-                       
-                            <div class="product-variants">
-                                @foreach (var item in Model.ProductColors)
+
+                        <div class="product-variants">
+                            @foreach (var item in Model.ProductColors)
+                            {
+                                @if (item.Count > 0)
                                 {
                                     <div class="product-variants">
                                         <div class="product-variant-item">
                                             <div class="custom-radio-circle">
-                                                <input type="radio" 
-                                                       class="custom-radio-circle-input" 
-                                                       name="productColor" 
-                                                       id="productColor_@item.ColorId" 
-                                                       value="@item.ColorId" 
-                                                       data-additional-price="@item.Price">
-                                                <label for="productColor_@item.ColorId" 
+                                                <!-- رنگ انتخابی -->
+                                                <input type="radio"
+                                                       class="custom-radio-circle-input"
+                                                       name="productColor"
+                                                       id="productColor_@item.Id"
+                                                       value="@item.Id"
+                                                       data-price="@item.Price"
+                                                       onclick="setProductColorId(@item.Id,@item.Price)" />
+                                                <label for="productColor_@item.Id"
                                                        class="custom-radio-circle-label">
-                                                    <span class="color" 
-                                                          style="background-color: @item.Color.ColorCode;" 
+                                                    <span class="color"
+                                                          style="background-color: @item.Color.ColorCode;"
                                                           title="@item.Color.Title">
-                                                    </span>
-                                                    <span class="additional-price">
-                                                        
                                                     </span>
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
                                 }
-                            </div>
-                      
+                            }
+                            <input type="hidden" id="selectedColorId" name="selectedColorId" value="">
+                            <input type="hidden" id="additionalPrice" name="additionalPrice" value="">
+                        </div>
+
                     </div>
 
                     <div class="expandable-text mb-3" style="height: 95px;">
@@ -394,11 +415,10 @@
                             </div>
                         </div>
                         <div class="product-seller--add-to-cart">
-                            <a href="#" class="btn btn-primary w-100" data-toast="" data-toast-type="success" data-toast-color="green" data-toast-position="topRight" data-toast-icon="ri-check-fill" data-toast-title="موفق!" data-toast-message="به سبد اضافه شد!">
+                            <a href="#" id="addToCartButton" class="btn btn-primary w-100" data-toast="" data-toast-type="success" data-toast-color="green" data-toast-position="topRight" data-toast-icon="ri-check-fill" data-toast-title="موفق!" data-toast-message="به سبد اضافه شد!">
                                 افزودن به سبد خرید
                             </a>
                         </div>
-                    </div>
                     <!-- end of product-seller-info -->
                 </div>
             </div>
@@ -1356,4 +1376,5 @@
     <!-- end of share-modal -->
     <!-- start of quick-view-modal -->
     <!-- end of quick-view-modal -->
+    </div>
 </main>
