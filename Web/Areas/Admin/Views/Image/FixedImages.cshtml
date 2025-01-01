@@ -3,42 +3,44 @@
 @using Microsoft.IdentityModel.Tokens
 @model System.Collections.Generic.IEnumerable<Domain.ViewModel.Image.BannerFixViewModel>
 @{
-    ViewData["Title"] = "مدیریت بتر ها";
+    ViewData["Title"] = "مدیریت بنر ها";
 }
 
-<div class="container mt-5">
-    <h3 class="mb-4">مدیریت بنر ها</h3>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>عکس</th>
-            <th>مکان در صفحه</th>
-            <th>لینک عکس</th>
-            <th>عملیات</th>
-        </tr>
-        </thead>
-        <tbody>
-        <div class="d-flex justify-content-start mb-3">
-            <a asp-action="AddFixedBanner" asp-controller="Image" asp-area="Admin" class="btn btn-primary">اضافه کردن عکس</a>
-        </div>
-        @if (Model.IsNullOrEmpty())
-        {
-            <div class="alert alert-danger">عکس اضافه کنید</div>
-        }
-        @foreach (var banner in Model)
-        {
+<div class="card">
+    <h5 class="card-header">@ViewData["Title"]</h5>
+    <div class="table-responsive text-nowrap">
+        <table class="table">
+            <thead>
             <tr>
-                <td>@banner.Id</td>
+                <th>#</th>
+                <th>عکس</th>
+                <th>مکان در صفحه</th>
+                <th>لینک عکس</th>
+                <th>عملیات</th>
+            </tr>
+            </thead>
+            <tbody>
+        
+            @if (Model.IsNullOrEmpty())
+            {
+                <div class="alert alert-danger">عکس اضافه کنید</div>
+            }
+            @foreach (var banner in Model)
+            {
+                <tr>
+                    <td>@banner.Id</td>
                     <td><div class="banner-div"><img class="banner-img" src="@PathTools.FixedBannerPath@banner.Title" /></div></td>
                     <td>@ImageEnum.BannerHelper.GetBannerTitle((Domain.Enums.ImageEnum.Banner)banner.Position)</td>
-                <td>@banner.Link</td>
-                <td>
-                        <a asp-action="Edit" asp-controller="Image" asp-area="Admin" asp-route-title="@banner.Title" class="btn m-1 btn-warning btn-sm"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a asp-action="DeleteFixedImage" asp-controller="Image" asp-area="Admin" asp-route-title="@banner.Title" class="btn m-1 btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
+                    <td>@banner.Link</td>
+                    <td>
+                        <a asp-action="Edit" asp-controller="Image" asp-area="Admin" asp-route-title="@banner.Title" class="btn m-1 btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a asp-action="DeleteFixedImage" asp-controller="Image" asp-area="Admin" asp-route-title="@banner.Title" class="btn m-1 btn-danger"><i class="fa-solid fa-trash"></i></a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
 </div>
+<hr/>
+    <a asp-action="AddFixedBanner" asp-controller="Image" asp-area="Admin" class="btn btn-primary btn-lg">اضافه کردن عکس</a>

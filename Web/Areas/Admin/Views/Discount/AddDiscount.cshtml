@@ -10,14 +10,14 @@
     <!-- Discount Code -->
     <div class="form-group mb-3">
         <label asp-for="Code" class="form-label"></label>
-        <input asp-for="Code" class="form-control" placeholder="کد تخفیف (اختیاری)" />
+        <input asp-for="Code" id="discountCode" class="form-control" placeholder="کد تخفیف (اختیاری)" />
         <span asp-validation-for="Code" class="text-danger"></span>
     </div>
 
     <!-- Discount Type -->
     <div class="form-group mb-3">
         <label asp-for="IsPercentage" class="form-label"></label>
-        <select asp-for="IsPercentage" class="form-control" required>
+        <select asp-for="IsPercentage" class="form-control form-select-lg" required>
             <option value="true">درصدی</option>
             <option value="false">مقدار ثابت</option>
         </select>
@@ -34,21 +34,20 @@
     <!-- Start Date -->
     <div class="form-group mb-3">
         <label asp-for="StartDate" class="form-label"></label>
-        <input asp-for="StartDate" class="form-control persianDate" type="text" readonly/>
-
+        <input asp-for="StartDate" class="form-control persianDate" type="text" readonly />
         <span asp-validation-for="StartDate" class="text-danger"></span>
     </div>
 
     <!-- End Date -->
     <div class="form-group mb-3">
         <label asp-for="EndDate" class="form-label"></label>
-        <input asp-for="EndDate" class="form-control persianDate" type="text" readonly/>
+        <input asp-for="EndDate" class="form-control persianDate" type="text" readonly />
         <span asp-validation-for="EndDate" class="text-danger"></span>
     </div>
 
     <!-- Is Active -->
     <div class="form-group form-check mb-3">
-        <input asp-for="IsActive"  class="form-check-input" type="checkbox" checked />
+        <input asp-for="IsActive" class="form-check-input" type="checkbox" checked />
         <label asp-for="IsActive" class="form-check-label"></label>
         <span asp-validation-for="IsActive" class="text-danger"></span>
     </div>
@@ -56,7 +55,7 @@
     <!-- Usage Limit -->
     <div class="form-group mb-3">
         <label asp-for="UsageLimit" class="form-label"></label>
-        <input asp-for="UsageLimit" class="form-control" type="number" placeholder="تعداد استفاده (اختیاری)" />
+        <input asp-for="UsageLimit" id="usageLimit" class="form-control" type="number" placeholder="تعداد استفاده (اختیاری)" disabled />
         <span asp-validation-for="UsageLimit" class="text-danger"></span>
     </div>
 
@@ -66,4 +65,18 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const discountCodeInput = document.getElementById("discountCode");
+            const usageLimitInput = document.getElementById("usageLimit");
+
+            discountCodeInput.addEventListener("input", function () {
+                if (discountCodeInput.value.trim() !== "") {
+                    usageLimitInput.disabled = false;
+                } else {
+                    usageLimitInput.disabled = true;
+                }
+            });
+        });
+    </script>
 }

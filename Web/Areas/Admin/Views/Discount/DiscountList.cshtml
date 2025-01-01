@@ -1,42 +1,48 @@
 ﻿@using Application.Tools
 @model List<Domain.ViewModel.Discount.DiscountViewModel>
-
-<h1>لیست تخفیف‌ها</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>کد</th>
-            <th>نوع</th>
-            <th>مقدار</th>
-            <th>حد استفاده</th>
-            <td>تاریخ شروع</td>
-            <td>تاریخ پایان</td>
-            <th>فعال</th>
-            <th>عملیات</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var discount in Model)
-        {
+@{
+    ViewData["Title"] = "لیست تخفیفات";
+}
+<div class="card">
+    <h5 class="card-header">@ViewData["Title"]</h5>
+    <div class="table-responsive text-nowrap">
+        <table class="table">
+            <thead>
             <tr>
-                <td>@discount.Code</td>
-                <td>@(discount.IsPercentage ? "درصدی" : "مقدار ثابت")</td>
-                <td>@discount.Value</td>
-                <td>@discount.UsageLimit</td>
-                <td>@discount.StartDate?</td>
-                <td>@discount.EndDate?</td>
-                <td>@(discount.IsActive ? "بله" : "خیر")</td>
-                <td>
-                    <a asp-action="AssignDiscountToUsers" asp-controller="Discount" asp-area="Admin" asp-route-Id="@discount.Id" class="btn m-1 btn-success"><i class="fa-solid fa-user-plus"></i></a>
-                    <a asp-action="AssignDiscountToProducts" asp-controller="Discount" asp-area="Admin" asp-route-Id="@discount.Id" class="btn m-1 btn-success"><i class="fa-solid fa-cart-plus"></i></a>
-                    <a asp-action="Edit" asp-controller="Discount" asp-area="Admin" asp-route-Id="@discount.Id" class="btn m-1 btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <form asp-action="Delete" asp-controller="Discount" asp-area="Admin" asp-route-id="@discount.Id" method="post">
-                        <button type="submit" class="btn m-1 btn-danger"><i class="fa-solid fa-trash"></i></button>
-                    </form>
-                </td>
+                <th>کد</th>
+                <th>نوع</th>
+                <th>مقدار</th>
+                <th>حد استفاده</th>
+                <td>تاریخ شروع</td>
+                <td>تاریخ پایان</td>
+                <th>فعال</th>
+                <th>عملیات</th>
             </tr>
-        }
-    </tbody>
-</table>
+            </thead>
+            <tbody>
+            @foreach (var discount in Model)
+            {
+                <tr>
+                    <td>@discount.Code</td>
+                    <td>@(discount.IsPercentage ? "درصدی" : "مقدار ثابت")</td>
+                    <td>@discount.Value</td>
+                    <td>@discount.UsageLimit</td>
+                    <td>@discount.StartDate?</td>
+                    <td>@discount.EndDate?</td>
+                    <td>@(discount.IsActive ? "بله" : "خیر")</td>
+                    <td>
+                        <a asp-action="AssignDiscountToUsers" asp-controller="Discount" asp-area="Admin" asp-route-Id="@discount.Id" class="btn m-1 btn-success"><i class="fa-solid fa-user-plus"></i></a>
+                        <a asp-action="AssignDiscountToProducts" asp-controller="Discount" asp-area="Admin" asp-route-Id="@discount.Id" class="btn m-1 btn-success"><i class="fa-solid fa-cart-plus"></i></a>
+                        <a asp-action="Edit" asp-controller="Discount" asp-area="Admin" asp-route-Id="@discount.Id" class="btn m-1 btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <form asp-action="Delete" asp-controller="Discount" asp-area="Admin" asp-route-id="@discount.Id" method="post">
+                            <button type="submit" class="btn m-1 btn-danger"><i class="fa-solid fa-trash"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+<hr/>
 <a asp-action="AddDiscount" asp-controller="Discount" asp-area="Admin" class="btn btn-primary">اضافه کردن تخفیف</a>

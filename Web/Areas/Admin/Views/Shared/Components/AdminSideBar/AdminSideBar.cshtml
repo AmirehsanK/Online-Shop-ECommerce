@@ -107,7 +107,20 @@
                 </li>
             </ul>
         </li>
+        <li class="menu-item active open">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="مدیریت کامنت ها"></div>
+            </a>
 
+            <ul class="menu-sub">
+                <li class="menu-item active">
+                    <a asp-area="Admin" asp-controller="Comment" asp-action="CommentList" class="menu-link">
+                        <div data-i18n="لیست کامنت ها "></div>
+                    </a>
+                </li>
+            </ul>
+        </li>
         <!-- Apps & Pages -->
         <li class="menu-item">
             <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="menu-link menu-toggle">

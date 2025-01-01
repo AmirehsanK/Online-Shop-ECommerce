@@ -2,85 +2,79 @@
 @model IEnumerable<Domain.Entities.Images.Banner>
 
 @{
-    Layout = "_AdminLayout";
+    ViewData["Title"] = "مدیریت بنر ها";
 }
-
-<head>
-    <title>Image Slider</title>
-</head>
-
-<div class="container mt-5">
-    <h3 class="mb-4">مدیریت عکس های اسلایدر</h3>
-    <div class="d-flex justify-content-start mb-3">
-        <a asp-action="AddBanner" class="btn btn-primary">اضافه کردن عکس</a>
+<div class="d-flex justify-content-start mb-3">
     </div>
-    <div class="card">
-        <div class="card-body">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>عکس</th>
-                    <th>لینک عکس</th>
-                    <th>تاریخ انقضا</th>
-                    <th>وضعیت</th>
-                    <th>عملیات</th>
-                </tr>
-                </thead>
-                <tbody>
-                @if (Model != null && Model.Any())
-                {
-                    foreach (var banner in Model)
-                    {
-                        <tr>
-                            <td>
-                                <div class="banner-div">
-                                <img src="@PathTools.BannerPath@banner.Title" alt="Banner Image"
-                                             class="img-thumbnail banner-img"/>
-                                    </div>
-                            </td>
-                            <td>
-                                <a href="@banner.Link">لینک</a>
-                            </td>
-                            <td>
-                                @if (banner.ExpirationDate.HasValue)
-                                {
-                                    @banner.ExpirationDate.Value.ToShamsi()
-                                }
-                                else
-                                {
-                                    <span class="text-muted">بدون تاریخ انقضا</span>
-                                }
-                            </td>
-                            <td>
-                                @if (banner.ExpirationDate.HasValue && banner.ExpirationDate.Value < DateTime.Now)
-                                {
-                                    <span class="badge bg-danger">منقضی شده</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-success">فعال</span>
-                                }
-                            </td>
-                            <td>
-                                    <a asp-action="Details" asp-route-Title="@banner.Title" class="btn m-1 btn-sm btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-                                <form asp-action="Delete" asp-route-title="@banner.Title" method="post" class="d-inline">
-                                    <button type="submit" class="btn m-1 btn-sm btn-danger"
-                                            onclick="return confirm('ایا از حذف محصول اطمنینان دارید؟');">
-                                            <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    }
-                }
-                else
+<div class="card">
+    <h5 class="card-header">@ViewData["Title"]</h5>
+    <div class="table-responsive text-nowrap">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>عکس</th>
+                <th>لینک عکس</th>
+                <th>تاریخ انقضا</th>
+                <th>وضعیت</th>
+                <th>عملیات</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var banner in Model)
                 {
                     <tr>
-                        <td colspan="5" class="text-center">عکسی موجود نیست</td>
+                        <td>
+                            <div class="banner-div">
+                                <img src="@PathTools.BannerPath@banner.Title" alt="Banner Image"
+                                     class="img-thumbnail banner-img"/>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="@banner.Link">لینک</a>
+                        </td>
+                        <td>
+                            @if (banner.ExpirationDate.HasValue)
+                            {
+                                @banner.ExpirationDate.Value.ToShamsi()
+                            }
+                            else
+                            {
+                                <span class="text-muted">بدون تاریخ انقضا</span>
+                            }
+                        </td>
+                        <td>
+                            @if (banner.ExpirationDate.HasValue && banner.ExpirationDate.Value < DateTime.Now)
+                            {
+                                <span class="badge bg-danger">منقضی شده</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">فعال</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-Title="@banner.Title" class="btn m-1 btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <form asp-action="Delete" asp-route-title="@banner.Title" method="post" class="d-inline">
+                                <button type="submit" class="btn m-1 btn-danger"
+                                        onclick="return confirm('ایا از حذف محصول اطمنینان دارید؟');">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 }
-                </tbody>
-            </table>
-        </div>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center">عکسی موجود نیست</td>
+                </tr>
+            }
+            </tbody>
+        </table>
     </div>
 </div>
+<hr/>
+<a asp-action="AddBanner" class="btn btn-primary btn-lg">اضافه کردن عکس</a>

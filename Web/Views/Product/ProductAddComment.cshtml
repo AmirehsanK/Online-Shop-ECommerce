@@ -1,0 +1,122 @@
+﻿@using Domain.Enums
+@model Domain.ViewModel.Comment.CommentViewModel
+@{
+    ViewData["Title"] = "ثبت نظر";
+}
+
+<main class="page-content">
+    <div class="container">
+        <nav class="mb-5" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">خانه</a></li>
+                <li class="breadcrumb-item"><a href="#">کالای دیجیتال</a></li>
+                <li class="breadcrumb-item"><a href="#">موبایل</a></li>
+                <li class="breadcrumb-item"><a href="#">گوشی موبایل</a></li>
+            </ol>
+        </nav>
+
+        <div class="ui-box bg-white product-detail-container mb-5">
+            <div class="ui-box-content">
+                <form asp-action="ProductAddComment" asp-controller="Product" asp-area="" method="post" class="add-comment-product">
+                    <div class="form-element-row mb-3">
+                        <label asp-for="Title" class="label"></label>
+                        <input asp-for="Title" class="form-control" placeholder="عنوان نظر خود را بنویسید..">
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-element-row mb-3">
+                        <label asp-for="Strengths" class="label"></label>
+                        <div class="add-point-container" id="advantages">
+                            <div class="add-point-field">
+                                <input asp-for="Strengths" class="form-control" autocomplete="off" placeholder="نقاط قوت را وارد کنید..">
+                            </div>
+                            <span asp-validation-for="Strengths" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-element-row mb-3">
+                        <label asp-for="Weaknesses" class="label"></label>
+                        <div class="add-point-container" id="disadvantages">
+                            <div class="add-point-field">
+                                <input asp-for="Weaknesses" class="form-control" autocomplete="off" placeholder="نقاط ضعف را وارد کنید..">
+                            </div>
+                            <span asp-validation-for="Weaknesses" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-element-row mb-3">
+                        <label asp-for="Content" class="label"></label>
+                        <textarea asp-for="Content" rows="5" class="form-control" placeholder="متن نظر خود را بنویسید.."></textarea>
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                    </div>
+
+                    <!-- start of comments-product-attributes -->
+                    <div class="comments-product-attributes px-3">
+                        <div class="row">
+                            <div class="col-lg-6 mb-3">
+                                <div class="comments-product-attributes-title">کیفیت ساخت</div>
+                                <input id="ex19" type="text" asp-for="" class="form-control" />
+                            </div>
+                            <div class="col-lg-6 mb-3">
+                                <div class="comments-product-attributes-title">ارزش خرید به نسبت قیمت</div>
+                                <input id="ex20" type="text" asp-for="" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 mb-3">
+                                <div class="comments-product-attributes-title">نوآوری</div>
+                                <input id="ex21" type="text" asp-for="" class="form-control" />
+                            </div>
+                            <div class="col-lg-6 mb-3">
+                                <div class="comments-product-attributes-title">امکانات و قابلیت‌ها</div>
+                                <input id="ex22" type="text" asp-for="" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 mb-3">
+                                <div class="comments-product-attributes-title">سهولت استفاده</div>
+                                <input id="ex23" type="text" asp-for="" class="form-control" />
+                            </div>
+                            <div class="col-lg-6 mb-3">
+                                <div class="comments-product-attributes-title">طراحی و ظاهر</div>
+                                <input id="ex24" type="text" asp-for="" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end of comments-product-attributes -->
+                    <!-- Ratings -->
+                    <div class="comments-product-attributes px-3">
+                        @for (int i = 0; i < Model.Ratings.Count; i++)
+                        {
+                            <div class="form-element-row mb-3">
+                                <label class="comments-product-attributes-title">
+                                    @Domain.Enums.RatingHelper.GetRatingTitle(Model.Ratings[i].Category)
+                                </label>
+                                <input asp-for="Ratings[i].Score" class="form-control" type="number" min="1" max="5">
+                                <span asp-validation-for="Ratings[i].Score" class="text-danger"></span>
+                            </div>
+                        }
+                    </div>
+                    <!--End of Ratings -->
+
+                     <div class="text-end mb-3">
+                        <button type="submit" class="btn btn-primary">ثبت نظر <i class="ri-send-plane-fill ms-2"></i></button>
+                    </div>
+                </form>
+                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                    <div class="my-2">
+                        با “ثبت نظر” موافقت خود را با <a href="#" class="link">قوانین انتشار نظرات</a> در سایت اعلام می‌کنم.
+                    </div>
+                    <div class="my-2">
+                        <a href="#" class="link">انصراف و بازگشت</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+ 

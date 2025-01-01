@@ -25,18 +25,20 @@ public static class DiContainer
         services.AddScoped<IFileHandleRepository, FileHandleRepository>();
         services.AddScoped<IDiscountRepository, DiscountRepository>();
         services.AddScoped<IProductSpecificationRepository, ProductSpecificationRepository>();
-
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IFaqRepository, FaqRepository>();
         services.AddScoped<IProductGalleryRepository, ProductGalleryRepository>();
         services.AddScoped<INotificationRepository, NotificationRepository>();
         services.AddScoped<IProductColorRepository, ProductColorRepository>();
-        services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IQuestionRepository, QuestionRepository>();
+        services.AddScoped<ICommentRepository, CommentRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+
         #endregion
 
         #region Services
 
+        services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ITicketService, TicketService>();
@@ -47,17 +49,13 @@ public static class DiContainer
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IFaqService, FaqService>();
         services.AddScoped<IDiscountService, DiscountService>();
-
         services.AddScoped<IProductGalleryService, ProductGalleryService>();
         services.AddScoped<IProductColorService, ProductColorService>();
         services.AddScoped<IProductSpecificationService, ProductSpecificationService>();
         services.AddScoped<IQuestionService, QuestionService>();
+        services.AddScoped<ICommentService, CommentService>();
      
         #endregion
-
-
-
-
 
         services.AddSingleton<HtmlEncoder>(
             HtmlEncoder.Create(new[]

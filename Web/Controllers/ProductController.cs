@@ -1,6 +1,9 @@
-﻿using Application.Services.Interfaces;
+﻿using Application.Services.Impelementation;
+using Application.Services.Interfaces;
 using Application.Tools;
 using Domain.Entities.Question;
+using Domain.Enums;
+using Domain.ViewModel.Comment;
 using Domain.ViewModel.Product.Product;
 using Domain.ViewModel.Question;
 using Microsoft.AspNetCore.Mvc;
@@ -8,8 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Web.Controllers
 {
     public class ProductController(IProductService productService,
-    IQuestionService questionService,
-    IOrderService orderService) : SiteBaseController
+    IQuestionService questionService,ICommentService commentService,IOrderService orderService) : SiteBaseController
+     
     {
         #region ProductList
 
@@ -60,14 +63,43 @@ namespace Web.Controllers
         }
 
         #endregion
-   
 
+        #region MyRegion
+
+        
+
+     
         [HttpPost]
         public async Task<IActionResult> ToggleQuestionLike(int productId, int userId, QuestionLike questionLike)
         {
             bool isSuccess = await questionService.ToggleQuestionLike(productId, userId, questionLike);
             return Json(new { success = isSuccess });
         }
+        #endregion
+
+        #region Comments
+        [HttpGet]
+        public async Task<IActionResult> ProductAddComment(int productId)
+        {
+            var model = new CommentViewModel
+            {
+                Ratings = Enum.GetValues(typeof(RatingCategory))
+                    .Cast<RatingCategory>()
+                    .Select(category => new CommentRatingViewModel { Category = category })
+                    .ToList()
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ProductAddComment(CommentViewModel comment)
+        {
+            await commentService.AddCommentAsync(comment);
+            TempData[SuccessMessage] = "نظر شما با موفقیت ثبت شد";
+            return RedirectToAction(nameof(ProductDetail),new{ productid = comment.ProductId});
+        }
+
+        #endregion
 
         #region AddToBasket
       

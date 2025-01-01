@@ -12,9 +12,9 @@ namespace Domain.Interface
         Task<List<Discount>> GetAllAsync();
         Task<Discount?> GetByIdAsync(int id);
         Task<List<Discount>> GetActiveDiscounts();
-        Task<Discount> GetHighestDiscountForProductAsync(int productId);
+        Task<Discount?> GetHighestDiscountForProductAsync(int productId);
         Task AddAsync(Discount discount);
-        Task UpdateAsync(Discount discount);
+        void Update(Discount discount);
         Task DeleteAsync(int id);
 
         Task<List<int>> GetUserDiscount(int discountId);

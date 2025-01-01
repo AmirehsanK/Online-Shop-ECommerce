@@ -9,7 +9,7 @@
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script>
     function onSubmit(token) {
-      document.getElementById("LoginForm_id").submit();
+      document.getElementById("ContactUsForm_id").submit();
     }
 </script>
 <div class="page-wrapper">
@@ -28,7 +28,7 @@
                         برای پیگیری یا سوال درباره سفارش و ارسال پیام بهتر است از فرم زیر استفاده کنید.
                     </div>
                     <!-- start of contact-us-form -->
-                    <form asp-action="ContactUs" asp-controller="ContactUs" class="contact-us-form">
+                    <form id="ContactUsForm_id" asp-action="ContactUs" asp-controller="ContactUs" class="contact-us-form">
                         <div class="row">
                             <div class="col-md-6">
                                 <!-- Use ViewComponent for Subject -->

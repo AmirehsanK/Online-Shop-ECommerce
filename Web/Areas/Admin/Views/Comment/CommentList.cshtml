@@ -1,0 +1,61 @@
+﻿@using Application.Tools
+@model Domain.ViewModel.Comment.FilterCommentViewModel
+
+<h2>مدیریت نظرات</h2>
+
+<form method="get" asp-action="CommentList" asp-controller="Comment" asp-area="Admin">
+    <div class="form-check">
+        <input type="radio" class="form-check-input" id="all" name="filter" value="all" @(Model.Filter == "all" ? "checked" : "") />
+        <label class="form-check-label" for="all">همه نظرات</label>
+    </div>
+    <div class="form-check">
+        <input type="radio" class="form-check-input" id="approved" name="filter" value="approved" @(Model.Filter == "approved" ? "checked" : "") />
+        <label class="form-check-label" for="approved">نظرات تایید شده</label>
+    </div>
+    <div class="form-check">
+        <input type="radio" class="form-check-input" id="notApproved" name="filter" value="notApproved" @(Model.Filter == "notApproved" ? "checked" : "") />
+        <label class="form-check-label" for="notApproved">نظرات تایید نشده</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">اعمال فیلتر</button>
+</form>
+
+@if (Model.Entities.Count == 0)
+{
+    <p>هنوز نظری ثبت نشده است.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>عنوان</th>
+                <th>متن نظر</th>
+                <th>تاریخ ثبت</th>
+                <th>وضعیت</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var comment in Model.Entities)
+            {
+                <tr>
+                    <td>@comment.Title</td>
+                    <td>@comment.Content</td>
+                    <td>@comment.CreateDate.ToShamsi()</td>
+                    <td>@(comment.IsApproved ? "تایید شده" : "در انتظار تایید")</td>
+                    <td>
+                        @if (!comment.IsApproved)
+                        {
+                            <form method="post" asp-action="Approve" asp-controller="Comment" asp-area="Admin">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="commentId" value="@comment.Id" />
+                                <button type="submit" class="btn btn-success">تایید</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

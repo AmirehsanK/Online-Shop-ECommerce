@@ -357,12 +357,27 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="product-seller-row product-seller-row--price">
-                                <div class="product-seller-row--price-now fa-num">
-                                    <span class="price" id="finalPrice">@Model.Price.ToString("#,0")</span>
-                                    <span class="currency">تومان</span>
+                            @if (Model.OffPrice > 0)
+                            {
+                                <div class="product-seller-row product-seller-row--price">
+                                    <div class="product-seller-row--price-now fa-num">
+                                        <span class="price" id="finalPrice" style="text-decoration-color: red; text-decoration: line-through;">@Model.Price.ToString("#,0")</span>
+                                        <span class="currency">تومان</span>
+                                        <br/>
+                                        <span class="price" id="finalPrice" >@Model.OffPrice.ToString("#,0")</span>
+                                        <span class="currency">تومان</span>
+                                    </div>
                                 </div>
-                            </div>
+                            }
+                            else
+                            {
+                                <div class="product-seller-row product-seller-row--price">
+                                    <div class="product-seller-row--price-now fa-num">
+                                        <span class="price" id="finalPrice">@Model.Price.ToString("#,0")</span>
+                                        <span class="currency">تومان</span>
+                                    </div>
+                                </div>
+                            }
                             <div class="product-seller-row product-remaining-in-stock">
                                 @if (Model.Inventory < 2)
                                 {
@@ -1039,10 +1054,10 @@
                                         </div>
                                     </div>
                                     <div class="mb-2">دیدگاه خود را درباره این کالا بیان کنید</div>
-                                    <button class="btn btn-block btn-outline-primary">
+                                    <a asp-action="ProductAddComment" asp-controller="Product" asp-area="" asp-all-route-productid="@Model.ProductId" class="btn btn-block btn-outline-primary">
                                         افزودن
                                         دیدگاه
-                                    </button>
+                                    </a>
                                 </div>
                                 <!-- end of comments-sidebar -->
                             </div>
