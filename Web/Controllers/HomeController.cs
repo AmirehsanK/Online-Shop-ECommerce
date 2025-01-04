@@ -1,20 +1,14 @@
+using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
 
-public class HomeController : SiteBaseController
+public class HomeController(IProductService productService) : SiteBaseController
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public async Task<IActionResult> Index()
     {
-        _logger = logger;
-    }
-
-    public IActionResult Index()
-    {
-
-        return View();
+        var model = await productService.Get8MostDiscountedProducts();
+        return View(model);
     }
 
     public IActionResult Privacy()

@@ -3,6 +3,7 @@ using Application.Services.Interfaces;
 using Application.Tools;
 using Domain.Entities.ContactUs;
 using Domain.Interface;
+using Domain.ViewModel.ContactUs;
 
 namespace Application.Services.Impelementation;
 
@@ -42,6 +43,16 @@ public class ContactUsService(IContactUsRepository contactUsRepository) : IConta
             CreatedAt = m.CreatedAt,
             RespondedAt = m.RespondedAt
         });
+    }public async Task<List<ContactUsAdminViewModel>> GetMessagesForAdminAsync()
+    {
+        var messages = await contactUsRepository.GetMessagesAsync();
+        return messages.Select(m => new ContactUsAdminViewModel
+        {
+            Id = m.Id,
+            FullName = m.FullName,
+            Subject = m.Subject,
+            IsAnswered = m.IsAnswered
+        }).Take(3).ToList();
     }
 
     public async Task AnswerMessageAsync(int id,string messageResponse)

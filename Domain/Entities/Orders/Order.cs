@@ -13,6 +13,9 @@ namespace Domain.Entities.Orders
 
         public DateTime? PaymentDate { get; set; }
 
+        public bool IsFinally { get; set; }
+
+
         public string? RefCode { get; set; }
         #endregion
 

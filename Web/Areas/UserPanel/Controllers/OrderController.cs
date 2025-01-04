@@ -1,7 +1,8 @@
-﻿using Application.Services.Interfaces;
+﻿using System.Text;
+using Application.Services.Interfaces;
 using Application.Tools;
 using Domain.Interface;
-using Domain.ViewModel.Payment;
+using Domain.ViewModel;
 using Domain.ViewModel.User;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -12,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Web.Areas.UserPanel.Controllers
 {
     public class OrderController
-        (IOrderService orderService): UserPanelBaseController
+        (IOrderService orderService,IUserService userService,IConfiguration configuration): UserPanelBaseController
     {
         string merchant = "cfa83c81-89b0-4993-9445-2c3fcd323455";
         string amount = "1100";
@@ -75,6 +76,6 @@ namespace Web.Areas.UserPanel.Controllers
         #endregion
 
 
- 
+
     }
 }

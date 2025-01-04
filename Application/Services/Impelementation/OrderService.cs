@@ -106,5 +106,16 @@ namespace Application.Services.Impelementation
             userRepository.UpdateUser(user);
             await userRepository.SaveChangesAsync();
         }
+
+        public async Task CloseOrder(int userId)
+        {
+            var order = await orderRepository.GetUserLatestOpenOrder(userId);
+
+            order.IsFinally = true;
+            order.PaymentDate=DateTime.Now;
+            orderRepository.UpdateOrder(order);
+            await orderRepository.Save();
+
+        }
     }
 }

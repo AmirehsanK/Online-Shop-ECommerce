@@ -13,18 +13,11 @@ using Discount = Domain.Entities.Discount.Discount;
 
 namespace Application.Services.Impelementation
 {
-    public class DiscountService : IDiscountService
+    public class DiscountService(IDiscountRepository repository) : IDiscountService
     {
-        private readonly IDiscountRepository _repository;
-
-        public DiscountService(IDiscountRepository repository)
-        {
-            _repository = repository;
-        }
-
         public async Task<List<DiscountViewModel>> GetAllAsync()
         {
-            var discounts = await _repository.GetAllAsync();
+            var discounts = await repository.GetAllAsync();
             return discounts.Select(d => new DiscountViewModel
             {
                 Id=d.Id,
@@ -42,7 +35,7 @@ namespace Application.Services.Impelementation
 
         public async Task<DiscountViewModel?> GetByIdAsync(int id)
         {
-            var discount = await _repository.GetByIdAsync(id);
+            var discount = await repository.GetByIdAsync(id);
             if (discount == null) return null;
 
             return new DiscountViewModel
@@ -75,13 +68,13 @@ namespace Application.Services.Impelementation
                 UsageLimit = viewModel.UsageLimit
             };
 
-            await _repository.AddAsync(discount);
-            await _repository.SaveChangesAsync();
+            await repository.AddAsync(discount);
+            await repository.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(int id, DiscountEditViewModel viewModel)
         {
-            var discount = await _repository.GetByIdAsync(id);
+            var discount = await repository.GetByIdAsync(id);
             if (discount == null) return;
 
             discount.Code = viewModel.Code;
@@ -92,53 +85,53 @@ namespace Application.Services.Impelementation
             discount.IsActive = (bool)viewModel.IsActive;
             discount.UsageLimit = viewModel.UsageLimit;
 
-            _repository.Update(discount);
-            await _repository.SaveChangesAsync();
+            repository.Update(discount);
+            await repository.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var discount = await _repository.GetByIdAsync(id);
+            var discount = await repository.GetByIdAsync(id);
             if (discount == null) return;
 
             discount.IsDeleted=true;
-            _repository.Update(discount);
-            await _repository.SaveChangesAsync();
+            repository.Update(discount);
+            await repository.SaveChangesAsync();
         }
 
         public async Task<List<int>> GetUserDiscount(int discountId)
         {
-            return await _repository.GetUserDiscount(discountId);
+            return await repository.GetUserDiscount(discountId);
         }
 
         public Task<List<int>> GetProductDiscount(int discountId)
         {
-            return _repository.GetProductDiscount(discountId);
+            return repository.GetProductDiscount(discountId);
         }
 
         public async Task AssignProductDiscountAsync(List<int> productIds, int discountId)
         {
-            var existingProductIds = await _repository.GetProductDiscount(discountId);
+            var existingProductIds = await repository.GetProductDiscount(discountId);
 
-            var ProductsToRemove = existingProductIds.Except(productIds).ToList();
+            var productsToRemove = existingProductIds.Except(productIds).ToList();
 
-            var ProductsToAdd = productIds.Except(existingProductIds).ToList();
+            var productsToAdd = productIds.Except(existingProductIds).ToList();
 
-            foreach (var productId in ProductsToRemove)
+            foreach (var productId in productsToRemove)
             {
-                await _repository.RemoveProductDiscountAsync(productId, discountId);
+                await repository.RemoveProductDiscountAsync(productId, discountId);
             }
 
-            foreach (var productId in ProductsToAdd)
+            foreach (var productId in productsToAdd)
             {
-                await _repository.AssignProductDiscountAsync(productId, discountId);
+                await repository.AssignProductDiscountAsync(productId, discountId);
             }
-            await _repository.SaveChangesAsync();
+            await repository.SaveChangesAsync();
         }
 
         public async Task AssignUserDiscountAsync(List<int> userIds, int discountId)
         {
-            var existingUserIds = await _repository.GetUserDiscount(discountId);
+            var existingUserIds = await repository.GetUserDiscount(discountId);
 
             var usersToRemove = existingUserIds.Except(userIds).ToList();
 
@@ -146,14 +139,35 @@ namespace Application.Services.Impelementation
 
             foreach (var userId in usersToRemove)
             {
-                await _repository.RemoveUserDiscountAsync(userId, discountId);
+                await repository.RemoveUserDiscountAsync(userId, discountId);
             }
 
             foreach (var userId in usersToAdd)
             {
-                await _repository.AssignUserDiscountAsync(userId, discountId);
+                await repository.AssignUserDiscountAsync(userId, discountId);
             }
-            await _repository.SaveChangesAsync();
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task<List<DiscountListAdminViewModel>> GetAllForAdminAsync()
+        {
+            var activeDiscounts = await repository.GetActiveDiscounts();
+
+            var filteredDiscounts = activeDiscounts
+                .Where(d => d.ProductDiscounts != null && d.ProductDiscounts.Count > 1)
+                .Take(3)
+                .ToList();
+
+            var discountList = filteredDiscounts.Select(d => new DiscountListAdminViewModel
+            {
+                Id = d.Id,
+                Code = d.Code,
+                IsPercentage = d.IsPercentage,
+                Value = d.Value,
+                IsActive = d.IsActive
+            }).ToList();
+
+            return discountList;
         }
     }
 }

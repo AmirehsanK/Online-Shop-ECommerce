@@ -17,5 +17,7 @@ namespace Application.Services.Interfaces
 
         Task AddUserAddressForOrder(GetUserAddressForOrderViewModel model,int userid);
 
+        Task CloseOrder(int userId);
+
     }
 }

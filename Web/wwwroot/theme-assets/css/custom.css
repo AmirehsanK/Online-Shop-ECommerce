@@ -4,6 +4,10 @@
 }
 .offprice {
     text-decoration-color: red;
-    text-decoration: line-through;s
+    text-decoration: line-through;
+}
+.offimage {
+    width: 150px !important;
+    height: 150px !important;
 }
 /*# sourceMappingURL=custom.css.map */

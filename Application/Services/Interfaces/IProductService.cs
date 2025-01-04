@@ -34,6 +34,7 @@ namespace Application.Services.Interfaces
         #region Product
 
         Task<FilterProductViewModel> GetAllProductsAsync(FilterProductViewModel product);
+        Task<List<ProductViewModel>> Get8MostDiscountedProducts();
         Task<ProductViewModel> GetProductByIdAsync(int productId);
         Task AddProductAsync(AddProductViewModel model);
         Task UpdateProductAsync(ProductViewModel product);
