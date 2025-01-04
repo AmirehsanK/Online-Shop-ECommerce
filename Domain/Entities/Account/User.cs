@@ -46,6 +46,8 @@ public class User : BaseEntity
 
     public ICollection<Order> Orders { get; set; }
 
+    public ICollection<Transaction> Transactions { get; set; }
+
 
     #endregion
 

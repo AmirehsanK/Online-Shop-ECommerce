@@ -1,6 +1,7 @@
 ﻿using Application.Services.Interfaces;
 using Application.Tools;
 using Domain.Interface;
+using Domain.ViewModel.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Areas.UserPanel.Controllers
@@ -39,8 +40,35 @@ namespace Web.Areas.UserPanel.Controllers
 
         #region ChooseAddrress
 
+        [Route("ChooseAddress")]
+        [HttpGet]
         public async Task<IActionResult> ChooseAddress()
         {
+            var model = await orderService.GetUserAddressForOrder(User.GetCurrentUserId());
+            ViewData["BasketDetail"] = await orderService.GetBasketDetail(User.GetCurrentUserId());
+            return View(model);
+        }
+        [Route("ChooseAddress")]
+        [HttpPost]
+        public async Task<IActionResult> ChooseAddress(GetUserAddressForOrderViewModel model) 
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            
+            await orderService.AddUserAddressForOrder(model, User.GetCurrentUserId());
+            var models = await orderService.GetUserAddressForOrder(User.GetCurrentUserId());
+            return View(models);
+        }
+
+        #endregion
+
+        #region PaymentOrder
+        [HttpGet("PaymentOrder")]
+        public async Task<IActionResult> PaymentOrder()
+        {
+            ViewData["BasketDetail"] = await orderService.GetBasketDetail(User.GetCurrentUserId());
             return View();
         }
 

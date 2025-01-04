@@ -3,6 +3,7 @@ namespace Domain.ViewModel.Order
 {
     public class BasketDetailViewModel
     {
+        public int  ProductId { get; set; }
         public int  OrderDetailId { get; set; }
 
         public string Title { get; set; }

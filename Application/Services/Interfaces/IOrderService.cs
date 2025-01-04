@@ -1,6 +1,7 @@
 ﻿
 
 using Domain.ViewModel.Order;
+using Domain.ViewModel.User;
 
 namespace Application.Services.Interfaces
 {
@@ -12,6 +13,9 @@ namespace Application.Services.Interfaces
 
 
         Task<List<BasketDetailViewModel>> GetBasketDetail(int userId);
+        Task<GetUserAddressForOrderViewModel> GetUserAddressForOrder(int userId);
+
+        Task AddUserAddressForOrder(GetUserAddressForOrderViewModel model,int userid);
 
     }
 }

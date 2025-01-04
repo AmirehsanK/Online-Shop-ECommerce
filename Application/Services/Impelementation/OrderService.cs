@@ -4,18 +4,20 @@ using Application.Services.Interfaces;
 using Domain.Entities.Orders;
 using Domain.Interface;
 using Domain.ViewModel.Order;
+using Domain.ViewModel.User;
 
 namespace Application.Services.Impelementation
 {
     public class OrderService
         (IOrderRepository orderRepository,
-            IProductColorRepository colorRepository) : IOrderService
+            IProductColorRepository colorRepository,
+            IUserRepository userRepository) : IOrderService
     {
-        public async Task AddProductToOrder(int productId, int userId,int? productColorId, int count = 1)
+        public async Task AddProductToOrder(int productId, int userId, int? productColorId, int count = 1)
         {
             var OpenOrder = await orderRepository.GetUserLatestOpenOrder(userId);
             var exsistOrderDetial = await orderRepository.GetExistOrderDetail(productId, productColorId.Value);
-            if (exsistOrderDetial==null)
+            if (exsistOrderDetial == null)
             {
                 var orderdetail = new OrderDetail()
                 {
@@ -24,29 +26,29 @@ namespace Application.Services.Impelementation
                     OrderId = OpenOrder.Id,
                     IsDeleted = false,
                     CreateDate = DateTime.Now,
-        
+
                     ProductColorId = productColorId
 
                 };
-                
+
                 if (productColorId.HasValue)
                 {
                     var colorprice = await colorRepository.GetProductColorWithid(productColorId.Value);
                     var color = colorprice.Price;
                     orderdetail.ColorPrice = color;
                 }
-                
+
                 await orderRepository.AddOrderDetail(orderdetail);
                 await orderRepository.Save();
             }
             else
             {
-                exsistOrderDetial.Count=exsistOrderDetial.Count+1;
+                exsistOrderDetial.Count = exsistOrderDetial.Count + 1;
                 orderRepository.UpdateOrderDetail(exsistOrderDetial);
                 await orderRepository.Save();
             }
-      
-    
+
+
 
         }
 
@@ -68,7 +70,6 @@ namespace Application.Services.Impelementation
                 var colorcode = await colorRepository.GetProductColorWithid(item.ProductColorId.Value);
                 var code = colorcode.Color.ColorCode;
                 var name = colorcode.Color.Title;
-
                 var newdetail = new BasketDetailViewModel
                 {
                     ColorCode = code,
@@ -77,17 +78,33 @@ namespace Application.Services.Impelementation
                     FinallPrice = (item.ColorPrice + item.Product.Price) * item.Count,
                     OrderDetailId = item.Id,
                     ColorName = name,
-                    ProductCount = item.Count
-
+                    ProductCount = item.Count,
+                    ProductId = item.ProductId
                 };
-
                 detailss.Add(newdetail);
-
-
             }
-
             return detailss;
 
+        }
+
+        public async Task<GetUserAddressForOrderViewModel> GetUserAddressForOrder(int userId)
+        {
+            var user = await userRepository.GetUserByIdAsync(userId);
+            var userAddress = new GetUserAddressForOrderViewModel()
+            {
+                Address = user.Address,
+                FullName = user.FirstName + " " + user.LastName
+
+            };
+            return userAddress;
+        }
+
+        public async Task AddUserAddressForOrder(GetUserAddressForOrderViewModel model, int userid)
+        {
+            var user = await userRepository.GetUserByIdAsync(userid);
+            user.Address = model.Address;
+            userRepository.UpdateUser(user);
+            await userRepository.SaveChangesAsync();
         }
     }
 }
