@@ -1,40 +1,43 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Runtime.InteropServices.ComTypes;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Text;
-using MyEshop.Data.DTOs.Novino;
-using MyEshop.Data.ViewModels.Payment;
+using Application.Services.Impelementation;
+using Application.Services.Interfaces;
+using Application.Tools;
+
+using Application.DTO;
+using Domain.ViewModel.Payment;
 
 namespace Web.Areas.UserPanel.Controllers
 {
-    public class PaymentController : UserPanelBaseController
+    public class PaymentController(IOrderService orderService) : UserPanelBaseController
     {
-        public async Task<IActionResult> StartPay(int orderId)
+        [HttpGet("start-pay")]
+        public async Task<IActionResult> StartPay()
         {
-            var order = await _context.Orders
-                .Include(od => od.OrderDetails)
-                .Include(od => od.User)
-                .FirstOrDefaultAsync(o => o.Id == orderId);
+            var order = await orderService.GetBasketDetail(User.GetCurrentUserId());
 
             if (order == null)
                 return NotFound();
 
             using HttpClient httpClient = new HttpClient();
 
-            int amount = order.OrderDetails.Sum(od => od.Price * od.Count);
+            int amount = order.Sum(od => od.FinallPrice * od.ProductCount);
 
             NovinoGetPaymentUrlRequestDto model = new NovinoGetPaymentUrlRequestDto()
             {
                 Amount = amount * 10,
                 CallbackMethod = "POST",
-                CallbackUrl = "https://localhost:7094/Payment/NovinoCallback",
+                CallbackUrl = "https://localhost:7271/novinocallback",
                 CardPan = null,
                 Description = "پرداخت سبد خرید",
-                Email = order.User.Email,
-                InvoiceId = order.Id.ToString(),
+                Email = "",
+                InvoiceId = User.GetCurrentUserId().ToString(),
                 MerchantId = "test",
                 Mobile = null,
-                Name = order.User.UserName
+                Name = ""
             };
 
             string body = JsonConvert.SerializeObject(model);
@@ -60,22 +63,20 @@ namespace Web.Areas.UserPanel.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("novinocallback")]
         public async Task<IActionResult> NovinoCallback(string paymentStatus, string invoiceID, string authority)
         {
             if (!string.IsNullOrEmpty(paymentStatus) && paymentStatus.ToLower() == "ok")
             {
-                var order = await _context.Orders
-                .Include(od => od.OrderDetails)
-                .Include(od => od.User)
-                .FirstOrDefaultAsync(o => o.Id == int.Parse(invoiceID));
+                var id=int.Parse(invoiceID);
+                var order = await orderService.GetBasketDetail(id);
 
                 if (order == null)
                     return NotFound();
 
                 using HttpClient httpClient = new HttpClient();
 
-                int amount = order.OrderDetails.Sum(od => od.Price * od.Count);
+                int amount = order.Sum(od => od.FinallPrice * od.ProductCount);
 
                 NovinoVerifyPaymentRequestDto model = new NovinoVerifyPaymentRequestDto()
                 {
@@ -99,30 +100,21 @@ namespace Web.Areas.UserPanel.Controllers
 
                 if (finalResult != null && finalResult.Status == "100")
                 {
-                    order.IsFinaly = true;
+                    await orderService.CloseOrder(id);
 
-                    _context.Orders.Update(order);
-                    await _context.SaveChangesAsync();
+                    return View("SuccessPayment");
 
-                    return View("SuccessPayment", new SuccessPaymnetViewModel()
-                    {
-                        Message = "پرداخت با موفقیت انجام شد.",
-                        RefId = finalResult.Data.RefId
-                    });
                 }
                 else
                 {
-                    return View("ErrorPayment", new ErrorPaymnetViewModel()
-                    {
-                        Message = "خرید شما با شکست مواجه شده است. لطفا تیکت ارسال کنید.",
-                        RefId = "123431"
-                    });
+                    return View("UnSuccessPayment");
+
                 }
 
             }
             else
             {
-                return View("ErrorPayment", new ErrorPaymnetViewModel()
+                return View("UnSuccessPayment", new ErrorPaymnetViewModel()
                 {
                     Message = "خرید شما با شکست مواجه شده است. لطفا تیکت ارسال کنید.",
                     RefId = "123431"
@@ -131,5 +123,24 @@ namespace Web.Areas.UserPanel.Controllers
 
         }
 
+        #region SuccessPayment
+        [HttpGet("SuccessPayment")]
+        public async Task<IActionResult> SuccessPayment()
+        {
+            return View();
+        }
+
+
+
+        #endregion
+
+        #region UnSuccessPayment
+
+        public async Task<IActionResult> UnSuccessPayment()
+        {
+            return View();
+        }
+
+        #endregion
     }
 }

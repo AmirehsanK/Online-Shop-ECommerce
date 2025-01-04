@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyEshop.Data.DTOs.Novino
+namespace Application.DTO
 {
     public class NovinoGetPaymentUrlResponseDto
     {

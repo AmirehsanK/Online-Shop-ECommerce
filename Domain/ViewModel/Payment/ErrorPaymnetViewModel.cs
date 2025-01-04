@@ -1,4 +1,4 @@
-﻿namespace MyEshop.Data.ViewModels.Payment
+﻿namespace Domain.ViewModel.Payment
 {
     public class ErrorPaymnetViewModel
     {

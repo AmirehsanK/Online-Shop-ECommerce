@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyEshop.Data.ViewModels.Payment
+namespace Domain.ViewModel.Payment
 {
     public class SuccessPaymnetViewModel
     {

@@ -3,6 +3,7 @@
 namespace Web.Areas.UserPanel.Controllers;
 
 [Area("UserPanel")]
+
 public class UserPanelBaseController : Controller
 {
     public static string SuccessMessage = "Success";

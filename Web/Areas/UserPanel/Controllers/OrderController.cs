@@ -2,15 +2,24 @@
 using Application.Services.Interfaces;
 using Application.Tools;
 using Domain.Interface;
+using Domain.ViewModel;
 using Domain.ViewModel.User;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
+
 namespace Web.Areas.UserPanel.Controllers
 {
     public class OrderController
         (IOrderService orderService,IUserService userService,IConfiguration configuration): UserPanelBaseController
     {
+        string merchant = "cfa83c81-89b0-4993-9445-2c3fcd323455";
+        string amount = "1100";
+        string authority;
+        string description = "خرید تستی ";
+        string callbackurl = "https://localhost:7271/user/VerifyByHttpClient";
         #region BasketDetail
 
         [HttpGet("BasketDetail")]
@@ -66,15 +75,7 @@ namespace Web.Areas.UserPanel.Controllers
 
         #endregion
 
-        #region PaymentOrder
-        [HttpGet("PaymentOrder")]
-        public async Task<IActionResult> PaymentOrder()
-        {
-            ViewData["BasketDetail"] = await orderService.GetBasketDetail(User.GetCurrentUserId());
-            return View();
-        }
 
-        #endregion
 
     }
 }
