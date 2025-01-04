@@ -17,7 +17,14 @@ namespace Application.Services.Impelementation
         {
             var discounts = await discountService.GetAllForAdminAsync();
             var contactUsList = await contactUsService.GetMessagesForAdminAsync();
-            return new AdminPanelViewModel();
+            var tickets = await ticketService.GetAllTicketListForAdmin();
+            return new AdminPanelViewModel()
+            {
+                SalesAmount = 1532,
+                ActiveDiscountList = discounts,
+                TicketList = tickets,
+                ContactUsList = contactUsList
+            };
         }
     }
 }

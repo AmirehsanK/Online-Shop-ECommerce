@@ -54,7 +54,7 @@ public static class DiContainer
         services.AddScoped<IProductSpecificationService, ProductSpecificationService>();
         services.AddScoped<IQuestionService, QuestionService>();
         services.AddScoped<ICommentService, CommentService>();
-     
+        services.AddScoped<IAdminService, AdminService>();
         #endregion
 
         services.AddSingleton<HtmlEncoder>(

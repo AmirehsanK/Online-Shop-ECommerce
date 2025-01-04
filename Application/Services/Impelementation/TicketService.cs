@@ -178,6 +178,15 @@ namespace Application.Services.Impelementation
                 Title = u.Title,
                 UpdateDate = u.UpdateDate
             }).ToList();
+        }public async Task<List<TicketAdminPanelViewModel>> GetAllTicketForAdminPanel()
+        {
+            var allticket = await _ticketRepository.GetAllTicketForAdminAsync();
+            return allticket.Select(u => new TicketAdminPanelViewModel()
+            {
+                Ticketid = u.Id,
+                Title = u.Title,
+                CreateDate = u.CreateDate
+            }).Take(3).ToList();
         }
 
         #endregion

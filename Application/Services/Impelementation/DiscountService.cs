@@ -153,19 +153,14 @@ namespace Application.Services.Impelementation
         {
             var activeDiscounts = await repository.GetActiveDiscounts();
 
-            var filteredDiscounts = activeDiscounts
-                .Where(d => d.ProductDiscounts != null && d.ProductDiscounts.Count > 1)
-                .Take(3)
-                .ToList();
-
-            var discountList = filteredDiscounts.Select(d => new DiscountListAdminViewModel
+            var discountList = activeDiscounts.Select(d => new DiscountListAdminViewModel
             {
                 Id = d.Id,
                 Code = d.Code,
                 IsPercentage = d.IsPercentage,
                 Value = d.Value,
                 IsActive = d.IsActive
-            }).ToList();
+            }).Take(3).ToList();
 
             return discountList;
         }

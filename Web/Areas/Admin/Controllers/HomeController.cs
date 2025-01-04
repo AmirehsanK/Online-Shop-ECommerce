@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Application.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Areas.Admin.Controllers;
 
-public class HomeController : AdminBaseController
+public class HomeController(IAdminService adminService) : AdminBaseController
 {
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var model = await adminService.GetAdminPanelAsync();
+        return View(model);
     }
 }
