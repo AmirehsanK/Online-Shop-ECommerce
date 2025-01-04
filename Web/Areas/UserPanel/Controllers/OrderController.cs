@@ -1,12 +1,15 @@
-﻿using Application.Services.Interfaces;
+﻿using System.Text;
+using Application.Services.Interfaces;
 using Application.Tools;
 using Domain.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 namespace Web.Areas.UserPanel.Controllers
 {
     public class OrderController
-        (IOrderService orderService): UserPanelBaseController
+        (IOrderService orderService,IUserService userService,IConfiguration configuration): UserPanelBaseController
     {
         #region BasketDetail
 
@@ -46,6 +49,5 @@ namespace Web.Areas.UserPanel.Controllers
 
         #endregion
 
- 
     }
 }

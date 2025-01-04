@@ -154,6 +154,31 @@ namespace Application.Services.Impelementation
 
         #region Product
 
+        public async Task<List<ProductViewModel>> GetAllProductsNoFilter()
+        {
+
+            var products = await _productRepository.GetAllProductsNoFilterAsync();
+
+            return products
+                .Where(p => !p.IsDeleted)
+                .Select(p => new ProductViewModel
+                {
+                    Id = p.Id,
+                    ProductName = p.ProductName,
+                    ShortDescription = p.ShortDescription,
+                    Review = p.Review,
+                    ExpertReview = p.ExpertReview,
+                    ImageName = p.ImageName,
+                    Price = p.Price,
+                    Inventory = p.Inventory,
+                    SubCategoryId = p.CategoryId,
+                    SubCategoryTitle = p.Category.Title,
+                    ProductGalleries = p.ProductGalleries
+                })
+                .ToList();
+
+        }
+
         public async Task<FilterProductViewModel> GetAllProductsAsync(FilterProductViewModel product)
         {
             var activeDiscounts = await _discountRepository.GetActiveDiscounts();
@@ -180,7 +205,7 @@ namespace Application.Services.Impelementation
                         item.DiscountValue = (int)Math.Ceiling(((double)discount.Value / item.Price) * 100);
                     }
 
-                    
+                    item.DiscountEndDate = productDiscount.EndDate;
                     var offPrice = discount.IsPercentage
                         ? item.Price * (1 - (discount.Value / 100.0))
                         : item.Price - discount.Value;
@@ -196,32 +221,19 @@ namespace Application.Services.Impelementation
             }
             return products;
         }
-        public async Task<List<ProductViewModel>> GetAllProductsNoFilter()
+
+        public async Task<List<ProductViewModel>> Get8MostDiscountedProducts()
         {
+            var allProducts = await GetAllProductsAsync(new FilterProductViewModel());
 
-            var products = await _productRepository.GetAllProductsNoFilterAsync();
-
-            return products
-                .Where(p => !p.IsDeleted)
-                .Select(p => new ProductViewModel
-                {
-                    Id = p.Id,
-                    ProductName = p.ProductName,
-                    ShortDescription = p.ShortDescription,
-                    Review = p.Review,
-                    ExpertReview = p.ExpertReview,
-                    ImageName = p.ImageName,
-                    Price = p.Price,
-                    Inventory = p.Inventory,
-                    SubCategoryId = p.CategoryId,
-                    SubCategoryTitle = p.Category.Title,
-                    ProductGalleries = p.ProductGalleries
-                })
+            var discountsEndingSoon = allProducts.Entities
+                .Where(p => p.DiscountValue > 0 && p.DiscountEndDate.HasValue)
+                .OrderBy(p => p.DiscountEndDate)
+                .Take(8)
                 .ToList();
 
+            return discountsEndingSoon;
         }
-
-
 
         public async Task<ProductViewModel> GetProductByIdAsync(int productId)
         {

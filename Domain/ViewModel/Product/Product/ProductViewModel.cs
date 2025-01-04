@@ -36,7 +36,8 @@ namespace Domain.ViewModel.Product.Product
 
             public int OffPrice { get; set; } = 0;
 
-        public int DiscountValue { get; set; } = 0;
+            public int DiscountValue { get; set; } = 0;
+            public DateTime? DiscountEndDate { get; set; }
 
             public int Inventory { get; set; }
 

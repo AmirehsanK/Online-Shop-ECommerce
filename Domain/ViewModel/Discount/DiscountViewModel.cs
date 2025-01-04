@@ -34,7 +34,6 @@ namespace Domain.ViewModel.Discount
 
         [Display(Name = "تعداد استفاده")]
         public int? UsageLimit { get; set; }
-
         
     }
 }

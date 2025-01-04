@@ -18,17 +18,11 @@ using Application.Tools;
 
 namespace Application.Services.Impelementation
 {
-    public class UserService : IUserService
+    public class UserService(IUserRepository userRepository) : IUserService
     {
-        private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
-        {
-            _userRepository = userRepository;
-        }
-
         public async Task<List<UserListViewModel>> GetUserListAsync()
         {
-            var users = await _userRepository.GetAllAsync();
+            var users = await userRepository.GetAllAsync();
             return users.Where(u=> u.IsDeleted==false).Select(u => new UserListViewModel()
             {
                 Id = u.Id,
@@ -40,11 +34,11 @@ namespace Application.Services.Impelementation
                 
             }).ToList();
         }
-        
+
         public async Task<CreateUserEnums> CreateUserAsync(CreateUserViewModel model)
         {
             model.Email = model.Email.ToLower().Trim();
-            var Exist = await _userRepository.GetUserByEmailAsync(model.Email);
+            var Exist = await userRepository.GetUserByEmailAsync(model.Email);
             if (Exist == null)
             {
                 var user = new User()
@@ -59,8 +53,8 @@ namespace Application.Services.Impelementation
                     IsEmailActive = model.IsEmailActive,
                     Password = model.Password
                 };
-                await _userRepository.AddUserAsync(user);
-                await _userRepository.SaveChangesAsync();
+                await userRepository.AddUserAsync(user);
+                await userRepository.SaveChangesAsync();
                 return CreateUserEnums.Success;
 
             }
@@ -72,34 +66,34 @@ namespace Application.Services.Impelementation
 
         public async Task<bool> IsEmailExistAsync(string email)
         {
-            return await _userRepository.IsEmailExistAsync(email);
+            return await userRepository.IsEmailExistAsync(email);
         }
 
         #region Password
         
         public async Task<bool> IsPasswordCorrectAsync(string email,string password)
         {
-            var x =await _userRepository.GetUserByEmailAsync(email);
+            var x =await userRepository.GetUserByEmailAsync(email);
             return PasswordHasher.VerifyHashedPassword(x.Password, password);
         }
 
         public async Task ChangePasswordAsync(int userId, string newPassword)
         {
-            var user = await _userRepository.GetUserByIdAsync(userId);
+            var user = await userRepository.GetUserByIdAsync(userId);
 
             if (user == null)
                 throw new Exception("User not found");
 
             user.Password = PasswordHasher.HashPassword(newPassword);
 
-            _userRepository.UpdateUser(user) ;
-            await _userRepository.SaveChangesAsync();
+            userRepository.UpdateUser(user) ;
+            await userRepository.SaveChangesAsync();
         }
 
 
         public async Task<ForgetPasswordEnum> ForgotPasswordEmailSenderAsync(string email)
         {
-            var user = await _userRepository.GetUserByEmailAsync(email);
+            var user = await userRepository.GetUserByEmailAsync(email);
             if (user == null)
                 return ForgetPasswordEnum.UserNotFound;
             var domainLink = "https://localhost:7271";
@@ -111,7 +105,7 @@ namespace Application.Services.Impelementation
 
         public async Task<ForgetPasswordTokenCheckEnum> ForgotPasswordTokenCheckerAsync(string token)
         {
-            var exist = await _userRepository.IsExistUserByGuidAsync(token);
+            var exist = await userRepository.IsExistUserByGuidAsync(token);
             if (exist)
                 return ForgetPasswordTokenCheckEnum.Success;
             return ForgetPasswordTokenCheckEnum.Failed;
@@ -119,10 +113,10 @@ namespace Application.Services.Impelementation
 
         public async Task ResetPasswordAsync(string token, string newPassword)
         {
-            var user = await _userRepository.GetUserByGUIDAsync(token);
+            var user = await userRepository.GetUserByGUIDAsync(token);
             user.Password = PasswordHasher.HashPassword(newPassword);
-            _userRepository.UpdateUser(user);
-            await _userRepository.SaveChangesAsync();
+            userRepository.UpdateUser(user);
+            await userRepository.SaveChangesAsync();
         }
 
         public bool ComparePasswordAsync(string hashedPassword, string providedPassword)
@@ -134,7 +128,7 @@ namespace Application.Services.Impelementation
 
         public async Task<User> GetUserByEmailAsync(string email)
         {
-            return await _userRepository.GetUserByEmailAsync(email);
+            return await userRepository.GetUserByEmailAsync(email);
         }
 
         
@@ -157,8 +151,8 @@ namespace Application.Services.Impelementation
             var domainLink = "https://localhost:7271";
             string mailbody = $"<a href=\"{domainLink}/EmailActive/{user.EmailActiveCode}\"> فعالسازی حساب کاربری </a>";
             await EmailSender.SendEmail(user.Email,"فعال سازی حساب کاربری",mailbody );
-            await _userRepository.AddUserAsync(user);
-            await _userRepository.SaveChangesAsync();
+            await userRepository.AddUserAsync(user);
+            await userRepository.SaveChangesAsync();
         }
         
         
@@ -166,7 +160,7 @@ namespace Application.Services.Impelementation
         public async Task EditUserAsync(EditUserViewModel model)
         {
             
-            var user = await _userRepository.GetUserByIdAsync(model.Id);
+            var user = await userRepository.GetUserByIdAsync(model.Id);
           
 
             user.FirstName = model.FirstName;
@@ -178,14 +172,14 @@ namespace Application.Services.Impelementation
             user.Address=model.Address;
             user.Password = !string.IsNullOrEmpty(model.Password?.Trim())
                 ? PasswordHasher.HashPassword(model.Password) : user.Password;
-            _userRepository.UpdateUser(user);
-            await _userRepository.SaveChangesAsync();
+            userRepository.UpdateUser(user);
+            await userRepository.SaveChangesAsync();
 
         }
 
         public async Task<EditUserViewModel> GetUsersByIDAsync(int userid)
         {
-            var user= await _userRepository.GetUserByIdAsync(userid);
+            var user= await userRepository.GetUserByIdAsync(userid);
             var edit = new EditUserViewModel()
             {
                 FirstName = user.FirstName,
@@ -204,19 +198,19 @@ namespace Application.Services.Impelementation
 
         public async Task<ActiveEmailEnum> EmailActivatorAsync(string emailActiveCode)
         {
-            var user= await _userRepository.GetUserByGUIDAsync(emailActiveCode);
+            var user= await userRepository.GetUserByGUIDAsync(emailActiveCode);
             if (user == null)
                 return ActiveEmailEnum.Failed;
             
             user.IsEmailActive = true;
             user.EmailActiveCode=Guid.NewGuid().ToString("N");
-            await _userRepository.SaveChangesAsync();
+            await userRepository.SaveChangesAsync();
             return ActiveEmailEnum.Success;
         }
         
         public async Task<LoginUserEnum> LoginUserAsync(LoginUserViewModel model)
         {
-            var user = await _userRepository.GetUserByEmailAsync(model.Email);
+            var user = await userRepository.GetUserByEmailAsync(model.Email);
             if (user != null)
             {
                 //if (user.Password == PasswordHasher.HashPassword(model.Password))
@@ -258,16 +252,16 @@ namespace Application.Services.Impelementation
 
         public async Task DeleteUserAsync(int userid)
         {
-            var user = await _userRepository.GetUserByIdAsync(userid);
+            var user = await userRepository.GetUserByIdAsync(userid);
             user.IsDeleted = true;
-            _userRepository.UpdateUser(user);
-           await _userRepository.SaveChangesAsync();
+            userRepository.UpdateUser(user);
+           await userRepository.SaveChangesAsync();
 
         }
 
         public async Task<UserDetailViewModel> GetUserDetailAsync(int userid)
         {
-            var user = await _userRepository.GetUserByIdAsync(userid);
+            var user = await userRepository.GetUserByIdAsync(userid);
             var Detail = new UserDetailViewModel()
             {
                 FirstName = user.FirstName,
@@ -283,7 +277,8 @@ namespace Application.Services.Impelementation
 
         public async Task<User> GetUserById(int userid)
         {
-            return await _userRepository.GetUserByIdAsync(userid);
+            return await userRepository.GetUserByIdAsync(userid);
         }
+
     }
 }

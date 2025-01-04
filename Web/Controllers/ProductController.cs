@@ -141,8 +141,6 @@ namespace Web.Controllers
         }
         #endregion
 
-        #endregion
-
         #region AddToBasket
       
 

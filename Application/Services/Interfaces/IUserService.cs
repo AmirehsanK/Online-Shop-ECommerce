@@ -10,7 +10,6 @@ namespace Application.Services.Interfaces
     public interface IUserService
     {
         Task<List<UserListViewModel>> GetUserListAsync();
-
         Task<bool> IsPasswordCorrectAsync(string email, string password);
 
         bool ComparePasswordAsync(string hashedPassword, string providedPassword);

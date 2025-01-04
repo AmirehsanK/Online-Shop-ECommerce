@@ -11,6 +11,7 @@ namespace Application.Services.Interfaces
     public interface IDiscountService
     {
         Task<List<DiscountViewModel>> GetAllAsync();
+        Task<List<DiscountListAdminViewModel>> GetAllForAdminAsync();
         Task<DiscountViewModel?> GetByIdAsync(int id);
         Task AddAsync(DiscountViewModel viewModel);
         Task UpdateAsync(int id, DiscountEditViewModel viewModel);
