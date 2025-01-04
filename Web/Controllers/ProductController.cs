@@ -29,20 +29,19 @@ namespace Web.Controllers
 
         #endregion
 
-        #region ProductDetail
-        [HttpGet("ProductDetail/{productid}")]
+        [HttpGet("product-detail")]
         public async Task<IActionResult> ProductDetail(int productid)
         {
             #region averageRating
 
             var comment = await commentService.GetCommentsByProductIdAsync(productid);
-            float avgQuality = 0;
+            float avgQuality = 0;   
             float avgDesign = 0;
             float avgEase = 0;
             float avgValue = 0;
             float avgInnovation = 0;
             float avgFeatures = 0;
-            
+
             foreach (var variable in comment)
             {
                 avgQuality += variable.BuildQuality;
@@ -61,22 +60,22 @@ namespace Web.Controllers
             avgFeatures /= comment.Count;
             float avgOverall = (avgQuality + avgDesign + avgEase + avgValue + avgInnovation + avgFeatures) / 6;
             Dictionary<string, float> avg = new Dictionary<string, float>();
-            avg.Add("avgQuality",avgQuality);
-            avg.Add("avgDesign",avgDesign);
-            avg.Add("avgEase",avgEase);
-            avg.Add("avgValue",avgValue);
-            avg.Add("avgInnovation",avgInnovation);
-            avg.Add("avgFeatures",avgFeatures);
-            avg.Add("avgOverall",avgOverall);
-            ViewData["Commentavg"]= avg;
-#endregion
+            avg.Add("avgQuality", avgQuality);
+            avg.Add("avgDesign", avgDesign);
+            avg.Add("avgEase", avgEase);
+            avg.Add("avgValue", avgValue);
+            avg.Add("avgInnovation", avgInnovation);
+            avg.Add("avgFeatures", avgFeatures);
+            avg.Add("avgOverall", avgOverall);
+            ViewData["Commentavg"] = avg;
+            #endregion
             ViewData["Comments"] = comment;
             ViewData["Question"] = await questionService.GetProductQuestionsById(productid);
             var model= await productService.GetProductDetailForSite(productid);
             return View(model);
         }
         
-        #endregion
+   
 
         #region AddQuestionToProduct
 

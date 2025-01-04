@@ -1,8 +1,207 @@
-﻿
+﻿@using Application.Tools
+@using Domain.ViewModel.Order
+@model Domain.ViewModel.User.GetUserAddressForOrderViewModel
 @{
     ViewData["Title"] = "ChooseAddress";
     Layout = "_OrderLayout";
+    var Basket = ViewData["BasketDetail"] as List<BasketDetailViewModel>;
 }
 
-<h1>ChooseAddress</h1>
+<main class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 col-lg-8 mb-lg-0 mb-4">
+                <!-- start of box => user-address-selected -->
+                <div class="ui-box bg-white user-address-selected mb-5">
+                    <div class="ui-box-title">آدرس تحویل سفارش</div>
+                    <div class="ui-box-content">
+                        <!-- start of user-addresses-container -->
+                        <div class="user-addresses-container">
+                            <!-- start of user-address -->
+                            <div class="user-address">
+                                @if (Model.Address == null)
+                                {
+                                    <form asp-area="UserPanel" asp-controller="Order" asp-action="ChooseAddress" method="post">
+
+                                        <div class="form-group">
+
+                                            <textarea asp-for="Address" class="form-control ckeditor" rows="5"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary">افزودن ادرس</button>
+                                        </div>
+                                    </form>
+                                }
+                                <div class="user-address-recipient mb-2">@Model.Address</div>
+                                <span class="d-block user-contact-items fa-num mb-3">
+                                    <span class="user-contact-item">
+                                        <i class="ri-user-line icon"></i>
+                                        <span class="value">@Model.FullName</span>
+                                    </span>
+                                </span>
+                                <a asp-area="UserPanel" asp-controller="Home" asp-action="UserInfo"  class="link border-bottom-0 fs-7 fw-bold" data-btn-box="" data-parent=".user-address-selected" data-target="#change-user-address">تغییر یا ویرایش آدرس <i class="ri-arrow-left-s-fill"></i></a>
+                            </div>
+                            <!-- end of user-address -->
+                        </div>
+                        <!-- end of user-addresses-container -->
+                    </div>
+                </div>
+
+                <!-- end of box => user-addresses -->
+                <!-- start of box => shipment-type -->
+                <div class="ui-box bg-white shipment-type mb-3">
+                    <div class="ui-box-title">شیوه و زمان ارسال</div>
+                    <div class="ui-box-content">
+                        <!-- start of nav-tabs -->
+                        <nav>
+                            <div class="nav nav-tabs" id="shipping-type" role="tablist">
+                                <button class="nav-link fs-6 fw-bold active" id="shipping-type-1-tab" data-bs-toggle="tab" data-bs-target="#shipping-type-1" type="button" role="tab" aria-controls="shipping-type-1" aria-selected="true">
+                                    <span class="d-flex flex-column align-items-start">
+                                        <span class="d-flex align-items-center"><i class="ri-lightbulb-line me-2"></i> پیشنهادی</span>
+                                        <span class="fs-7 text-muted">چینش مرسوله ها به پیشنهاد ما</span>
+                                    </span>
+                                </button>
+                                
+                            </div>
+                        </nav>
+                        <!-- start of nav-tabs -->
+                        <!-- start of tab-content -->
+                        <div class="tab-content" id="shipping-type-tabContent">
+                            <!-- start of tab-pane -->
+                            <div class="tab-pane py-4 fade show active" id="shipping-type-1" role="tabpanel" aria-labelledby="shipping-type-1">
+                                <!-- start of checkout-pack -->
+                                <div class="checkout-pack">
+                                    <div class="checkout-pack-header fa-num">
+                                        <div class="checkout-pack-title">مرسوله ۱ از ۱</div>
+                                        <div class="checkout-pack-detail">
+                                            <span>۳ کالا</span>
+                                            <span class="divider"></span>
+                                            <span>تامین کالا از ۱ روز کاری آینده</span>
+                                        </div>
+                                        <div class="checkout-pack-subtitle">
+                                            <i class="ri-truck-fill icon"></i>
+                                            ارسال عادی
+                                        </div>
+                                    </div>
+                                    <div class="checkout-pack-content">
+                                        <!-- Slider main container -->
+                                        <div class="swiper checkout-pack-swiper-slider mb-5 swiper-initialized swiper-horizontal swiper-pointer-events swiper-rtl">
+                                            <!-- Additional required wrapper -->
+                                            <div class="swiper-wrapper" id="swiper-wrapper-5de1a91bb51968c7" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
+                                                <!-- Slides -->
+                                                @foreach (var item in Basket)
+                                                {
+                                                    <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 3" style="width: 135.667px; margin-left: 10px;">
+                                                        <div class="checkout-pack-item">
+                                                            <div class="checkout-pack-item-thumbnail">
+                                                                <a asp-area="" asp-controller="Product" asp-action="ProductDetail" asp-route-productid="@item.ProductId" >
+                                                                    <img src="@(PathTools.FilePath+item.ImageName)" alt="">
+                                                                </a>
+                                                            </div>
+                                                            <div class="checkout-pack-item-detail">
+                                                                <div class="checkout-pack-item-variant">
+                                                                    <span class="color" style="background-color: @item.ColorCode;"></span>
+                                                                    <span class="ms-1">@item.ColorName</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                           
+                                            
+                                            </div>
+
+                                            <!-- If we need navigation buttons -->
+                                            <div class="swiper-button-prev swiper-button-disabled swiper-button-lock" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-5de1a91bb51968c7" aria-disabled="true"></div>
+                                            <div class="swiper-button-next swiper-button-disabled swiper-button-lock" tabindex="-1" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-5de1a91bb51968c7" aria-disabled="true"></div>
+                                            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                                        </div>
+                                   
+                                    </div>
+                                </div>
+                                <!-- end of checkout-pack -->
+                            </div>
+                            <!-- end of tab-pane -->
+                            <!-- start of tab-pane -->
+                           
+                            <!-- end of tab-pane -->
+                        </div>
+                        <!-- end of tab-content -->
+                    </div>
+                </div>
+                <!-- end of box => shipment-type -->
+                <a href="#" class="link border-bottom-0">
+                    <i class="ri-arrow-right-s-fill"></i> بازگشت به سبد
+                    خرید
+                </a>
+            </div>
+            <div class="col-xl-3 col-lg-4">
+                <div class="ui-sticky ui-sticky-top">
+                    <!-- start of checkout-bill -->
+                    <div class="checkout-bill ui-box bg-white mb-5">
+                        <div class="checkout-bill-row">
+                            <div class="checkout-bill-row-label">قیمت کالاها @Basket.Count</div>
+                            <div class="checkout-bill-row-value">
+                                <span class="fs-6">@Basket.Sum(u => u.FinallPrice).ToString("#,0")</span> <span class="currency">تومان</span>
+                            </div>
+                        </div>
+                        <div class="checkout-bill-row">
+                            <div class="checkout-bill-row-label">تخفیف کالاها</div>
+                            <div class="checkout-bill-row-value">
+                                <span class="fs-6 text-danger">۵,۰۰۰</span>
+                                <span class="currency text-danger">تومان</span>
+                            </div>
+                        </div>
+                        <div class="checkout-bill-row">
+                            <div class="checkout-bill-row-label">جمع سبد خرید</div>
+                            <div class="checkout-bill-row-value">
+                                <span class="fs-6">@Basket.Sum(u => u.FinallPrice ).ToString("#,0")</span> <span class="currency">تومان</span>
+                            </div>
+                        </div>
+                        <div class="checkout-bill-row checkout-bill-note">
+                            هزینه‌ی ارسال در ادامه بر اساس آدرس، زمان و نحوه‌ی ارسال انتخابی شما‌ محاسبه و به
+                            این مبلغ اضافه خواهد شد
+                        </div>
+                        <div class="checkout-bill-row checkout-bill-action">
+                            <a asp-area="UserPanel" asp-controller="Order" asp-action="PaymentOrder" class="btn btn-block btn-primary">ادامه فرایند خرید</a>
+                        </div>
+                        <div class="checkout-bill-row checkout-bill-footer">
+                            <div class="checkout-bill-row-label">
+                                <span class="d-flex">
+                                    <i class="ri-copper-coin-fill text-warning me-1"></i>
+                                    <span class="fs-7">امتیاز باشگاه مشتریان</span>
+                                </span>
+                            </div>
+                            <div class="checkout-bill-row-value">۱۵۰ <span class="fs-7 fw-bold text-muted">امتیاز</span></div>
+                        </div>
+                    </div>
+                    <!-- end of checkout-bill -->
+                    <!-- start of widget -->
+                    <div class="widget p-0">
+                        <div class="widget-content widget--free-shipping">
+                            <div class="free-shipping--detail">
+                                <div class="title">ارسال رایگان سفارش</div>
+                                <div class="subtitle">سفارش‌های بالای ۳۰۰ هزار تومان</div>
+                            </div>
+                            <div class="free-shipping--banner">
+                                <img src="./theme-assets/images/theme/free-shipping--banner.png" alt="ارسال رایگان سفارش">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end of widget -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- start of remove-from-addresses-modal -->
+    <!-- end of remove-from-addresses-modal -->
+    <!-- start of add-address-modal-without-map -->
+    <!-- end of add-address-modal-without-map -->
+    <!-- start of add-address-modal-without-fields -->
+    <!-- end of add-address-modal-without-fields -->
+    <!-- start of add-address-modal-fields-with-map -->
+    <!-- end of add-address-modal-fields-with-map -->
+    <!-- start of edit-address-modal -->
+    <!-- end of edit-address-modal -->
+</main>
 
