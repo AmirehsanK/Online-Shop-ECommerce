@@ -41,13 +41,10 @@
                                     <a asp-controller="ProductCategory" asp-area="Admin" asp-action="CreateSubCategory"
                                        asp-route-parentid="@category.CategoryId" class="btn btn-label-success">افزودن زیر مجموعه</a>
                                 }
-
-
                                 <a asp-controller="ProductCategory" asp-area="Admin" asp-action="EditBaseCategory"
                                    asp-route-categoryid="@category.CategoryId" class="btn btn-label-warning">ویرایش</a>
                                 <a asp-controller="ProductCategory" asp-area="Admin" asp-action="BaseCategoryList"
                                    asp-route-categoryid="@category.CategoryId" class="btn btn-label-primary">جزییات</a>
-
                                 <a asp-controller="ProductCategory" asp-area="Admin" asp-action="DeleteBaseCategory"
                                    asp-route-categoryid="@category.CategoryId" class="btn btn-label-danger">حدف دسته بندی </a>
                             </td>

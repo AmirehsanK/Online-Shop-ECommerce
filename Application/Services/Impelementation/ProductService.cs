@@ -13,8 +13,11 @@ using Domain.ViewModel.Product.Product;
 using Infra.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Application.Security;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Domain.ViewModel.Product.ProductGallery;
+using SixLabors.ImageSharp;
+using Image = System.Drawing.Image;
 
 namespace Application.Services.Impelementation
 {
@@ -90,19 +93,31 @@ namespace Application.Services.Impelementation
                 CategoryId = u.Id
             }).ToList();
 
+        }public async Task<List<SubCategoryViewModel>> GetAllSubCategoriesForSlider()
+        {
+            var Subcategory = await _productRepository.GetAllSubCategory();
+            return Subcategory.Select(u => new SubCategoryViewModel()
+            {
+                Title = u.Title,
+                ParentId = (int)u.ParentId,
+                Id = u.Id
+                ,ImageName = u.ImageName
+            }).Take(9).ToList();
+
         }
 
         public async Task AddSubCategory(SubCategoryViewModel model)
         {
             var category = await _productRepository.GetBaseCategory(model.ParentId);
+            var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(model.Image.FileName);
+            model.Image.AddImageToServer(imageName, PathTools.CategoryImageServerPath, null, null);
             var subCategory = new ProductCategory()
             {
                 CreateDate = DateTime.Now,
                 Title = model.Title,
                 IsDeleted = false,
                 ParentId = model.ParentId,
-
-
+                ImageName = imageName
             };
             await _productRepository.AddCategoryAsync(subCategory);
             await _productRepository.SaveChangeAsync();
@@ -122,6 +137,15 @@ namespace Application.Services.Impelementation
         public async Task EditBaseCategory(EditBaseCategoryViewModel model)
         {
             var category = await _productRepository.GetBaseCategory(model.CategoryId);
+            if (model.ParentId != null && model.Image.IsImage())
+            {
+                var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(model.Image.FileName);
+                model.Image.AddImageToServer(imageName, PathTools.CategoryImageServerPath, null, null);
+                if (category.ImageName != null)
+                { category.ImageName.DeleteImage(PathTools.CategoryImagePath, null);}
+
+                category.ImageName = imageName;
+            }
             category.Title = model.CategoryTitle;
             _productRepository.UpdateCategoryAsync(category);
             await _productRepository.SaveChangeAsync();
@@ -137,18 +161,15 @@ namespace Application.Services.Impelementation
                 foreach (var item in SubCategory)
                 {
                     item.IsDeleted = true;
-
+                    if (item.ImageName != null)
+                    {
+                        item.ImageName.DeleteImage(PathTools.CategoryImagePath, null);
+                    }
                 }
                 _productRepository.UpdateCategoryList(SubCategory);
             }
-
             _productRepository.UpdateCategoryAsync(mainCategory);
-
             await _productRepository.SaveChangeAsync();
-
-
-
-
         }
         #endregion
 
