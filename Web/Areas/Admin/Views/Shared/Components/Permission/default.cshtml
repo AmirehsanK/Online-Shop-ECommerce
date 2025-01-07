@@ -1,133 +1,5 @@
 ﻿@model List<Domain.ViewModel.Permission.PermissionSelectionViewModel>
 
-<style>
-    /* Layout for boxes */
-    .permission-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        justify-content: space-between;
-    }
-
-    .permission-box {
-        flex: 0 0 calc(33.333% - 15px); /* 3 boxes per row with margin */
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        background-color: #fff;
-        box-sizing: border-box;
-        min-height: 200px; /* Ensures consistent height */
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Parent Permission */
-    .parent-permission {
-        display: flex;
-        align-items: center;
-        font-weight: bold;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-        background-color: #f9f9f9;
-        justify-content: space-between;
-    }
-
-    .parent-permission label {
-        margin-right: 10px;
-    }
-
-    /* Button */
-    .check-all-btn,
-    .check-all-page-btn {
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 14px;
-    }
-
-    .check-all-btn:hover,
-    .check-all-page-btn:hover {
-        background-color: #45a049;
-    }
-
-    /* Button at top */
-    .check-all-page-container {
-        margin-bottom: 20px;
-        text-align: center;
-    }
-
-    /* Child Permissions as a simple list */
-    .child-permissions {
-        list-style: none;
-        padding: 10px;
-        margin: 0;
-        overflow-y: auto;
-        flex-grow: 1;
-    }
-
-    .child-permissions li {
-        display: flex;
-        align-items: center;
-        margin-bottom: 5px;
-    }
-
-    .child-permissions li:last-child {
-        margin-bottom: 0;
-    }
-
-    /* iOS-Style Toggle Switch */
-    .toggle-switch {
-        position: relative;
-        display: inline-block;
-        width: 50px;
-        height: 24px;
-    }
-
-    .toggle-switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        transition: 0.4s;
-        border-radius: 24px;
-    }
-
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 20px;
-        width: 20px;
-        left: 2px;
-        bottom: 2px;
-        background-color: white;
-        transition: 0.4s;
-        border-radius: 50%;
-    }
-
-    input:checked + .slider {
-        background-color: #4CAF50;
-    }
-
-    input:checked + .slider:before {
-        transform: translateX(26px);
-    }
-
-    .permission-name {
-        font-size: 16px;
-    }
-</style>
-
 <div class="check-all-page-container">
     <button type="button" class="check-all-page-btn">انتخاب همه مجوزها</button>
 </div>
@@ -153,7 +25,7 @@
                 </div>
                 <button type="button" class="check-all-btn" 
                         data-parent-id="@permission.PermissionId" 
-                        data-checked="false">انتخاب همه</button>
+                        data-checked="false"><i class="fa-solid fa-check-double"></i></button>
             </div>
 
             <!-- Child Permissions -->
@@ -164,13 +36,13 @@
                     {
                         <li>
                             <label class="toggle-switch">
-                                <input type="checkbox" 
-                                       name="Permissions[@child.PermissionId].IsSelected" 
-                                       value="true" 
-                                       @(child.IsSelected ? "checked" : "") 
-                                       data-permission-id="@child.PermissionId" 
-                                       data-parent-id="@permission.PermissionId" 
-                                       class="permission-checkbox" />
+                                <input type="checkbox"
+                                       name="Permissions[@child.PermissionId].IsSelected"
+                                       value="true"
+                                       @(child.IsSelected ? "checked" : "")
+                                       data-permission-id="@child.PermissionId"
+                                       data-parent-id="@permission.PermissionId"
+                                       class="permission-checkbox"/>
                                 <span class="slider"></span>
                             </label>
                             <span class="permission-name">@child.DisplayName</span>

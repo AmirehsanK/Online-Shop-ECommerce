@@ -24,12 +24,28 @@
             {
                 <tr>
                     <td>@discount.Code</td>
-                    <td>@(discount.IsPercentage ? "درصدی" : "مقدار ثابت")</td>
+                    <td>@if (!discount.IsPercentage)
+                        {
+                            <span class="badge bg-warning">مقدار ثابت</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">درصدی</span>
+                        }
+                        </td>
                     <td>@discount.Value</td>
                     <td>@discount.UsageLimit</td>
-                    <td>@discount.StartDate?</td>
-                    <td>@discount.EndDate?</td>
-                    <td>@(discount.IsActive ? "بله" : "خیر")</td>
+                    <td>@discount.StartDate</td>
+                    <td>@discount.EndDate</td>
+                    <td>@if (!discount.IsActive)
+                        {
+                            <span class="badge bg-danger">منقضی شده</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">فعال</span>
+                        }
+                        </td>
                     <td>
                         <a asp-action="AssignDiscountToUsers" asp-controller="Discount" asp-area="Admin" asp-route-Id="@discount.Id" class="btn m-1 btn-success"><i class="fa-solid fa-user-plus"></i></a>
                         <a asp-action="AssignDiscountToProducts" asp-controller="Discount" asp-area="Admin" asp-route-Id="@discount.Id" class="btn m-1 btn-success"><i class="fa-solid fa-cart-plus"></i></a>
