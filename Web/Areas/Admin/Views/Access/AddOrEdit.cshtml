@@ -1,0 +1,179 @@
+﻿@using Domain.ViewModel.Permission
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Domain.ViewModel.Permission.RolePermissionsViewModel
+
+@{
+    ViewData["Title"] = Model.RoleId == 0 ? "افزودن نقش" : "ویرایش نقش";
+}
+
+<style>
+    /* Permissions Container */
+    .permissions-container {
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    /* Permission Box */
+    .permission-box {
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        background-color: #fff;
+    }
+
+    /* Parent Permission */
+    .parent-permission {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    /* Child Permissions */
+    .child-permissions {
+        margin-left: 20px;
+        margin-top: 10px;
+    }
+
+    /* iOS-Style Toggle Switch */
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+        margin-right: 10px;
+    }
+
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 24px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .slider {
+        background-color: #4CAF50;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(26px);
+    }
+
+    /* Permission Name */
+    .permission-name {
+        font-size: 16px;
+    }
+</style>
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="SaveRole" method="post">
+    <input type="hidden" asp-for="RoleId" />
+
+    <!-- Role Name Field -->
+    <div class="form-group">
+        <label asp-for="RoleName" class="control-label">نام نقش</label>
+        <input asp-for="RoleName" class="form-control" />
+        <span asp-validation-for="RoleName" class="text-danger"></span>
+    </div>
+
+    <!-- Permissions Section -->
+    <h3>دسترسی‌ها</h3>
+    <div class="permissions-container">
+        @await Component.InvokeAsync("Permission", Model.Permissions)
+    </div>
+
+    <!-- Save Button -->
+    <div class="form-group">
+        <input type="submit" value="ذخیره" class="btn btn-primary" />
+    </div>
+</form>
+
+<!-- Back to List Link -->
+<div>
+    <a asp-action="Index">بازگشت به لیست</a>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const permissionCheckboxes = document.querySelectorAll(".permission-checkbox");
+
+        // Add event listeners to all checkboxes
+        permissionCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", function () {
+                handleCheckboxChange(checkbox);
+            });
+        });
+
+        function handleCheckboxChange(checkbox) {
+            const permissionId = checkbox.dataset.permissionId;
+            const isParent = !checkbox.dataset.parentId; // Parent has no parentId
+
+            if (isParent) {
+                // If parent checkbox is changed, update all child checkboxes
+                const childCheckboxes = document.querySelectorAll(`[data-parent-id="${permissionId}"]`);
+                childCheckboxes.forEach(childCheckbox => {
+                    if (childCheckbox.checked !== checkbox.checked) {
+                        childCheckbox.checked = checkbox.checked;
+                        childCheckbox.dispatchEvent(new Event("change", { bubbles: true }));
+                    }
+                });
+            } else {
+                // If child checkbox is changed, update parent checkbox
+                const parentId = checkbox.dataset.parentId;
+                const parentCheckbox = document.querySelector(`[data-permission-id="${parentId}"]`);
+
+                if (parentCheckbox) {
+                    const childCheckboxes = document.querySelectorAll(`[data-parent-id="${parentId}"]`);
+                    const atLeastOneChildChecked = Array.from(childCheckboxes).some(child => child.checked);
+
+                    // Update parent checkbox based on child checkboxes
+                    parentCheckbox.checked = atLeastOneChildChecked;
+                    parentCheckbox.disabled = !atLeastOneChildChecked; // Disable parent if all children are off
+                }
+            }
+        }
+
+        // Initialize parent checkboxes based on child states
+        initializeParentCheckboxes();
+
+        function initializeParentCheckboxes() {
+            const parentCheckboxes = document.querySelectorAll(".permission-checkbox[data-parent-id='']");
+            parentCheckboxes.forEach(parentCheckbox => {
+                const permissionId = parentCheckbox.dataset.permissionId;
+                const childCheckboxes = document.querySelectorAll(`[data-parent-id="${permissionId}"]`);
+                const atLeastOneChildChecked = Array.from(childCheckboxes).some(child => child.checked);
+
+                // Set initial state of parent checkbox
+                parentCheckbox.checked = atLeastOneChildChecked;
+                parentCheckbox.disabled = !atLeastOneChildChecked; // Disable parent if all children are off
+            });
+        }
+    });
+</script>

@@ -33,6 +33,7 @@ public static class DiContainer
         services.AddScoped<IQuestionRepository, QuestionRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IPermissionRepository, PermissionRepository>();
 
         #endregion
 
@@ -55,6 +56,8 @@ public static class DiContainer
         services.AddScoped<IQuestionService, QuestionService>();
         services.AddScoped<ICommentService, CommentService>();
         services.AddScoped<IAdminService, AdminService>();
+        services.AddScoped<IPermissionService,PermissionService>();
+        
         #endregion
 
         services.AddSingleton<HtmlEncoder>(

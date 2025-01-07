@@ -3,6 +3,7 @@ using Domain.Entities.Common;
 using Domain.Entities.Discount;
 using Domain.Entities.Notification;
 using Domain.Entities.Orders;
+using Domain.Entities.Permission;
 using Domain.Entities.Question;
 using Domain.Entities.Ticket;
 
@@ -47,7 +48,8 @@ public class User : BaseEntity
     public ICollection<Order> Orders { get; set; }
 
     public ICollection<Transaction> Transactions { get; set; }
-
+    
+    public ICollection<UserRoleMapping> UserRoleMappings { get; set; }
 
     #endregion
 
