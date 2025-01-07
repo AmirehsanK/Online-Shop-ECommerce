@@ -93,7 +93,7 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-action="SaveRole" method="post">
+<form asp-action="SaveRole" asp-controller="Access" asp-area="Admin" method="post">
     <input type="hidden" asp-for="RoleId" />
 
     <!-- Role Name Field -->
@@ -104,6 +104,7 @@
     </div>
 
     <!-- Permissions Section -->
+    <hr/>
     <h3>دسترسی‌ها</h3>
     <div class="permissions-container">
         @await Component.InvokeAsync("Permission", Model.Permissions)
@@ -113,12 +114,11 @@
     <div class="form-group">
         <input type="submit" value="ذخیره" class="btn btn-primary" />
     </div>
+    <!-- Back to List Link -->
+    <div>
+        <a asp-action="Index" class="btn btn-danger">بازگشت به لیست</a>
+    </div>
 </form>
-
-<!-- Back to List Link -->
-<div>
-    <a asp-action="Index">بازگشت به لیست</a>
-</div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {

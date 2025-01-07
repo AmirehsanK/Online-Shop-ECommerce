@@ -1,14 +1,8 @@
 ﻿using Application.Services.Interfaces;
 using Application.Tools;
-using Domain.Entities.Discount;
 using Domain.Interface;
 using Domain.ViewModel.Discount;
-using Infra.Data.Migrations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Discount = Domain.Entities.Discount.Discount;
 
 namespace Application.Services.Impelementation

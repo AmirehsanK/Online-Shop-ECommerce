@@ -1,20 +1,23 @@
 ﻿@model List<Domain.ViewModel.Permission.PermissionSelectionViewModel>
+
 <style>
-    /* Permissions Container */
-    .permissions-container {
-        border: 1px solid #ddd;
-        padding: 15px;
-        border-radius: 8px;
-        background-color: #f9f9f9;
+    /* Layout for boxes */
+    .permission-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: space-between;
     }
 
-    /* Permission Box */
     .permission-box {
-        margin-bottom: 15px;
+        flex: 0 0 calc(33.333% - 15px); /* 3 boxes per row with margin */
         border: 1px solid #ccc;
         border-radius: 8px;
-        padding: 10px;
         background-color: #fff;
+        box-sizing: border-box;
+        min-height: 200px; /* Ensures consistent height */
+        display: flex;
+        flex-direction: column;
     }
 
     /* Parent Permission */
@@ -22,13 +25,56 @@
         display: flex;
         align-items: center;
         font-weight: bold;
-        margin-bottom: 10px;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        background-color: #f9f9f9;
+        justify-content: space-between;
     }
 
-    /* Child Permissions */
+    .parent-permission label {
+        margin-right: 10px;
+    }
+
+    /* Button */
+    .check-all-btn,
+    .check-all-page-btn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .check-all-btn:hover,
+    .check-all-page-btn:hover {
+        background-color: #45a049;
+    }
+
+    /* Button at top */
+    .check-all-page-container {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    /* Child Permissions as a simple list */
     .child-permissions {
-        margin-left: 20px;
-        margin-top: 10px;
+        list-style: none;
+        padding: 10px;
+        margin: 0;
+        overflow-y: auto;
+        flex-grow: 1;
+    }
+
+    .child-permissions li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+
+    .child-permissions li:last-child {
+        margin-bottom: 0;
     }
 
     /* iOS-Style Toggle Switch */
@@ -37,7 +83,6 @@
         display: inline-block;
         width: 50px;
         height: 24px;
-        margin-right: 10px;
     }
 
     .toggle-switch input {
@@ -78,83 +123,136 @@
         transform: translateX(26px);
     }
 
-    /* Permission Name */
     .permission-name {
         font-size: 16px;
     }
 </style>
 
-@foreach (var permission in Model)
-{
-    <div class="permission-box row">
-        <!-- Parent Permission -->
-        <div class="parent-permission ">
-            <label class="toggle-switch">
-                <input type="checkbox" 
-                       name="Permissions[@permission.PermissionId].IsSelected" 
-                       value="true" 
-                       @(permission.IsSelected ? "checked" : "") 
-                       data-permission-id="@permission.PermissionId" 
-                       data-parent-id="@permission.ParentId" 
-                       class="permission-checkbox" />
-                <span class="slider"></span>
-            </label>
-            <span class="permission-name">@permission.DisplayName</span>
-        </div>
+<div class="check-all-page-container">
+    <button type="button" class="check-all-page-btn">انتخاب همه مجوزها</button>
+</div>
 
-        <!-- Child Permissions -->
-        @if (permission.Children.Any())
-        {
-            <div class="child-permissions col-lg-6 col-sm-12">
-                @await Component.InvokeAsync("Permission", permission.Children)
+<div class="permission-container">
+    @foreach (var permission in Model)
+    {
+        <div class="permission-box">
+            <!-- Parent Permission -->
+            <div class="parent-permission">
+                <div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" 
+                               name="Permissions[@permission.PermissionId].IsSelected" 
+                               value="true" 
+                               @(permission.IsSelected ? "checked" : "") 
+                               data-permission-id="@permission.PermissionId" 
+                               data-parent-id="@permission.ParentId" 
+                               class="permission-checkbox parent-checkbox" />
+                        <span class="slider"></span>
+                    </label>
+                    <span class="permission-name">@permission.DisplayName</span>
+                </div>
+                <button type="button" class="check-all-btn" 
+                        data-parent-id="@permission.PermissionId" 
+                        data-checked="false">انتخاب همه</button>
             </div>
-        }
-    </div>
-}
+
+            <!-- Child Permissions -->
+            @if (permission.Children.Any())
+            {
+                <ul class="child-permissions">
+                    @foreach (var child in permission.Children)
+                    {
+                        <li>
+                            <label class="toggle-switch">
+                                <input type="checkbox" 
+                                       name="Permissions[@child.PermissionId].IsSelected" 
+                                       value="true" 
+                                       @(child.IsSelected ? "checked" : "") 
+                                       data-permission-id="@child.PermissionId" 
+                                       data-parent-id="@permission.PermissionId" 
+                                       class="permission-checkbox" />
+                                <span class="slider"></span>
+                            </label>
+                            <span class="permission-name">@child.DisplayName</span>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    }
+</div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const permissionCheckboxes = document.querySelectorAll(".permission-checkbox");
+        const checkAllButtons = document.querySelectorAll(".check-all-btn");
+        const checkAllPageButton = document.querySelector(".check-all-page-btn");
 
-        // Add event listeners to all checkboxes
-        permissionCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener("change", function () {
-                handleCheckboxChange(checkbox);
-            });
-        });
-
-        function handleCheckboxChange(checkbox) {
-            const permissionId = checkbox.dataset.permissionId;
-            const isParent = !checkbox.dataset.parentId; // Parent has no parentId
-
-            if (isParent) {
-                // If parent checkbox is changed, update all child checkboxes
-                const childCheckboxes = document.querySelectorAll(`[data-parent-id="${permissionId}"]`);
-                childCheckboxes.forEach(childCheckbox => {
-                    if (childCheckbox.checked !== checkbox.checked) {
-                        childCheckbox.checked = checkbox.checked;
-                        childCheckbox.dispatchEvent(new Event("change", { bubbles: true }));
-                    }
-                });
+        // Update button state
+        function updateButtonState(button, allChecked) {
+            if (allChecked) {
+                button.textContent = "لغو انتخاب همه";
+                button.style.backgroundColor = "red";
+                button.dataset.checked = "true";
             } else {
-                // If child checkbox is changed, update parent checkbox
-                const parentId = checkbox.dataset.parentId;
-                const parentCheckbox = document.querySelector(`[data-permission-id="${parentId}"]`);
-
-                if (parentCheckbox) {
-                    const childCheckboxes = document.querySelectorAll(`[data-parent-id="${parentId}"]`);
-                    const atLeastOneChildChecked = Array.from(childCheckboxes).some(child => child.checked);
-
-                    // Update parent checkbox based on child checkboxes
-                    parentCheckbox.checked = atLeastOneChildChecked;
-                    parentCheckbox.disabled = !atLeastOneChildChecked; // Disable parent if all children are off
-                }
+                button.textContent = "انتخاب همه";
+                button.style.backgroundColor = "#4CAF50";
+                button.dataset.checked = "false";
             }
         }
 
-        // Initialize parent checkboxes based on child states
-        initializeParentCheckboxes();
+        // Handle "Check All" for individual groups
+        checkAllButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const parentId = button.dataset.parentId;
+                const childCheckboxes = document.querySelectorAll(`[data-parent-id="${parentId}"]`);
+                const allChecked = button.dataset.checked === "true";
 
+                childCheckboxes.forEach(childCheckbox => {
+                    childCheckbox.checked = !allChecked;
+                    childCheckbox.dispatchEvent(new Event("change", { bubbles: true }));
+                });
+
+                const parentCheckbox = document.querySelector(`[data-permission-id="${parentId}"]`);
+                if (parentCheckbox) {
+                    parentCheckbox.checked = !allChecked;
+                }
+
+                updateButtonState(button, !allChecked);
+            });
+        });
+
+        // Handle "Check All" for the entire page
+        checkAllPageButton.addEventListener("click", function () {
+            const allChecked = checkAllPageButton.dataset.checked === "true";
+
+            permissionCheckboxes.forEach(checkbox => {
+                checkbox.checked = !allChecked;
+                checkbox.dispatchEvent(new Event("change", { bubbles: true }));
+            });
+
+            checkAllButtons.forEach(button => {
+                updateButtonState(button, !allChecked);
+            });
+
+            updateButtonState(checkAllPageButton, !allChecked);
+        });
+
+        // Initialize button states
+        function initializeButtonStates() {
+            checkAllButtons.forEach(button => {
+                const parentId = button.dataset.parentId;
+                const childCheckboxes = document.querySelectorAll(`[data-parent-id="${parentId}"]`);
+                const allChecked = Array.from(childCheckboxes).every(child => child.checked);
+
+                updateButtonState(button, allChecked);
+            });
+
+            const allChecked = Array.from(permissionCheckboxes).every(checkbox => checkbox.checked);
+            updateButtonState(checkAllPageButton, allChecked);
+        }
+
+        // Initialize parent checkboxes
         function initializeParentCheckboxes() {
             const parentCheckboxes = document.querySelectorAll(".permission-checkbox[data-parent-id='']");
             parentCheckboxes.forEach(parentCheckbox => {
@@ -162,10 +260,33 @@
                 const childCheckboxes = document.querySelectorAll(`[data-parent-id="${permissionId}"]`);
                 const atLeastOneChildChecked = Array.from(childCheckboxes).some(child => child.checked);
 
-                // Set initial state of parent checkbox
                 parentCheckbox.checked = atLeastOneChildChecked;
-                parentCheckbox.disabled = !atLeastOneChildChecked; // Disable parent if all children are off
             });
         }
+
+        initializeParentCheckboxes();
+        initializeButtonStates();
+
+        // Handle checkbox change events
+        permissionCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", function () {
+                const parentId = checkbox.dataset.parentId;
+
+                if (!parentId) {
+                    const childCheckboxes = document.querySelectorAll(`[data-parent-id="${checkbox.dataset.permissionId}"]`);
+                    childCheckboxes.forEach(childCheckbox => {
+                        childCheckbox.checked = checkbox.checked;
+                    });
+                } else {
+                    const parentCheckbox = document.querySelector(`[data-permission-id="${parentId}"]`);
+                    const childCheckboxes = document.querySelectorAll(`[data-parent-id="${parentId}"]`);
+                    const allChecked = Array.from(childCheckboxes).every(child => child.checked);
+
+                    parentCheckbox.checked = allChecked;
+                }
+
+                initializeButtonStates();
+            });
+        });
     });
 </script>
