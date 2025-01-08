@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Account;
 using Domain.ViewModel;
+using Domain.ViewModel.User;
 
 namespace Domain.Interface
 {
@@ -16,6 +17,8 @@ namespace Domain.Interface
         Task<string> GetUserNameByIdAsync(int userid);
 
         Task<User> GetUserByEmailAsync(string email);
+        Task<List<UserWithRolesViewModel>> GetAllUsersForRolesAsync();
+
         
         Task<User> GetUserByGUIDAsync(string guid);
         Task<bool> IsExistUserByGuidAsync(string guid);

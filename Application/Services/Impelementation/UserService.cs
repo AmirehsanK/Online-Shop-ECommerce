@@ -64,6 +64,11 @@ namespace Application.Services.Impelementation
 
         }
 
+        public async Task<List<UserWithRolesViewModel>> GetAllUsersForRolesAsync()
+        {
+            return await userRepository.GetAllUsersForRolesAsync();
+        }
+
         public async Task<bool> IsEmailExistAsync(string email)
         {
             return await userRepository.IsEmailExistAsync(email);

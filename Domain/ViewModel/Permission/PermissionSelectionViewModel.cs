@@ -7,4 +7,5 @@ public class PermissionSelectionViewModel
     public bool IsSelected { get; set; }
     public int? ParentId { get; set; }
     public List<PermissionSelectionViewModel> Children { get; set; } = [];
+    
 }

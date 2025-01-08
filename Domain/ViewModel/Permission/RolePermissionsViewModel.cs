@@ -9,4 +9,5 @@ public class RolePermissionsViewModel
         [MaxLength(50)]
         public string RoleName { get; set; }
         public List<PermissionSelectionViewModel> Permissions { get; set; } = new List<PermissionSelectionViewModel>();
+        
 }

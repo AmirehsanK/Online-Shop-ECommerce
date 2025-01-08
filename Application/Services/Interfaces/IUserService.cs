@@ -21,7 +21,7 @@ namespace Application.Services.Interfaces
         Task<ForgetPasswordTokenCheckEnum> ForgotPasswordTokenCheckerAsync(string token);
         Task ResetPasswordAsync(string token, string newPassword);        
         Task<User> GetUserByEmailAsync(string email);
-
+        Task<List<UserWithRolesViewModel>> GetAllUsersForRolesAsync();
         Task<bool> IsEmailExistAsync(string email);
         Task RegisterUserAsync(RegisterUserViewModel model);
         

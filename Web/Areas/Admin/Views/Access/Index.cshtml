@@ -1,0 +1,81 @@
+﻿@model Domain.ViewModel.User.FilterUserWithRolesViewModel
+
+@{
+    ViewData["Title"] = "لیست کاربران با نقش‌ها";
+}
+
+<div class="card">
+    <h5 class="card-header">@ViewData["Title"]</h5>
+    <div class="table-responsive text-nowrap">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>نام کاربری</th>
+                <th>ایمیل</th>
+                <th>نقش‌ها</th>
+                <th>عملیات</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (Model.Entities != null && Model.Entities.Any())
+            {
+                foreach (var user in Model.Entities)
+                {
+                    <tr>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                        <td>
+                            <ul>
+                                @foreach (var role in user.Roles)
+                                {
+                                    <li>@role</li>
+                                }
+                            </ul>
+                        </td>
+                        <td>
+                            <a asp-action="AssignRoles" asp-route-userId="@user.UserId" class="btn btn-warning">
+                                <i class="fa-solid fa-pen-to-square"></i> ویرایش نقش‌ها
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center">هیچ کاربری با نقش یافت نشد.</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Pagination Section -->
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        @if (Model.Page > 1)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-page="@(Model.Page - 1)" asp-route-userName="@Model.UserName" asp-route-email="@Model.Email">قبلی</a>
+            </li>
+        }
+
+        @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+        {
+            <li class="page-item @(i == Model.Page ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-userName="@Model.UserName" asp-route-email="@Model.Email">@i</a>
+            </li>
+        }
+
+        @if (Model.Page < Model.PageCount)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-page="@(Model.Page + 1)" asp-route-userName="@Model.UserName" asp-route-email="@Model.Email">بعدی</a>
+            </li>
+        }
+    </ul>
+</nav>
+
+<br />
+<a asp-action="AssignRoles" class="btn btn-primary">افزودن نقش به کاربر</a>
