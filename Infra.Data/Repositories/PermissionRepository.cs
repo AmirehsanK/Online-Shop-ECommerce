@@ -26,6 +26,25 @@ public class PermissionRepository(ApplicationDbContext context):IPermissionRepos
     {
         return await context.Permissions.ToListAsync();
     }
+    public async Task RemoveAllRolePermissionsAsync(int roleId)
+    {
+        var rolePermissions = await context.RolePermissionMappings
+            .Where(rp => rp.RoleId == roleId)
+            .ToListAsync();
+
+        context.RolePermissionMappings.RemoveRange(rolePermissions);
+        await context.SaveChangesAsync();
+    }
+    public async Task AddRolePermissionAsync(RolePermissionMapping rolePermissionMapping)
+    {
+        context.RolePermissionMappings.Add(rolePermissionMapping);
+        await context.SaveChangesAsync();
+    }
+    public async Task<Permission> GetPermissionByIdAsync(int permissionId)
+    {
+        return await context.Permissions
+            .FirstOrDefaultAsync(p => p.Id == permissionId);
+    }
 
     #endregion
     
@@ -171,7 +190,7 @@ public class PermissionRepository(ApplicationDbContext context):IPermissionRepos
     }
     public async Task<List<Role>> GetAllRolesAsync()
     {
-        return await context.Roles.ToListAsync();
+        return await context.Roles.Where(u=>u.IsDeleted==false).ToListAsync();
     }
     public async Task<List<string>> GetUserRolesAsync(int userId)
     {

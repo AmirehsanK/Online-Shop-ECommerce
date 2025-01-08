@@ -1,0 +1,166 @@
+﻿@using Domain.ViewModel.Permission
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Domain.ViewModel.Permission.RolePermissionsViewModel
+
+@{
+    ViewData["Title"] = "ویرایش نقش";
+}
+
+<h2>ویرایش نقش: @Model.RoleName</h2>
+
+<form asp-action="SaveRole" asp-controller="Access" asp-area="Admin" method="post">
+    <input type="hidden" asp-for="RoleId" />
+    <input type="hidden" asp-for="RoleName" />
+
+    <!-- Permissions Section -->
+    <hr />
+    <h3>دسترسی‌ها</h3>
+    <div class="permissions-container">
+        <div class="check-all-page-container">
+            <button type="button" class="check-all-page-btn">انتخاب همه مجوزها</button>
+        </div>
+
+        <div class="permission-container">
+            @for (int i = 0; i < Model.Permissions.Count; i++)
+            {
+                <div class="permission-box">
+                    <!-- Parent Permission -->
+                    <div class="parent-permission">
+                        <div>
+                            <input type="hidden" asp-for="@Model.Permissions[i].DisplayName"/>
+                            <input type="hidden" asp-for="@Model.Permissions[i].PermissionId"/>
+                            <label class="toggle-switch">
+                                <input type="checkbox"
+                                       asp-for="@Model.Permissions[i].IsSelected"
+                                       data-permission-id="@Model.Permissions[i].PermissionId"
+                                       data-parent-id="@Model.Permissions[i].ParentId"
+                                       class="permission-checkbox parent-checkbox"/>
+                                <span class="slider"></span>
+                            </label>
+                            <span class="permission-name">@Model.Permissions[i].DisplayName</span>
+                        </div>
+                        <button type="button" class="check-all-btn"
+                                data-parent-id="@Model.Permissions[i].PermissionId"
+                                data-checked="false">
+                            <i class="fa-solid fa-check-double"></i>
+                        </button>
+                    </div>
+
+                    <!-- Child Permissions -->
+                    @if (Model.Permissions[i].Children.Any())
+                    {
+                        <ul class="child-permissions">
+                            @for (int j = 0; j < Model.Permissions[i].Children.Count; j++)
+                            {
+                                <li>
+                                    <input type="hidden" asp-for="@Model.Permissions[i].DisplayName"/>
+                                    <input type="hidden" asp-for="@Model.Permissions[i].ParentId"/>
+                                    <input type="hidden" asp-for="@Model.Permissions[i].PermissionId"/>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox"
+                                               asp-for="@Model.Permissions[i].Children[j].IsSelected"
+                                               data-permission-id="@Model.Permissions[i].Children[j].PermissionId"
+                                               data-parent-id="@Model.Permissions[i].PermissionId"
+                                               class="permission-checkbox"/>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span class="permission-name">@Model.Permissions[i].Children[j].DisplayName</span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Save Button -->
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">ذخیره</button>
+    </div>
+
+    <!-- Back to List Link -->
+    <br />
+    <div>
+        <a asp-action="Index" class="btn btn-danger">بازگشت به لیست</a>
+    </div>
+    <br />
+</form>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const permissionCheckboxes = document.querySelectorAll(".permission-checkbox");
+            const checkAllButtons = document.querySelectorAll(".check-all-btn");
+            const checkAllPageButton = document.querySelector(".check-all-page-btn");
+
+            function updateButtonState(button, allChecked) {
+                if (allChecked) {
+                    button.textContent = "لغو همه";
+                    button.style.backgroundColor = "red";
+                    button.dataset.checked = "true";
+                } else {
+                    button.textContent = "انتخاب همه";
+                    button.style.backgroundColor = "#4CAF50";
+                    button.dataset.checked = "false";
+                }
+            }
+
+            checkAllButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const parentId = button.dataset.parentId;
+                    const childCheckboxes = document.querySelectorAll(`[data-parent-id="${parentId}"]`);
+                    const allChecked = button.dataset.checked === "true";
+
+                    childCheckboxes.forEach(childCheckbox => {
+                        childCheckbox.checked = !allChecked;
+                        childCheckbox.dispatchEvent(new Event("change", { bubbles: true }));
+                    });
+
+                    const parentCheckbox = document.querySelector(`[data-permission-id="${parentId}"]`);
+                    if (parentCheckbox) {
+                        parentCheckbox.checked = !allChecked;
+                    }
+
+                    updateButtonState(button, !allChecked);
+                });
+            });
+
+            checkAllPageButton.addEventListener("click", function () {
+                const allChecked = checkAllPageButton.dataset.checked === "true";
+
+                permissionCheckboxes.forEach(checkbox => {
+                    checkbox.checked = !allChecked;
+                    checkbox.dispatchEvent(new Event("change", { bubbles: true }));
+                });
+
+                checkAllButtons.forEach(button => {
+                    updateButtonState(button, !allChecked);
+                });
+
+                updateButtonState(checkAllPageButton, !allChecked);
+            });
+
+            permissionCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener("change", function () {
+                    const parentId = checkbox.dataset.parentId;
+
+                    if (!parentId) {
+                        const childCheckboxes = document.querySelectorAll(`[data-parent-id="${checkbox.dataset.permissionId}"]`);
+                        childCheckboxes.forEach(childCheckbox => {
+                            childCheckbox.checked = checkbox.checked;
+                        });
+                    } else {
+                        const parentCheckbox = document.querySelector(`[data-permission-id="${parentId}"]`);
+                        const childCheckboxes = document.querySelectorAll(`[data-parent-id="${parentId}"]`);
+                        const atLeastOneChildChecked = Array.from(childCheckboxes).some(child => child.checked);
+
+                        if (parentCheckbox) {
+                            parentCheckbox.checked = atLeastOneChildChecked;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

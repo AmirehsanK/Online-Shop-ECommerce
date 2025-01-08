@@ -40,7 +40,7 @@ public class PermissionService(IUserRepository userRepository,IPermissionReposit
     public async Task<List<PermissionSelectionViewModel>> GetPermissionsHierarchyAsync()
     {
         var allPermissions = await permissionRepository.GetAllPermissionsAsync();
-        
+
         var permissionsHierarchy = allPermissions
             .Where(p => p.ParentId == null)
             .Select(p => new PermissionSelectionViewModel
@@ -54,6 +54,7 @@ public class PermissionService(IUserRepository userRepository,IPermissionReposit
 
         return permissionsHierarchy;
     }
+
     private List<PermissionSelectionViewModel> GetChildPermissions(int parentId, List<Permission> allPermissions)
     {
         return allPermissions
@@ -67,7 +68,10 @@ public class PermissionService(IUserRepository userRepository,IPermissionReposit
             })
             .ToList();
     }
-
+    public async Task<List<int>> GetSelectedPermissionIdsAsync(int roleId)
+    {
+        return await permissionRepository.GetSelectedPermissionIdsAsync(roleId);
+    }
     public async Task<Role> GetRoleByIdAsync(int id)
     {
         return await permissionRepository.GetRoleByIdAsync(id);
@@ -93,11 +97,6 @@ public class PermissionService(IUserRepository userRepository,IPermissionReposit
             Roles = roles
         };
     }
-    public async Task<List<int>> GetSelectedPermissionIdsAsync(int roleId)
-    {
-        return await permissionRepository.GetSelectedPermissionIdsAsync(roleId);
-    }
-
     public async Task AddRoleAsync(RolePermissionsViewModel viewModel)
     {
         var role = new Role { RoleName = viewModel.RoleName };
@@ -120,10 +119,34 @@ public class PermissionService(IUserRepository userRepository,IPermissionReposit
         role.RoleName = viewModel.RoleName;
         await permissionRepository.UpdateRoleAsync(role);
 
-        var selectedPermissions = viewModel.Permissions
+        await permissionRepository.RemoveAllRolePermissionsAsync(role.Id);
+
+        var selectedPermissions  = viewModel.Permissions
             .Where(p => p.IsSelected)
-            .Select(p => new RolePermissionMapping(role.Id, p.PermissionId));
-        await permissionRepository.UpdateRolePermissionsAsync(role.Id, selectedPermissions);
+            .ToList();
+
+
+        List<int> selectedPermissionIds = new();
+
+        foreach (var parent in selectedPermissions)
+        {
+            selectedPermissionIds.Add(parent.PermissionId);
+            parent.Children
+                .Where(s => s.IsSelected)
+                .ToList()
+                .ForEach(item =>  selectedPermissionIds.Add(item.PermissionId));
+        }
+        
+        foreach (var permissionId in selectedPermissionIds)
+        {
+            var permission = await permissionRepository.GetPermissionByIdAsync(permissionId);
+            if (permission == null)
+            {
+                throw new KeyNotFoundException($"Permission with ID {permissionId} not found.");
+            }
+            var rolePermissionMapping = new RolePermissionMapping(role.Id, permissionId);
+            await permissionRepository.AddRolePermissionAsync(rolePermissionMapping);
+        }
     }
     public async Task SoftDeleteRoleAsync(int roleId)
     {

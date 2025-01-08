@@ -11,8 +11,10 @@ public interface IPermissionRepository
 
     Task<User> GetUserById(int userId);
     Task<Permission> GetUniquePermission(string permissionName);
-    
     Task<List<Permission>> GetAllPermissionsAsync();
+    Task RemoveAllRolePermissionsAsync(int roleId);
+    Task AddRolePermissionAsync(RolePermissionMapping rolePermissionMapping);
+    Task<Permission> GetPermissionByIdAsync(int permissionId);
 
     #endregion
 

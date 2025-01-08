@@ -1,0 +1,98 @@
+﻿@model List<Domain.Entities.Permission.Role>
+
+@{
+    ViewData["Title"] = "لیست نقش‌ها";
+}
+
+<h2>لیست نقش‌ها</h2>
+
+<!-- Button to open the "Add Role" modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRoleModal">
+    افزودن نقش
+</button>
+
+<!-- Table to display roles -->
+<table class="table">
+    <thead>
+    <tr>
+        <th>نام نقش</th>
+        <th>عملیات</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var role in Model)
+    {
+    <tr>
+        <td>@role.RoleName</td>
+                <td>
+            <a href="@Url.Action("EditRole", new { id = role.Id })" class="btn btn-warning">ویرایش</a>
+        <button type="button" class="btn btn-danger delete-role" data-role-id="@role.Id">حذف</button>
+        </td>
+    </tr>
+    }
+    </tbody>
+</table>
+
+<!-- Add Role Modal -->
+<div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="addRoleModalLabel">افزودن نقش</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="بستن">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="addRoleForm">
+                @Html.AntiForgeryToken() <!-- Anti-forgery token -->
+                <div class="form-group">
+                    <label for="roleName">نام نقش</label>
+                    <input type="text" class="form-control" id="roleName" name="roleName" required />
+                </div>
+            </form>
+        </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+        <button type="button" class="btn btn-primary" id="saveRoleBtn">ذخیره</button>
+    </div>
+    </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    $(document).ready(function () {
+    $("#saveRoleBtn").click(function () {
+            const roleName = $("#roleName").val();
+            if (!roleName) {
+                alert("نام نقش الزامی است.");
+                return;
+            }
+
+            const token = $('input[name="__RequestVerificationToken"]').val();
+
+            console.log("Sending AJAX request to add role:", roleName); 
+
+    $.post("/Admin/Access/AddRole", { roleName: roleName, __RequestVerificationToken: token }, function () {
+        console.log("Role added successfully.");
+        location.reload(); 
+    }).fail(function (error) {
+        console.error("Error adding role:", error); 
+        alert("خطا در افزودن نقش.");
+    });
+            });
+
+                $(".delete-role").click(function () {
+                    const roleId = $(this).data("role-id");
+                    if (confirm("آیا از حذف این نقش اطمینان دارید؟")) {
+                        $.post("/Admin/Access/Delete", { id: roleId }, function () {
+                            location.reload();
+                        }).fail(function () {
+                            alert("خطا در حذف نقش.");
+                        });
+                    }
+                });
+            });
+</script>
+}
