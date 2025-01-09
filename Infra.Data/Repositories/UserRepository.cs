@@ -47,7 +47,11 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     public async Task<string> GetUserNameByIdAsync(int userid)
     {
         var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userid);
-        return user!.FirstName + " " + user.LastName;
+        if (user == null)
+        {
+            return "ناشناس";
+        }
+        return user.FirstName + " " + user.LastName;
     }
 
     #endregion

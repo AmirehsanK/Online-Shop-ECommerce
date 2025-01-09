@@ -2,7 +2,7 @@
 @using Domain.ViewModel.Question
 @model Domain.ViewModel.Question.FilterQuestionListViewModel
 @{
-    ViewData["Title"] = "لیست سوال های درباره محصول";
+    ViewData["Title"] = "لیست سوالات محصول";
 }
 @section Scripts
 {
@@ -12,9 +12,9 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
         <div class="card">
             <div class="header">
-                <h2>
+                <h5>
                     فیلتر ها
-                </h2>
+                </h5>
             </div>
             <div class="body">
                 <form method="get" asp-action="QuestionList" id="filter-form">
@@ -46,7 +46,9 @@
                             </div>
                         </div>
                         <div class="col-sm-12">
+                            <br/>
                             <button class="btn btn-success">جستجو</button>
+                            <br/>
                         </div>
                     </div>
                 </form>
@@ -58,12 +60,11 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="header">
-                    <h2>
+                    <h4>
                         @ViewData["Title"]
-                    </h2>
+                    </h4>
                 </div>
                 <div class="body table-responsive">
-
                     <table class="table">
                         <thead>
                             <tr>
@@ -72,8 +73,6 @@
                                 <th>وضعیت</th>
                                 <th>تاریخ ایجاد</th>
                                 <th>عملیات</th>
-
-
                             </tr>
                         </thead>
                         <tbody>
@@ -85,25 +84,18 @@
                                     <th scope="row">@item.Id</th>
                                     <th>@item.Question</th>
                                     <th>@item.QuestionStatus.GetDisplayName()</th>
-                                    <th>@item.DateTime</th>
+                                    <th>@item.DateTime.ToShamsi()</th>
                                     <th>
-                                        <a class="btn btn-waning" asp-area="Admin" asp-controller="Question" asp-action="QuestionDetail" asp-route-QuestionId="@item.Id">جزییات</a>
-                                        <a class="btn btn-waning" asp-area="Admin" asp-controller="Question" asp-action="CloseQuestion" asp-route-QuestionId="@item.Id">بستن</a>
-                                        <a class="btn btn-waning" asp-area="Admin" asp-controller="Question" asp-action="ConfirmQuestion" asp-route-QuestionId="@item.Id">تایید کردن</a>
-
+                                        <a class="btn btn-warning" asp-area="Admin" asp-controller="Question" asp-action="QuestionDetail" asp-route-QuestionId="@item.Id"><i class="fa-solid fa-circle-info"></i></a>
+                                        <a class="btn btn-danger" asp-area="Admin" asp-controller="Question" asp-action="CloseQuestion" asp-route-QuestionId="@item.Id"><i class="fa-solid fa-circle-xmark"></i></a>
+                                        <a class="btn btn-primary" asp-area="Admin" asp-controller="Question" asp-action="ConfirmQuestion" asp-route-QuestionId="@item.Id"><i class="fa-solid fa-circle-check"></i></a>
                                     </th>
-
-
-
                                 </tr>
                             }
 
                         </tbody>
                     </table>
-
-
                     <partial name="_PagingPartial" model="@Model.GetCurrentPaging()" />
-
                 </div>
             </div>
         </div>

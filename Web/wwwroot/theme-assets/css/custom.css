@@ -11,3 +11,20 @@
     height: 150px !important;
 }
 /*# sourceMappingURL=custom.css.map */
+
+/*# Product Details */
+.product-variants {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.product-variant-item {
+    margin: 5px;
+}
+
+.custom-radio-circle {
+    display: inline-block;
+}
+/*# End Of Product Details */
+

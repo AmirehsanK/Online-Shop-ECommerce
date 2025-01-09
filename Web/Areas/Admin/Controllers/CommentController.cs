@@ -12,8 +12,9 @@ namespace Web.Areas.Admin.Controllers
         #region Comment List
 
         [InvokePermission(PermissionName.CommentList)]
-        public async Task<IActionResult> CommentList(FilterCommentViewModel filter)
+        public async Task<IActionResult> CommentList(FilterCommentViewModel filter,string filterModel)
         {
+            filter.Filter = filterModel;
             var comments = await commentService.GetCommentsAsync(filter);
             return View(comments);
         }

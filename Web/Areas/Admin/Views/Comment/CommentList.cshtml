@@ -2,67 +2,86 @@
 @model Domain.ViewModel.Comment.FilterCommentViewModel
 
 @{
-    ViewData["Title"] = "لیست نقش‌ها";
+    ViewData["Title"] = "لیست کامنت‌ها";
 }
-<h2>@ViewData["Title"]</h2>
-<form method="get" asp-action="CommentList" asp-controller="Comment" asp-area="Admin">
-    <div class="form-check">
-        <input type="radio" class="form-check-input" id="all" name="filter" value="all" @(Model.Filter == "all" ? "checked" : "") />
-        <label class="form-check-label" for="all">همه نظرات</label>
-    </div>
-    <div class="form-check">
-        <input type="radio" class="form-check-input" id="approved" name="filter" value="approved" @(Model.Filter == "approved" ? "checked" : "") />
-        <label class="form-check-label" for="approved">نظرات تایید شده</label>
-    </div>
-    <div class="form-check">
-        <input type="radio" class="form-check-input" id="notApproved" name="filter" value="notApproved" @(Model.Filter == "notApproved" ? "checked" : "") />
-        <label class="form-check-label" for="notApproved">نظرات تایید نشده</label>
-    </div>
 
-    <button type="submit" class="btn btn-primary mt-3">اعمال فیلتر</button>
-</form>
+<div class="card">
+    <h5 class="card-header">@ViewData["Title"]</h5>
+    <div class="card-body">
+        <!-- Filter Dropdown -->
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <p>فیلتر نظرات:</p>
+                <a asp-action="CommentList" asp-controller="Comment" asp-area="Admin" asp-route-filterModel="notApproved" class="btn @(Model.Filter == "notApproved" ? "btn-primary" : "btn-outline-primary")">
+                    کامنت‌های تایید نشده
+                </a>
+                <a asp-action="CommentList" asp-controller="Comment" asp-area="Admin" asp-route-filterModel="approved" class="btn @(Model.Filter == "approved" ? "btn-primary" : "btn-outline-primary")">
+                    کامنت‌های تایید شده
+                </a>
+                <a asp-action="CommentList" asp-controller="Comment" asp-area="Admin" asp-route-filterModel="all" class="btn @(Model.Filter == "all" ? "btn-primary" : "btn-outline-primary")">
+                    همه کامنت‌ها
+                </a>
+            </div>
+        </div>
 
-@if (Model.Entities.Count == 0)
-{
-    <p>هنوز نظری ثبت نشده است.</p>
-}
-else
-{
-    <div class="card">
-    <h5 class="card-header">>@ViewData["Title"]</h5>
-    <div class="table-responsive text-nowrap">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>عنوان</th>
-            <th>متن نظر</th>
-            <th>تاریخ ثبت</th>
-            <th>وضعیت</th>
-            <th>عملیات</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var comment in Model.Entities)
+
+
+        <!-- Comments Table -->
+        @if (Model.Entities.Count == 0)
         {
-            <tr>
-                <td>@comment.Title</td>
-                <td>@comment.Content</td>
-                <td>@comment.CreateDate.ToShamsi()</td>
-                <td>@(comment.IsApproved ? "تایید شده" : "در انتظار تایید")</td>
-                <td>
-                    @if (!comment.IsApproved)
-                    {
-                        <form method="post" asp-action="Approve" asp-controller="Comment" asp-area="Admin">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="commentId" value="@comment.Id" />
-                            <button type="submit" class="btn btn-success">تایید</button>
-                        </form>
-                    }
-                </td>
-            </tr>
+            <p>هنوز نظری ثبت نشده است.</p>
         }
-        </tbody>
-    </table>
+        else
+        {
+            <div class="table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>عنوان</th>
+                        <th>متن نظر</th>
+                        <th>تاریخ ثبت</th>
+                        <th>وضعیت</th>
+                        <th>عملیات</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var comment in Model.Entities)
+                    {
+                        <tr>
+                            <td>@comment.Title</td>
+                            <td>@comment.Content</td>
+                            <td>@comment.CreateDate.ToShamsi()</td>
+                            <td>@(comment.IsApproved ? "تایید شده" : "در انتظار تایید")</td>
+                            <td>
+                                @if (!comment.IsApproved)
+                                {
+                                    <form asp-action="Approve" asp-controller="Comment" asp-area="Admin" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@comment.Id" />
+                                        <button type="submit" class="btn btn-success">تایید</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+        <!-- Pagination -->
+        <div class="card-footer d-flex justify-content-between align-items-center">
+            <span>صفحه @Model.Page از @Model.PageCount</span>
+            <div>
+                @if (Model.Page > 1)
+                {
+                    <a asp-action="CommentList" asp-route-Page="@(Model.Page - 1)" asp-route-Filter="@Model.Filter" class="btn btn-primary">قبلی</a>
+                }
+                @if (Model.Page < Model.PageCount)
+                {
+                    <a asp-action="CommentList" asp-route-Page="@(Model.Page + 1)" asp-route-Filter="@Model.Filter" class="btn btn-primary">بعدی</a>
+                }
+            </div>
+        </div>
     </div>
-    </div>
-}
+</div>

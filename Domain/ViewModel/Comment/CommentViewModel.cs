@@ -11,7 +11,7 @@ namespace Domain.ViewModel.Comment
         public int Id { get; set; }
         public int ProductId { get; set; }
         public int UserId { get;set; }
-        public string? UserName { get; set; }
+        public string UserName { get; set; }
 
         [Display(Name = "عنوان نظر")]
         [Required(ErrorMessage = "وارد کردن عنوان نظر اجباری است.")]
@@ -50,6 +50,6 @@ namespace Domain.ViewModel.Comment
 
     public class FilterCommentViewModel : Paging.BasePaging<CommentViewModel>
     {
-        public string Filter { get; set; } = "notApproved";
+        public string Filter { get; set; }
     }
 }

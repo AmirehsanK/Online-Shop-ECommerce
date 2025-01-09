@@ -10,25 +10,6 @@
     var comments = ViewData["Comments"] as List<CommentViewModel>;
     var commentAvg = ViewData["CommentAvg"] as Dictionary<string, float>;
 }
-@section Style
-{
-    <style>
-        .product-variants {
-            display: flex;
-            gap: 10px; /* فاصله بین دکمه‌ها */
-            flex-wrap: wrap; /* اگر نیاز به قرار گرفتن دکمه‌ها در چند خط باشد */
-        }
-
-        .product-variant-item {
-            margin: 5px; /* فاصله داخلی برای هر دکمه */
-        }
-
-        .custom-radio-circle {
-            display: inline-block;
-        }
-    </style>
-
-}
 
 @section Scripts
 {
@@ -84,30 +65,26 @@
 
         <script>
                 let selectedProductColorId = null;
-        let finalPrice = @Model.Price; // قیمت اولیه محصول
+        let finalPrice = @Model.Price; 
 
-        // تابع برای گرفتن انتخاب رنگ
         function setProductColorId(productColorId, additionalPrice) {
             selectedProductColorId = productColorId;
-            finalPrice = @Model.Price + additionalPrice; // محاسبه قیمت جدید
+            finalPrice = @Model.Price + additionalPrice; 
 
-            // به روز رسانی نمایش قیمت نهایی
             document.getElementById('finalPrice').innerText = finalPrice.toLocaleString();
         }
 
-        // ارسال اطلاعات به کنترلر وقتی که روی دکمه "افزودن به سبد خرید" کلیک می‌شود
         document.getElementById("addToCartButton").addEventListener("click", function() {
             if (selectedProductColorId === null) {
                 alert("لطفاً رنگی را انتخاب کنید.");
                 return;
             }
 
-            // ارسال درخواست به کنترلر
             $.ajax({
                 type: "POST",
-                url: "/UserPanel/Order/AddToCart", // اکشن شما در کنترلر
+                url: "/UserPanel/Order/AddToCart", 
                 data: {
-                    productId: @Model.ProductId, // شناسه محصول
+                    productId: @Model.ProductId, 
                     productColorId: selectedProductColorId
                 },
                 success: function(response) {
@@ -291,19 +268,6 @@
                         <span class="icon">
                             <i class="ri-information-line"></i>
                         </span>
-                        <div class="product-additional-info">
-                            <p>
-                                هشدار سامانه همتا: در صورت انجام معامله، از فروشنده کد فعالسازی را
-                                گرفته
-                                و حتما در حضور ایشان، دستگاه را از طریق #7777*، برای سیمکارت خود
-                                فعالسازی نمایید. آموزش تصویری در آدرس اینترنتی hmti.ir/06
-                            </p>
-                            <p>
-                                امکان برگشت کالا در گروه موبایل با دلیل "انصراف از خرید" تنها در
-                                صورتی
-                                مورد قبول است که پلمپ کالا باز نشده باشد.
-                            </p>
-                        </div>
                     </div>
                     <div class="widget p-0">
                         <div class="widget-content widget--free-shipping">
@@ -372,12 +336,6 @@
                             <div class="product-seller-row">
                                 <div class="product-seller-row-icon">
                                     <i class="ri-copper-coin-fill text-warning"></i>
-                                </div>
-                                <div class="product-seller-row-detail">
-                                    <div class="product-seller-row-detail-title">
-                                        ۱۵۰ امتیاز
-                                        در باشگاه مشتریان
-                                    </div>
                                 </div>
                             </div>
                             @if (Model.OffPrice > 0)
@@ -951,7 +909,7 @@
                 <div class="product-tab-content product-content-expert-summary tab-content border-bottom pb-2 mb-4" id="scrollspyHeading1">
                     <div class="product-tab-title">
                         <h2>نقد و بررسی اجمالی</h2>
-                        <h3 class="subtitle">Apple iPhone 13 A2634 Dual SIM 128GB And 4GB RAM Mobile Phone</h3>
+                        <h3 class="subtitle">@Model.ProductName</h3>
                     </div>
                     <div class="expandable-text pt-1" style="height: 250px;">
                         <div class="expandable-text_text">
@@ -974,7 +932,7 @@
                 <div class="product-tab-content product-content-expert-articles tab-content border-bottom pb-2 mb-4" id="scrollspyHeading2">
                     <div class="product-tab-title">
                         <h2>نقد و بررسی تخصصی</h2>
-                        <h3 class="subtitle">Apple iPhone 13 A2634 Dual SIM 128GB And 4GB RAM Mobile Phone</h3>
+                        <h3 class="subtitle">@Model.ProductName</h3>
                     </div>
                     <div class="expandable-text pt-1" style="height: 840px;">
                         <div class="expandable-text_text">
@@ -996,7 +954,7 @@
                 <div class="product-tab-content product-params tab-content border-bottom pb-2 mb-4" id="scrollspyHeading3">
                     <div class="product-tab-title">
                         <h2>مشخصات کالا</h2>
-                        <h3 class="subtitle">Apple iPhone 13 A2634 Dual SIM 128GB And 4GB RAM Mobile Phone</h3>
+                        <h3 class="subtitle">@Model.ProductName</h3>
                     </div>
                     @await Component.InvokeAsync("ProductSpecification", new ProductSpecificationViewModel { ProductId = Model.ProductId })
                 </div>
@@ -1005,7 +963,7 @@
                 <div class="product-tab-content product-comments tab-content border-bottom pb-2 mb-4" id="scrollspyHeading4">
                     <div class="product-tab-title mb-0">
                         <h2>امتیاز و دیدگاه کاربران</h2>
-                        <h3 class="subtitle">Samsung Galaxy M31 SM-M315F/DSN Dual SIM 128GB Mobile Phone</h3>
+                        <h3 class="subtitle">@Model.ProductName</h3>
                     </div>
                     <div class="row">
                         <div class="col-xl-3 col-lg-4 col-md-5 mb-3">
@@ -1013,14 +971,14 @@
                                 <!-- start of comments-sidebar -->
                                 <div class="comments-sidebar">
                                     <div class="comments-sidebar-rating">
-                                        <div class="comments-sidebar-rating-main me-2">@commentAvg["avgOverall"]</div>
+                                        <div class="comments-sidebar-rating-main me-2">@commentAvg!["avgOverall"]</div>
                                         <div class="comments-sidebar-rating-desc">از ۵</div>
                                     </div>
                                     <div class="comments-sidebar-rating-bottom">
                                         <div class="stars-container justify-content-end">
                                             <div class="stars-text ms-2">از مجموع ۹۴۰ امتیاز</div>
                                             <div class="stars">
-                                                <div class="stars-val" style="width: 70%;"></div>
+                                                <div class="stars-val" style="width: @Application.Tools.RatingCalculator.CalculateBasedOnFive(@commentAvg["avgOverall"])%;"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -1028,7 +986,7 @@
                                         <div class="mb-3">
                                             <div class="content-expert-rating-title">کیفیت ساخت</div>
                                             <div class="content-expert-rating-value-wrapper">
-                                                <div class="content-expert-rating-value" style="width: 90%;">
+                                                <div class="content-expert-rating-value" style="width: @Application.Tools.RatingCalculator.CalculateBasedOnFive(@commentAvg["avgQuality"])%;">
                                                 </div>
                                                 <div class="content-expert-rating-value-label">@commentAvg["avgQuality"]</div>
                                             </div>
@@ -1038,7 +996,7 @@
                                                 ارزش خرید به نسبت قیمت
                                             </div>
                                             <div class="content-expert-rating-value-wrapper">
-                                                <div class="content-expert-rating-value" style="width: 90%;">
+                                                <div class="content-expert-rating-value" style="width: @Application.Tools.RatingCalculator.CalculateBasedOnFive(@commentAvg["avgValue"])%;">
                                                 </div>
                                                 <div class="content-expert-rating-value-label">@commentAvg["avgValue"]</div>
                                             </div>
@@ -1046,7 +1004,7 @@
                                         <div class="mb-3">
                                             <div class="content-expert-rating-title">نوآوری</div>
                                             <div class="content-expert-rating-value-wrapper">
-                                                <div class="content-expert-rating-value" style="width: 90%;">
+                                                <div class="content-expert-rating-value" style="width: @Application.Tools.RatingCalculator.CalculateBasedOnFive(@commentAvg["avgInnovation"])%;">
                                                 </div>
                                                 <div class="content-expert-rating-value-label">@commentAvg["avgInnovation"]</div>
                                             </div>
@@ -1054,7 +1012,7 @@
                                         <div class="mb-3">
                                             <div class="content-expert-rating-title">امکانات و قابلیت ها</div>
                                             <div class="content-expert-rating-value-wrapper">
-                                                <div class="content-expert-rating-value" style="width: 90%;">
+                                                <div class="content-expert-rating-value" style="width: @Application.Tools.RatingCalculator.CalculateBasedOnFive(@commentAvg["avgFeatures"])%;">
                                                 </div>
                                                 <div class="content-expert-rating-value-label">@commentAvg["avgFeatures"]</div>
                                             </div>
@@ -1062,7 +1020,7 @@
                                         <div class="mb-3">
                                             <div class="content-expert-rating-title">سهولت استفاده</div>
                                             <div class="content-expert-rating-value-wrapper">
-                                                <div class="content-expert-rating-value" style="width: 90%;">
+                                                <div class="content-expert-rating-value" style="width: @Application.Tools.RatingCalculator.CalculateBasedOnFive(@commentAvg["avgEase"])%;">
                                                 </div>
                                                 <div class="content-expert-rating-value-label">@commentAvg["avgEase"]</div>
                                             </div>
@@ -1070,7 +1028,7 @@
                                         <div class="mb-3">
                                             <div class="content-expert-rating-title">طراحی و ظاهر</div>
                                             <div class="content-expert-rating-value-wrapper">
-                                                <div class="content-expert-rating-value" style="width: 90%;">
+                                                <div class="content-expert-rating-value" style="width: @Application.Tools.RatingCalculator.CalculateBasedOnFive(@commentAvg["avgDesign"])%;">
                                                 </div>
                                                 <div class="content-expert-rating-value-label">@commentAvg["avgDesign"]</div>
                                             </div>
@@ -1087,7 +1045,7 @@
                         </div>
                         <div class="col-xl-9 col-lg-8 col-md-7 pt-5">
                             <!-- start of filter-comments -->
-                            <div class="filter-comments mb-4">
+                           <!-- <div class="filter-comments mb-4">
                                 <div class="filter-comments-title me-2">
                                     <i class="ri-list-settings-fill me-1"></i>
                                     <span>مرتب سازی دیدگاه ها بر اساس:</span>
@@ -1097,7 +1055,7 @@
                                     <button class="filter-comments-option">مفیدترین دیدگاه ها</button>
                                     <button class="filter-comments-option">دیدگاه خریداران</button>
                                 </div>
-                            </div>
+                            </div>-->
                             <!-- end of filter-comments -->
                             <!-- start of comments -->
                             <div class="comments">

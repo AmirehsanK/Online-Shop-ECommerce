@@ -19,18 +19,23 @@ public class CommentRepository(ApplicationDbContext context) : ICommentRepositor
     #endregion
 
     #region Filter Comments
-
+    
     public async Task<FilterCommentViewModel> GetAllCommentsAsync(FilterCommentViewModel filter)
     {
         var query = context.Comments.Where(p => !p.IsDeleted).AsQueryable();
-        var filteredComments = filter.Filter switch
+        if (!string.IsNullOrEmpty(filter.Filter))
         {
-            "approved" => context.Comments.Where(c => c.IsApproved),
-            "notApproved" => context.Comments.Where(c => !c.IsApproved),
-            _ => context.Comments
-        };
+            query = filter.Filter switch
+            {
+                "approved" => query.Where(c => c.IsApproved),
+                "notApproved" => query.Where(c => !c.IsApproved),
+                _ => query
+            };
+        }
+
         await filter.Paging(query.Select(p => new CommentViewModel()
         {
+            UserName = p.User.FirstOrDefault(u=>u.Id==p.Id)!.FirstName+" "+p.User.FirstOrDefault(u=>u.Id==p.Id)!.LastName,
             Content = p.Content,
             Id = p.Id,
             IsApproved = p.IsApproved,
@@ -40,6 +45,7 @@ public class CommentRepository(ApplicationDbContext context) : ICommentRepositor
             Weaknesses = p.Weaknesses!,
             CreateDate = p.CreateDate
         }));
+
         return filter;
     }
 
