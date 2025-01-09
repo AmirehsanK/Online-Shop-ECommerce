@@ -1,16 +1,23 @@
-﻿
-using Domain.Enums;
+﻿using Domain.Enums;
 using Domain.ViewModel.Product.ProductColor;
 
-namespace Application.Services.Interfaces
+namespace Application.Services.Interfaces;
+
+public interface IProductColorService
 {
-    public interface IProductColorService
-    {
-        Task AddNewColor(CreateProductColorViewModel  color);
 
-        Task<List<ColorListViewModel>> GetColorList();
+    #region Color Management
 
-        Task DeleteColorAsync(int  colorId);
-        Task<ProductExistColor> AddColorToProduct(AddProductColorViewModel productColor,int productid);
-    }
+    Task AddNewColor(CreateProductColorViewModel color);
+    Task<List<ColorListViewModel>> GetColorList();
+    Task DeleteColorAsync(int colorId);
+
+    #endregion
+
+    #region Product Color Management
+
+    Task<ProductExistColor> AddColorToProduct(AddProductColorViewModel productColor, int productid);
+
+    #endregion
+
 }

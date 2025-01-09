@@ -1,6 +1,5 @@
 ﻿using Domain.Entities.Account;
 using Domain.Entities.Permission;
-using Domain.ViewModel.Permission;
 using Domain.ViewModel.User;
 
 namespace Domain.Interface;
@@ -45,6 +44,5 @@ public interface IPermissionRepository
     Task UpdateUserAsync(User user);
 
     #endregion
-
 
 }

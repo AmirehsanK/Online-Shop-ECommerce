@@ -1,122 +1,74 @@
-﻿
-using Application.Services.Interfaces;
+﻿using Application.Services.Interfaces;
 using Domain.Entities.Notification;
 using Domain.Enums;
 using Domain.Interface;
 using Domain.ViewModel.Notification;
 
-namespace Application.Services.Impelementation
+namespace Application.Services.Impelementation;
+
+public class NotificationService(INotificationRepository notificationRepository) : INotificationService
 {
-    public class NotificationService : INotificationService
+    
+    #region Add Notification
+    public async Task AddNewMessage(AddNotificationViewModel model, int? userId)
     {
-        #region Ctor
-
-        private readonly INotificationRepository _notificationRepository;
-
-        public NotificationService(INotificationRepository notificationRepository)
+        var newNotification = new Notification()
         {
-            _notificationRepository = notificationRepository;
-        }
-
-        #endregion
-
-        public async Task AddNewMessage(AddNotificationViewModel model, int? userId)
+            CreateDate = DateTime.Now,
+            IsDeleted = false,
+            Message = model.Message,
+        };
+        if (userId.HasValue)
         {
-            var newnotification = new Notification()
-            {
-                CreateDate = DateTime.Now,
-                IsDeleted = false,
-                Message = model.Message,
-            };
-            if (userId.HasValue)
-            {
-                newnotification.UserId = userId.Value;
-            }
-
-            await _notificationRepository.AddNotificationAsync(newnotification);
-
-            await _notificationRepository.SaveChangesAsync();
+            newNotification.UserId = userId.Value;
         }
-
-        //public async Task<NotificationEnum> GetNotificationById(int userid)
-        //{
-        //    var message = await _notificationRepository.GetNotification(userid);
-        //    if (message.Where(u => u.UserId == userid)!=null)
-        //    {
-        //        return NotificationEnum.HasMessage;
-        //    }
-        //    else if(message.Where(u => u.UserId == null)!=null)
-        //    {
-        //        return NotificationEnum.PublicMessage;
-        //    }
-
-        //    return NotificationEnum.NotFound;
-
-        //}
-
-        public async Task<ShowNotificationViewModel> GetShowNotificationById(int userid)
-        {
-            var privatemessage = await _notificationRepository.GetPrivateNotification(userid);
-            if(privatemessage!=null)
-            {
-                var notification = new ShowNotificationViewModel()
-                {
-            
-                    Message = privatemessage.Message,
-                    MessageId = privatemessage.Id,
-                    userid= privatemessage.UserId.Value
-
-          
-                };
-                return notification;
-            }
-
-            return null;
-
-
-
-
-
-        }
-
-        public async Task markSeenForPrivateMessage(int? userId, int message)
-        {
-            var seen = new UserNotification()
-            {
-                CreateDate = DateTime.Now,
-                NotificationId = message,
-                UserId = userId.Value,
-                IsDeleted = false
-            };
-            await _notificationRepository.AddUserNotificationAsync(seen);
-            await _notificationRepository.SaveChangesAsync();
-        }
-
-        public async Task<NotificationEnum> GetNotificationById(int id)
-        {
-            var message = await _notificationRepository.GetPrivateNotification(id);
-     
-            if (message==null)
-            {
-                return NotificationEnum.NotFound;
-            }
-            else
-            {
-                return NotificationEnum.HasMessage;
-            }
-
-        }
-
-        public async Task<Notification> GetpublicMessage(int userId)
-        {
-            var message = await _notificationRepository.GetPublicNotification(userId);
-            if (message!=null)
-            {
-                return message;
-            }
-
-            return null;
-
-        }
+        await notificationRepository.AddNotificationAsync(newNotification);
+        await notificationRepository.SaveChangesAsync();
     }
+    #endregion
+
+    #region Get Notifications
+    public async Task<ShowNotificationViewModel> GetShowNotificationById(int userid)
+    {
+        var privateMessage = await notificationRepository.GetPrivateNotification(userid);
+        if (privateMessage == null!) return null!;
+        var notification = new ShowNotificationViewModel()
+        {
+            Message = privateMessage.Message,
+            MessageId = privateMessage.Id,
+            userid = privateMessage.UserId!.Value
+        };
+        return notification;
+    }
+
+    public async Task<Notification> GetpublicMessage(int userId)
+    {
+        var message = await notificationRepository.GetPublicNotification(userId);
+        return message != null! ? message : null!;
+    }
+    #endregion
+
+    #region Notification Status
+    public async Task<NotificationEnum> GetNotificationById(int id)
+    {
+        var message = await notificationRepository.GetPrivateNotification(id);
+        return message == null! ? NotificationEnum.NotFound : NotificationEnum.HasMessage;
+    }
+    #endregion
+
+    #region Mark Notification as Seen
+    public async Task markSeenForPrivateMessage(int? userId, int message)
+    {
+        var seen = new UserNotification()
+        {
+            CreateDate = DateTime.Now,
+            NotificationId = message,
+            UserId = userId!.Value,
+            IsDeleted = false
+        };
+        await notificationRepository.AddUserNotificationAsync(seen);
+        await notificationRepository.SaveChangesAsync();
+    }
+    #endregion
+    
 }

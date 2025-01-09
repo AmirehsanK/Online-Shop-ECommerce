@@ -1,28 +1,33 @@
-﻿
+﻿using Domain.Entities.Product;
 
-using Domain.Entities.Product;
+namespace Domain.Interface;
 
-namespace Domain.Interface
+public interface IProductColorRepository
 {
-    public interface IProductColorRepository
-    {
-        Task AddColorAsync(Color  color);
 
-        void UpdateColor(Color color);
+    #region Color Management
 
-        Task SaveChangeAsync();
+    Task AddColorAsync(Color color);
+    void UpdateColor(Color color);
+    Task<List<Color>> GetAllColorAsync();
+    Task<Color> GetColorById(int id);
 
-        Task AddProductColorAsync(ProductColor color);
+    #endregion
 
-        void UpdateProductColor(ProductColor color);
+    #region Product Color Management
 
-        Task<List<Color>> GetAllColorAsync();
+    Task AddProductColorAsync(ProductColor color);
+    void UpdateProductColor(ProductColor color);
+    Task<bool> CheckIsColorExistForProduct(int productId, string colorCode);
+    Task<ProductColor> GetProductColorWithid(int productColorid);
+    Task<List<ProductColor>> GetProductColorAsync(int productId);
 
-        Task<bool> CheckIsColorExistForProduct(int productId, string colorCode);
+    #endregion
 
-        Task<ProductColor> GetProductColorWithid(int productColorid);
-        Task<List<ProductColor>> GetProductColorAsync(int productId);
+    #region Save Changes
 
-        Task<Color> GetColorById(int id);
-    }
+    Task SaveChangeAsync();
+
+    #endregion
+
 }

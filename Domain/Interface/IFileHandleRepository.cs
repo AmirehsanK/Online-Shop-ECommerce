@@ -5,7 +5,6 @@ namespace Domain.Interface;
 
 public interface IFileHandleRepository
 {
-    Task SaveChangesAsync();
 
     #region Slider Images
 
@@ -38,4 +37,12 @@ public interface IFileHandleRepository
     Task<BannerFix> GetFixedImageByPositionAsync(ImageEnum.Banner position);
 
     #endregion
+    
+    #region Save
+
+    Task SaveChangesAsync();
+
+
+    #endregion
+
 }

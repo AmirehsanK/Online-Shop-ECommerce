@@ -4,12 +4,14 @@ namespace Domain.Interface;
 
 public interface IContactUsRepository
 {
+    
     #region Subject
 
     Task<List<Subject>> GetSubjectsAsync();
 
     Task<Subject> GetSubjectByIdAsync(int id);
         #endregion
+        
     #region Main
 
     Task AddMessageAsync(ContactMessage message);
@@ -18,4 +20,5 @@ public interface IContactUsRepository
     Task UpdateMessageAsync(ContactMessage message);
 
     #endregion
+    
 }

@@ -1,5 +1,4 @@
 ﻿using Application.Services.Interfaces;
-using Domain.Entities.Account;
 using Domain.Entities.Permission;
 using Domain.Interface;
 using Domain.ViewModel.Permission;
@@ -7,11 +6,12 @@ using Domain.ViewModel.User;
 
 namespace Application.Services.Impelementation;
 
-public class PermissionService(IUserRepository userRepository,IPermissionRepository permissionRepository) : IPermissionService
+public class PermissionService(
+    IUserRepository userRepository,
+    IPermissionRepository permissionRepository) : IPermissionService
 {
-    #region Permission
-
     
+    #region Permission
     public async Task<bool> CheckUserPermissionAsync(int userId, string permissionName)
     {
         var user = await permissionRepository.GetUserById(userId);
@@ -19,15 +19,10 @@ public class PermissionService(IUserRepository userRepository,IPermissionReposit
         {
             return false;
         }
-
         var permission = await permissionRepository.GetUniquePermission(permissionName);
-        if (permission is null)
-        {
-            return false;
-        }
-
-        return user.UserRoleMappings.Any(s => permission.RolePermissionMappings.Any(p => p.RoleId == s.RoleId));
+        return permission is not null && user.UserRoleMappings.Any(s => permission.RolePermissionMappings.Any(p => p.RoleId == s.RoleId));
     }
+
     public async Task<List<PermissionSelectionViewModel>> GetPermissionsHierarchyAsync()
     {
         var permissions = await permissionRepository.GetAllPermissionsAsync();
@@ -52,28 +47,29 @@ public class PermissionService(IUserRepository userRepository,IPermissionReposit
         }
         return lookup[0].ToList();
     }
+
     public async Task<List<int>> GetSelectedPermissionIdsAsync(int roleId)
     {
         return await permissionRepository.GetSelectedPermissionIdsAsync(roleId);
     }
-
     #endregion
 
     #region Role
-    
     public async Task<bool> CanEditOrDeleteRoleAsync(int roleId)
     {
         var role = await permissionRepository.GetRoleByIdAsync(roleId);
-        if (role == null)
+        if (role == null!)
         {
-            return false; 
+            return false;
         }
         return role.RoleName != "ادمین کل";
     }
+
     public async Task<FilterUserWithRolesViewModel> GetUsersWithRolesAsync(FilterUserWithRolesViewModel filter)
     {
         return await permissionRepository.GetUsersWithRolesAsync(filter);
     }
+
     public async Task<Role> GetRoleByIdAsync(int id)
     {
         return await permissionRepository.GetRoleByIdAsync(id);
@@ -83,6 +79,7 @@ public class PermissionService(IUserRepository userRepository,IPermissionReposit
     {
         return await permissionRepository.GetUserWithRolesAsync(userId);
     }
+
     public async Task AddRoleAsync(RolePermissionsViewModel viewModel)
     {
         var role = new Role { RoleName = viewModel.RoleName };
@@ -107,10 +104,9 @@ public class PermissionService(IUserRepository userRepository,IPermissionReposit
 
         await permissionRepository.RemoveAllRolePermissionsAsync(role.Id);
 
-        var selectedPermissions  = viewModel.Permissions
+        var selectedPermissions = viewModel.Permissions
             .Where(p => p.IsSelected)
             .ToList();
-
 
         List<int> selectedPermissionIds = new();
 
@@ -120,9 +116,9 @@ public class PermissionService(IUserRepository userRepository,IPermissionReposit
             parent.Children
                 .Where(s => s.IsSelected)
                 .ToList()
-                .ForEach(item =>  selectedPermissionIds.Add(item.PermissionId));
+                .ForEach(item => selectedPermissionIds.Add(item.PermissionId));
         }
-        
+
         foreach (var permissionId in selectedPermissionIds)
         {
             var permission = await permissionRepository.GetPermissionByIdAsync(permissionId);
@@ -134,23 +130,27 @@ public class PermissionService(IUserRepository userRepository,IPermissionReposit
             await permissionRepository.AddRolePermissionAsync(rolePermissionMapping);
         }
     }
+
     public async Task SoftDeleteRoleAsync(int roleId)
     {
         await permissionRepository.SoftDeleteRoleAsync(roleId);
     }
+
     public async Task<List<string>> GetUserRolesAsync(int userId)
     {
         return await permissionRepository.GetUserRolesAsync(userId);
     }
-    
+
     public async Task<bool> IsRoleNameUniqueAsync(string roleName, int? roleId = null)
     {
         return await permissionRepository.IsRoleNameUniqueAsync(roleName, roleId);
     }
+
     public async Task<List<Role>> GetAllRolesAsync()
     {
         return await permissionRepository.GetAllRolesAsync();
     }
+
     public async Task UpdateUserRolesAsync(int userId, List<string> selectedRoles)
     {
         var user = await permissionRepository.GetUserByIdAsync(userId);
@@ -172,13 +172,13 @@ public class PermissionService(IUserRepository userRepository,IPermissionReposit
         foreach (var roleName in selectedRoles.Where(roleName => !existingMappings.Any(urm => urm.Role.RoleName == roleName)))
         {
             var role = await permissionRepository.GetRoleByNameAsync(roleName);
-            if (role != null)
+            if (role != null!)
             {
                 user.UserRoleMappings.Add(new UserRoleMapping
                 {
                     RoleId = role.Id,
                     UserId = user.Id,
-                    IsDeleted = false, 
+                    IsDeleted = false,
                     CreateDate = DateTime.UtcNow
                 });
             }
@@ -187,4 +187,5 @@ public class PermissionService(IUserRepository userRepository,IPermissionReposit
         await permissionRepository.UpdateUserAsync(user);
     }
     #endregion
+    
 }

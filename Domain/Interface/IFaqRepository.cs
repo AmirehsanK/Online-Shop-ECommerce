@@ -1,37 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities.Faq;
+﻿using Domain.Entities.Faq;
 
-namespace Domain.Interface
+namespace Domain.Interface;
+
+public interface IFaqRepository
 {
-    public interface IFaqRepository
-    {
-    
-        Task AddFaqCategory(FaqCategory faqCategory);
 
-        Task<List<FaqCategory>> GetAllFaqCategory();
+    #region Faq Category Management
 
-        Task<FaqCategory> GetFaqCategoryByIdAsync(int categoryid);
+    Task AddFaqCategory(FaqCategory faqCategory);
+    Task<List<FaqCategory>> GetAllFaqCategory();
+    Task<FaqCategory> GetFaqCategoryByIdAsync(int categoryid);
+    void UpdateFaqCategory(FaqCategory faqCategory);
+    Task<FaqCategory> GetCategoryById(int id);
 
-        void UpdateFaqCategory(FaqCategory faqCategory);
+    #endregion
 
-        void UpdateFaqQuestion(FaqQuestion faqQuestion);
+    #region Faq Question Management
 
-        Task SaveChangeAsync();
+    Task AddQuestion(FaqQuestion question);
+    Task<List<FaqQuestion>> GetFaqQuestion(int categoryid);
+    Task<FaqQuestion> GetQuestionById(int questionid);
+    void UpdateFaqQuestion(FaqQuestion faqQuestion);
+    void UpdateListQuestion(List<FaqQuestion> list);
 
-        Task AddQuestion(FaqQuestion  question);
+    #endregion
 
-        Task<FaqCategory> GetCategoryById(int id);
+    #region Save Changes
 
-        Task<List<FaqQuestion>> GetFaqQuestion(int categoryid);
+    Task SaveChangeAsync();
 
-        Task<FaqQuestion> GetQuestionById(int questionid);
+    #endregion
 
-        void UpdateListQuestion(List<FaqQuestion> list);
-
-
-    }
 }

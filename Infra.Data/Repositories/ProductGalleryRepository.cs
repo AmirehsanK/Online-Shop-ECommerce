@@ -1,50 +1,46 @@
-﻿
-
-using Domain.Entities.Product;
+﻿using Domain.Entities.Product;
 using Domain.Interface;
 using Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infra.Data.Repositories
+namespace Infra.Data.Repositories;
+
+public class ProductGalleryRepository(ApplicationDbContext context) : IProductGalleryRepository
 {
-    public class ProductGalleryRepository:IProductGalleryRepository
+
+    #region Gallery Methods
+
+    public async Task AddGalleryAsync(ProductGallery gallery)
     {
-        #region Ctor
-
-
-        private readonly ApplicationDbContext _context;
-
-        public ProductGalleryRepository(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
-        #endregion
-
-        public async Task AddGalleryAsync(ProductGallery gallery)
-        {
-            await _context.ProductGalleries.AddAsync(gallery);
-        }
-
-        public async Task<List<ProductGallery>> GetGalleryWithIdAsync(int id)
-        {
-            return await _context.ProductGalleries.Where(u => u.IsDeleted == false && u.ProductId == id).ToListAsync();
-        }
-
-        public async Task SaveChangeAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<ProductGallery> GetOneGalleryWithIdAsync(int id)
-        {
-            return await _context.ProductGalleries.FindAsync(id);
-
-        }
-
-        public void RemoveProductGallery(ProductGallery gallery)
-        {
-             _context.ProductGalleries.Remove(gallery);
-        }
+        await context.ProductGalleries.AddAsync(gallery);
     }
+
+    public async Task<List<ProductGallery>> GetGalleryWithIdAsync(int id)
+    {
+        return await context.ProductGalleries
+            .Where(u => u.IsDeleted == false && u.ProductId == id)
+            .ToListAsync();
+    }
+
+    public async Task<ProductGallery> GetOneGalleryWithIdAsync(int id)
+    {
+        return (await context.ProductGalleries.FindAsync(id))!;
+    }
+
+    public void RemoveProductGallery(ProductGallery gallery)
+    {
+        context.ProductGalleries.Remove(gallery);
+    }
+
+    #endregion
+
+    #region Save Changes
+
+    public async Task SaveChangeAsync()
+    {
+        await context.SaveChangesAsync();
+    }
+
+    #endregion
+
 }

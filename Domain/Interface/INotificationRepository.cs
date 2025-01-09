@@ -1,20 +1,23 @@
-﻿
-using Domain.Entities.Notification;
-using Domain.Enums;
+﻿using Domain.Entities.Notification;
 
-namespace Domain.Interface
+namespace Domain.Interface;
+
+public interface INotificationRepository
 {
-    public interface INotificationRepository
-    {
-        Task AddUserNotificationAsync(UserNotification  userNotification);
 
-        Task AddNotificationAsync(Notification  notification);
+    #region Notification Management
 
-        Task SaveChangesAsync();
+    Task AddUserNotificationAsync(UserNotification userNotification);
+    Task AddNotificationAsync(Notification notification);
+    Task<Notification> GetPrivateNotification(int userid);
+    Task<Notification> GetPublicNotification(int userid);
 
-        Task<Notification> GetPrivateNotification(int userid);
+    #endregion
 
-        Task<Notification> GetPublicNotification(int userid);
+    #region Save Changes
 
-    }
+    Task SaveChangesAsync();
+
+    #endregion
+
 }

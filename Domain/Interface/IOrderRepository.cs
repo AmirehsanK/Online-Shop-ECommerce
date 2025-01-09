@@ -1,24 +1,26 @@
-﻿
+﻿using Domain.Entities.Orders;
 
-using Domain.Entities.Orders;
+namespace Domain.Interface;
 
-namespace Domain.Interface
+public interface IOrderRepository
 {
-    public interface IOrderRepository
-    {
-        Task<Order> GetUserLatestOpenOrder(int userId);
-        
-        Task<OrderDetail> GetExistOrderDetail(int productId, int ProductColorId);
-        Task AddOrder(Order order);
 
-        Task Save();
+    #region Order Management
 
-        void UpdateOrder(Order order);
-        void UpdateOrderDetail(OrderDetail orderDetail);
+    Task<Order> GetUserLatestOpenOrder(int userId);
+    Task<OrderDetail> GetExistOrderDetail(int productId, int ProductColorId);
+    Task AddOrder(Order order);
+    void UpdateOrder(Order order);
+    void UpdateOrderDetail(OrderDetail orderDetail);
+    Task AddOrderDetail(OrderDetail orderDetail);
+    Task<Order> GetUserBasketDetail(int userId);
 
-        Task AddOrderDetail(OrderDetail orderDetail);
+    #endregion
 
-        Task<Order> GetUserBasketDetail(int userId);
+    #region Save Changes
 
-    }
+    Task Save();
+
+    #endregion
+
 }

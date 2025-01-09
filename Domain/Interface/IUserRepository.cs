@@ -1,34 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities.Account;
-using Domain.ViewModel;
+﻿using Domain.Entities.Account;
 using Domain.ViewModel.User;
 
-namespace Domain.Interface
+namespace Domain.Interface;
+
+public interface IUserRepository
 {
-    public interface IUserRepository
-    {
-        Task<List<User>> GetAllAsync();
 
-        Task<User> GetUserByIdAsync(int userid);
-        Task<string> GetUserNameByIdAsync(int userid);
+    #region User Retrieval
 
-        Task<User> GetUserByEmailAsync(string email);
-        Task<List<UserWithRolesViewModel>> GetAllUsersForRolesAsync();
+    Task<List<User>> GetAllAsync();
+    Task<User> GetUserByIdAsync(int userid);
+    Task<string> GetUserNameByIdAsync(int userid);
+    Task<User> GetUserByEmailAsync(string email);
+    Task<List<UserWithRolesViewModel>> GetAllUsersForRolesAsync();
+    Task<User> GetUserByGUIDAsync(string guid);
+    Task<bool> IsExistUserByGuidAsync(string guid);
+    Task<bool> IsEmailExistAsync(string email);
 
-        
-        Task<User> GetUserByGUIDAsync(string guid);
-        Task<bool> IsExistUserByGuidAsync(string guid);
+    #endregion
 
-        Task<bool> IsEmailExistAsync(string email);
+    #region User Management
 
-        Task AddUserAsync(User user);
-        void UpdateUser(User user);
+    Task AddUserAsync(User user);
+    void UpdateUser(User user);
 
-        Task SaveChangesAsync();
+    #endregion
 
-    }
+    #region Save Changes
+
+    Task SaveChangesAsync();
+
+    #endregion
+
 }

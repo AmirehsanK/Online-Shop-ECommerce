@@ -1,70 +1,83 @@
-﻿
-using Domain.Entities.Orders;
+﻿using Domain.Entities.Orders;
 using Domain.Interface;
 using Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infra.Data.Repositories
+namespace Infra.Data.Repositories;
+
+public class OrderRepository(ApplicationDbContext context) : IOrderRepository
 {
-    public class OrderRepository
-        (ApplicationDbContext context) : IOrderRepository
+
+    #region Order Methods
+
+    public async Task<Order> GetUserLatestOpenOrder(int userId)
     {
-        public async Task<Order> GetUserLatestOpenOrder(int userId)
+        var order = await context.Orders
+            .Include(u => u.OrderDetails)
+            .FirstOrDefaultAsync(u => u.UserId == userId && u.PaymentDate == null);
+
+        if (order != null) return order;
+
+        var newOrder = new Order()
         {
-            var Order = await context.Orders.Include(u=> u.OrderDetails).FirstOrDefaultAsync(u => u.UserId == userId&&u.PaymentDate==null);
-            if (Order == null)
-            {
-                var neworder = new Order()
-                {
-                    CreateDate = DateTime.Now,
-                    IsDeleted = false,
-                    UserId = userId
-                };
-                await AddOrder(neworder);
-                await Save();
-                
-                return neworder;
-            }
+            CreateDate = DateTime.Now,
+            IsDeleted = false,
+            UserId = userId
+        };
+        await AddOrder(newOrder);
+        await Save();
 
-            return Order;
-        }
-
-        public async Task<OrderDetail> GetExistOrderDetail(int productId, int ProductColorId)
-        {
-            return await context.OrderDetails.FirstOrDefaultAsync(u =>
-                u.ProductId == productId && u.ProductColorId == ProductColorId);
-        }
-
-        public async Task AddOrder(Order order)
-        {
-            await context.Orders.AddAsync(order);
-        }
-
-        public async Task Save()
-        {
-            await context.SaveChangesAsync();
-        }
-
-        public void UpdateOrder(Order order)
-        {
-            context.Orders.Update(order);
-        }
-
-        public void UpdateOrderDetail(OrderDetail orderDetail)
-        {
-            context.OrderDetails.Update(orderDetail);
-        }
-
-        public async Task AddOrderDetail(OrderDetail orderDetail)
-        {
-            await context.OrderDetails.AddAsync(orderDetail);
-        }
-
-        public async Task<Order> GetUserBasketDetail(int userId)
-        {
-            return await context.Orders.Where(u => u.UserId == userId && u.PaymentDate == null)
-                .Include(u => u.OrderDetails).ThenInclude(u=> u.Product).FirstOrDefaultAsync();
-
-        }
+        return newOrder;
     }
+
+    public async Task AddOrder(Order order)
+    {
+        await context.Orders.AddAsync(order);
+    }
+
+    public void UpdateOrder(Order order)
+    {
+        context.Orders.Update(order);
+    }
+
+    public async Task<Order> GetUserBasketDetail(int userId)
+    {
+        return (await context.Orders
+            .Where(u => u.UserId == userId && u.PaymentDate == null)
+            .Include(u => u.OrderDetails)
+            .ThenInclude(u => u.Product)
+            .FirstOrDefaultAsync())!;
+    }
+
+    #endregion
+
+    #region Order Detail Methods
+
+    public async Task<OrderDetail> GetExistOrderDetail(int productId, int ProductColorId)
+    {
+        return (await context.OrderDetails
+            .FirstOrDefaultAsync(u => u.ProductId == productId && u.ProductColorId == ProductColorId))!;
+    }
+
+    public async Task AddOrderDetail(OrderDetail orderDetail)
+    {
+        await context.OrderDetails.AddAsync(orderDetail);
+    }
+
+    public void UpdateOrderDetail(OrderDetail orderDetail)
+    {
+        context.OrderDetails.Update(orderDetail);
+    }
+
+    #endregion
+
+    #region Save Changes
+
+    public async Task Save()
+    {
+        await context.SaveChangesAsync();
+    }
+
+    #endregion
+
 }

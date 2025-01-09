@@ -1,19 +1,23 @@
-﻿
+﻿using Domain.Entities.Product;
 
-using Domain.Entities.Product;
+namespace Domain.Interface;
 
-namespace Domain.Interface
+public interface IProductGalleryRepository
 {
-    public interface IProductGalleryRepository
-    {
-        Task AddGalleryAsync(ProductGallery  gallery);
 
-        Task<List<ProductGallery>> GetGalleryWithIdAsync(int id);
+    #region Gallery Management
 
-        Task SaveChangeAsync();
+    Task AddGalleryAsync(ProductGallery gallery);
+    Task<List<ProductGallery>> GetGalleryWithIdAsync(int id);
+    Task<ProductGallery> GetOneGalleryWithIdAsync(int id);
+    void RemoveProductGallery(ProductGallery gallery);
 
-        Task<ProductGallery> GetOneGalleryWithIdAsync(int id);
+    #endregion
 
-        void RemoveProductGallery(ProductGallery gallery);
-    }
+    #region Save Changes
+
+    Task SaveChangeAsync();
+
+    #endregion
+
 }

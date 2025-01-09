@@ -8,10 +8,15 @@ namespace Infra.Data.Repositories;
 
 public class FileHandleRepository(ApplicationDbContext context) : IFileHandleRepository
 {
+
+    #region Save Changes
+
     public async Task SaveChangesAsync()
     {
         await context.SaveChangesAsync();
     }
+
+    #endregion
 
     #region Slider Image
 
@@ -29,6 +34,7 @@ public class FileHandleRepository(ApplicationDbContext context) : IFileHandleRep
     {
         return await context.Banners.ToListAsync();
     }
+
     public async Task<IEnumerable<Banner>> GetAllWorkingImagesAsync()
     {
         var currentTime = DateTime.UtcNow;
@@ -36,9 +42,10 @@ public class FileHandleRepository(ApplicationDbContext context) : IFileHandleRep
             .Where(b => b.ExpirationDate == null || b.ExpirationDate > currentTime)
             .ToListAsync();
     }
+
     public async Task<Banner> GetImageAsync(string guid)
     {
-        return await context.Banners.FirstOrDefaultAsync(x => x.Title == guid);
+        return (await context.Banners.FirstOrDefaultAsync(x => x.Title == guid))!;
     }
 
     public void UpdateImage(Banner banner)
@@ -67,7 +74,7 @@ public class FileHandleRepository(ApplicationDbContext context) : IFileHandleRep
 
     public async Task<BannerFix> GetFixedImageAsync(string guid)
     {
-        return await context.BannerFix.FirstOrDefaultAsync(x => x.Title == guid);
+        return (await context.BannerFix.FirstOrDefaultAsync(x => x.Title == guid))!;
     }
 
     public void UpdateFixedImage(BannerFix banner)
@@ -77,8 +84,9 @@ public class FileHandleRepository(ApplicationDbContext context) : IFileHandleRep
 
     public async Task<BannerFix> GetFixedImageByPositionAsync(ImageEnum.Banner position)
     {
-        return await context.BannerFix.FirstOrDefaultAsync(x => x.Position == position);
+        return (await context.BannerFix.FirstOrDefaultAsync(x => x.Position == position))!;
     }
 
     #endregion
+
 }

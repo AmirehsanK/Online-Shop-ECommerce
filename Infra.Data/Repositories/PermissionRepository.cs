@@ -14,21 +14,20 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
 
     public async Task SeedSuperAdminAsync(User user)
     {
-        if (await context.Users.AnyAsync(u => u.FirstName == "superadmin"))
+        if (await context.Users.AnyAsync(u => u.FirstName == "superAdmin"))
         {
             return;
         }
-
         var superAdminUser = new User
         {
-            FirstName = "superadmin",
+            FirstName = "superAdmin",
             Email = "superadmin@example.com",
             Password = ("SuperAdminPassword123!"),
             UserRoleMappings = new List<UserRoleMapping>
             {
                 new UserRoleMapping
                 {
-                    RoleId = (await context.Roles.FirstOrDefaultAsync(r => r.RoleName == "ادمین کل")).Id
+                    RoleId = ((await context.Roles.FirstOrDefaultAsync(r => r.RoleName == "ادمین کل"))!).Id
                 }
             }
         };
@@ -37,22 +36,22 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
     }
 
     #endregion
-    
+
     #region Permission
 
     public async Task<User> GetUserById(int userId)
     {
-        return await context.Users
+        return (await context.Users
             .Include(u => u.UserRoleMappings)
             .ThenInclude(urm => urm.Role)
-            .FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted); 
+            .FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted))!;
     }
 
     public async Task<Permission> GetUniquePermission(string permissionName)
     {
-        return await context.Permissions
+        return (await context.Permissions
             .Include(p => p.RolePermissionMappings)
-            .FirstOrDefaultAsync(p => p.UniqueName == permissionName && !p.IsDeleted);
+            .FirstOrDefaultAsync(p => p.UniqueName == permissionName && !p.IsDeleted))!;
     }
 
     public async Task<List<Permission>> GetAllPermissionsAsync()
@@ -71,7 +70,7 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
         foreach (var rolePermission in rolePermissions)
         {
             rolePermission.IsDeleted = true;
-            rolePermission.CreateDate = DateTime.UtcNow; 
+            rolePermission.CreateDate = DateTime.UtcNow;
         }
 
         await context.SaveChangesAsync();
@@ -87,8 +86,8 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
 
     public async Task<Permission> GetPermissionByIdAsync(int permissionId)
     {
-        return await context.Permissions
-            .FirstOrDefaultAsync(p => p.Id == permissionId && !p.IsDeleted);
+        return (await context.Permissions
+            .FirstOrDefaultAsync(p => p.Id == permissionId && !p.IsDeleted))!;
     }
 
     #endregion
@@ -141,8 +140,8 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
 
     public async Task<Role> GetRoleByIdAsync(int id)
     {
-        return await context.Roles
-            .FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
+        return (await context.Roles
+            .FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted))!;
     }
 
     public async Task<List<int>> GetSelectedPermissionIdsAsync(int roleId)
@@ -156,7 +155,7 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
     public async Task AddRoleAsync(Role role)
     {
         role.IsDeleted = false;
-        role.CreateDate = DateTime.UtcNow; 
+        role.CreateDate = DateTime.UtcNow;
         context.Roles.Add(role);
         await context.SaveChangesAsync();
     }
@@ -172,8 +171,8 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
     {
         foreach (var permission in permissions)
         {
-            permission.IsDeleted = false; 
-            permission.CreateDate = DateTime.UtcNow; 
+            permission.IsDeleted = false;
+            permission.CreateDate = DateTime.UtcNow;
         }
 
         context.RolePermissionMappings.AddRange(permissions);
@@ -183,19 +182,19 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
     public async Task UpdateRolePermissionsAsync(int roleId, IEnumerable<RolePermissionMapping> permissions)
     {
         var existingMappings = await context.RolePermissionMappings
-            .Where(rpm => rpm.RoleId == roleId && !rpm.IsDeleted) 
+            .Where(rpm => rpm.RoleId == roleId && !rpm.IsDeleted)
             .ToListAsync();
 
         foreach (var mapping in existingMappings)
         {
             mapping.IsDeleted = true;
-            mapping.CreateDate = DateTime.UtcNow; 
+            mapping.CreateDate = DateTime.UtcNow;
         }
 
         foreach (var permission in permissions)
         {
-            permission.IsDeleted = false; 
-            permission.CreateDate = DateTime.UtcNow; 
+            permission.IsDeleted = false;
+            permission.CreateDate = DateTime.UtcNow;
         }
 
         context.RolePermissionMappings.AddRange(permissions);
@@ -210,7 +209,7 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
         if (role != null)
         {
             role.IsDeleted = true;
-            role.CreateDate = DateTime.UtcNow; 
+            role.CreateDate = DateTime.UtcNow;
             context.Roles.Update(role);
             await context.SaveChangesAsync();
         }
@@ -226,12 +225,12 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
         if (user == null)
         {
             Console.WriteLine("User not found.");
-            return null;
+            return null!;
         }
 
         var roles = user.UserRoleMappings
-            .Where(urm => !urm.IsDeleted) 
-            .Select(urm => urm.Role?.RoleName) 
+            .Where(urm => !urm.IsDeleted)
+            .Select(urm => urm.Role?.RoleName)
             .Where(roleName => roleName != null)
             .ToList();
 
@@ -240,7 +239,7 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
             UserId = user.Id,
             UserName = user.FirstName + " " + user.LastName,
             Email = user.Email,
-            Roles = roles
+            Roles = roles!
         };
     }
 
@@ -257,26 +256,23 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
         }
 
         var existingMappings = user.UserRoleMappings
-            .Where(urm => !urm.IsDeleted) 
+            .Where(urm => !urm.IsDeleted)
             .ToList();
 
-        foreach (var roleName in selectedRoles)
+        foreach (var roleName in selectedRoles.Where(roleName => existingMappings.All(urm => urm.Role.RoleName != roleName)))
         {
-            if (!existingMappings.Any(urm => urm.Role.RoleName == roleName))
-            {
-                var role = await context.Roles
-                    .FirstOrDefaultAsync(r => r.RoleName == roleName && !r.IsDeleted); 
+            var role = await context.Roles
+                .FirstOrDefaultAsync(r => r.RoleName == roleName && !r.IsDeleted);
 
-                if (role != null)
+            if (role != null)
+            {
+                user.UserRoleMappings.Add(new UserRoleMapping
                 {
-                    user.UserRoleMappings.Add(new UserRoleMapping
-                    {
-                        RoleId = role.Id,
-                        UserId = user.Id,
-                        IsDeleted = false, 
-                        CreateDate = DateTime.UtcNow 
-                    });
-                }
+                    RoleId = role.Id,
+                    UserId = user.Id,
+                    IsDeleted = false,
+                    CreateDate = DateTime.UtcNow
+                });
             }
         }
 
@@ -292,7 +288,7 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
     public async Task<List<Role>> GetAllRolesAsync()
     {
         return await context.Roles
-            .Where(r => !r.IsDeleted) 
+            .Where(r => !r.IsDeleted)
             .ToListAsync();
     }
 
@@ -306,8 +302,8 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
 
     public async Task<Role> GetRoleByNameAsync(string roleName)
     {
-        return await context.Roles
-            .FirstOrDefaultAsync(r => r.RoleName == roleName && !r.IsDeleted); 
+        return (await context.Roles
+            .FirstOrDefaultAsync(r => r.RoleName == roleName && !r.IsDeleted))!;
     }
 
     public async Task<User> GetUserByIdAsync(int userId)
@@ -315,22 +311,23 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
         var user = await context.Users
             .Include(u => u.UserRoleMappings)
             .ThenInclude(urm => urm.Role)
-            .FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted); 
+            .FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
 
-        if (user != null && user.UserRoleMappings == null)
+        if (user is { UserRoleMappings: null })
         {
             user.UserRoleMappings = new List<UserRoleMapping>();
         }
 
-        return user;
+        return user!;
     }
 
     public async Task UpdateUserAsync(User user)
     {
-        user.IsDeleted = false; 
+        user.IsDeleted = false;
         context.Users.Update(user);
         await context.SaveChangesAsync();
     }
 
     #endregion
+
 }
