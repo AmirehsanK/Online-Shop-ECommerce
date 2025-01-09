@@ -8,6 +8,6 @@ public class RolePermissionsViewModel
         [Required(ErrorMessage = "نام نقش الزامی است")]
         [MaxLength(50)]
         public string RoleName { get; set; }
-        public List<PermissionSelectionViewModel> Permissions { get; set; } = new List<PermissionSelectionViewModel>();
+        public List<PermissionSelectionViewModel> Permissions { get; set; } = [];
         
 }

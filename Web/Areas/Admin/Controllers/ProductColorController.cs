@@ -2,9 +2,12 @@
 using Domain.Enums;
 using Domain.ViewModel.Product.ProductColor;
 using Microsoft.AspNetCore.Mvc;
+using Web.Attributes;
+using Infra.Data.Statics;
 
 namespace Web.Areas.Admin.Controllers
 {
+    [InvokePermission(PermissionName.ColorManagement)]
     public class ProductColorController : AdminBaseController
     {
         #region Ctor
@@ -18,35 +21,35 @@ namespace Web.Areas.Admin.Controllers
 
         #endregion
 
-
-        #region CraeateColor
+        #region CreateColor
 
         [HttpGet]
+        [InvokePermission(PermissionName.CreateColor)]
         public IActionResult CreateColor()
         {
             return View();
         }
+
         [HttpPost]
+        [InvokePermission(PermissionName.CreateColor)]
         public async Task<IActionResult> CreateColor(CreateProductColorViewModel color)
         {
-            #region Validation
-
             if (!ModelState.IsValid)
             {
                 return View(color);
             }
 
-            #endregion
-
             await _productColorService.AddNewColor(color);
+            TempData[SuccessMessage] = "رنگ با موفقیت اضافه شد.";
             return RedirectToAction(nameof(ColorList));
         }
 
         #endregion
 
-        #region Colorlist
+        #region ColorList
 
         [HttpGet]
+        [InvokePermission(PermissionName.ColorList)]
         public async Task<IActionResult> ColorList()
         {
             var model = await _productColorService.GetColorList();
@@ -56,13 +59,16 @@ namespace Web.Areas.Admin.Controllers
         #endregion
 
         [HttpGet]
+        [InvokePermission(PermissionName.DeleteColor)]
         public async Task<IActionResult> DeleteColor(int colorId)
         {
             await _productColorService.DeleteColorAsync(colorId);
+            TempData[SuccessMessage] = "رنگ با موفقیت حذف شد.";
             return RedirectToAction(nameof(ColorList));
         }
 
         [HttpGet]
+        [InvokePermission(PermissionName.ProductManagement)]
         public async Task<IActionResult> AddProductColor(int productId)
         {
             ViewData["Colors"] = await _productColorService.GetColorList();
@@ -70,35 +76,27 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProductColor(AddProductColorViewModel model,int productId)
+        [InvokePermission(PermissionName.ProductManagement)]
+        public async Task<IActionResult> AddProductColor(AddProductColorViewModel model, int productId)
         {
-            #region Validation
-
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            #endregion
-            var res=await _productColorService.AddColorToProduct(model, productId);
+            var res = await _productColorService.AddColorToProduct(model, productId);
             switch (res)
             {
                 case ProductExistColor.Exist:
                     TempData[ErrorMessage] = "رنگ وارد شده موجود میباشد";
-                    return RedirectToAction("Productlist","Product");
+                    return RedirectToAction("Productlist", "Product");
                 case ProductExistColor.NotFound:
-                    return RedirectToAction("Productlist","Product");
-                    break;
-            
+                    TempData[ErrorMessage] = "محصول مورد نظر یافت نشد";
+                    return RedirectToAction("Productlist", "Product");
             }
 
-            return View();
-
-
+            TempData[SuccessMessage] = "رنگ با موفقیت به محصول اضافه شد.";
+            return RedirectToAction("Productlist", "Product");
         }
-
-
-
-
     }
 }

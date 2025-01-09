@@ -20,7 +20,7 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     public async Task<List<UserWithRolesViewModel>> GetAllUsersForRolesAsync()
     {
         return await context.Users
-            .Where(u => !u.IsDeleted)
+            .Where(u => !u.IsDeleted && u.IsAdmin==true)
             .Select(u => new UserWithRolesViewModel
             {
                 UserId = u.Id,

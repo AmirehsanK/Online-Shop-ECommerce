@@ -8,8 +8,8 @@ public interface IPermissionService
 {
    #region Permission
 
-   Task<bool> CheckUserPermissionAsync(int userId,string permissionName);
    Task<List<PermissionSelectionViewModel>> GetPermissionsHierarchyAsync();
+   Task<bool> CheckUserPermissionAsync(int userId,string permissionName);
 
    #endregion
 
@@ -18,14 +18,15 @@ public interface IPermissionService
    Task<FilterUserWithRolesViewModel> GetUsersWithRolesAsync(FilterUserWithRolesViewModel filter);
    Task<UserWithRolesViewModel> GetUserWithRolesAsync(int userId);
    Task<Role> GetRoleByIdAsync(int id);
+   Task<List<Role>> GetAllRolesAsync();
+   Task<List<string>> GetUserRolesAsync(int userId);
    Task<List<int>> GetSelectedPermissionIdsAsync(int roleId);
+   Task<bool> CanEditOrDeleteRoleAsync(int roleId);
+   Task<bool> IsRoleNameUniqueAsync(string roleName, int? roleId = null);
    Task AddRoleAsync(RolePermissionsViewModel viewModel);
    Task UpdateRoleAsync(RolePermissionsViewModel viewModel);
-   Task SoftDeleteRoleAsync(int roleId);
-   Task<List<string>> GetUserRolesAsync(int userId);
-   Task<bool> IsRoleNameUniqueAsync(string roleName, int? roleId = null);
-   Task<List<Role>> GetAllRolesAsync();
    Task UpdateUserRolesAsync(int userId, List<string> selectedRoles);
+   Task SoftDeleteRoleAsync(int roleId);
 
    #endregion
 

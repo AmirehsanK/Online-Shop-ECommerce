@@ -11,7 +11,7 @@
                      alt="User avatar">
                 <div class="user-info text-center">
                     <h4 class="mb-2">@Model.FirstName @Model.LastName</h4>
-                    <span class="badge bg-label-success">کاربر</span>
+                    <span class="badge bg-success">کاربر</span>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
                 </li>
                 <li class="mb-3">
                     <span class="fw-bold me-2">ادمین </span>
-                    <span class=" @(!Model.IsAdmin ? "badge bg-label-danger" : "badge bg-label-success")">
+                    <span class=" @(!Model.IsAdmin ? "badge bg-danger" : "badge bg-success")">
                         @if (Model.IsAdmin)
                         {
                             <text>بله</text>
@@ -50,7 +50,7 @@
                 </li>
                 <li class="mb-3">
                     <span class="fw-bold me-2">فعال :</span>
-                    <span class=" @(!Model.IsActive ? "badge bg-label-danger" : "badge bg-label-success")">
+                    <span class=" @(!Model.IsActive ? "badge bg-danger" : "badge bg-success")">
                         @if (Model.IsActive)
                         {
                             <text>فعال</text>
@@ -65,9 +65,9 @@
             </ul>
             <div class="d-flex justify-content-center pt-3">
                 <a asp-controller="User" asp-action="EditUser" asp-area="Admin" asp-route-UserId="@Model.Id"
-                   class="btn btn-label-warning me-3" data-bs-target="#editUser" data-bs-toggle="modal">ویرایش</a>
+                   class="btn btn-lg btn-warning me-3" data-bs-target="#editUser" data-bs-toggle="modal"><i class="fa-solid fa-pen-to-square"></i></a>
                 <a asp-area="Admin" asp-controller="User" asp-action="DeleteUser"
-                   class="btn btn-label-danger suspend-user">حذف</a>
+                   class="btn btn-lg btn-danger suspend-user"><i class="fa-solid fa-trash"></i></a>
             </div>
         </div>
     </div>

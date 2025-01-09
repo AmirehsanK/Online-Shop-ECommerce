@@ -1,9 +1,12 @@
 ﻿using Application.Services.Interfaces;
 using Domain.ViewModel.Product.CategoryAdmin;
 using Microsoft.AspNetCore.Mvc;
+using Web.Attributes;
+using Infra.Data.Statics;
 
 namespace Web.Areas.Admin.Controllers
 {
+    [InvokePermission(PermissionName.CategoryManagement)]
     public class ProductCategoryController : AdminBaseController
     {
         #region Ctor
@@ -20,61 +23,59 @@ namespace Web.Areas.Admin.Controllers
         #region CreateBaseCategory
 
         [HttpGet]
+        [InvokePermission(PermissionName.CreateBaseCategory)]
         public IActionResult CreateBaseCategory()
         {
-
             return View();
         }
+
         [HttpPost]
+        [InvokePermission(PermissionName.CreateBaseCategory)]
         public async Task<IActionResult> CreateBaseCategory(BaseCategoryViewModel model)
         {
-            #region Validation
-
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            #endregion
-
             await _productService.AddBaseCategory(model);
+            TempData[SuccessMessage] = "دسته‌بندی پایه با موفقیت ایجاد شد.";
             return RedirectToAction(nameof(BaseCategoryList));
         }
 
         #endregion
 
         #region EditBaseCategory
-        
+
         [HttpGet]
+        [InvokePermission(PermissionName.UpdateCategory)]
         public async Task<IActionResult> EditBaseCategory(int categoryid)
         {
             var model = await _productService.GetBaseCategoryForEdit(categoryid);
             return View(model);
         }
+
         [HttpPost]
+        [InvokePermission(PermissionName.UpdateCategory)]
         public async Task<IActionResult> EditBaseCategory(EditBaseCategoryViewModel model)
         {
-            #region Validation
-
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            #endregion
-
             await _productService.EditBaseCategory(model);
+            TempData[SuccessMessage] = "دسته‌بندی پایه با موفقیت ویرایش شد.";
             return RedirectToAction(nameof(BaseCategoryList));
         }
-        
-
 
         #endregion
 
         #region AllBaseCategoryList
 
         [HttpGet]
-        public async Task<IActionResult> BaseCategoryList(int? categoryid=null)
+        [InvokePermission(PermissionName.CategoryList)]
+        public async Task<IActionResult> BaseCategoryList(int? categoryid = null)
         {
             var model = await _productService.GetAllCategories(categoryid);
             ViewData["parentid"] = categoryid;
@@ -87,6 +88,7 @@ namespace Web.Areas.Admin.Controllers
         #region CreateSubCategory
 
         [HttpGet]
+        [InvokePermission(PermissionName.CreateSubCategory)]
         public IActionResult CreateSubCategory(int parentid)
         {
             var sub = new SubCategoryViewModel()
@@ -95,43 +97,34 @@ namespace Web.Areas.Admin.Controllers
             };
             return View(sub);
         }
+
         [HttpPost]
+        [InvokePermission(PermissionName.CreateSubCategory)]
         public async Task<IActionResult> CreateSubCategory(SubCategoryViewModel model)
         {
-            #region Validation
-
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            #endregion
-
             await _productService.AddSubCategory(model);
-
-            
+            TempData[SuccessMessage] = "زیردسته‌بندی با موفقیت ایجاد شد.";
             return RedirectToAction(nameof(BaseCategoryList));
         }
-
 
         #endregion
 
         #region DeleteBaseCategory
 
         [HttpGet]
+        [InvokePermission(PermissionName.DeleteCategory)]
         public async Task<IActionResult> DeleteBaseCategory(int Categoryid)
         {
             await _productService.DeleteBaseCategory(Categoryid);
+            TempData[SuccessMessage] = "دسته‌بندی پایه با موفقیت حذف شد.";
             return RedirectToAction(nameof(BaseCategoryList));
         }
 
         #endregion
-
-
-
-
-   
-
-
     }
 }

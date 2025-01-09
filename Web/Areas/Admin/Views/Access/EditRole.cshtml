@@ -21,13 +21,12 @@
         </div>
 
         <div class="permission-container">
-            @for (int i = 0; i < Model.Permissions.Count; i++)
+            @for (var i = 0; i < Model.Permissions.Count; i++)
             {
                 <div class="permission-box">
                     <!-- Parent Permission -->
                     <div class="parent-permission">
                         <div>
-                            <input type="hidden" asp-for="@Model.Permissions[i].DisplayName"/>
                             <input type="hidden" asp-for="@Model.Permissions[i].PermissionId"/>
                             <label class="toggle-switch">
                                 <input type="checkbox"
@@ -50,12 +49,10 @@
                     @if (Model.Permissions[i].Children.Any())
                     {
                         <ul class="child-permissions">
-                            @for (int j = 0; j < Model.Permissions[i].Children.Count; j++)
+                            @for (var j = 0; j < Model.Permissions[i].Children.Count; j++)
                             {
                                 <li>
-                                    <input type="hidden" asp-for="@Model.Permissions[i].DisplayName"/>
-                                    <input type="hidden" asp-for="@Model.Permissions[i].ParentId"/>
-                                    <input type="hidden" asp-for="@Model.Permissions[i].PermissionId"/>
+                                    <input type="hidden" asp-for="@Model.Permissions[i].Children[j].PermissionId"/>
                                     <label class="toggle-switch">
                                         <input type="checkbox"
                                                asp-for="@Model.Permissions[i].Children[j].IsSelected"
@@ -108,7 +105,7 @@
 
             checkAllButtons.forEach(button => {
                 button.addEventListener("click", function () {
-                    const parentId = button.dataset.parentId;
+                    const parentId = button.dataset.parentId || "0";
                     const childCheckboxes = document.querySelectorAll(`[data-parent-id="${parentId}"]`);
                     const allChecked = button.dataset.checked === "true";
 
@@ -143,12 +140,13 @@
 
             permissionCheckboxes.forEach(checkbox => {
                 checkbox.addEventListener("change", function () {
-                    const parentId = checkbox.dataset.parentId;
+                    const parentId = checkbox.dataset.parentId || "0";
 
-                    if (!parentId) {
+                    if (parentId === "0") {
                         const childCheckboxes = document.querySelectorAll(`[data-parent-id="${checkbox.dataset.permissionId}"]`);
                         childCheckboxes.forEach(childCheckbox => {
                             childCheckbox.checked = checkbox.checked;
+                            childCheckbox.dispatchEvent(new Event("change", { bubbles: true }));
                         });
                     } else {
                         const parentCheckbox = document.querySelector(`[data-permission-id="${parentId}"]`);

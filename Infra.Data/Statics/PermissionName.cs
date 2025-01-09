@@ -145,5 +145,16 @@ public class PermissionName
     public const string AnswerQuestion = "AnswerQuestion";
     
     #endregion
-    
+
+    #region Access
+
+    public const string AccessManagement = "AccessManagement";
+    public const string RoleList = "RoleList";
+    public const string UserRoleList = "UserRoleList";
+    public const string AssignRoleToUser = "AssignRoleToUser";
+    public const string CreateRole = "CreateRole";
+    public const string DeleteRole = "DeleteRole";
+    public const string UpdateRole = "UpdateRole";
+
+    #endregion
 }

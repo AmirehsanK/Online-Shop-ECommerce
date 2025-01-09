@@ -170,6 +170,8 @@ public class ApplicationDbContext : DbContext
         #region Permission
 
         modelBuilder.Entity<Permission>().HasData(PermissionSeeds.ApplicationPermissions);
+        modelBuilder.Entity<Role>().HasData(PermissionSeeds.RoleSeeds.ApplicationRoles);
+        modelBuilder.Entity<RolePermissionMapping>().HasData(PermissionSeeds.RolePermissionSeeds.ApplicationRolePermissionMappings);
 
         #endregion
     }

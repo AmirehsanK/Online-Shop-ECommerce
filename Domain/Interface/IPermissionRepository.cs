@@ -7,6 +7,13 @@ namespace Domain.Interface;
 
 public interface IPermissionRepository
 {
+
+    #region Admin
+
+    Task SeedSuperAdminAsync(User user);
+
+        #endregion
+    
     #region Permission
 
     Task<User> GetUserById(int userId);

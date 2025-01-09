@@ -56,189 +56,187 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboards -->
-        <li class="menu-item active">
+        <li class="menu-item active" invoke-permission="UserManagement">
             <a class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="مدیریت کاربران"></div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item active">
+                <li class="menu-item active" invoke-permission="UserList">
                     <a asp-area="Admin" asp-controller="User" asp-action="UserList" class="menu-link">
                         <div data-i18n="لیست کاربران"></div>
                     </a>
                 </li>
-                <li class="menu-item active">
+                <li class="menu-item active" invoke-permission="CreateUser">
                     <a asp-area="Admin" asp-controller="User" asp-action="CreateUser" class="menu-link">
                         <div data-i18n="افزودن کاربر جدید"></div>
                     </a>
                 </li>
             </ul>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" invoke-permission="ProductManagement">
             <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-food-menu"></i>
                 <div data-i18n="مدیریت محصولات"></div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item" invoke-permission="ProductManagement">
                     <a asp-area="Admin" asp-controller="Product" asp-action="ProductManagement" class="menu-link">
                         <div data-i18n="مدیریت محصولات">مدیریت محصولات</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item" invoke-permission="ProductList">
                     <a asp-area="Admin" asp-controller="Product" asp-action="ProductList" class="menu-link">
                         <div data-i18n="لیست محصولات">لیست محصولات</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item" invoke-permission="CreateProduct">
                     <a asp-controller="Product" asp-area="Admin" asp-action="AddProduct" class="menu-link">
                         <div data-i18n="اضافه کردن محصول">اضافه کردن محصول</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item" invoke-permission="CategoryManagement">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <div data-i18n="ادامه">ادامه</div>
                     </a>
                     <ul class="menu-sub">
-                        <li class="menu-item">
+                        <li class="menu-item" invoke-permission="CategoryList">
                             <a asp-area="Admin" asp-controller="ProductCategory" asp-action="BaseCategoryList" class="menu-link">
                                 <div data-i18n="لیست دسته بندی ها">لیست دسته بندی ها</div>
                             </a>
                         </li>
-                        <li class="menu-item">
+                        <li class="menu-item" invoke-permission="CreateColor">
                             <a asp-area="Admin" asp-controller="ProductColor" asp-action="CreateColor" class="menu-link">
                                 <div data-i18n="افزودن رنگ جدید">افزودن رنگ جدید</div>
                             </a>
                         </li>
-                        <li class="menu-item">
+                        <li class="menu-item" invoke-permission="ColorList">
                             <a asp-area="Admin" asp-controller="ProductColor" asp-action="ColorList" class="menu-link">
                                 <div data-i18n="لیست رنگ های پیش فرض">لیست رنگ های پیش فرض</div>
                             </a>
                         </li>
                     </ul>
                 </li>
-                    
             </ul>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" invoke-permission="NotificationManagement">
             <a class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-check-shield"></i>
                 <div data-i18n="مدیریت پیام ها"></div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item" invoke-permission="CreateNotification">
                     <a asp-area="Admin" asp-controller="Notification" asp-action="AddNewNotification" class="menu-link">
                         <div data-i18n="ارسال پیام عمومی"></div>
                     </a>
                 </li>
             </ul>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" invoke-permission="SliderImageManagement|FixedBannerManagement">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-spreadsheet"></i>
                 <div data-i18n="مدیریت بنر ها">مدیریت بنر ها</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item" invoke-permission="SliderImageManagement">
                     <a asp-action="ImageSlider" asp-controller="Image" asp-area="Admin" class="menu-link">
                         <div data-i18n="مدیریت اسلایدر">مدیریت اسلایدر</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item" invoke-permission="FixedBannerManagement">
                     <a asp-action="FixedImages" asp-controller="Image" asp-area="Admin" class="menu-link">
                         <div data-i18n="مدیریت بنر های ثابت">مدیریت بنر های ثابت</div>
                     </a>
                 </li>
             </ul>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" invoke-permission="DiscountManagement">
             <a class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="مدیریت تخفیفات"></div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item ">
+                <li class="menu-item" invoke-permission="DiscountList">
                     <a asp-area="Admin" asp-controller="Discount" asp-action="DiscountList" class="menu-link">
                         <div data-i18n="لیست تخفیفات"></div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item" invoke-permission="CreateDiscount">
                     <a asp-area="Admin" asp-controller="Discount" asp-action="AddDiscount" class="menu-link">
                         <div data-i18n="افزودن تخفیف جدید"></div>
                     </a>
                 </li>
             </ul>
-        </li> 
-        <li class="menu-item">
+        </li>
+        <li class="menu-item" invoke-permission="TicketManagement">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="مدیریت تیکت ها"></div>
             </a>
-
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item" invoke-permission="TicketList">
                     <a asp-area="Admin" asp-controller="AdminTicket" asp-action="AllTicketList" class="menu-link">
                         <div data-i18n="لیست تیکت ها "></div>
                     </a>
                 </li>
             </ul>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" invoke-permission="CommentManagement">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="مدیریت کامنت ها"></div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item" invoke-permission="CommentList">
                     <a asp-area="Admin" asp-controller="Comment" asp-action="CommentList" class="menu-link">
                         <div data-i18n="لیست کامنت ها "></div>
                     </a>
                 </li>
             </ul>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" invoke-permission="ContactUsManagement">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="تماس با ما"></div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item" invoke-permission="ContactUsList">
                     <a asp-area="Admin" asp-controller="ContactUs" asp-action="MessageList" class="menu-link">
                         <div data-i18n="لیست پیام ها"></div>
                     </a>
                 </li>
             </ul>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" invoke-permission="FaqManagement">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-check-shield"></i>
                 <div data-i18n="سوالات متداول"></div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item" invoke-permission="FaqList">
                     <a asp-area="Admin" asp-controller="Faq" asp-action="FaqCategoryList" class="menu-link">
                         <div data-i18n="دسته بندی ها"></div>
                     </a>
                 </li>
             </ul>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" invoke-permission="AccessManagement">
             <a class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="مدیریت دسترسی"></div>
             </a>
             <ul class="menu-sub">
-            <li class="menu-item ">
-                <a asp-area="Admin" asp-controller="Access" asp-action="Index" class="menu-link">
-                    <div data-i18n="لیست کاربران"></div>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a asp-area="Admin" asp-controller="Access" asp-action="AssignRolesToUser" class="menu-link">
-                    <div data-i18n="اختصاص نقش به کاربر"></div>
-                </a>
-            </li>
-                <li class="menu-item">
+                <li class="menu-item" invoke-permission="UserRoleList">
+                    <a asp-area="Admin" asp-controller="Access" asp-action="Index" class="menu-link">
+                        <div data-i18n="لیست کاربران"></div>
+                    </a>
+                </li>
+                <li class="menu-item" invoke-permission="AssignRoleToUser">
+                    <a asp-area="Admin" asp-controller="Access" asp-action="AssignRolesToUser" class="menu-link">
+                        <div data-i18n="اختصاص نقش به کاربر"></div>
+                    </a>
+                </li>
+                <li class="menu-item" invoke-permission="RoleList">
                     <a asp-area="Admin" asp-controller="Access" asp-action="RoleList" class="menu-link">
                         <div data-i18n="لیست نقش ها"></div>
                     </a>

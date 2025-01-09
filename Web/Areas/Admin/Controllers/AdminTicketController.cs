@@ -2,9 +2,12 @@
 using Application.Tools;
 using Domain.ViewModel.Ticket;
 using Microsoft.AspNetCore.Mvc;
+using Web.Attributes;
+using Infra.Data.Statics;
 
 namespace Web.Areas.Admin.Controllers
 {
+    [InvokePermission(PermissionName.TicketManagement)]
     public class AdminTicketController : AdminBaseController
     {
         #region Ctor
@@ -18,19 +21,21 @@ namespace Web.Areas.Admin.Controllers
 
         #endregion
 
-        #region ShowAllticket
+        #region ShowAllTicket
 
+        [InvokePermission(PermissionName.TicketList)]
         public async Task<IActionResult> AllTicketList()
         {
-            var model= await _ticketService.GetAllTicketListForAdmin();
+            var model = await _ticketService.GetAllTicketListForAdmin();
             return View(model);
         }
 
         #endregion
 
-        #region MyRegion
+        #region AnswerTicket
 
         [HttpGet]
+        [InvokePermission(PermissionName.AnswerTicket)]
         public async Task<IActionResult> AnswerTicket(int TicketId)
         {
             var model = await _ticketService.GetTicketDetail(TicketId);
@@ -38,28 +43,24 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AnswerTicket(TicketDetailViewModel Ticket,int TicketId)
+        [InvokePermission(PermissionName.AnswerTicket)]
+        public async Task<IActionResult> AnswerTicket(TicketDetailViewModel Ticket, int TicketId)
         {
-            #region Validation
-
             if (!ModelState.IsValid)
             {
                 var model = await _ticketService.GetTicketDetail(TicketId);
                 return View(model);
             }
-       
-
-            #endregion
 
             await _ticketService.AddMessageToCurrentTicketFromAdmin(Ticket, TicketId, User.GetCurrentUserId());
             return RedirectToAction(nameof(AllTicketList));
-
         }
 
         #endregion
 
-        #region ClosedTicket
+        #region CloseTicket
 
+        [InvokePermission(PermissionName.DeleteTicket)]
         public async Task<IActionResult> CloseTicket(int TicketId)
         {
             await _ticketService.CloseTicket(TicketId);
@@ -67,6 +68,5 @@ namespace Web.Areas.Admin.Controllers
         }
 
         #endregion
-
     }
 }

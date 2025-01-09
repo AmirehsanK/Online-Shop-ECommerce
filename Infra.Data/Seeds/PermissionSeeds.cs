@@ -555,5 +555,78 @@ public class PermissionSeeds
         },
 
         #endregion
+
+        #region Access
+
+        new()
+        {
+            ParentId = null,
+            Id = 69,
+            UniqueName = PermissionName.AccessManagement,
+            DisplayName = "مدیریت دسترسی ها"
+        },new()
+        {
+            ParentId = 69,
+            Id = 70,
+            UniqueName = PermissionName.RoleList,
+            DisplayName = "لیست نقش ها"
+        },new()
+        {
+            ParentId = 69,
+            Id = 71,
+            UniqueName = PermissionName.UserRoleList,
+            DisplayName = "لیست کاربران"
+        },new()
+        {
+            ParentId = 69,
+            Id = 72,
+            UniqueName = PermissionName.AssignRoleToUser,
+            DisplayName = "اضافه کردن نقش به کاربر"
+        },new()
+        {
+            ParentId = 69,
+            Id = 73,
+            UniqueName = PermissionName.CreateRole,
+            DisplayName = "اضافه کردن نقش"
+        },new()
+        {
+            ParentId = 69,
+            Id = 74,
+            UniqueName = PermissionName.DeleteRole,
+            DisplayName = "حذف نقش"
+        },new()
+        {
+            ParentId = 69,
+            Id = 75,
+            UniqueName = PermissionName.UpdateRole,
+            DisplayName = "ویرایش نقش"
+        },
+
+        #endregion
     ];
+    public static class RoleSeeds
+    {
+        public static List<Role> ApplicationRoles { get; } =
+        [
+            new()
+            {
+                Id = 3,
+                RoleName = "ادمین کل",
+                IsDeleted = false,
+                CreateDate = DateTime.UtcNow
+            }
+        ];
+    }
+    public static class RolePermissionSeeds
+    {
+        public static List<RolePermissionMapping> ApplicationRolePermissionMappings { get; } =
+            PermissionSeeds.ApplicationPermissions
+                .Select((permission, index) => new RolePermissionMapping(3,permission.Id)
+                {
+                    Id = index + 1, 
+                    IsDeleted = false,
+                    CreateDate = DateTime.UtcNow
+                })
+                .ToList();
+    }
 }

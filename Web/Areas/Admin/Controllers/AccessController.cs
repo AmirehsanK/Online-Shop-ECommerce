@@ -5,22 +5,25 @@ using Domain.ViewModel.Permission;
 using Domain.ViewModel.User;
 using Infra.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Web.Attributes;
+using Infra.Data.Statics;
 
 namespace Web.Areas.Admin.Controllers;
 
-public class AccessController(IPermissionService permissionService,IUserService userService ) : AdminBaseController
+[InvokePermission(PermissionName.AccessManagement)]
+public class AccessController(IPermissionService permissionService, IUserService userService) : AdminBaseController
 {
-    public async Task<IActionResult> Index(FilterUserWithRolesViewModel filter)
-    {
-        var users = await permissionService.GetUsersWithRolesAsync(filter);
-        return View(users);
-    }
+    #region Role
+
+    [InvokePermission(PermissionName.RoleList)]
     public async Task<IActionResult> RoleList()
     {
         var roles = await permissionService.GetAllRolesAsync();
         return View(roles);
     }
+
     [HttpPost]
+    [InvokePermission(PermissionName.CreateRole)]
     public async Task<IActionResult> AddRole(string roleName)
     {
         if (string.IsNullOrEmpty(roleName))
@@ -32,12 +35,32 @@ public class AccessController(IPermissionService permissionService,IUserService 
         await permissionService.AddRoleAsync(role);
         return Ok();
     }
+
+    [HttpPost]
+    [InvokePermission(PermissionName.UpdateRole)]
+    public async Task<IActionResult> SaveRole(RolePermissionsViewModel viewModel)
+    {
+        var validPermissions = viewModel.Permissions
+            .Where(p => p.PermissionId > 0 && (p.ParentId == null || p.ParentId > 0))
+            .ToList();
+        viewModel.Permissions = validPermissions;
+        await permissionService.UpdateRoleAsync(viewModel);
+
+        return RedirectToAction("RoleList");
+    }
+
+    [InvokePermission(PermissionName.UpdateRole)]
     public async Task<IActionResult> EditRole(int id)
     {
         var role = await permissionService.GetRoleByIdAsync(id);
         if (role == null)
         {
             return NotFound();
+        }
+        if (!await permissionService.CanEditOrDeleteRoleAsync(id))
+        {
+            TempData[ErrorMessage] = "شما مجاز به حذف این نقش نیستید.";
+            return RedirectToAction(nameof(RoleList));
         }
 
         var permissions = await permissionService.GetPermissionsHierarchyAsync();
@@ -55,27 +78,16 @@ public class AccessController(IPermissionService permissionService,IUserService 
         return View(viewModel);
     }
 
-    private void MarkSelectedPermissions(List<PermissionSelectionViewModel> permissions, List<int> selectedPermissionIds)
-    {
-        foreach (var permission in permissions)
-        {
-            permission.IsSelected = selectedPermissionIds.Contains(permission.PermissionId);
-            if (permission.Children.Any())
-            {
-                MarkSelectedPermissions(permission.Children, selectedPermissionIds);
-            }
-        }
-    }
     [HttpPost]
-    public async Task<IActionResult> SaveRole(RolePermissionsViewModel viewModel)
-    {
-        await permissionService.UpdateRoleAsync(viewModel);
-
-        return RedirectToAction("RoleList");
-    }
-    [HttpPost]
+    [InvokePermission(PermissionName.DeleteRole)]
     public async Task<IActionResult> Delete(int id)
     {
+        if (!await permissionService.CanEditOrDeleteRoleAsync(id))
+        {
+            TempData[ErrorMessage] = "شما مجاز به حذف این نقش نیستید.";
+            return RedirectToAction(nameof(RoleList));
+        }
+
         try
         {
             await permissionService.SoftDeleteRoleAsync(id);
@@ -88,7 +100,20 @@ public class AccessController(IPermissionService permissionService,IUserService 
 
         return RedirectToAction(nameof(Index));
     }
+
+    #endregion
+
+    #region User
+
+    [InvokePermission(PermissionName.UserRoleList)]
+    public async Task<IActionResult> Index(FilterUserWithRolesViewModel filter)
+    {
+        var users = await permissionService.GetUsersWithRolesAsync(filter);
+        return View(users);
+    }
+
     [HttpPost]
+    [InvokePermission(PermissionName.AssignRoleToUser)]
     public async Task<IActionResult> AssignRolesToUser(UserRoleAssignmentViewModel model)
     {
         try
@@ -121,8 +146,10 @@ public class AccessController(IPermissionService permissionService,IUserService 
             TempData[ErrorMessage] = "خطا در اختصاص نقش‌ها: " + ex.Message;
         }
 
-        return RedirectToAction(nameof(AssignRolesToUser), new { userId = model.UserId });
+        return RedirectToAction(nameof(Index));
     }
+
+    [InvokePermission(PermissionName.AssignRoleToUser)]
     public async Task<IActionResult> AssignRolesToUser(int? userId)
     {
         var users = await userService.GetAllUsersForRolesAsync();
@@ -146,7 +173,7 @@ public class AccessController(IPermissionService permissionService,IUserService 
             {
                 RoleId = r.Id,
                 RoleName = r.RoleName,
-                IsSelected = userWithRoles.Roles.Contains(r.RoleName) 
+                IsSelected = userWithRoles.Roles.Contains(r.RoleName)
             }).ToList();
         }
         else
@@ -156,10 +183,67 @@ public class AccessController(IPermissionService permissionService,IUserService 
             {
                 RoleId = r.Id,
                 RoleName = r.RoleName,
-                IsSelected = false 
+                IsSelected = false
             }).ToList();
         }
 
         return View(model);
     }
+
+    [InvokePermission(PermissionName.AssignRoleToUser)]
+    public async Task<IActionResult> EditUserRoles(int userId)
+    {
+        var userWithRoles = await permissionService.GetUserWithRolesAsync(userId);
+        if (userWithRoles == null)
+        {
+            TempData[ErrorMessage] = "کاربر مورد نظر یافت نشد.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        var allRoles = await permissionService.GetAllRolesAsync();
+        ViewBag.AllRoles = allRoles;
+
+        return View(userWithRoles);
+    }
+
+    [HttpPost]
+    [InvokePermission(PermissionName.AssignRoleToUser)]
+    public async Task<IActionResult> UpdateUserRoles(int userId, List<string> selectedRoles)
+    {
+        try
+        {
+            if (selectedRoles == null || !selectedRoles.Any())
+            {
+                TempData[ErrorMessage] = "هیچ نقشی انتخاب نشده است.";
+                return RedirectToAction(nameof(EditUserRoles), new { userId });
+            }
+
+            await permissionService.UpdateUserRolesAsync(userId, selectedRoles);
+            TempData[SuccessMessage] = "نقش‌ها با موفقیت به‌روزرسانی شدند.";
+        }
+        catch (Exception ex)
+        {
+            TempData[ErrorMessage] = "خطا در به‌روزرسانی نقش‌ها: " + ex.Message;
+        }
+
+        return RedirectToAction(nameof(Index), new { userId });
+    }
+
+    #endregion
+
+    #region Permission
+
+    private void MarkSelectedPermissions(List<PermissionSelectionViewModel> permissions, List<int> selectedPermissionIds)
+    {
+        foreach (var permission in permissions)
+        {
+            permission.IsSelected = selectedPermissionIds.Contains(permission.PermissionId);
+            if (permission.Children.Any())
+            {
+                MarkSelectedPermissions(permission.Children, selectedPermissionIds);
+            }
+        }
+    }
+
+    #endregion
 }

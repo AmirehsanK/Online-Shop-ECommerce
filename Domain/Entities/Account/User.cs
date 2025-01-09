@@ -48,7 +48,6 @@ public class User : BaseEntity
     public ICollection<Order> Orders { get; set; }
 
     public ICollection<Transaction> Transactions { get; set; }
-    
     public ICollection<UserRoleMapping> UserRoleMappings { get; set; }
 
     #endregion
