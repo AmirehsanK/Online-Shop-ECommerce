@@ -15,11 +15,16 @@ namespace Web.Areas.UserPanel.Controllers
     public class OrderController
         (IOrderService orderService,IUserService userService,IConfiguration configuration): UserPanelBaseController
     {
+        #region Properties
+
         string merchant = "cfa83c81-89b0-4993-9445-2c3fcd323455";
         string amount = "1100";
         string authority;
         string description = "خرید تستی ";
         string callbackurl = "https://localhost:7271/user/VerifyByHttpClient";
+        
+        #endregion
+        
         #region BasketDetail
 
         [HttpGet("BasketDetail")]
@@ -36,15 +41,10 @@ namespace Web.Areas.UserPanel.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToCart(int productId, int productColorId)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                await orderService.AddProductToOrder(productId, User.GetCurrentUserId(),productColorId);
-                await orderService.MinuesColorCount(productColorId);
-                return Json(new { success = true, message = "محصول به سبد خرید اضافه شد." });
-            }
-
-            return RedirectToAction("login", "UserAuthentication");
-
+            if (User.Identity!.IsAuthenticated) return RedirectToAction("login", "UserAuthentication");
+            await orderService.AddProductToOrder(productId, User.GetCurrentUserId(),productColorId);
+            await orderService.MinuesColorCount(productColorId);
+            return Json(new { success = true, message = "محصول به سبد خرید اضافه شد." });
         }
 
         #endregion
@@ -74,8 +74,6 @@ namespace Web.Areas.UserPanel.Controllers
         }
 
         #endregion
-
-
 
     }
 }

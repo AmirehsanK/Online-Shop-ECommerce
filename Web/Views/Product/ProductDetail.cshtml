@@ -8,9 +8,9 @@
 @model Domain.ViewModel.Product.Product.ProductDetailViewModel
 @{
     ViewData["Title"] = "جزییات محصول";
-    var Questions = ViewData["Question"] as List<QuestionLikeViewModel>;
+    var questions = ViewData["Question"] as List<QuestionLikeViewModel>;
     var comments = ViewData["Comments"] as List<CommentViewModel>;
-    var commentAvg = ViewData["Commentavg"] as Dictionary<string, float>;
+    var commentAvg = ViewData["CommentAvg"] as Dictionary<string, float>;
 }
 @section Style
 {
@@ -1206,9 +1206,9 @@
 
                             <div class="comments">
                                 <!-- start of question -->
-                                @if (Questions != null && Questions.Any())
+                                @if (questions != null && questions.Any())
                                 {
-                                    @foreach (var item in Questions)
+                                    @foreach (var item in questions)
                                     {
                                         <div class="comment question">
                                             <div class="comment-body border-bottom-0">

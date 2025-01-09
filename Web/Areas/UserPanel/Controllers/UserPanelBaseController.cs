@@ -6,7 +6,7 @@ namespace Web.Areas.UserPanel.Controllers;
 
 public class UserPanelBaseController : Controller
 {
-    public static string SuccessMessage = "Success";
-    public static string ErrorMessage = "Error";
-    public static string WarningMessage = "Warning";
+    protected const string SuccessMessage = "Success";
+    protected const string ErrorMessage = "Error";
+    protected const string WarningMessage = "Warning";
 }

@@ -10,15 +10,21 @@ using Infra.Data.Statics;
 namespace Web.Areas.Admin.Controllers
 {
     [InvokePermission(PermissionName.DiscountManagement)]
-    public class DiscountController(IDiscountService _service, IUserService _userService, IProductService _productService) : AdminBaseController
+    public class DiscountController(IDiscountService service, IUserService userService, IProductService productService) : AdminBaseController
     {
+        #region Discount List
+
         [InvokePermission(PermissionName.DiscountList)]
         public async Task<IActionResult> DiscountList()
         {
-            var discounts = await _service.GetAllAsync();
+            var discounts = await service.GetAllAsync();
             return View(discounts);
         }
+        
+        #endregion
 
+        #region Crud Discount
+        
         [InvokePermission(PermissionName.CreateDiscount)]
         public IActionResult AddDiscount()
         {
@@ -35,62 +41,15 @@ namespace Web.Areas.Admin.Controllers
                 return View(viewModel);
             }
 
-            await _service.AddAsync(viewModel);
+            await service.AddAsync(viewModel);
             TempData[SuccessMessage] = "تخفیف مورد نظر با موفقیت اضافه شد";
             return RedirectToAction(nameof(DiscountList));
         }
-
-        [InvokePermission(PermissionName.AssignToProductDiscount)]
-        public async Task<IActionResult> AssignDiscountToProducts(int id)
-        {
-            var products = await _productService.GetAllProductsNoFilter();
-            var viewModel = new DiscountProductViewModel
-            {
-                DiscountId = id,
-                SelectedProductIds = await _service.GetProductDiscount(id),
-                Products = products.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.ProductName }).ToList(),
-            };
-            TempData["DiscountId"] = id;
-
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        [InvokePermission(PermissionName.AssignToProductDiscount)]
-        public async Task<IActionResult> AssignDiscountToProducts(int discountId, List<int> productIds)
-        {
-            await _service.AssignProductDiscountAsync(productIds, discountId);
-            TempData[SuccessMessage] = "تخفیف به محصولات اختصاص یافت";
-            return RedirectToAction(nameof(DiscountList));
-        }
-
-        [InvokePermission(PermissionName.AssignToUserDiscount)]
-        public async Task<IActionResult> AssignDiscountToUsers(int id)
-        {
-            var users = await _userService.GetUserListAsync();
-            DiscountUserViewModel viewModel = new()
-            {
-                DiscountId = id,
-                SelectedUserIds = await _service.GetUserDiscount(id),
-                Users = users.Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.FirstName + " " + u.LastName }).ToList(),
-            };
-
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        [InvokePermission(PermissionName.AssignToUserDiscount)]
-        public async Task<IActionResult> AssignDiscountToUsers(int discountId, List<int> userIds)
-        {
-            await _service.AssignUserDiscountAsync(userIds, discountId);
-            TempData[SuccessMessage] = "تخفیف به کاربران اختصاص یافت";
-            return RedirectToAction(nameof(DiscountList));
-        }
-
+        
         [InvokePermission(PermissionName.UpdateDiscount)]
         public async Task<IActionResult> Edit(int id)
         {
-            var discount = await _service.GetByIdAsync(id);
+            var discount = await service.GetByIdAsync(id);
             if (discount == null)
             {
                 TempData[ErrorMessage] = "تخفیف مورد نظر یافت نشد";
@@ -121,7 +80,7 @@ namespace Web.Areas.Admin.Controllers
                 return View(viewModel);
             }
 
-            await _service.UpdateAsync(id, viewModel);
+            await service.UpdateAsync(id, viewModel);
             TempData[SuccessMessage] = "تخفیف مورد نظر با موفقیت ویرایش شد";
             return RedirectToAction(nameof(DiscountList));
         }
@@ -130,9 +89,63 @@ namespace Web.Areas.Admin.Controllers
         [InvokePermission(PermissionName.DeleteDiscount)]
         public async Task<IActionResult> Delete(int id)
         {
-            await _service.DeleteAsync(id);
+            await service.DeleteAsync(id);
             TempData[SuccessMessage] = "تخفیف مورد نظر با موفقیت حذف شد";
             return RedirectToAction(nameof(DiscountList));
         }
+        
+        #endregion
+
+        #region Assign Discount
+
+        [InvokePermission(PermissionName.AssignToProductDiscount)]
+        public async Task<IActionResult> AssignDiscountToProducts(int id)
+        {
+            var products = await productService.GetAllProductsNoFilter();
+            var viewModel = new DiscountProductViewModel
+            {
+                DiscountId = id,
+                SelectedProductIds = await service.GetProductDiscount(id),
+                Products = products.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.ProductName }).ToList(),
+            };
+            TempData["DiscountId"] = id;
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [InvokePermission(PermissionName.AssignToProductDiscount)]
+        public async Task<IActionResult> AssignDiscountToProducts(int discountId, List<int> productIds)
+        {
+            await service.AssignProductDiscountAsync(productIds, discountId);
+            TempData[SuccessMessage] = "تخفیف به محصولات اختصاص یافت";
+            return RedirectToAction(nameof(DiscountList));
+        }
+
+        [InvokePermission(PermissionName.AssignToUserDiscount)]
+        public async Task<IActionResult> AssignDiscountToUsers(int id)
+        {
+            var users = await userService.GetUserListAsync();
+            DiscountUserViewModel viewModel = new()
+            {
+                DiscountId = id,
+                SelectedUserIds = await service.GetUserDiscount(id),
+                Users = users.Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.FirstName + " " + u.LastName }).ToList(),
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [InvokePermission(PermissionName.AssignToUserDiscount)]
+        public async Task<IActionResult> AssignDiscountToUsers(int discountId, List<int> userIds)
+        {
+            await service.AssignUserDiscountAsync(userIds, discountId);
+            TempData[SuccessMessage] = "تخفیف به کاربران اختصاص یافت";
+            return RedirectToAction(nameof(DiscountList));
+        }
+        
+        #endregion
+       
     }
 }

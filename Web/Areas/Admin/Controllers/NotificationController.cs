@@ -7,18 +7,10 @@ using Infra.Data.Statics;
 namespace Web.Areas.Admin.Controllers
 {
     [InvokePermission(PermissionName.NotificationManagement)]
-    public class NotificationController : AdminBaseController
+    public class NotificationController(INotificationService notificationService) : AdminBaseController
     {
-        #region Ctor
-
-        private readonly INotificationService _notificationService;
-
-        public NotificationController(INotificationService notificationService)
-        {
-            _notificationService = notificationService;
-        }
-
-        #endregion
+        
+        #region Add New Notification
 
         [HttpGet]
         [InvokePermission(PermissionName.CreateNotification)]
@@ -40,9 +32,12 @@ namespace Web.Areas.Admin.Controllers
                 return View(model);
             }
 
-            await _notificationService.AddNewMessage(model, userId);
+            await notificationService.AddNewMessage(model, userId);
             TempData[SuccessMessage] = "اعلان با موفقیت ارسال شد.";
             return RedirectToAction(nameof(AddNewNotification));
         }
+        
+        #endregion
+        
     }
 }

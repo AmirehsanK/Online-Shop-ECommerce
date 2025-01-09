@@ -9,6 +9,7 @@ namespace Web.Areas.Admin.Controllers
     [InvokePermission(PermissionName.QuestionManagement)]
     public class QuestionController(IQuestionService questionService) : AdminBaseController
     {
+        
         #region QuestionList
 
         [InvokePermission(PermissionName.QuestionList)]
@@ -24,9 +25,9 @@ namespace Web.Areas.Admin.Controllers
 
         [HttpGet]
         [InvokePermission(PermissionName.QuestionList)]
-        public async Task<IActionResult> QuestionDetail(int QuestionId)
+        public async Task<IActionResult> QuestionDetail(int questionId)
         {
-            var model = await questionService.GetQuestionDetail(QuestionId);
+            var model = await questionService.GetQuestionDetail(questionId);
             return View(model);
         }
 
@@ -34,14 +35,11 @@ namespace Web.Areas.Admin.Controllers
         [InvokePermission(PermissionName.AnswerQuestion)]
         public async Task<IActionResult> QuestionDetail(QuestionDetailViewModel model)
         {
-            if (!string.IsNullOrEmpty(model.Answer))
-            {
-                await questionService.AddAnswerToQuestion(model);
-                TempData[SuccessMessage] = "پاسخ شما ثبت شد";
-                return RedirectToAction(nameof(QuestionList));
-            }
+            if (string.IsNullOrEmpty(model.Answer)) return View();
+            await questionService.AddAnswerToQuestion(model);
+            TempData[SuccessMessage] = "پاسخ شما ثبت شد";
+            return RedirectToAction(nameof(QuestionList));
 
-            return View();
         }
 
         #endregion
@@ -67,5 +65,6 @@ namespace Web.Areas.Admin.Controllers
         }
 
         #endregion
+        
     }
 }

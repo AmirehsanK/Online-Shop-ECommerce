@@ -8,25 +8,15 @@ using Infra.Data.Statics;
 namespace Web.Areas.Admin.Controllers
 {
     [InvokePermission(PermissionName.TicketManagement)]
-    public class AdminTicketController : AdminBaseController
+    public class AdminTicketController(ITicketService ticketService) : AdminBaseController
     {
-        #region Ctor
-
-        private readonly ITicketService _ticketService;
-
-        public AdminTicketController(ITicketService ticketService)
-        {
-            _ticketService = ticketService;
-        }
-
-        #endregion
 
         #region ShowAllTicket
 
         [InvokePermission(PermissionName.TicketList)]
         public async Task<IActionResult> AllTicketList()
         {
-            var model = await _ticketService.GetAllTicketListForAdmin();
+            var model = await ticketService.GetAllTicketListForAdmin();
             return View(model);
         }
 
@@ -36,23 +26,23 @@ namespace Web.Areas.Admin.Controllers
 
         [HttpGet]
         [InvokePermission(PermissionName.AnswerTicket)]
-        public async Task<IActionResult> AnswerTicket(int TicketId)
+        public async Task<IActionResult> AnswerTicket(int ticketId)
         {
-            var model = await _ticketService.GetTicketDetail(TicketId);
+            var model = await ticketService.GetTicketDetail(ticketId);
             return View(model);
         }
 
         [HttpPost]
         [InvokePermission(PermissionName.AnswerTicket)]
-        public async Task<IActionResult> AnswerTicket(TicketDetailViewModel Ticket, int TicketId)
+        public async Task<IActionResult> AnswerTicket(TicketDetailViewModel ticket, int ticketId)
         {
             if (!ModelState.IsValid)
             {
-                var model = await _ticketService.GetTicketDetail(TicketId);
+                var model = await ticketService.GetTicketDetail(ticketId);
                 return View(model);
             }
 
-            await _ticketService.AddMessageToCurrentTicketFromAdmin(Ticket, TicketId, User.GetCurrentUserId());
+            await ticketService.AddMessageToCurrentTicketFromAdmin(ticket, ticketId, User.GetCurrentUserId());
             return RedirectToAction(nameof(AllTicketList));
         }
 
@@ -61,12 +51,13 @@ namespace Web.Areas.Admin.Controllers
         #region CloseTicket
 
         [InvokePermission(PermissionName.DeleteTicket)]
-        public async Task<IActionResult> CloseTicket(int TicketId)
+        public async Task<IActionResult> CloseTicket(int ticketId)
         {
-            await _ticketService.CloseTicket(TicketId);
+            await ticketService.CloseTicket(ticketId);
             return RedirectToAction(nameof(AllTicketList));
         }
 
         #endregion
+        
     }
 }

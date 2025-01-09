@@ -7,25 +7,15 @@ using Infra.Data.Statics;
 namespace Web.Areas.Admin.Controllers
 {
     [InvokePermission(PermissionName.FaqManagement)]
-    public class FaqController : AdminBaseController
+    public class FaqController(IFaqService faqService) : AdminBaseController
     {
-        #region Ctor
-
-        private readonly IFaqService _faqService;
-
-        public FaqController(IFaqService faqService)
-        {
-            _faqService = faqService;
-        }
-
-        #endregion
 
         #region FaqCategoryList
 
         [InvokePermission(PermissionName.FaqList)]
         public async Task<IActionResult> FaqCategoryList()
         {
-            var model = await _faqService.GetAllFaqCategoriesAsync();
+            var model = await faqService.GetAllFaqCategoriesAsync();
             return View(model);
         }
 
@@ -49,7 +39,7 @@ namespace Web.Areas.Admin.Controllers
                 return View(model);
             }
 
-            await _faqService.AddFaqCategory(model);
+            await faqService.AddFaqCategory(model);
             return RedirectToAction(nameof(FaqCategoryList));
         }
 
@@ -59,9 +49,9 @@ namespace Web.Areas.Admin.Controllers
 
         [HttpGet]
         [InvokePermission(PermissionName.UpdateFaqCategory)]
-        public async Task<IActionResult> EditFaqCategory(int categoryid)
+        public async Task<IActionResult> EditFaqCategory(int categoryId)
         {
-            var model = await _faqService.GetCategoryForShow(categoryid);
+            var model = await faqService.GetCategoryForShow(categoryId);
             return View(model);
         }
 
@@ -74,7 +64,7 @@ namespace Web.Areas.Admin.Controllers
                 return View(model);
             }
 
-            await _faqService.EditFaqCategory(model);
+            await faqService.EditFaqCategory(model);
             return RedirectToAction(nameof(FaqCategoryList));
         }
 
@@ -84,9 +74,9 @@ namespace Web.Areas.Admin.Controllers
 
         [HttpGet]
         [InvokePermission(PermissionName.DeleteFaqCategory)]
-        public async Task<IActionResult> DeleteFaqCategory(int categoryid)
+        public async Task<IActionResult> DeleteFaqCategory(int categoryId)
         {
-            await _faqService.DeleteFaqCategoryAndChild(categoryid);
+            await faqService.DeleteFaqCategoryAndChild(categoryId);
             return RedirectToAction(nameof(FaqCategoryList));
         }
 
@@ -98,7 +88,7 @@ namespace Web.Areas.Admin.Controllers
         [InvokePermission(PermissionName.CreateFaq)]
         public async Task<IActionResult> CreateFaqQuestion()
         {
-            ViewData["Categories"] = await _faqService.GetAllCategoryForShow();
+            ViewData["Categories"] = await faqService.GetAllCategoryForShow();
             return View();
         }
 
@@ -108,12 +98,12 @@ namespace Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewData["Categories"] = await _faqService.GetAllCategoryForShow();
+                ViewData["Categories"] = await faqService.GetAllCategoryForShow();
                 return View(model);
             }
 
-            await _faqService.AddFaqQuestion(model);
-            ViewData["Categories"] = await _faqService.GetAllCategoryForShow();
+            await faqService.AddFaqQuestion(model);
+            ViewData["Categories"] = await faqService.GetAllCategoryForShow();
             return RedirectToAction(nameof(FaqCategoryList));
         }
 
@@ -122,9 +112,9 @@ namespace Web.Areas.Admin.Controllers
         #region FaqQuestionList
 
         [InvokePermission(PermissionName.FaqList)]
-        public async Task<IActionResult> FaqQuestionList(int categoryid)
+        public async Task<IActionResult> FaqQuestionList(int categoryId)
         {
-            var model = await _faqService.GetAllFaqQuestionListViewModelsAsync(categoryid);
+            var model = await faqService.GetAllFaqQuestionListViewModelsAsync(categoryId);
             return View(model);
         }
 
@@ -136,8 +126,8 @@ namespace Web.Areas.Admin.Controllers
         [InvokePermission(PermissionName.UpdateFaq)]
         public async Task<IActionResult> EditFaqQuestion(int questionId)
         {
-            var model = await _faqService.GetFaqQuestionById(questionId);
-            ViewData["Categories"] = await _faqService.GetAllCategoryForShow();
+            var model = await faqService.GetFaqQuestionById(questionId);
+            ViewData["Categories"] = await faqService.GetAllCategoryForShow();
             return View(model);
         }
 
@@ -147,21 +137,26 @@ namespace Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewData["Categories"] = await _faqService.GetAllCategoryForShow();
+                ViewData["Categories"] = await faqService.GetAllCategoryForShow();
                 return View(model);
             }
 
-            await _faqService.EditFaqQuestion(model);
+            await faqService.EditFaqQuestion(model);
             return RedirectToAction(nameof(FaqCategoryList));
         }
 
         #endregion
-
+        
+        #region DeleteFaqQuestion
+        
         [InvokePermission(PermissionName.DeleteFaq)]
-        public async Task<IActionResult> DeleteFaqQuestion(int queestionid)
+        public async Task<IActionResult> DeleteFaqQuestion(int questionId)
         {
-            await _faqService.DeleteFaqQuestion(queestionid);
-            return Redirect(HttpContext.Request.Headers.Referer);
+            await faqService.DeleteFaqQuestion(questionId);
+            return Redirect(HttpContext.Request.Headers.Referer!);
         }
+        
+        #endregion
+        
     }
 }

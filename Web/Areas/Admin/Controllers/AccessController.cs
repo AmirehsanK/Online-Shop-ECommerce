@@ -13,6 +13,7 @@ namespace Web.Areas.Admin.Controllers;
 [InvokePermission(PermissionName.AccessManagement)]
 public class AccessController(IPermissionService permissionService, IUserService userService) : AdminBaseController
 {
+    
     #region Role
 
     [InvokePermission(PermissionName.RoleList)]
@@ -53,7 +54,7 @@ public class AccessController(IPermissionService permissionService, IUserService
     public async Task<IActionResult> EditRole(int id)
     {
         var role = await permissionService.GetRoleByIdAsync(id);
-        if (role == null)
+        if (role == null!)
         {
             return NotFound();
         }
@@ -133,7 +134,7 @@ public class AccessController(IPermissionService permissionService, IUserService
                 .Select(r => r.RoleName)
                 .ToList();
 
-            if (selectedRoles == null || !selectedRoles.Any())
+            if (selectedRoles == null || selectedRoles.Count == 0)
             {
                 throw new ArgumentException("No roles selected.");
             }
@@ -159,7 +160,7 @@ public class AccessController(IPermissionService permissionService, IUserService
         if (userId.HasValue)
         {
             var userWithRoles = await permissionService.GetUserWithRolesAsync(userId.Value);
-            if (userWithRoles == null)
+            if (userWithRoles == null!)
             {
                 TempData[ErrorMessage] = "کاربر مورد نظر یافت نشد.";
                 return RedirectToAction(nameof(AssignRolesToUser));
@@ -194,7 +195,7 @@ public class AccessController(IPermissionService permissionService, IUserService
     public async Task<IActionResult> EditUserRoles(int userId)
     {
         var userWithRoles = await permissionService.GetUserWithRolesAsync(userId);
-        if (userWithRoles == null)
+        if (userWithRoles == null!)
         {
             TempData[ErrorMessage] = "کاربر مورد نظر یافت نشد.";
             return RedirectToAction(nameof(Index));
@@ -212,7 +213,7 @@ public class AccessController(IPermissionService permissionService, IUserService
     {
         try
         {
-            if (selectedRoles == null || !selectedRoles.Any())
+            if (selectedRoles == null! || selectedRoles.Count == 0)
             {
                 TempData[ErrorMessage] = "هیچ نقشی انتخاب نشده است.";
                 return RedirectToAction(nameof(EditUserRoles), new { userId });
@@ -233,12 +234,12 @@ public class AccessController(IPermissionService permissionService, IUserService
 
     #region Permission
 
-    private void MarkSelectedPermissions(List<PermissionSelectionViewModel> permissions, List<int> selectedPermissionIds)
+    private static void MarkSelectedPermissions(List<PermissionSelectionViewModel> permissions, List<int> selectedPermissionIds)
     {
         foreach (var permission in permissions)
         {
             permission.IsSelected = selectedPermissionIds.Contains(permission.PermissionId);
-            if (permission.Children.Any())
+            if (permission.Children.Count != 0)
             {
                 MarkSelectedPermissions(permission.Children, selectedPermissionIds);
             }
@@ -246,4 +247,5 @@ public class AccessController(IPermissionService permissionService, IUserService
     }
 
     #endregion
+    
 }

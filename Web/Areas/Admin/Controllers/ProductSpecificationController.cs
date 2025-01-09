@@ -7,19 +7,10 @@ using Infra.Data.Statics;
 namespace Web.Areas.Admin.Controllers
 {
     [InvokePermission(PermissionName.SpecificationManagement)]
-    public class ProductSpecificationController : AdminBaseController
+    public class ProductSpecificationController(IProductSpecificationService productSpecificationService)
+        : AdminBaseController
     {
-        #region Ctor
-
-        private readonly IProductSpecificationService _productSpecificationService;
-
-        public ProductSpecificationController(IProductSpecificationService productSpecificationService)
-        {
-            _productSpecificationService = productSpecificationService;
-        }
-
-        #endregion
-
+        
         #region AddNewSpecificationForProduct
 
         [HttpGet]
@@ -38,7 +29,7 @@ namespace Web.Areas.Admin.Controllers
                 return View(productSpecification);
             }
 
-            await _productSpecificationService.AddNewSpecification(productSpecification);
+            await productSpecificationService.AddNewSpecification(productSpecification);
             ViewBag.Referer = HttpContext.Request.Headers.Referer;
             TempData[SuccessMessage] = $"@{productSpecification.Title} به محصول اضافه شد";
             return Redirect(ViewBag.Referer);
@@ -50,11 +41,11 @@ namespace Web.Areas.Admin.Controllers
 
         [HttpGet]
         [InvokePermission(PermissionName.SpecificationList)]
-        public async Task<IActionResult> ShowProductSpecification(int productid, FilterProductSpecification specification)
+        public async Task<IActionResult> ShowProductSpecification(int productId, FilterProductSpecification specification)
         {
             specification.TakeEntity = 1;
-            var model = await _productSpecificationService.GetAllProductSpecificationAsync(specification, productid);
-            ViewData["ID"] = productid;
+            var model = await productSpecificationService.GetAllProductSpecificationAsync(specification, productId);
+            ViewData["ID"] = productId;
             return View(model);
         }
 
@@ -64,9 +55,9 @@ namespace Web.Areas.Admin.Controllers
 
         [HttpGet]
         [InvokePermission(PermissionName.UpdateSpecification)]
-        public async Task<IActionResult> EditProductSpecification(int SpecificationId)
+        public async Task<IActionResult> EditProductSpecification(int specificationId)
         {
-            var model = await _productSpecificationService.GetSpecificationForShow(SpecificationId);
+            var model = await productSpecificationService.GetSpecificationForShow(specificationId);
             model.Value.Split(",");
             return View(model);
         }
@@ -85,10 +76,11 @@ namespace Web.Areas.Admin.Controllers
 
             #endregion
 
-            await _productSpecificationService.EditProductSpecification(model);
+            await productSpecificationService.EditProductSpecification(model);
             return View();
         }
 
         #endregion
+        
     }
 }

@@ -8,18 +8,8 @@ using Infra.Data.Statics;
 namespace Web.Areas.Admin.Controllers;
 
 [InvokePermission(PermissionName.UserManagement)]
-public class UserController : AdminBaseController
+public class UserController(IUserService userService) : AdminBaseController
 {
-    #region Ctor
-
-    private readonly IUserService _userService;
-
-    public UserController(IUserService userService)
-    {
-        _userService = userService;
-    }
-
-    #endregion
 
     #region UserList
 
@@ -27,7 +17,7 @@ public class UserController : AdminBaseController
     [InvokePermission(PermissionName.UserList)]
     public async Task<IActionResult> UserList()
     {
-        var models = await _userService.GetUserListAsync();
+        var models = await userService.GetUserListAsync();
         return View(models);
     }
 
@@ -39,7 +29,7 @@ public class UserController : AdminBaseController
     [InvokePermission(PermissionName.UserList)]
     public async Task<IActionResult> UserDetail(int userId)
     {
-        var model = await _userService.GetUserDetailAsync(userId);
+        var model = await userService.GetUserDetailAsync(userId);
         return View(model);
     }
 
@@ -49,9 +39,9 @@ public class UserController : AdminBaseController
 
     [HttpGet]
     [InvokePermission(PermissionName.DeleteUser)]
-    public async Task<IActionResult> DeleteUser(int UserId)
+    public async Task<IActionResult> DeleteUser(int userId)
     {
-        await _userService.DeleteUserAsync(UserId);
+        await userService.DeleteUserAsync(userId);
         return RedirectToAction("UserList");
     }
 
@@ -72,7 +62,7 @@ public class UserController : AdminBaseController
     {
         if (!ModelState.IsValid) return View(model);
 
-        var res = await _userService.CreateUserAsync(model);
+        var res = await userService.CreateUserAsync(model);
         switch (res)
         {
             case CreateUserEnums.Success:
@@ -92,9 +82,9 @@ public class UserController : AdminBaseController
 
     [HttpGet]
     [InvokePermission(PermissionName.UpdateUser)]
-    public async Task<IActionResult> EditUser(int UserId)
+    public async Task<IActionResult> EditUser(int userId)
     {
-        var model = await _userService.GetUsersByIDAsync(UserId);
+        var model = await userService.GetUsersByIDAsync(userId);
         return View(model);
     }
 
@@ -104,10 +94,11 @@ public class UserController : AdminBaseController
     {
         if (!ModelState.IsValid) return View(model);
 
-        await _userService.EditUserAsync(model);
+        await userService.EditUserAsync(model);
         TempData[SuccessMessage] = "اطلاعات با موفیت ویرایش شد";
         return RedirectToAction(nameof(UserList));
     }
 
     #endregion
+    
 }

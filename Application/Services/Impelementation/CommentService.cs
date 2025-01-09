@@ -34,6 +34,46 @@ namespace Application.Services.Impelementation
         {
             return await commentRepository.GetAllCommentsAsync(filter);
         }
+
+        public async Task<Dictionary<string, float>> GetCommentRatingsAsync(int productId)
+        {
+            var comment = await GetCommentsByProductIdAsync(productId);
+            float avgQuality = 0;   
+            float avgDesign = 0;
+            float avgEase = 0;
+            float avgValue = 0;
+            float avgInnovation = 0;
+            float avgFeatures = 0;
+            foreach (var variable in comment)
+            {
+                avgQuality += variable.BuildQuality;
+                avgDesign += variable.DesignAndAppearance;
+                avgEase += variable.EaseOfUse;
+                avgValue += variable.ValueForMoney;
+                avgInnovation += variable.Innovation;
+                avgFeatures += variable.Features;
+            }
+            avgQuality /= comment.Count;
+            avgDesign /= comment.Count;
+            avgEase /= comment.Count;
+            avgValue /= comment.Count;
+            avgInnovation /= comment.Count;
+            avgFeatures /= comment.Count;
+            var avgOverall = (avgQuality + avgDesign + avgEase + avgValue + avgInnovation + avgFeatures) / 6;
+            avgOverall = (float)Math.Round(avgOverall, 1);
+            var avg = new Dictionary<string, float>
+            {
+                { "avgQuality", avgQuality },
+                { "avgDesign", avgDesign },
+                { "avgEase", avgEase },
+                { "avgValue", avgValue },
+                { "avgInnovation", avgInnovation },
+                { "avgFeatures", avgFeatures },
+                { "avgOverall", avgOverall }
+            };
+            return avg;
+        }
+
         public async Task ApproveCommentAsync(int id)
         {
             await commentRepository.ApproveCommentAsync(id);
