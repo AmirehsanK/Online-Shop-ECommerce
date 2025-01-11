@@ -1,0 +1,32 @@
+﻿@model Domain.ViewModel.AddWallet.AddWalletViewModel
+@{
+    ViewData["Title"] = "کیف پول و تراکنش های ان";
+}
+<div class="col-xl-9 col-lg-8 col-md-7">
+    <div class="ui-box bg-white mb-5">
+        <div class="ui-box-title">افزایش موجودی</div>
+        <div class="ui-box-subtitle">
+            فرم زیر را پر کنید (توضیحات کامل تر روند پاسخ دهی را کوتاه تر
+            می
+            کند.)
+        </div>
+        <div class="ui-box-content">
+            <!-- start of add-ticket-form -->
+            <form asp-area="UserPanel" asp-controller="Payment" asp-action="StartPay" method="get" class="add-ticket-form">
+                <input type="hidden" asp-for="UserId" value="@ViewData["UserId"]" />
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- start of form-element -->
+                        <div class="form-element-row mb-5">
+                            <label class="label">مبلغ</label>
+                            <input asp-for="Amount" type="text" class="form-control" placeholder="">
+                        </div>
+                        <!-- end of form-element -->
+                    </div>
+                </div>
+                <button type="Submit" class="btn btn-info">افزایش موجودی</button>
+            </form>
+            <!-- end of add-ticket-form -->
+        </div>
+    </div>
+</div>

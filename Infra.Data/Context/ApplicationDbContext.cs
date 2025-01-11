@@ -86,9 +86,13 @@ public class ApplicationDbContext : DbContext
             new ProductCategory { Id = 20, Title = "لوازم کمپینگ", ParentId = 17 });
         #endregion
     }
-    #endregion 
+    #endregion
 
+    #region Transaction
 
+    public DbSet<Transaction> Transactions { get; set; }
+
+    #endregion
     #region Ticket
 
     public DbSet<TicketsMessage> TicketsMessages { get; set; }

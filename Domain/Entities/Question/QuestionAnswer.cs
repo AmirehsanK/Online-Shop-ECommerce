@@ -17,7 +17,8 @@ namespace Domain.Entities.Question
 
         public string? Answer { get; set; }
 
-        
+        public QuestionStatus QuestionStatus { get; set; }
+
         public bool IsConfirmed { get; set; }
 
         public bool IsClosed { get; set; }
@@ -39,12 +40,8 @@ namespace Domain.Entities.Question
     {
         [Display(Name = "پاسخ داده شده")]
         Answered,
-        [Display(Name = "تایید نشده")]
-        NotConfirmed,
-        [Display(Name = "تایید شده")]
-        Confirmed,
-        [Display(Name = "بسته شده")]
-        IsClosed
+        [Display(Name = "بررسی نشده")]
+        NotAnswered
     }
 
 }

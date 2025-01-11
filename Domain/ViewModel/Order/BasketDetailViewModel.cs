@@ -12,9 +12,9 @@ namespace Domain.ViewModel.Order
 
         public int FinallPrice { get; set; }
 
-        public string ColorCode { get; set; }
+        public string? ColorCode { get; set; }
 
-        public string ColorName { get; set; }
+        public string? ColorName { get; set; }
 
         public int ProductCount { get; set; }
 

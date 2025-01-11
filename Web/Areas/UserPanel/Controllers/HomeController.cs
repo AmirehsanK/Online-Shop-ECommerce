@@ -126,4 +126,15 @@ public class HomeController : UserPanelBaseController
     }
 
     #endregion
+
+
+    #region AddTransactionToWallet
+    [HttpGet]
+    public async Task<IActionResult> AddTransactionToWallet()
+    {
+        ViewData["UserId"]=User.GetCurrentUserId();
+        return View();
+    }
+
+    #endregion
 }

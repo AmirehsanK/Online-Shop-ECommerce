@@ -8,19 +8,17 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Text;
+using Domain.Enums;
+using Domain.ViewModel.AddWallet;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Areas.UserPanel.Controllers
 {
     public class OrderController
-        (IOrderService orderService,IUserService userService,IConfiguration configuration): UserPanelBaseController
+        (IOrderService orderService,IUserService userService,IConfiguration configuration,
+            ITransactionService transactionService): UserPanelBaseController
     {
-        string merchant = "cfa83c81-89b0-4993-9445-2c3fcd323455";
-        string amount = "1100";
-        string authority;
-        string description = "خرید تستی ";
-        string callbackurl = "https://localhost:7271/user/VerifyByHttpClient";
-        #region BasketDetail
+
 
         [HttpGet("BasketDetail")]
         public async Task<IActionResult> BasketDetail()
@@ -29,18 +27,37 @@ namespace Web.Areas.UserPanel.Controllers
             return View(model);
         }
 
-        #endregion
+      
 
         #region AddToBasket
 
         [HttpPost]
-        public async Task<IActionResult> AddToCart(int productId, int productColorId)
+        public async Task<IActionResult> AddToCart(int productId, int? productColorId)
         {
             if (User.Identity.IsAuthenticated)
             {
-                await orderService.AddProductToOrder(productId, User.GetCurrentUserId(),productColorId);
-                await orderService.MinuesColorCount(productColorId);
-                return Json(new { success = true, message = "محصول به سبد خرید اضافه شد." });
+
+               var res= await orderService.AddProductToOrder(productId, User.GetCurrentUserId(),productColorId);
+               switch (res)
+               {
+                   case AddToBasketResult.Success:
+                       if (productColorId!=null)
+                       {
+                           await orderService.MinuesColorCount(productColorId.Value);
+                       }
+                       TempData[SuccessMessage] = "محصول به سبد خرید اضافه شد";
+                       return Redirect(HttpContext.Response.Headers.Referer);
+                       
+                   case AddToBasketResult.Failed:
+                       TempData[ErrorMessage] = "با خطا مواجه شد";
+                       return Redirect(HttpContext.Response.Headers.Referer);
+             
+               }
+                if (productColorId!=null)
+                {
+                    await orderService.MinuesColorCount(productColorId.Value);
+                }
+
             }
 
             return RedirectToAction("login", "UserAuthentication");
@@ -75,7 +92,33 @@ namespace Web.Areas.UserPanel.Controllers
 
         #endregion
 
-
-
+        public async Task<IActionResult> ChoosePaymentWay()
+        {
+            ViewData["BasketDetail"] = await orderService.GetBasketDetail(User.GetCurrentUserId());
+            return View();
+        }
+        public async Task<IActionResult> CheckWalletBalance(int amount, int UserId)
+        {
+            var res = await transactionService.GetUserBalanceWallet(UserId, amount);
+            switch (res)
+            {
+                case WalletStatusBalance.IsOkay:
+                    
+                    return RedirectToAction("SuccessPayment", "Payment");
+                    
+                case WalletStatusBalance.NoneBalance:
+                    var wallet = new AddWalletViewModel
+                    {
+                        Amount = amount,
+                        UserId = UserId
+                    };
+                    return RedirectToAction("StartPay", "Payment", wallet);
+                    break;
+             
+            }
+                    
+            
+            return View();
+        }
     }
 }

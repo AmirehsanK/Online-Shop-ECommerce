@@ -1,6 +1,7 @@
 ﻿@using Domain.Entities.Account
 @{
     var user = ViewData["User"] as User;
+    var balance = ViewData["UserBalance"] as int? ?? 0;
 }
 
 <div class="ui-sticky ui-sticky-top">
@@ -14,20 +15,20 @@
                 </div>
                 <div class="profile-info">
                     <a href="#" class="text-decoration-none text-dark fw-bold mb-2">
-                       @user.FirstName @user.LastName
+                       @user.FirstName + @user.LastName
                     </a>
-                    <div class="text-muted fs-7 fw-bold">۰۹xxxxxxxxx</div>
+                    <div class="text-muted fs-7 fw-bold">@user.PhoneNumber</div>
                 </div>
             </div>
             <div class="user-options">
                 <ul>
                     <li>
-                        <span class="label">کیف پول</span>
+                        <span class="label">کیف پول :</span>
                         <span class="detail">
                             <span class="d-block">
-                                ۰ <span class="currency fs-7 fw-bold">تومان</span>
+                                @balance.ToString("0,#") <span class="currency fs-7 fw-bold">تومان</span>
                             </span>
-                            <a href="#"
+                            <a asp-area="UserPanel" asp-controller="Home" asp-action="AddTransactionToWallet"
                                class="link border-bottom-0 text-info fs-7 fw-bold">
                                 افزایش
                                 موجودی <i class="ri-arrow-left-s-line"></i>

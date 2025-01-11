@@ -1,22 +1,28 @@
 ﻿
 
+using System.Transactions;
 using Application.Services.Interfaces;
+using Domain.Entities.Account;
 using Domain.Entities.Orders;
+using Domain.Enums;
 using Domain.Interface;
 using Domain.ViewModel.Order;
 using Domain.ViewModel.User;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Application.Services.Impelementation
 {
     public class OrderService
         (IOrderRepository orderRepository,
             IProductColorRepository colorRepository,
-            IUserRepository userRepository) : IOrderService
+            IUserRepository userRepository,
+            ITransactionRepository transactionRepository) : IOrderService
     {
-        public async Task AddProductToOrder(int productId, int userId, int? productColorId, int count = 1)
+        public async Task<AddToBasketResult> AddProductToOrder(int productId, int userId, int? productColorId, int count = 1)
         {
+
             var OpenOrder = await orderRepository.GetUserLatestOpenOrder(userId);
-            var exsistOrderDetial = await orderRepository.GetExistOrderDetail(productId, productColorId.Value);
+            var exsistOrderDetial = await orderRepository.GetExistOrderDetail(productId, productColorId, OpenOrder.Id);
             if (exsistOrderDetial == null)
             {
                 var orderdetail = new OrderDetail()
@@ -47,8 +53,7 @@ namespace Application.Services.Impelementation
                 orderRepository.UpdateOrderDetail(exsistOrderDetial);
                 await orderRepository.Save();
             }
-
-
+            return AddToBasketResult.Success;
 
         }
 
@@ -60,24 +65,34 @@ namespace Application.Services.Impelementation
             await colorRepository.SaveChangeAsync();
         }
 
-        public async Task<List<BasketDetailViewModel>> GetBasketDetail(int userId)
+        public async Task<List<BasketDetailViewModel?>> GetBasketDetail(int userId)
         {
             var details = await orderRepository.GetUserBasketDetail(userId);
+            if (details == null)
+            {
+                return null;
+            }
             var detailss = new List<BasketDetailViewModel>();
-
+            string color=null;
+            string colorcodes=null;
             foreach (var item in details.OrderDetails)
             {
-                var colorcode = await colorRepository.GetProductColorWithid(item.ProductColorId.Value);
-                var code = colorcode.Color.ColorCode;
-                var name = colorcode.Color.Title;
+
+                var colorcode = await colorRepository.GetProductColorWithid(item.ProductColorId);
+                if (colorcode!=null)
+                {
+                    color = colorcode.Color.Title;
+                    colorcodes = colorcode.Color.ColorCode;
+                }
+          
                 var newdetail = new BasketDetailViewModel
                 {
-                    ColorCode = code,
+                    ColorCode = colorcodes,
                     Title = item.Product.ProductName,
                     ImageName = item.Product.ImageName,
                     FinallPrice = (item.ColorPrice + item.Product.Price) * item.Count,
                     OrderDetailId = item.Id,
-                    ColorName = name,
+                    ColorName = color,
                     ProductCount = item.Count,
                     ProductId = item.ProductId
                 };
@@ -107,15 +122,31 @@ namespace Application.Services.Impelementation
             await userRepository.SaveChangesAsync();
         }
 
-        public async Task CloseOrder(int userId)
+        public async Task CloseOrder(int userId, int transId)
         {
             var order = await orderRepository.GetUserLatestOpenOrder(userId);
+            if (order.OrderDetails.Count != 0)
+            {
+                order.IsFinally = true;
+                order.PaymentDate = DateTime.Now;
+                orderRepository.UpdateOrder(order);
+                await orderRepository.Save();
+            }
 
-            order.IsFinally = true;
-            order.PaymentDate=DateTime.Now;
-            orderRepository.UpdateOrder(order);
-            await orderRepository.Save();
 
+            var trans = await transactionRepository.GetTransactionById(transId);
+            trans.IsPay = true;
+            transactionRepository.UpdateTransaction(trans);
+            await transactionRepository.Save();
+
+        }
+
+        public async Task ChangeTransactionStatus(int transid)
+        {
+            var transaction = await transactionRepository.GetTransactionById(transid);
+            transaction.IsPay = false;
+            transactionRepository.UpdateTransaction(transaction);
+            await transactionRepository.Save();
         }
     }
 }

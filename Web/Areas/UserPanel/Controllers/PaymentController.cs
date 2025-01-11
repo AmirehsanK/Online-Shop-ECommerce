@@ -8,46 +8,66 @@ using Application.Services.Interfaces;
 using Application.Tools;
 
 using Application.DTO;
+using Domain.ViewModel.AddWallet;
 using Domain.ViewModel.Payment;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Areas.UserPanel.Controllers
 {
-    public class PaymentController(IOrderService orderService) : UserPanelBaseController
+    [Authorize]
+    public class PaymentController(IOrderService orderService,
+        ITransactionService transactionService) : UserPanelBaseController
     {
         [HttpGet("start-pay")]
-        public async Task<IActionResult> StartPay()
+        public async Task<IActionResult> StartPay(AddWalletViewModel? wallet)
         {
-            var order = await orderService.GetBasketDetail(User.GetCurrentUserId());
-
-            if (order == null)
-                return NotFound();
-
+            
             using HttpClient httpClient = new HttpClient();
 
-            int amount = order.Sum(od => od.FinallPrice * od.ProductCount);
 
             NovinoGetPaymentUrlRequestDto model = new NovinoGetPaymentUrlRequestDto()
             {
-                Amount = amount * 10,
                 CallbackMethod = "POST",
-                CallbackUrl = "https://localhost:7271/novinocallback",
                 CardPan = null,
-                Description = "پرداخت سبد خرید",
                 Email = "",
                 InvoiceId = User.GetCurrentUserId().ToString(),
                 MerchantId = "test",
                 Mobile = null,
-                Name = ""
+                Name = "",
+
+
             };
+            if (wallet.Amount!=0&&wallet.UserId != 0)
+            {
+                model.Amount = wallet.Amount * 10;
+                model.Description = "شارژ کیف پول";
+                var id = await transactionService.AddNewTransaction(User.GetCurrentUserId(), wallet.Amount);
+                model.TransActionId = id;
+                model.CallbackUrl = $"https://localhost:7271/novinocallback/{id}";
+
+            }
+            else
+            {
+                var order = await orderService.GetBasketDetail(User.GetCurrentUserId());
+                
+                if (order == null)
+                    return NotFound();
+                int amount = order.Sum(od => od.FinallPrice);
+                model.Amount = amount * 10;
+                model.Description = "پرداخت سبد خرید";
+                var id = await transactionService.AddNewTransaction(User.GetCurrentUserId(), amount);
+                model.TransActionId = id;
+                model.CallbackUrl = $"https://localhost:7271/novinocallback/{id}";
+            }
 
             string body = JsonConvert.SerializeObject(model);
 
             HttpContent content = new StringContent(body, Encoding.UTF8, "application/json");
 
             var response = await httpClient.PostAsync(
-                      "https://api.novinopay.com/payment/ipg/v2/request",
-                      content
-                      );
+                "https://api.novinopay.com/payment/ipg/v2/request",
+                content
+            );
 
             string responseContent = await response.Content.ReadAsStringAsync();
 
@@ -55,35 +75,58 @@ namespace Web.Areas.UserPanel.Controllers
 
             if (finalResult != null && finalResult.Status == "100")
             {
+
                 return Redirect(finalResult.Data.PaymentUrl);
             }
             else
             {
                 return NotFound();
             }
+
         }
 
-        [HttpPost("novinocallback")]
-        public async Task<IActionResult> NovinoCallback(string paymentStatus, string invoiceID, string authority)
+        [HttpPost("novinocallback/{transId}") ,AllowAnonymous]
+        public async Task<IActionResult> NovinoCallback(string paymentStatus, string invoiceID, string authority, int transId)
         {
             if (!string.IsNullOrEmpty(paymentStatus) && paymentStatus.ToLower() == "ok")
             {
-                var id=int.Parse(invoiceID);
-                var order = await orderService.GetBasketDetail(id);
-
-                if (order == null)
-                    return NotFound();
-
+                var id = int.Parse(invoiceID);
+             
                 using HttpClient httpClient = new HttpClient();
 
-                int amount = order.Sum(od => od.FinallPrice * od.ProductCount);
+              
+                var transactionamount = await transactionService.GetTransactionByid(transId);
+
 
                 NovinoVerifyPaymentRequestDto model = new NovinoVerifyPaymentRequestDto()
                 {
-                    Amount = amount * 10,
+
                     Authority = authority,
                     MerchantId = "test"
                 };
+                
+                var order = await orderService.GetBasketDetail(id);
+                if (order.Count == 0)
+                {
+                    model.Amount = transactionamount.Price*10;
+                }
+                else
+                {
+                    
+                    int amount = order.Sum(od => od.FinallPrice);
+                    if (amount == transactionamount.Price)
+                    {
+                        model.Amount = amount * 10;
+                    }
+                    else
+                    {
+                        model.Amount = transactionamount.Price * 10;
+                    }
+                }
+                   
+             
+              
+               
 
                 string body = JsonConvert.SerializeObject(model);
 
@@ -100,21 +143,20 @@ namespace Web.Areas.UserPanel.Controllers
 
                 if (finalResult != null && finalResult.Status == "100")
                 {
-                    await orderService.CloseOrder(id);
+                    await orderService.CloseOrder(id, transId);
 
-                    return View("SuccessPayment");
-
+                    return RedirectToAction("SuccessPayment");
                 }
                 else
                 {
-                    return View("UnSuccessPayment");
-
+                    await orderService.ChangeTransactionStatus(transId);
+                    return RedirectToAction("UnSuccessPayment");
                 }
 
             }
             else
             {
-                return View("UnSuccessPayment", new ErrorPaymnetViewModel()
+                return RedirectToAction("UnSuccessPayment", new ErrorPaymnetViewModel()
                 {
                     Message = "خرید شما با شکست مواجه شده است. لطفا تیکت ارسال کنید.",
                     RefId = "123431"

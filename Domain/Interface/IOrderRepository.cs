@@ -8,7 +8,7 @@ namespace Domain.Interface
     {
         Task<Order> GetUserLatestOpenOrder(int userId);
         
-        Task<OrderDetail> GetExistOrderDetail(int productId, int ProductColorId);
+        Task<OrderDetail?> GetExistOrderDetail(int productId, int? ProductColorId,int orderId);
         Task AddOrder(Order order);
 
         Task Save();

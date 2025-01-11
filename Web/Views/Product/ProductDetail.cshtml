@@ -84,8 +84,8 @@
 
     </script>
 
-        <script>
-                let selectedProductColorId = null;
+    <script>
+        let selectedProductColorId = null;
         let finalPrice = @Model.Price; // قیمت اولیه محصول
 
         // تابع برای گرفتن انتخاب رنگ
@@ -99,25 +99,14 @@
 
         // ارسال اطلاعات به کنترلر وقتی که روی دکمه "افزودن به سبد خرید" کلیک می‌شود
         document.getElementById("addToCartButton").addEventListener("click", function() {
-            if (selectedProductColorId === null) {
-                alert("لطفاً رنگی را انتخاب کنید.");
-                return;
-            }
-
             // ارسال درخواست به کنترلر
             $.ajax({
                 type: "POST",
                 url: "/UserPanel/Order/AddToCart", // اکشن شما در کنترلر
                 data: {
-                    productId: @Model.ProductId, // شناسه محصول
-                    productColorId: selectedProductColorId
+                     productId: @Model.ProductId, // شناسه محصول
+                     productColorId: selectedProductColorId === null ? null : selectedProductColorId //
                 },
-                success: function(response) {
-                    alert("محصول با موفقیت به سبد خرید اضافه شد!");
-                },
-                error: function() {
-                    alert("خطا در افزودن به سبد خرید!");
-                }
             });
         });
     </script>
@@ -125,7 +114,6 @@
 
 
 }
-
 <main class="page-content">
     <div class="container">
         <!-- start of breadcrumb -->
@@ -388,8 +376,8 @@
                                     <div class="product-seller-row--price-now fa-num">
                                         <span class="price offprice" id="finalPrice">@Model.Price.ToString("#,0")</span>
                                         <span class="currency">تومان</span>
-                                        <br/>
-                                        <span class="price" id="finalPrice" >@Model.OffPrice.ToString("#,0")</span>
+                                        <br />
+                                        <span class="price" id="finalPrice">@Model.OffPrice.ToString("#,0")</span>
                                         <span class="currency">تومان</span>
                                     </div>
                                 </div>
@@ -419,962 +407,964 @@
                                 افزودن به سبد خرید
                             </a>
                         </div>
-                    <!-- end of product-seller-info -->
+                        <!-- end of product-seller-info -->
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- end of product-detail-container -->
-        <!-- start of box -->
-        <div class="ui-box bg-white mb-5">
-            <div class="ui-box-title">لیست فروشندگان این کالا</div>
-            <div class="ui-box-content">
-                <!-- start of suppliers-items -->
-                <div class="suppliers-items">
-                    <!-- start of suppliers-item -->
-                    <div class="suppliers-item">
-                        <div class="suppliers-item-col suppliers-item-col--info">
-                            <div class="suppliers-seller-icon">
-                                <img src="./theme-assets/images/seller-logo-small.svg" alt="">
-                            </div>
-                            <div class="suppliers-seller-info">
-                                <div class="suppliers-seller-name fw-bold">یکتاکالا</div>
-                                <div class="suppliers-seller-rate fs-7">
-                                    <span class="text-success fw-bold fa-num">92%</span>
-                                    <span class="text-muted">رضایت خریداران</span>
-                                    <span class="text-muted">|</span>
-                                    <span class="text-muted">عملکرد</span>
-                                    <span class="text-success fw-bold">عالی</span>
+            <!-- end of product-detail-container -->
+            <!-- start of box -->
+            <div class="ui-box bg-white mb-5">
+                <div class="ui-box-title">لیست فروشندگان این کالا</div>
+                <div class="ui-box-content">
+                    <!-- start of suppliers-items -->
+                    <div class="suppliers-items">
+                        <!-- start of suppliers-item -->
+                        <div class="suppliers-item">
+                            <div class="suppliers-item-col suppliers-item-col--info">
+                                <div class="suppliers-seller-icon">
+                                    <img src="./theme-assets/images/seller-logo-small.svg" alt="">
+                                </div>
+                                <div class="suppliers-seller-info">
+                                    <div class="suppliers-seller-name fw-bold">یکتاکالا</div>
+                                    <div class="suppliers-seller-rate fs-7">
+                                        <span class="text-success fw-bold fa-num">92%</span>
+                                        <span class="text-muted">رضایت خریداران</span>
+                                        <span class="text-muted">|</span>
+                                        <span class="text-muted">عملکرد</span>
+                                        <span class="text-success fw-bold">عالی</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="suppliers-item-col suppliers-item-col--conditions">
-                            <div class="suppliers-item-sender">
-                                <i class="ri-truck-line"></i>
-                                <span class="text-dark">ارسال یکتاکالا</span>
+                            <div class="suppliers-item-col suppliers-item-col--conditions">
+                                <div class="suppliers-item-sender">
+                                    <i class="ri-truck-line"></i>
+                                    <span class="text-dark">ارسال یکتاکالا</span>
+                                </div>
+                            </div>
+                            <div class="suppliers-item-col suppliers-item-col--guarantee">
+                                <i class="ri-shield-check-line"></i>
+                                <span class="text-dark fa-num">گارانتی 18 ماهه</span>
+                            </div>
+                            <div class="suppliers-item-col suppliers-item-col--price">
+                                <span class="price-now fa-num">26,500,000</span>
+                                <span class="currency">تومان</span>
+                            </div>
+                            <div class="suppliers-item-col suppliers-item-col--action">
+                                <a href="#" class="btn btn-sm btn-outline-primary fw-bold px-4">افزودن به سبد</a>
                             </div>
                         </div>
-                        <div class="suppliers-item-col suppliers-item-col--guarantee">
-                            <i class="ri-shield-check-line"></i>
-                            <span class="text-dark fa-num">گارانتی 18 ماهه</span>
+                        <!-- end of suppliers-item -->
+                        <!-- start of suppliers-item -->
+                        <div class="suppliers-item">
+                            <div class="suppliers-item-col suppliers-item-col--info">
+                                <div class="suppliers-seller-icon">
+                                    <img src="./theme-assets/images/seller-logo-small.svg" alt="">
+                                </div>
+                                <div class="suppliers-seller-info">
+                                    <div class="suppliers-seller-name fw-bold">یکتاکالا</div>
+                                    <div class="suppliers-seller-rate fs-7">
+                                        <span class="text-success fw-bold fa-num">92%</span>
+                                        <span class="text-muted">رضایت خریداران</span>
+                                        <span class="text-muted">|</span>
+                                        <span class="text-muted">عملکرد</span>
+                                        <span class="text-success fw-bold">عالی</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="suppliers-item-col suppliers-item-col--conditions">
+                                <div class="suppliers-item-sender">
+                                    <i class="ri-truck-line"></i>
+                                    <span class="text-dark">ارسال یکتاکالا</span>
+                                </div>
+                            </div>
+                            <div class="suppliers-item-col suppliers-item-col--guarantee">
+                                <i class="ri-shield-check-line"></i>
+                                <span class="text-dark fa-num">گارانتی 18 ماهه</span>
+                            </div>
+                            <div class="suppliers-item-col suppliers-item-col--price">
+                                <span class="price-now fa-num">26,500,000</span>
+                                <span class="currency">تومان</span>
+                            </div>
+                            <div class="suppliers-item-col suppliers-item-col--action">
+                                <a href="#" class="btn btn-sm btn-outline-primary fw-bold px-4">افزودن به سبد</a>
+                            </div>
                         </div>
-                        <div class="suppliers-item-col suppliers-item-col--price">
-                            <span class="price-now fa-num">26,500,000</span>
-                            <span class="currency">تومان</span>
-                        </div>
-                        <div class="suppliers-item-col suppliers-item-col--action">
-                            <a href="#" class="btn btn-sm btn-outline-primary fw-bold px-4">افزودن به سبد</a>
-                        </div>
+                        <!-- end of suppliers-item -->
                     </div>
-                    <!-- end of suppliers-item -->
-                    <!-- start of suppliers-item -->
-                    <div class="suppliers-item">
-                        <div class="suppliers-item-col suppliers-item-col--info">
-                            <div class="suppliers-seller-icon">
-                                <img src="./theme-assets/images/seller-logo-small.svg" alt="">
-                            </div>
-                            <div class="suppliers-seller-info">
-                                <div class="suppliers-seller-name fw-bold">یکتاکالا</div>
-                                <div class="suppliers-seller-rate fs-7">
-                                    <span class="text-success fw-bold fa-num">92%</span>
-                                    <span class="text-muted">رضایت خریداران</span>
-                                    <span class="text-muted">|</span>
-                                    <span class="text-muted">عملکرد</span>
-                                    <span class="text-success fw-bold">عالی</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="suppliers-item-col suppliers-item-col--conditions">
-                            <div class="suppliers-item-sender">
-                                <i class="ri-truck-line"></i>
-                                <span class="text-dark">ارسال یکتاکالا</span>
-                            </div>
-                        </div>
-                        <div class="suppliers-item-col suppliers-item-col--guarantee">
-                            <i class="ri-shield-check-line"></i>
-                            <span class="text-dark fa-num">گارانتی 18 ماهه</span>
-                        </div>
-                        <div class="suppliers-item-col suppliers-item-col--price">
-                            <span class="price-now fa-num">26,500,000</span>
-                            <span class="currency">تومان</span>
-                        </div>
-                        <div class="suppliers-item-col suppliers-item-col--action">
-                            <a href="#" class="btn btn-sm btn-outline-primary fw-bold px-4">افزودن به سبد</a>
-                        </div>
-                    </div>
-                    <!-- end of suppliers-item -->
-                </div>
-                <!-- end of suppliers-items -->
-            </div>
-        </div>
-        <!-- end of box -->
-        <!-- start of box -->
-        <div class="ui-box mb-5">
-            <div class="ui-box-title">محصولات مشابه</div>
-            <div class="ui-box-content">
-                <!-- Slider main container -->
-                <div class="swiper product-swiper-slider swiper-initialized swiper-horizontal swiper-pointer-events swiper-rtl">
-                    <!-- Additional required wrapper -->
-                    <div class="swiper-wrapper" id="swiper-wrapper-8dfb96fa3d27e584" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
-                        <!-- Slides -->
-                        <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 8" style="width: 230.8px; margin-left: 10px;">
-                            <!-- start of product-card -->
-                            <div class="product-card">
-                                <div class="product-thumbnail">
-                                    <a href="#">
-                                        <img src="./theme-assets/images/products/01.jpg" alt="product title">
-                                    </a>
-                                </div>
-                                <div class="product-card-body">
-                                    <h2 class="product-title">
-                                        <a href="#">
-                                            گوشی موبایل اپل مدل iPhone 13 A2634 دو سیم‌ کارت ظرفیت 128
-                                            گیگابایت و رم 4 گیگابایت
-                                        </a>
-                                    </h2>
-                                    <div class="product-variant">
-                                        <span class="color" style="background-color: #d4d4d4;"></span>
-                                        <span class="color" style="background-color: #e86841;"></span>
-                                        <span class="color" style="background-color: #b82c32;"></span>
-                                        <span>+</span>
-                                    </div>
-                                    <div class="product-price fa-num">
-                                        <div class="d-flex align-items-center">
-                                            <del class="price-old">26,900,000</del>
-                                            <span class="discount ms-2">%2</span>
-                                        </div>
-                                        <span class="price-now">26,249,000 <span class="currency">تومان</span></span>
-                                    </div>
-                                </div>
-                                <div class="product-card-footer">
-                                    <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
-                                        <div class="product-actions">
-                                            <ul>
-                                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product-rating fa-num">
-                                            <i class="ri-star-fill star"></i>
-                                            <strong>۴.۴</strong>
-                                            <span>(۴۳۶)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end of product-card -->
-                        </div>
-                        <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 8" style="width: 230.8px; margin-left: 10px;">
-                            <!-- start of product-card -->
-                            <div class="product-card">
-                                <div class="product-thumbnail">
-                                    <a href="#">
-                                        <img src="./theme-assets/images/products/02.jpg" alt="product title">
-                                    </a>
-                                </div>
-                                <div class="product-card-body">
-                                    <h2 class="product-title">
-                                        <a href="#">
-                                            گوشی موبایل شیائومی مدل 11 lite 5G NE 2109119DG دو سیم‌ کارت
-                                            ظرفیت 256 گیگابایت و رم 8 گیگابایت
-                                        </a>
-                                    </h2>
-                                    <div class="product-variant">
-                                        <span class="color" style="background-color: #4d5b63;"></span>
-                                        <span class="color" style="background-color: #57415f;"></span>
-                                        <span class="color" style="background-color: #984638;"></span>
-                                        <span>+</span>
-                                    </div>
-                                    <div class="product-price fa-num">
-                                        <span class="price-now">8,239,000 <span class="currency">تومان</span></span>
-                                    </div>
-                                </div>
-                                <div class="product-card-footer">
-                                    <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
-                                        <div class="product-actions">
-                                            <ul>
-                                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product-rating fa-num">
-                                            <i class="ri-star-fill star"></i>
-                                            <strong>۴.۴</strong>
-                                            <span>(۴۳۶)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end of product-card -->
-                        </div>
-                        <div class="swiper-slide" role="group" aria-label="3 / 8" style="width: 230.8px; margin-left: 10px;">
-                            <!-- start of product-card -->
-                            <div class="product-card">
-                                <div class="product-thumbnail">
-                                    <a href="#">
-                                        <img src="./theme-assets/images/products/03.jpg" alt="product title">
-                                    </a>
-                                </div>
-                                <div class="product-card-body">
-                                    <h2 class="product-title">
-                                        <a href="#">
-                                            گوشی موبایل شیائومی مدل Redmi Note 10 pro M2101K6G دو سیم‌
-                                            کارت
-                                            ظرفیت 128 گیگابایت و رم 6
-                                        </a>
-                                    </h2>
-                                    <div class="product-variant">
-                                        <span class="color" style="background-color: #24476e;"></span>
-                                        <span class="color" style="background-color: #12505b;"></span>
-                                        <span class="color" style="background-color: #e4a793;"></span>
-                                        <span>+</span>
-                                    </div>
-                                    <div class="product-price fa-num">
-                                        <span class="price-now">7,599,000 <span class="currency">تومان</span></span>
-                                    </div>
-                                </div>
-                                <div class="product-card-footer">
-                                    <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
-                                        <div class="product-actions">
-                                            <ul>
-                                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product-rating fa-num">
-                                            <i class="ri-star-fill star"></i>
-                                            <strong>۴.۴</strong>
-                                            <span>(۴۳۶)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end of product-card -->
-                        </div>
-                        <div class="swiper-slide" role="group" aria-label="4 / 8" style="width: 230.8px; margin-left: 10px;">
-                            <!-- start of product-card -->
-                            <div class="product-card">
-                                <div class="product-thumbnail">
-                                    <a href="#">
-                                        <img src="./theme-assets/images/products/04.jpg" alt="product title">
-                                    </a>
-                                </div>
-                                <div class="product-card-body">
-                                    <h2 class="product-title">
-                                        <a href="#">
-                                            گوشی موبایل سامسونگ مدل Galaxy Z Flip3 5G ظرفیت 256 گیگابایت
-                                            و
-                                            رم 8 گیگابایت
-                                        </a>
-                                    </h2>
-                                    <div class="product-variant">
-                                        <span class="color" style="background-color: #24476e;"></span>
-                                        <span class="color" style="background-color: #12505b;"></span>
-                                        <span class="color" style="background-color: #e4a793;"></span>
-                                        <span>+</span>
-                                    </div>
-                                    <div class="product-price fa-num">
-                                        <span class="price-now">22,499,000 <span class="currency">تومان</span></span>
-                                    </div>
-                                </div>
-                                <div class="product-card-footer">
-                                    <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
-                                        <div class="product-actions">
-                                            <ul>
-                                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product-rating fa-num">
-                                            <i class="ri-star-fill star"></i>
-                                            <strong>۴.۴</strong>
-                                            <span>(۴۳۶)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end of product-card -->
-                        </div>
-                        <div class="swiper-slide" role="group" aria-label="5 / 8" style="width: 230.8px; margin-left: 10px;">
-                            <!-- start of product-card -->
-                            <div class="product-card">
-                                <div class="product-thumbnail">
-                                    <a href="#">
-                                        <img src="./theme-assets/images/products/05.jpg" alt="product title">
-                                    </a>
-                                </div>
-                                <div class="product-card-body">
-                                    <h2 class="product-title">
-                                        <a href="#">
-                                            گوشی موبایل اپل مدل iPhone 12 Pro Max A2412 دو سیم‌ کارت
-                                            ظرفیت
-                                            256 گیگابایت
-                                        </a>
-                                    </h2>
-                                    <div class="product-variant">
-                                        <span class="color" style="background-color: #d4d4d4;"></span>
-                                        <span class="color" style="background-color: #e86841;"></span>
-                                        <span class="color" style="background-color: #b82c32;"></span>
-                                        <span>+</span>
-                                    </div>
-                                    <div class="product-price fa-num">
-                                        <span class="price-now">36,300,000 <span class="currency">تومان</span></span>
-                                    </div>
-                                </div>
-                                <div class="product-card-footer">
-                                    <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
-                                        <div class="product-actions">
-                                            <ul>
-                                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product-rating fa-num">
-                                            <i class="ri-star-fill star"></i>
-                                            <strong>۴.۴</strong>
-                                            <span>(۴۳۶)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end of product-card -->
-                        </div>
-                        <div class="swiper-slide" role="group" aria-label="6 / 8" style="width: 230.8px; margin-left: 10px;">
-                            <!-- start of product-card -->
-                            <div class="product-card">
-                                <div class="product-thumbnail">
-                                    <a href="#">
-                                        <img src="./theme-assets/images/products/06.jpg" alt="product title">
-                                    </a>
-                                </div>
-                                <div class="product-card-body">
-                                    <h2 class="product-title">
-                                        <a href="#">
-                                            گوشی موبایل شیائومی مدل Mi 11i 5G M2012K11G دو سیم‌ کارت
-                                            ظرفیت
-                                            256 گیگابایت و 8 گیگابایت رم
-                                        </a>
-                                    </h2>
-                                    <div class="product-variant">
-                                        <span class="color" style="background-color: #4d5b63;"></span>
-                                        <span class="color" style="background-color: #57415f;"></span>
-                                        <span class="color" style="background-color: #984638;"></span>
-                                        <span>+</span>
-                                    </div>
-                                    <div class="product-price fa-num">
-                                        <span class="price-now">16,199,000 <span class="currency">تومان</span></span>
-                                    </div>
-                                </div>
-                                <div class="product-card-footer">
-                                    <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
-                                        <div class="product-actions">
-                                            <ul>
-                                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product-rating fa-num">
-                                            <i class="ri-star-fill star"></i>
-                                            <strong>۴.۴</strong>
-                                            <span>(۴۳۶)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end of product-card -->
-                        </div>
-                        <div class="swiper-slide" role="group" aria-label="7 / 8" style="width: 230.8px; margin-left: 10px;">
-                            <!-- start of product-card -->
-                            <div class="product-card">
-                                <div class="product-thumbnail">
-                                    <a href="#">
-                                        <img src="./theme-assets/images/products/07.jpg" alt="product title">
-                                    </a>
-                                </div>
-                                <div class="product-card-body">
-                                    <h2 class="product-title">
-                                        <a href="#">
-                                            گوشی موبایل سامسونگ مدل Galaxy S9 Plus دو سیم کارت ظرفیت 64
-                                            گیگابایت
-                                        </a>
-                                    </h2>
-                                    <div class="product-variant">
-                                        <span class="color" style="background-color: #24476e;"></span>
-                                        <span class="color" style="background-color: #12505b;"></span>
-                                        <span class="color" style="background-color: #e4a793;"></span>
-                                        <span>+</span>
-                                    </div>
-                                    <div class="product-price fa-num">
-                                        <span class="price-now">12,890,000 <span class="currency">تومان</span></span>
-                                    </div>
-                                </div>
-                                <div class="product-card-footer">
-                                    <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
-                                        <div class="product-actions">
-                                            <ul>
-                                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product-rating fa-num">
-                                            <i class="ri-star-fill star"></i>
-                                            <strong>۴.۴</strong>
-                                            <span>(۴۳۶)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end of product-card -->
-                        </div>
-                        <div class="swiper-slide" role="group" aria-label="8 / 8" style="width: 230.8px; margin-left: 10px;">
-                            <!-- start of product-card -->
-                            <div class="product-card">
-                                <div class="product-thumbnail">
-                                    <a href="#">
-                                        <img src="./theme-assets/images/products/08.jpg" alt="product title">
-                                    </a>
-                                </div>
-                                <div class="product-card-body">
-                                    <h2 class="product-title">
-                                        <a href="#">
-                                            گوشی موبایل سامسونگ مدل Galaxy Note 20 5G SM-N981B/DS دو سیم
-                                            کارت ظرفیت 256 گیگابایت و رم 8
-                                        </a>
-                                    </h2>
-                                    <div class="product-variant">
-                                        <span class="color" style="background-color: #24476e;"></span>
-                                        <span class="color" style="background-color: #12505b;"></span>
-                                        <span class="color" style="background-color: #e4a793;"></span>
-                                        <span>+</span>
-                                    </div>
-                                    <div class="product-price fa-num">
-                                        <div class="d-flex align-items-center">
-                                            <del class="price-old">23,570,000</del>
-                                            <span class="discount ms-2">%3</span>
-                                        </div>
-                                        <span class="price-now">22,799,000 <span class="currency">تومان</span></span>
-                                    </div>
-                                </div>
-                                <div class="product-card-footer">
-                                    <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
-                                        <div class="product-actions">
-                                            <ul>
-                                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product-rating fa-num">
-                                            <i class="ri-star-fill star"></i>
-                                            <strong>۴.۴</strong>
-                                            <span>(۴۳۶)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end of product-card -->
-                        </div>
-                    </div>
-                    <!-- If we need pagination -->
-                    <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal swiper-pagination-bullets-dynamic" style="width: 80px;"><span class="swiper-pagination-bullet swiper-pagination-bullet-active swiper-pagination-bullet-active-main" tabindex="0" role="button" aria-label="Go to slide 1" aria-current="true" style="right: 24px;"></span><span class="swiper-pagination-bullet swiper-pagination-bullet-active-next" tabindex="0" role="button" aria-label="Go to slide 2" style="right: 24px;"></span><span class="swiper-pagination-bullet swiper-pagination-bullet-active-next-next" tabindex="0" role="button" aria-label="Go to slide 3" style="right: 24px;"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 4" style="right: 24px;"></span></div>
-
-                    <!-- If we need navigation buttons -->
-                    <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-d376b852de9483d5" aria-disabled="false"></div>
-                    <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-d376b852de9483d5" aria-disabled="false"></div>
-                    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                    <!-- end of suppliers-items -->
                 </div>
             </div>
-        </div>
-        <!-- end of box -->
-        <div class="row">
-            <div class="col-xl-9 col-lg-8">
-                <div class="ui-sticky ui-sticky-top mb-4">
-                    <!-- start of product-tabs -->
-                    <div class="product-tabs">
-                        <ul class="nav nav-pills">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#scrollspyHeading1" data-scroll="scrollspyHeading1">نقد و بررسی</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#scrollspyHeading2" data-scroll="scrollspyHeading2">بررسی تخصصی</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#scrollspyHeading3" data-scroll="scrollspyHeading3">مشخصات</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#scrollspyHeading4" data-scroll="scrollspyHeading4">دیدگاه کاربران</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#scrollspyHeading5" data-scroll="scrollspyHeading5">پرسش و پاسخ</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- end of product-tabs -->
-                </div>
-                <!-- start of product-content-expert-summary -->
-                <div class="product-tab-content product-content-expert-summary tab-content border-bottom pb-2 mb-4" id="scrollspyHeading1">
-                    <div class="product-tab-title">
-                        <h2>نقد و بررسی اجمالی</h2>
-                        <h3 class="subtitle">Apple iPhone 13 A2634 Dual SIM 128GB And 4GB RAM Mobile Phone</h3>
-                    </div>
-                    <div class="expandable-text pt-1" style="height: 250px;">
-                        <div class="expandable-text_text">
-                            <p>
-                                @Model.Review
-                            </p>
+            <!-- end of box -->
+            <!-- start of box -->
+            <div class="ui-box mb-5">
+                <div class="ui-box-title">محصولات مشابه</div>
+                <div class="ui-box-content">
+                    <!-- Slider main container -->
+                    <div class="swiper product-swiper-slider swiper-initialized swiper-horizontal swiper-pointer-events swiper-rtl">
+                        <!-- Additional required wrapper -->
+                        <div class="swiper-wrapper" id="swiper-wrapper-8dfb96fa3d27e584" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
+                            <!-- Slides -->
+                            <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 8" style="width: 230.8px; margin-left: 10px;">
+                                <!-- start of product-card -->
+                                <div class="product-card">
+                                    <div class="product-thumbnail">
+                                        <a href="#">
+                                            <img src="./theme-assets/images/products/01.jpg" alt="product title">
+                                        </a>
+                                    </div>
+                                    <div class="product-card-body">
+                                        <h2 class="product-title">
+                                            <a href="#">
+                                                گوشی موبایل اپل مدل iPhone 13 A2634 دو سیم‌ کارت ظرفیت 128
+                                                گیگابایت و رم 4 گیگابایت
+                                            </a>
+                                        </h2>
+                                        <div class="product-variant">
+                                            <span class="color" style="background-color: #d4d4d4;"></span>
+                                            <span class="color" style="background-color: #e86841;"></span>
+                                            <span class="color" style="background-color: #b82c32;"></span>
+                                            <span>+</span>
+                                        </div>
+                                        <div class="product-price fa-num">
+                                            <div class="d-flex align-items-center">
+                                                <del class="price-old">26,900,000</del>
+                                                <span class="discount ms-2">%2</span>
+                                            </div>
+                                            <span class="price-now">26,249,000 <span class="currency">تومان</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="product-card-footer">
+                                        <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
+                                            <div class="product-actions">
+                                                <ul>
+                                                    <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="product-rating fa-num">
+                                                <i class="ri-star-fill star"></i>
+                                                <strong>۴.۴</strong>
+                                                <span>(۴۳۶)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end of product-card -->
+                            </div>
+                            <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 8" style="width: 230.8px; margin-left: 10px;">
+                                <!-- start of product-card -->
+                                <div class="product-card">
+                                    <div class="product-thumbnail">
+                                        <a href="#">
+                                            <img src="./theme-assets/images/products/02.jpg" alt="product title">
+                                        </a>
+                                    </div>
+                                    <div class="product-card-body">
+                                        <h2 class="product-title">
+                                            <a href="#">
+                                                گوشی موبایل شیائومی مدل 11 lite 5G NE 2109119DG دو سیم‌ کارت
+                                                ظرفیت 256 گیگابایت و رم 8 گیگابایت
+                                            </a>
+                                        </h2>
+                                        <div class="product-variant">
+                                            <span class="color" style="background-color: #4d5b63;"></span>
+                                            <span class="color" style="background-color: #57415f;"></span>
+                                            <span class="color" style="background-color: #984638;"></span>
+                                            <span>+</span>
+                                        </div>
+                                        <div class="product-price fa-num">
+                                            <span class="price-now">8,239,000 <span class="currency">تومان</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="product-card-footer">
+                                        <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
+                                            <div class="product-actions">
+                                                <ul>
+                                                    <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="product-rating fa-num">
+                                                <i class="ri-star-fill star"></i>
+                                                <strong>۴.۴</strong>
+                                                <span>(۴۳۶)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end of product-card -->
+                            </div>
+                            <div class="swiper-slide" role="group" aria-label="3 / 8" style="width: 230.8px; margin-left: 10px;">
+                                <!-- start of product-card -->
+                                <div class="product-card">
+                                    <div class="product-thumbnail">
+                                        <a href="#">
+                                            <img src="./theme-assets/images/products/03.jpg" alt="product title">
+                                        </a>
+                                    </div>
+                                    <div class="product-card-body">
+                                        <h2 class="product-title">
+                                            <a href="#">
+                                                گوشی موبایل شیائومی مدل Redmi Note 10 pro M2101K6G دو سیم‌
+                                                کارت
+                                                ظرفیت 128 گیگابایت و رم 6
+                                            </a>
+                                        </h2>
+                                        <div class="product-variant">
+                                            <span class="color" style="background-color: #24476e;"></span>
+                                            <span class="color" style="background-color: #12505b;"></span>
+                                            <span class="color" style="background-color: #e4a793;"></span>
+                                            <span>+</span>
+                                        </div>
+                                        <div class="product-price fa-num">
+                                            <span class="price-now">7,599,000 <span class="currency">تومان</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="product-card-footer">
+                                        <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
+                                            <div class="product-actions">
+                                                <ul>
+                                                    <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="product-rating fa-num">
+                                                <i class="ri-star-fill star"></i>
+                                                <strong>۴.۴</strong>
+                                                <span>(۴۳۶)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end of product-card -->
+                            </div>
+                            <div class="swiper-slide" role="group" aria-label="4 / 8" style="width: 230.8px; margin-left: 10px;">
+                                <!-- start of product-card -->
+                                <div class="product-card">
+                                    <div class="product-thumbnail">
+                                        <a href="#">
+                                            <img src="./theme-assets/images/products/04.jpg" alt="product title">
+                                        </a>
+                                    </div>
+                                    <div class="product-card-body">
+                                        <h2 class="product-title">
+                                            <a href="#">
+                                                گوشی موبایل سامسونگ مدل Galaxy Z Flip3 5G ظرفیت 256 گیگابایت
+                                                و
+                                                رم 8 گیگابایت
+                                            </a>
+                                        </h2>
+                                        <div class="product-variant">
+                                            <span class="color" style="background-color: #24476e;"></span>
+                                            <span class="color" style="background-color: #12505b;"></span>
+                                            <span class="color" style="background-color: #e4a793;"></span>
+                                            <span>+</span>
+                                        </div>
+                                        <div class="product-price fa-num">
+                                            <span class="price-now">22,499,000 <span class="currency">تومان</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="product-card-footer">
+                                        <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
+                                            <div class="product-actions">
+                                                <ul>
+                                                    <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="product-rating fa-num">
+                                                <i class="ri-star-fill star"></i>
+                                                <strong>۴.۴</strong>
+                                                <span>(۴۳۶)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end of product-card -->
+                            </div>
+                            <div class="swiper-slide" role="group" aria-label="5 / 8" style="width: 230.8px; margin-left: 10px;">
+                                <!-- start of product-card -->
+                                <div class="product-card">
+                                    <div class="product-thumbnail">
+                                        <a href="#">
+                                            <img src="./theme-assets/images/products/05.jpg" alt="product title">
+                                        </a>
+                                    </div>
+                                    <div class="product-card-body">
+                                        <h2 class="product-title">
+                                            <a href="#">
+                                                گوشی موبایل اپل مدل iPhone 12 Pro Max A2412 دو سیم‌ کارت
+                                                ظرفیت
+                                                256 گیگابایت
+                                            </a>
+                                        </h2>
+                                        <div class="product-variant">
+                                            <span class="color" style="background-color: #d4d4d4;"></span>
+                                            <span class="color" style="background-color: #e86841;"></span>
+                                            <span class="color" style="background-color: #b82c32;"></span>
+                                            <span>+</span>
+                                        </div>
+                                        <div class="product-price fa-num">
+                                            <span class="price-now">36,300,000 <span class="currency">تومان</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="product-card-footer">
+                                        <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
+                                            <div class="product-actions">
+                                                <ul>
+                                                    <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="product-rating fa-num">
+                                                <i class="ri-star-fill star"></i>
+                                                <strong>۴.۴</strong>
+                                                <span>(۴۳۶)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end of product-card -->
+                            </div>
+                            <div class="swiper-slide" role="group" aria-label="6 / 8" style="width: 230.8px; margin-left: 10px;">
+                                <!-- start of product-card -->
+                                <div class="product-card">
+                                    <div class="product-thumbnail">
+                                        <a href="#">
+                                            <img src="./theme-assets/images/products/06.jpg" alt="product title">
+                                        </a>
+                                    </div>
+                                    <div class="product-card-body">
+                                        <h2 class="product-title">
+                                            <a href="#">
+                                                گوشی موبایل شیائومی مدل Mi 11i 5G M2012K11G دو سیم‌ کارت
+                                                ظرفیت
+                                                256 گیگابایت و 8 گیگابایت رم
+                                            </a>
+                                        </h2>
+                                        <div class="product-variant">
+                                            <span class="color" style="background-color: #4d5b63;"></span>
+                                            <span class="color" style="background-color: #57415f;"></span>
+                                            <span class="color" style="background-color: #984638;"></span>
+                                            <span>+</span>
+                                        </div>
+                                        <div class="product-price fa-num">
+                                            <span class="price-now">16,199,000 <span class="currency">تومان</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="product-card-footer">
+                                        <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
+                                            <div class="product-actions">
+                                                <ul>
+                                                    <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="product-rating fa-num">
+                                                <i class="ri-star-fill star"></i>
+                                                <strong>۴.۴</strong>
+                                                <span>(۴۳۶)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end of product-card -->
+                            </div>
+                            <div class="swiper-slide" role="group" aria-label="7 / 8" style="width: 230.8px; margin-left: 10px;">
+                                <!-- start of product-card -->
+                                <div class="product-card">
+                                    <div class="product-thumbnail">
+                                        <a href="#">
+                                            <img src="./theme-assets/images/products/07.jpg" alt="product title">
+                                        </a>
+                                    </div>
+                                    <div class="product-card-body">
+                                        <h2 class="product-title">
+                                            <a href="#">
+                                                گوشی موبایل سامسونگ مدل Galaxy S9 Plus دو سیم کارت ظرفیت 64
+                                                گیگابایت
+                                            </a>
+                                        </h2>
+                                        <div class="product-variant">
+                                            <span class="color" style="background-color: #24476e;"></span>
+                                            <span class="color" style="background-color: #12505b;"></span>
+                                            <span class="color" style="background-color: #e4a793;"></span>
+                                            <span>+</span>
+                                        </div>
+                                        <div class="product-price fa-num">
+                                            <span class="price-now">12,890,000 <span class="currency">تومان</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="product-card-footer">
+                                        <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
+                                            <div class="product-actions">
+                                                <ul>
+                                                    <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="product-rating fa-num">
+                                                <i class="ri-star-fill star"></i>
+                                                <strong>۴.۴</strong>
+                                                <span>(۴۳۶)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end of product-card -->
+                            </div>
+                            <div class="swiper-slide" role="group" aria-label="8 / 8" style="width: 230.8px; margin-left: 10px;">
+                                <!-- start of product-card -->
+                                <div class="product-card">
+                                    <div class="product-thumbnail">
+                                        <a href="#">
+                                            <img src="./theme-assets/images/products/08.jpg" alt="product title">
+                                        </a>
+                                    </div>
+                                    <div class="product-card-body">
+                                        <h2 class="product-title">
+                                            <a href="#">
+                                                گوشی موبایل سامسونگ مدل Galaxy Note 20 5G SM-N981B/DS دو سیم
+                                                کارت ظرفیت 256 گیگابایت و رم 8
+                                            </a>
+                                        </h2>
+                                        <div class="product-variant">
+                                            <span class="color" style="background-color: #24476e;"></span>
+                                            <span class="color" style="background-color: #12505b;"></span>
+                                            <span class="color" style="background-color: #e4a793;"></span>
+                                            <span>+</span>
+                                        </div>
+                                        <div class="product-price fa-num">
+                                            <div class="d-flex align-items-center">
+                                                <del class="price-old">23,570,000</del>
+                                                <span class="discount ms-2">%3</span>
+                                            </div>
+                                            <span class="price-now">22,799,000 <span class="currency">تومان</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="product-card-footer">
+                                        <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
+                                            <div class="product-actions">
+                                                <ul>
+                                                    <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="product-rating fa-num">
+                                                <i class="ri-star-fill star"></i>
+                                                <strong>۴.۴</strong>
+                                                <span>(۴۳۶)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end of product-card -->
+                            </div>
                         </div>
-                        <div class="expandable-text-expand-btn justify-content-start text-sm">
-                            <span class="show-more active">
-                                ادامه مطلب <i class="ri-arrow-down-s-line ms-2"></i>
-                            </span>
-                            <span class="show-less d-none">
-                                مشاهده کمتر <i class="ri-arrow-up-s-line ms-2"></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <!-- end of product-content-expert-summary -->
-                <!-- start of product-content-expert-articles -->
-                <div class="product-tab-content product-content-expert-articles tab-content border-bottom pb-2 mb-4" id="scrollspyHeading2">
-                    <div class="product-tab-title">
-                        <h2>نقد و بررسی تخصصی</h2>
-                        <h3 class="subtitle">Apple iPhone 13 A2634 Dual SIM 128GB And 4GB RAM Mobile Phone</h3>
-                    </div>
-                    <div class="expandable-text pt-1" style="height: 840px;">
-                        <div class="expandable-text_text">
-                            <p>@Model.ExpertReview</p>
+                        <!-- If we need pagination -->
+                        <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal swiper-pagination-bullets-dynamic" style="width: 80px;"><span class="swiper-pagination-bullet swiper-pagination-bullet-active swiper-pagination-bullet-active-main" tabindex="0" role="button" aria-label="Go to slide 1" aria-current="true" style="right: 24px;"></span><span class="swiper-pagination-bullet swiper-pagination-bullet-active-next" tabindex="0" role="button" aria-label="Go to slide 2" style="right: 24px;"></span><span class="swiper-pagination-bullet swiper-pagination-bullet-active-next-next" tabindex="0" role="button" aria-label="Go to slide 3" style="right: 24px;"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 4" style="right: 24px;"></span></div>
 
-                        </div>
-                        <div class="expandable-text-expand-btn justify-content-start text-sm">
-                            <span class="show-more active">
-                                نمایش کامل نقد و بررسی تخصصی <i class="ri-arrow-down-s-line ms-2"></i>
-                            </span>
-                            <span class="show-less d-none">
-                                نمایش خلاصه <i class="ri-arrow-up-s-line ms-2"></i>
-                            </span>
-                        </div>
+                        <!-- If we need navigation buttons -->
+                        <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-d376b852de9483d5" aria-disabled="false"></div>
+                        <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-d376b852de9483d5" aria-disabled="false"></div>
+                        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                     </div>
                 </div>
-                <!-- end of product-content-expert-articles -->
-                <!-- start of product-params -->
-                <div class="product-tab-content product-params tab-content border-bottom pb-2 mb-4" id="scrollspyHeading3">
-                    <div class="product-tab-title">
-                        <h2>مشخصات کالا</h2>
-                        <h3 class="subtitle">Apple iPhone 13 A2634 Dual SIM 128GB And 4GB RAM Mobile Phone</h3>
+            </div>
+            <!-- end of box -->
+            <div class="row">
+                <div class="col-xl-9 col-lg-8">
+                    <div class="ui-sticky ui-sticky-top mb-4">
+                        <!-- start of product-tabs -->
+                        <div class="product-tabs">
+                            <ul class="nav nav-pills">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#scrollspyHeading1" data-scroll="scrollspyHeading1">نقد و بررسی</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#scrollspyHeading2" data-scroll="scrollspyHeading2">بررسی تخصصی</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#scrollspyHeading3" data-scroll="scrollspyHeading3">مشخصات</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#scrollspyHeading4" data-scroll="scrollspyHeading4">دیدگاه کاربران</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#scrollspyHeading5" data-scroll="scrollspyHeading5">پرسش و پاسخ</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- end of product-tabs -->
                     </div>
-                    @await Component.InvokeAsync("ProductSpecification", new ProductSpecificationViewModel { ProductId = Model.ProductId })
-                </div>
-                <!-- end of product-params -->
-                <!-- start of product-comments -->
-                <div class="product-tab-content product-comments tab-content border-bottom pb-2 mb-4" id="scrollspyHeading4">
-                    <div class="product-tab-title mb-0">
-                        <h2>امتیاز و دیدگاه کاربران</h2>
-                        <h3 class="subtitle">Samsung Galaxy M31 SM-M315F/DSN Dual SIM 128GB Mobile Phone</h3>
-                    </div>
-                    <div class="row">
-                        <div class="col-xl-3 col-lg-4 col-md-5 mb-3">
-                            <div class="ui-sticky ui-sticky-top pt-5 z-index-0">
-                                <!-- start of comments-sidebar -->
-                                <div class="comments-sidebar">
-                                    <div class="comments-sidebar-rating">
-                                        <div class="comments-sidebar-rating-main me-2">@commentAvg["avgOverall"]</div>
-                                        <div class="comments-sidebar-rating-desc">از ۵</div>
-                                    </div>
-                                    <div class="comments-sidebar-rating-bottom">
-                                        <div class="stars-container justify-content-end">
-                                            <div class="stars-text ms-2">از مجموع ۹۴۰ امتیاز</div>
-                                            <div class="stars">
-                                                <div class="stars-val" style="width: 70%;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="content-expert-rating mt-4">
-                                        <div class="mb-3">
-                                            <div class="content-expert-rating-title">کیفیت ساخت</div>
-                                            <div class="content-expert-rating-value-wrapper">
-                                                <div class="content-expert-rating-value" style="width: 90%;">
-                                                </div>
-                                                <div class="content-expert-rating-value-label">@commentAvg["avgQuality"]</div>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="content-expert-rating-title">
-                                                ارزش خرید به نسبت قیمت
-                                            </div>
-                                            <div class="content-expert-rating-value-wrapper">
-                                                <div class="content-expert-rating-value" style="width: 90%;">
-                                                </div>
-                                                <div class="content-expert-rating-value-label">@commentAvg["avgValue"]</div>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="content-expert-rating-title">نوآوری</div>
-                                            <div class="content-expert-rating-value-wrapper">
-                                                <div class="content-expert-rating-value" style="width: 90%;">
-                                                </div>
-                                                <div class="content-expert-rating-value-label">@commentAvg["avgInnovation"]</div>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="content-expert-rating-title">امکانات و قابلیت ها</div>
-                                            <div class="content-expert-rating-value-wrapper">
-                                                <div class="content-expert-rating-value" style="width: 90%;">
-                                                </div>
-                                                <div class="content-expert-rating-value-label">@commentAvg["avgFeatures"]</div>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="content-expert-rating-title">سهولت استفاده</div>
-                                            <div class="content-expert-rating-value-wrapper">
-                                                <div class="content-expert-rating-value" style="width: 90%;">
-                                                </div>
-                                                <div class="content-expert-rating-value-label">@commentAvg["avgEase"]</div>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="content-expert-rating-title">طراحی و ظاهر</div>
-                                            <div class="content-expert-rating-value-wrapper">
-                                                <div class="content-expert-rating-value" style="width: 90%;">
-                                                </div>
-                                                <div class="content-expert-rating-value-label">@commentAvg["avgDesign"]</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-2">دیدگاه خود را درباره این کالا بیان کنید</div>
-                                    <a asp-action="ProductAddComment" asp-controller="Product" asp-route-productId="@Model.ProductId" class="btn btn-block btn-outline-primary">
-                                        افزودن
-                                        دیدگاه
-                                    </a>
-                                </div>
-                                <!-- end of comments-sidebar -->
+                    <!-- start of product-content-expert-summary -->
+                    <div class="product-tab-content product-content-expert-summary tab-content border-bottom pb-2 mb-4" id="scrollspyHeading1">
+                        <div class="product-tab-title">
+                            <h2>نقد و بررسی اجمالی</h2>
+                            <h3 class="subtitle">Apple iPhone 13 A2634 Dual SIM 128GB And 4GB RAM Mobile Phone</h3>
+                        </div>
+                        <div class="expandable-text pt-1" style="height: 250px;">
+                            <div class="expandable-text_text">
+                                <p>
+                                    @Model.Review
+                                </p>
+                            </div>
+                            <div class="expandable-text-expand-btn justify-content-start text-sm">
+                                <span class="show-more active">
+                                    ادامه مطلب <i class="ri-arrow-down-s-line ms-2"></i>
+                                </span>
+                                <span class="show-less d-none">
+                                    مشاهده کمتر <i class="ri-arrow-up-s-line ms-2"></i>
+                                </span>
                             </div>
                         </div>
-                        <div class="col-xl-9 col-lg-8 col-md-7 pt-5">
-                            <!-- start of filter-comments -->
-                            <div class="filter-comments mb-4">
-                                <div class="filter-comments-title me-2">
-                                    <i class="ri-list-settings-fill me-1"></i>
-                                    <span>مرتب سازی دیدگاه ها بر اساس:</span>
-                                </div>
-                                <div class="filter-comments-options">
-                                    <button class="filter-comments-option active">جدیدترین دیدگاه ها</button>
-                                    <button class="filter-comments-option">مفیدترین دیدگاه ها</button>
-                                    <button class="filter-comments-option">دیدگاه خریداران</button>
-                                </div>
-                            </div>
-                            <!-- end of filter-comments -->
-                            <!-- start of comments -->
-                            <div class="comments">
-                            @if (comments != null && comments.Any())
-                            {
-                                @foreach (var item in comments)
-                                {
-                                    <!-- start of comment -->
-                                    <div class="comment">
-                                        <div class="comment-header">
-                                            <span>@item.CreateDate.ToShamsi()</span>
-                                            <span>@item.UserName</span>
-                                        </div>
-                                        <div class="comment-body">
-                                            <p>@item.Content</p>
-                                            <ul>
-                                                <li class="comment-evaluation positive">@item.Strengths</li>
-                                                
-                                                <li class="comment-evaluation negative">
-                                                    @item.Weaknesses
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="comment-footer">
-                                            <span class="me-2">آیا این دیدگاه برایتان مفید بود؟</span>
-                                            
-                                                <button class="comment-like" data-comment-id="@item.Id"
-                                                        data-action="True">@item.Likes</button>
-                                                <button class="comment-dislike" data-comment-id="@item.Id"
-                                                        data-action="false">
-                                                    @item.Dislikes
-                                                </button>
-                                        </div>
-                                    </div>
-                                    <!-- end of comment -->
-                                }
-                            }
+                    </div>
+                    <!-- end of product-content-expert-summary -->
+                    <!-- start of product-content-expert-articles -->
+                    <div class="product-tab-content product-content-expert-articles tab-content border-bottom pb-2 mb-4" id="scrollspyHeading2">
+                        <div class="product-tab-title">
+                            <h2>نقد و بررسی تخصصی</h2>
+                            <h3 class="subtitle">Apple iPhone 13 A2634 Dual SIM 128GB And 4GB RAM Mobile Phone</h3>
+                        </div>
+                        <div class="expandable-text pt-1" style="height: 840px;">
+                            <div class="expandable-text_text">
+                                <p>@Model.ExpertReview</p>
 
                             </div>
-                            <!-- end of comments -->
-                        </div>
-                    </div>
-                </div>
-                <!-- end of product-comments -->
-                <!-- start of product-questions -->
-                <div class="product-tab-content product-questions tab-content border-bottom pb-2 mb-4" id="scrollspyHeading5">
-                    <div class="product-tab-title mb-0">
-                        <h2>پرسش و پاسخ</h2>
-                        <h3 class="subtitle">Samsung Galaxy M31 SM-M315F/DSN Dual SIM 128GB Mobile Phone</h3>
-                    </div>
-                    <div class="row">
-                        <div class="col-xl-3 col-lg-4 col-md-5 mb-3">
-                            <div class="ui-sticky ui-sticky-top pt-5 z-index-0">
-                                <!-- start of questions-sidebar -->
-                                <div class="comments-sidebar">
-                                    <div class="border rounded p-2">
-                                        <div class="border-bottom pb-2 mb-2">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
-                                                <label class="form-check-label" for="flexCheckDefault1">
-                                                    پرسش های پاسخ داده شده
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
-                                                <label class="form-check-label" for="flexCheckDefault2">
-                                                    پرسش های بی پاسخ
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <span>پرسش های من</span>
-                                            <div class="form-check form-switch mb-0">
-                                                <input class="form-check-input ms-0" type="checkbox" id="flexSwitchCheckDefault">
-                                                <label class="form-check-label" for="flexSwitchCheckDefault"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-3">
-                                        <div class="mb-2">پرسش خود را درباره این کالا بیان کنید</div>
-                                        <button class="btn btn-block btn-outline-primary" data-remodal-target="add-question-modal">
-                                            ثبت
-                                            پرسش
-                                        </button>
-                                    </div>
-                                </div>
-                                <!-- end of questions-sidebar -->
+                            <div class="expandable-text-expand-btn justify-content-start text-sm">
+                                <span class="show-more active">
+                                    نمایش کامل نقد و بررسی تخصصی <i class="ri-arrow-down-s-line ms-2"></i>
+                                </span>
+                                <span class="show-less d-none">
+                                    نمایش خلاصه <i class="ri-arrow-up-s-line ms-2"></i>
+                                </span>
                             </div>
                         </div>
-                        <div class="col-xl-9 col-lg-8 col-md-7 pt-5">
-                            <!-- start of filter-questions -->
-                            <div class="filter-comments mb-4">
-                                <div class="filter-comments-title me-2">
-                                    <i class="ri-list-settings-fill me-1"></i>
-                                    <span>مرتب‌سازی پرسش‌ها بر اساس:</span>
-                                </div>
-                                <div class="filter-comments-options">
-                                    <button class="filter-comments-option active">جدیدترین پرسش ها</button>
-                                    <button class="filter-comments-option">مفیدترین پاسخ ها</button>
+                    </div>
+                    <!-- end of product-content-expert-articles -->
+                    <!-- start of product-params -->
+                    <div class="product-tab-content product-params tab-content border-bottom pb-2 mb-4" id="scrollspyHeading3">
+                        <div class="product-tab-title">
+                            <h2>مشخصات کالا</h2>
+                            <h3 class="subtitle">Apple iPhone 13 A2634 Dual SIM 128GB And 4GB RAM Mobile Phone</h3>
+                        </div>
+                        @await Component.InvokeAsync("ProductSpecification", new ProductSpecificationViewModel { ProductId = Model.ProductId })
+                    </div>
+                    <!-- end of product-params -->
+                    <!-- start of product-comments -->
+                    <div class="product-tab-content product-comments tab-content border-bottom pb-2 mb-4" id="scrollspyHeading4">
+                        <div class="product-tab-title mb-0">
+                            <h2>امتیاز و دیدگاه کاربران</h2>
+                            <h3 class="subtitle">Samsung Galaxy M31 SM-M315F/DSN Dual SIM 128GB Mobile Phone</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-4 col-md-5 mb-3">
+                                <div class="ui-sticky ui-sticky-top pt-5 z-index-0">
+                                    <!-- start of comments-sidebar -->
+                                    <div class="comments-sidebar">
+                                        <div class="comments-sidebar-rating">
+                                            <div class="comments-sidebar-rating-main me-2">@commentAvg["avgOverall"]</div>
+                                            <div class="comments-sidebar-rating-desc">از ۵</div>
+                                        </div>
+                                        <div class="comments-sidebar-rating-bottom">
+                                            <div class="stars-container justify-content-end">
+                                                <div class="stars-text ms-2">از مجموع ۹۴۰ امتیاز</div>
+                                                <div class="stars">
+                                                    <div class="stars-val" style="width: 70%;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="content-expert-rating mt-4">
+                                            <div class="mb-3">
+                                                <div class="content-expert-rating-title">کیفیت ساخت</div>
+                                                <div class="content-expert-rating-value-wrapper">
+                                                    <div class="content-expert-rating-value" style="width: 90%;">
+                                                    </div>
+                                                    <div class="content-expert-rating-value-label">@commentAvg["avgQuality"]</div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="content-expert-rating-title">
+                                                    ارزش خرید به نسبت قیمت
+                                                </div>
+                                                <div class="content-expert-rating-value-wrapper">
+                                                    <div class="content-expert-rating-value" style="width: 90%;">
+                                                    </div>
+                                                    <div class="content-expert-rating-value-label">@commentAvg["avgValue"]</div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="content-expert-rating-title">نوآوری</div>
+                                                <div class="content-expert-rating-value-wrapper">
+                                                    <div class="content-expert-rating-value" style="width: 90%;">
+                                                    </div>
+                                                    <div class="content-expert-rating-value-label">@commentAvg["avgInnovation"]</div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="content-expert-rating-title">امکانات و قابلیت ها</div>
+                                                <div class="content-expert-rating-value-wrapper">
+                                                    <div class="content-expert-rating-value" style="width: 90%;">
+                                                    </div>
+                                                    <div class="content-expert-rating-value-label">@commentAvg["avgFeatures"]</div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="content-expert-rating-title">سهولت استفاده</div>
+                                                <div class="content-expert-rating-value-wrapper">
+                                                    <div class="content-expert-rating-value" style="width: 90%;">
+                                                    </div>
+                                                    <div class="content-expert-rating-value-label">@commentAvg["avgEase"]</div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="content-expert-rating-title">طراحی و ظاهر</div>
+                                                <div class="content-expert-rating-value-wrapper">
+                                                    <div class="content-expert-rating-value" style="width: 90%;">
+                                                    </div>
+                                                    <div class="content-expert-rating-value-label">@commentAvg["avgDesign"]</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-2">دیدگاه خود را درباره این کالا بیان کنید</div>
+                                        <a asp-action="ProductAddComment" asp-controller="Product" asp-route-productId="@Model.ProductId" class="btn btn-block btn-outline-primary">
+                                            افزودن
+                                            دیدگاه
+                                        </a>
+                                    </div>
+                                    <!-- end of comments-sidebar -->
                                 </div>
                             </div>
-                            <!-- end of filter-questions -->
-                            <!-- start of questions -->
-
-                            <div class="comments">
-                                <!-- start of question -->
-                                @if (Questions != null && Questions.Any())
-                                {
-                                    @foreach (var item in Questions)
+                            <div class="col-xl-9 col-lg-8 col-md-7 pt-5">
+                                <!-- start of filter-comments -->
+                                <div class="filter-comments mb-4">
+                                    <div class="filter-comments-title me-2">
+                                        <i class="ri-list-settings-fill me-1"></i>
+                                        <span>مرتب سازی دیدگاه ها بر اساس:</span>
+                                    </div>
+                                    <div class="filter-comments-options">
+                                        <button class="filter-comments-option active">جدیدترین دیدگاه ها</button>
+                                        <button class="filter-comments-option">مفیدترین دیدگاه ها</button>
+                                        <button class="filter-comments-option">دیدگاه خریداران</button>
+                                    </div>
+                                </div>
+                                <!-- end of filter-comments -->
+                                <!-- start of comments -->
+                                <div class="comments">
+                                    @if (comments != null && comments.Any())
                                     {
-                                        <div class="comment question">
-                                            <div class="comment-body border-bottom-0">
-                                                <div class="question-title fw-bold">
-                                                    @item.Question
+                                        @foreach (var item in comments)
+                                        {
+                                            <!-- start of comment -->
+                                            <div class="comment">
+                                                <div class="comment-header">
+                                                    <span>@item.CreateDate.ToShamsi()</span>
+                                                    <span>@item.UserName</span>
+                                                </div>
+                                                <div class="comment-body">
+                                                    <p>@item.Content</p>
+                                                    <ul>
+                                                        <li class="comment-evaluation positive">@item.Strengths</li>
+
+                                                        <li class="comment-evaluation negative">
+                                                            @item.Weaknesses
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="comment-footer">
+                                                    <span class="me-2">آیا این دیدگاه برایتان مفید بود؟</span>
+
+                                                    <button class="comment-like" data-comment-id="@item.Id"
+                                                            data-action="True">
+                                                        @item.Likes
+                                                    </button>
+                                                    <button class="comment-dislike" data-comment-id="@item.Id"
+                                                            data-action="false">
+                                                        @item.Dislikes
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <div class="comment-footer flex-column align-items-start">
-                                                <div class="expandable-text pt-1 w-100" style="height: 160px;">
-                                                    <div class="expandable-text_text">
-                                                        <div class="border-bottom pb-2 mb-4">
-                                                            <div class="d-flex align-items-center mb-3">
-                                                                <span class="text-sm me-4">پاسخ</span>
-                                                                <p class="mb-0">
-                                                                    @item.Answer
-                                                                </p>
-                                                            </div>
-                                                            <div class="d-flex align-items-center flex-grow-1 justify-content-between w-100">
-                                                                <div>
-                                                                    <span class="text-sm me-2">حسین کشاورزی</span>
-                                                                    <span class="badge badge-sm bg-info rounded-pill">خریدار</span>
-                                                                </div>
-                                                                <div>
-                                                                    <span class="me-2">
-                                                                        آیا این پاسخ برای شما مفید
-                                                                        بود؟
-                                                                    </span>
-                                                                    <button class="like-btn btn btn-success"
-                                                                            data-product-id="@Model.ProductId"
-                                                                            data-user-id="@User.GetCurrentUserId()"
-                                                                            data-action="Liked">
-                                                                        👍 لایک(<span id="dislike-count">@item.LikeCount</span>)
-                                                                    </button>
-                                                                    <button class="dislike-btn btn btn-danger"
-                                                                            data-product-id="@Model.ProductId"
-                                                                            data-user-id="@User.GetCurrentUserId()"
-                                                                            data-action="Disliked">
-                                                                        👎 دیسلایک(<span id="dislike-count">@item.DissLikeCount</span>)
-                                                                    </button>
+                                            <!-- end of comment -->
+                                        }
+                                    }
 
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="mb-5">
-                                                            <a class="link border-bottom-0" data-bs-toggle="collapse" href="#collapseAnswer01" role="button" aria-expanded="false" aria-controls="collapseAnswer01">ثبت پاسخ جدید <i class="ri-arrow-left-s-line"></i></a>
-                                                        </div>
-                                                        <div class="collapse" id="collapseAnswer01">
-                                                            <div class="rounded bg-light p-3">
-                                                                <form action="#">
-                                                                    <div class="form-element-row mb-3">
-                                                                        <label class="label">
-                                                                            به این پرسش پاسخ
-                                                                            دهید*
-                                                                        </label>
-                                                                        <textarea rows="3" class="form-control" placeholder="متن پاسخ"></textarea>
-                                                                    </div>
-                                                                    <div class="d-flex align-items-center justify-content-between flex-wrap">
-                                                                        <div class="mb-2">
-                                                                            ثبت پرسش به معنی موافقت با <a href="#" class="link border-bottom-0">
-                                                                                قوانین
-                                                                                انتشار در سایت
-                                                                            </a> است.
-                                                                        </div>
-                                                                        <div class="mb-2">
-                                                                            <button class="btn btn-sm btn-outline-danger me-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAnswer01" aria-expanded="false" aria-controls="collapseAnswer01">بستن</button>
-                                                                            <button class="btn btn-sm btn-primary">
-                                                                                ثبت
-                                                                                پاسخ
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="expandable-text-expand-btn justify-content-start text-sm">
-                                                        <span class="show-more active">
-                                                            مشاهده پاسخ های دیگر <i class="ri-arrow-down-s-line ms-2"></i>
-                                                        </span>
-                                                        <span class="show-less d-none">
-                                                            مشاهده کمتر <i class="ri-arrow-up-s-line ms-2"></i>
-                                                        </span>
-                                                    </div>
+                                </div>
+                                <!-- end of comments -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end of product-comments -->
+                    <!-- start of product-questions -->
+                    <div class="product-tab-content product-questions tab-content border-bottom pb-2 mb-4" id="scrollspyHeading5">
+                        <div class="product-tab-title mb-0">
+                            <h2>پرسش و پاسخ</h2>
+                            <h3 class="subtitle">Samsung Galaxy M31 SM-M315F/DSN Dual SIM 128GB Mobile Phone</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-4 col-md-5 mb-3">
+                                <div class="ui-sticky ui-sticky-top pt-5 z-index-0">
+                                    <!-- start of questions-sidebar -->
+                                    <div class="comments-sidebar">
+                                        <div class="border rounded p-2">
+                                            <div class="border-bottom pb-2 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
+                                                    <label class="form-check-label" for="flexCheckDefault1">
+                                                        پرسش های پاسخ داده شده
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
+                                                    <label class="form-check-label" for="flexCheckDefault2">
+                                                        پرسش های بی پاسخ
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <span>پرسش های من</span>
+                                                <div class="form-check form-switch mb-0">
+                                                    <input class="form-check-input ms-0" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault"></label>
                                                 </div>
                                             </div>
                                         </div>
-                                    }
-                                }
-
-                                <!-- end of question -->
-                                <!-- start of question -->
-                                <!-- end of question -->
+                                        <div class="mt-3">
+                                            <div class="mb-2">پرسش خود را درباره این کالا بیان کنید</div>
+                                            <button class="btn btn-block btn-outline-primary" data-remodal-target="add-question-modal">
+                                                ثبت
+                                                پرسش
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- end of questions-sidebar -->
+                                </div>
                             </div>
-                            <!-- end of questions -->
+                            <div class="col-xl-9 col-lg-8 col-md-7 pt-5">
+                                <!-- start of filter-questions -->
+                                <div class="filter-comments mb-4">
+                                    <div class="filter-comments-title me-2">
+                                        <i class="ri-list-settings-fill me-1"></i>
+                                        <span>مرتب‌سازی پرسش‌ها بر اساس:</span>
+                                    </div>
+                                    <div class="filter-comments-options">
+                                        <button class="filter-comments-option active">جدیدترین پرسش ها</button>
+                                        <button class="filter-comments-option">مفیدترین پاسخ ها</button>
+                                    </div>
+                                </div>
+                                <!-- end of filter-questions -->
+                                <!-- start of questions -->
+
+                                <div class="comments">
+                                    <!-- start of question -->
+                                    @if (Questions != null && Questions.Any())
+                                    {
+                                        @foreach (var item in Questions)
+                                        {
+                                            <div class="comment question">
+                                                <div class="comment-body border-bottom-0">
+                                                    <div class="question-title fw-bold">
+                                                        @item.Question
+                                                    </div>
+                                                </div>
+                                                <div class="comment-footer flex-column align-items-start">
+                                                    <div class="expandable-text pt-1 w-100" style="height: 160px;">
+                                                        <div class="expandable-text_text">
+                                                            <div class="border-bottom pb-2 mb-4">
+                                                                <div class="d-flex align-items-center mb-3">
+                                                                    <span class="text-sm me-4">پاسخ</span>
+                                                                    <p class="mb-0">
+                                                                        @item.Answer
+                                                                    </p>
+                                                                </div>
+                                                                <div class="d-flex align-items-center flex-grow-1 justify-content-between w-100">
+                                                                    <div>
+                                                                        <span class="text-sm me-2">حسین کشاورزی</span>
+                                                                        <span class="badge badge-sm bg-info rounded-pill">خریدار</span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <span class="me-2">
+                                                                            آیا این پاسخ برای شما مفید
+                                                                            بود؟
+                                                                        </span>
+                                                                        <button class="like-btn btn btn-success"
+                                                                                data-product-id="@Model.ProductId"
+                                                                                data-user-id="@User.GetCurrentUserId()"
+                                                                                data-action="Liked">
+                                                                            👍 لایک(<span id="dislike-count">@item.LikeCount</span>)
+                                                                        </button>
+                                                                        <button class="dislike-btn btn btn-danger"
+                                                                                data-product-id="@Model.ProductId"
+                                                                                data-user-id="@User.GetCurrentUserId()"
+                                                                                data-action="Disliked">
+                                                                            👎 دیسلایک(<span id="dislike-count">@item.DissLikeCount</span>)
+                                                                        </button>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="mb-5">
+                                                                <a class="link border-bottom-0" data-bs-toggle="collapse" href="#collapseAnswer01" role="button" aria-expanded="false" aria-controls="collapseAnswer01">ثبت پاسخ جدید <i class="ri-arrow-left-s-line"></i></a>
+                                                            </div>
+                                                            <div class="collapse" id="collapseAnswer01">
+                                                                <div class="rounded bg-light p-3">
+                                                                    <form action="#">
+                                                                        <div class="form-element-row mb-3">
+                                                                            <label class="label">
+                                                                                به این پرسش پاسخ
+                                                                                دهید*
+                                                                            </label>
+                                                                            <textarea rows="3" class="form-control" placeholder="متن پاسخ"></textarea>
+                                                                        </div>
+                                                                        <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                                                            <div class="mb-2">
+                                                                                ثبت پرسش به معنی موافقت با <a href="#" class="link border-bottom-0">
+                                                                                    قوانین
+                                                                                    انتشار در سایت
+                                                                                </a> است.
+                                                                            </div>
+                                                                            <div class="mb-2">
+                                                                                <button class="btn btn-sm btn-outline-danger me-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAnswer01" aria-expanded="false" aria-controls="collapseAnswer01">بستن</button>
+                                                                                <button class="btn btn-sm btn-primary">
+                                                                                    ثبت
+                                                                                    پاسخ
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="expandable-text-expand-btn justify-content-start text-sm">
+                                                            <span class="show-more active">
+                                                                مشاهده پاسخ های دیگر <i class="ri-arrow-down-s-line ms-2"></i>
+                                                            </span>
+                                                            <span class="show-less d-none">
+                                                                مشاهده کمتر <i class="ri-arrow-up-s-line ms-2"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+
+                                    <!-- end of question -->
+                                    <!-- start of question -->
+                                    <!-- end of question -->
+                                </div>
+                                <!-- end of questions -->
+                            </div>
                         </div>
                     </div>
+                    <!-- end of product-questions -->
                 </div>
-                <!-- end of product-questions -->
-            </div>
-            <div class="col-xl-3 col-lg-4 d-lg-block d-none">
-                <div class="ui-sticky ui-sticky-top">
-                    <!-- start of mini-buy-box -->
-                    <div class="mini-buy-box ui-box bg-transparent p-4">
-                        <div class="d-flex border-bottom pb-3 mb-3">
-                            <div class="product-thumbnail">
-                                <img src="./theme-assets/images/gallery/main.jpg" alt="product title">
-                            </div>
-                            <div class="product-details">
-                                <div class="product-title">
-                                    <h1>
-                                        گوشی موبایل اپل مدل iPhone 13 A2634 دو سیم کارت ظرفیت 128 گیگابایت و رم
-                                        4 گیگابایت
-                                    </h1>
+                <div class="col-xl-3 col-lg-4 d-lg-block d-none">
+                    <div class="ui-sticky ui-sticky-top">
+                        <!-- start of mini-buy-box -->
+                        <div class="mini-buy-box ui-box bg-transparent p-4">
+                            <div class="d-flex border-bottom pb-3 mb-3">
+                                <div class="product-thumbnail">
+                                    <img src="./theme-assets/images/gallery/main.jpg" alt="product title">
                                 </div>
-                                <div class="product-options">
-                                    <div class="product-option">
-                                        <span class="color" style="background-color: #2196f3;"></span>
-                                        <span class="color-label ms-2">آبی</span>
+                                <div class="product-details">
+                                    <div class="product-title">
+                                        <h1>
+                                            گوشی موبایل اپل مدل iPhone 13 A2634 دو سیم کارت ظرفیت 128 گیگابایت و رم
+                                            4 گیگابایت
+                                        </h1>
+                                    </div>
+                                    <div class="product-options">
+                                        <div class="product-option">
+                                            <span class="color" style="background-color: #2196f3;"></span>
+                                            <span class="color-label ms-2">آبی</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="product-features">
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="ri-store-3-line text-success me-2"></i>
-                                <span>یکتاکالا</span>
+                            <div class="product-features">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="ri-store-3-line text-success me-2"></i>
+                                    <span>یکتاکالا</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="ri-shield-check-line text-info me-2"></i>
+                                    <span>گارانتی ۱۸ ماهه آوات</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="ri-checkbox-multiple-line text-primary me-2"></i>
+                                    <span>موجود در انبار فروشنده</span>
+                                </div>
                             </div>
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="ri-shield-check-line text-info me-2"></i>
-                                <span>گارانتی ۱۸ ماهه آوات</span>
+                            <div class="product-price">
+                                <span class="price-value">۶,۵۹۹,۰۰۰</span>
+                                <span class="currency ms-1">تومان</span>
                             </div>
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="ri-checkbox-multiple-line text-primary me-2"></i>
-                                <span>موجود در انبار فروشنده</span>
+                            <a href="#" class="btn btn-block btn-primary fw-bold">
+                                افزودن به
+                                سبد خرید
+                            </a>
+                        </div>
+                        <div class="remodal remodal-sm remodal-is-initialized remodal-is-opened" data-remodal-id="add-question-modal" data-remodal-options="hashTracking: false" tabindex="-1">
+                            <div class="remodal-header">
+                                <div class="remodal-title">پرسش خود را در مورد کالا مطرح کنید</div>
+                                <button data-remodal-action="close" class="remodal-close"></button>
                             </div>
-                        </div>
-                        <div class="product-price">
-                            <span class="price-value">۶,۵۹۹,۰۰۰</span>
-                            <span class="currency ms-1">تومان</span>
-                        </div>
-                        <a href="#" class="btn btn-block btn-primary fw-bold">
-                            افزودن به
-                            سبد خرید
-                        </a>
-                    </div>
-                    <div class="remodal remodal-sm remodal-is-initialized remodal-is-opened" data-remodal-id="add-question-modal" data-remodal-options="hashTracking: false" tabindex="-1">
-                        <div class="remodal-header">
-                            <div class="remodal-title">پرسش خود را در مورد کالا مطرح کنید</div>
-                            <button data-remodal-action="close" class="remodal-close"></button>
-                        </div>
-                        <partial name="_AddQuestionToProduct" model="new QuestionAnswerViewModel{ProductId=Model.ProductId}" />
+                            <partial name="_AddQuestionToProduct" model="new QuestionAnswerViewModel{ProductId=Model.ProductId}" />
 
+                        </div>
+                        <!-- end of mini-buy-box -->
                     </div>
-                    <!-- end of mini-buy-box -->
                 </div>
             </div>
         </div>
-    </div>
-    <!-- start of notification-modal -->
-    <!-- end of notification-modal -->
-    <!-- start of add-question-modal -->
-    <!-- end of add-question-modal -->
-    <!-- start of share-modal -->
-    <!-- end of share-modal -->
-    <!-- start of quick-view-modal -->
-    <!-- end of quick-view-modal -->
+        <!-- start of notification-modal -->
+        <!-- end of notification-modal -->
+        <!-- start of add-question-modal -->
+        <!-- end of add-question-modal -->
+        <!-- start of share-modal -->
+        <!-- end of share-modal -->
+        <!-- start of quick-view-modal -->
+        <!-- end of quick-view-modal -->
     </div>
 </main>

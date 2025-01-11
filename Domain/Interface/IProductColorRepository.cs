@@ -20,7 +20,7 @@ namespace Domain.Interface
 
         Task<bool> CheckIsColorExistForProduct(int productId, string colorCode);
 
-        Task<ProductColor> GetProductColorWithid(int productColorid);
+        Task<ProductColor?> GetProductColorWithid(int? productColorid);
         Task<List<ProductColor>> GetProductColorAsync(int productId);
 
         Task<Color> GetColorById(int id);

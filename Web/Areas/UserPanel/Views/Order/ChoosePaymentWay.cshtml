@@ -1,0 +1,77 @@
+﻿@using Application.Tools
+@using Domain.ViewModel.Order
+
+
+@{
+
+    ViewData["Title"] = "PaymentOrder";
+    Layout = "_OrderLayout";
+
+
+
+    // گرفتن UserId از کوکی یا سشن
+
+    var userId = User.GetCurrentUserId();
+    var basket = ViewData["BasketDetail"] as List<BasketDetailViewModel>;
+    var basketAmount = basket.Sum(u => u.FinallPrice);
+}
+<main class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 col-lg-8 mb-lg-0 mb-4">
+                <div class="ui-box bg-white payment-methods mb-5">
+                    <div class="ui-box-title">شیوه پرداخت</div>
+                    <div class="ui-box-content">
+                        <div class="custom-radio-outline">
+                            <input type="radio" class="custom-radio-outline-input" name="checkoutPayment" id="checkoutPayment01" value="OnlinePayment">
+                            <label for="checkoutPayment01" class="custom-radio-outline-label">
+                                <span class="label">
+                                    <span class="icon"><i class="ri-secure-payment-fill"></i></span>
+                                    <span class="detail">
+                                        <span class="title">پرداخت اینترنتی</span>
+                                        <span class="subtitle">آنلاین با تمامی کارت‌های بانکی</span>
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="custom-radio-outline">
+                            <input type="radio" class="custom-radio-outline-input" name="checkoutPayment" id="checkoutPayment02" value="WalletPayment">
+                            <label for="checkoutPayment02" class="custom-radio-outline-label">
+                                <span class="label">
+                                    <span class="icon"><i class="ri-wallet-3-fill"></i></span>
+                                    <span class="detail">
+                                        <span class="title">پرداخت از طریق کیف پول</span>
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <button id="payButton" class="btn btn-primary btn-block">پرداخت</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    <script>
+        document.getElementById('payButton').addEventListener('click', function () {
+            const selectedPayment = document.querySelector('input[name="checkoutPayment"]:checked');
+            const basketAmount = @basketAmount;
+            const userId = '@userId';
+
+            if (!selectedPayment) {
+                alert('لطفاً روش پرداخت را انتخاب کنید.');
+                return;
+            }
+
+            if (selectedPayment.id === "checkoutPayment01") {
+                // پرداخت اینترنتی
+                window.location.href = `/Start-pay`;
+            } else if (selectedPayment.id === "checkoutPayment02") {
+                // پرداخت از کیف پول
+                window.location.href = `/UserPanel/Order/CheckWalletBalance?amount=${basketAmount}&userId=${userId}`;
+            }
+        });
+    </script>
+}

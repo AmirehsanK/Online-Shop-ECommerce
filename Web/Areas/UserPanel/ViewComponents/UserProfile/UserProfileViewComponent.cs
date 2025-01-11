@@ -10,11 +10,15 @@ public class UserProfileViewComponent : ViewComponent
     #region Ctor
 
     private readonly IUserService _userService;
+    private readonly ITransactionService _transactionService;
 
-    public UserProfileViewComponent(IUserService userService)
+    public UserProfileViewComponent(IUserService userService, ITransactionService transactionService)
     {
         _userService = userService;
+        _transactionService = transactionService;
     }
+
+   
 
     #endregion
 
@@ -24,7 +28,9 @@ public class UserProfileViewComponent : ViewComponent
     {
         if (User.Identity.IsAuthenticated)
         {
+            ViewData["UserBalance"] = await _transactionService.GetUserBalanceTransaction(User.GetCurrentUserId());
             ViewData["User"] = await _userService.GetUserById(User.GetCurrentUserId());
+
         }
 
         return View("UserProfile");

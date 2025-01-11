@@ -1,5 +1,6 @@
 ﻿
 
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Entities.Common;
 
@@ -11,8 +12,11 @@ namespace Domain.Entities.Account
         public int UserId { get; set; }
 
         public int Price { get; set; }
+
         public TransactionType TransactionType { get; set; }
-        public TransactionStatus TransactionStatus { get; set; }
+
+        public bool IsPay { get; set; }
+
 
         #region Relation
 
@@ -23,13 +27,11 @@ namespace Domain.Entities.Account
 
     public enum TransactionType : byte
     {
+        [Display(Name = "برداشت")]
         WithDraw,
+        [Display(Name = "واریز")]
         Deposit
     }
 
-    public enum TransactionStatus
-    {
-        Confirm,
-        NotConfirmed
-    }
+ 
 }

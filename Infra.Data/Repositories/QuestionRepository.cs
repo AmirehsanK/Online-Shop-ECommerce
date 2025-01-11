@@ -59,6 +59,7 @@ namespace Infra.Data.Repositories
                 Question = u.Question,
                 UserId = u.UserId,
                 IsClosed = u.IsClosed,
+                QuestionStatus = u.QuestionStatus,
                 IsConfimed = u.IsConfirmed,
                 Id = u.Id
             }));

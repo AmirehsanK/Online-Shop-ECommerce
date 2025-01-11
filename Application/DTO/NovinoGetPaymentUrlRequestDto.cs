@@ -36,6 +36,8 @@ namespace Application.DTO
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        public int TransActionId { get; set; }
+
         [JsonProperty("card_pan")]
         public string CardPan { get; set; }
     }

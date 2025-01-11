@@ -82,20 +82,22 @@
                             @foreach (var item in Model.Entities)
                             {
                                 <tr>
-
                                     <th scope="row">@item.Id</th>
                                     <th>@item.Question</th>
                                     <th>@item.QuestionStatus.GetDisplayName()</th>
                                     <th>@item.DateTime</th>
                                     <th>
+
                                         <a class="btn btn-waning" asp-area="Admin" asp-controller="Question" asp-action="QuestionDetail" asp-route-QuestionId="@item.Id">جزییات</a>
-                                        <a class="btn btn-waning" asp-area="Admin" asp-controller="Question" asp-action="CloseQuestion" asp-route-QuestionId="@item.Id">بستن</a>
-                                        <a class="btn btn-waning" asp-area="Admin" asp-controller="Question" asp-action="ConfirmQuestion" asp-route-QuestionId="@item.Id">تایید کردن</a>
-
+                                        @if (item.IsClosed != true)
+                                        {
+                                            <a class="btn btn-waning" asp-area="Admin" asp-controller="Question" asp-action="CloseQuestion" asp-route-QuestionId="@item.Id">بستن</a>
+                                        }
+                                        @if (item.IsConfimed != true)
+                                        {
+                                            <a class="btn btn-waning" asp-area="Admin" asp-controller="Question" asp-action="ConfirmQuestion" asp-route-QuestionId="@item.Id">تایید کردن</a>
+                                        }
                                     </th>
-
-
-
                                 </tr>
                             }
 

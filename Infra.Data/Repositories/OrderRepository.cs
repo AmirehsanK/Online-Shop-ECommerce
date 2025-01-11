@@ -11,7 +11,7 @@ namespace Infra.Data.Repositories
     {
         public async Task<Order> GetUserLatestOpenOrder(int userId)
         {
-            var Order = await context.Orders.Include(u=> u.OrderDetails).FirstOrDefaultAsync(u => u.UserId == userId&&u.PaymentDate==null);
+            var Order = await context.Orders.Include(u=> u.OrderDetails).FirstOrDefaultAsync(u => u.UserId == userId&&u.PaymentDate==null&&u.IsFinally==false);
             if (Order == null)
             {
                 var neworder = new Order()
@@ -29,10 +29,19 @@ namespace Infra.Data.Repositories
             return Order;
         }
 
-        public async Task<OrderDetail> GetExistOrderDetail(int productId, int ProductColorId)
+        public async Task<OrderDetail?> GetExistOrderDetail(int productId, int? ProductColorId,int orderid)
         {
-            return await context.OrderDetails.FirstOrDefaultAsync(u =>
-                u.ProductId == productId && u.ProductColorId == ProductColorId);
+            if (ProductColorId.HasValue)
+            {
+                return await context.OrderDetails.Where(u=>u.OrderId==orderid).FirstOrDefaultAsync(u =>
+                    u.ProductId == productId && u.ProductColorId == ProductColorId.Value);
+            }
+            else
+            {
+                 return await context.OrderDetails.Where(u=>u.OrderId==orderid).FirstOrDefaultAsync(u =>
+                    u.ProductId == productId && u.ProductColorId == null);
+            }
+           
         }
 
         public async Task AddOrder(Order order)

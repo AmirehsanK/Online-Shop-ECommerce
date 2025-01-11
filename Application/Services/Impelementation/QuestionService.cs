@@ -14,6 +14,7 @@ namespace Application.Services.Impelementation
                 Question = model.Question,
                 CreateDate = DateTime.Now,
                 IsConfirmed = false,
+                QuestionStatus = QuestionStatus.NotAnswered,
                 IsClosed = false,
                 ProductId = model.ProductId,
                 UserId = userid
@@ -62,6 +63,7 @@ namespace Application.Services.Impelementation
         {
             var Question = await questionRepository.GetQuesetionById(model.QuestionId);
             Question.Answer = model.Answer;
+            Question.QuestionStatus = QuestionStatus.Answered;
             questionRepository.Update(Question);
             await questionRepository.SaveAsync();
 
