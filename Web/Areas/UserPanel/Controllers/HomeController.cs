@@ -25,6 +25,10 @@ public class HomeController(IUserService userService,
     {
         var res = await notificationService.GetNotificationById(User.GetCurrentUserId());
         var publicMessage = await notificationService.GetpublicMessage(User.GetCurrentUserId());
+        var favoriteList = await favoritesService.GetFavoriteProductsAsync(User.GetCurrentUserId());
+
+        ViewBag.Favorites = favoriteList;
+
         switch (res)
         {
             case NotificationEnum.HasMessage:
