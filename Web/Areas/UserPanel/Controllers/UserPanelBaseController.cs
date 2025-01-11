@@ -3,7 +3,6 @@
 namespace Web.Areas.UserPanel.Controllers;
 
 [Area("UserPanel")]
-
 public class UserPanelBaseController : Controller
 {
     protected const string SuccessMessage = "Success";

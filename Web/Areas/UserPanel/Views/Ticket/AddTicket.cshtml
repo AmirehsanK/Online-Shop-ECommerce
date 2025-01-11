@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "تیکت جدید";
 }
+
 @section Scripts
 {
     <partial name="_ValidationScriptsPartial"/>
@@ -33,7 +34,8 @@
         </div>
         <div class="ui-box-content">
             <!-- start of add-ticket-form -->
-            <form asp-area="UserPanel" asp-controller="Ticket" asp-action="AddTicket" method="post" class="add-ticket-form" enctype="multipart/form-data">
+            <form asp-area="UserPanel" asp-controller="Ticket" asp-action="AddTicket" method="post"
+                  class="add-ticket-form" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-6">
                         <!-- start of form-element -->
@@ -47,24 +49,26 @@
                 </div>
                 <div class="row">
                     <!-- start of form-element -->
-                        <div class="col-md-6">
-                            <!-- start of form-element -->
-                            <div class="form-element-row mb-5">
-                                <label class="label">بخش</label>
-                                <select asp-for="Section" asp-items="@Html.GetEnumSelectList<Section>()"  class="select2" id="department">
-                              
+                    <div class="col-md-6">
+                        <!-- start of form-element -->
+                        <div class="form-element-row mb-5">
+                            <label class="label">بخش</label>
+                            <select asp-for="Section" asp-items="@Html.GetEnumSelectList<Section>()" class="select2"
+                                    id="department">
 
-                                </select>
-                            </div>
-                            <!-- end of form-element -->
+
+                            </select>
                         </div>
                         <!-- end of form-element -->
-                    
+                    </div>
+                    <!-- end of form-element -->
+
                     <div class="col-md-6">
                         <!-- start of form-element -->
                         <div class="form-element-row mb-5">
                             <label class="label">اولویت</label>
-                            <select asp-for="Priority" asp-items="@Html.GetEnumSelectList<Priority>()" class="select2"  id="priority">
+                            <select asp-for="Priority" asp-items="@Html.GetEnumSelectList<Priority>()" class="select2"
+                                    id="priority">
                             </select>
                         </div>
                         <!-- end of form-element -->
@@ -75,7 +79,8 @@
                         <!-- start of form-element -->
                         <div class="form-element-row mb-5">
                             <label asp-for="Message" class="label">پیام</label>
-                            <textarea asp-for="Message" rows="5" class="form-control" id="editor" placeholder="متن پیام"></textarea>
+                            <textarea asp-for="Message" rows="5" class="form-control" id="editor"
+                                      placeholder="متن پیام"></textarea>
                             <span asp-validation-for="Message" class="alert-danger"></span>
                         </div>
                         <!-- end of form-element -->
@@ -96,7 +101,7 @@
                                 </div>
                             </div>
                             <div class="custom-input-file">
-                                <input asp-for="Image"  type="file" class="custom-input-file-input"  id="attachment">
+                                <input asp-for="Image" type="file" class="custom-input-file-input" id="attachment">
                                 <label for="attachment" class="custom-input-file-label">
                                     <span class="label">
                                         <i class="ri-arrow-up-fill me-1"></i> انتخاب عکس یا ویدئو
@@ -104,11 +109,12 @@
                                 </label>
                             </div>
                         </div>
-                     @*    <input asp-for="Image" type="file"/> *@
+                        @*    <input asp-for="Image" type="file"/> *@
                         <!-- end of form-element -->
                     </div>
                     <div class="col-12 text-end">
-                        <button asp-area="UserPanel" asp-controller="Ticket" asp-action="AddTicket" type="submit" class="btn btn-success px-4">ثبت و ارسال <i class="ri-ball-pen-line ms-2"></i></button>
+                        <button asp-area="UserPanel" asp-controller="Ticket" asp-action="AddTicket" type="submit"
+                                class="btn btn-success px-4">ثبت و ارسال <i class="ri-ball-pen-line ms-2"></i></button>
                     </div>
                 </div>
             </form>

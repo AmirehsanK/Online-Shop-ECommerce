@@ -6,7 +6,6 @@ namespace Application.Services.Interfaces;
 
 public interface IFileHandleService
 {
-
     #region Slider Images
 
     Task<IEnumerable<Banner>> GetAllBanner();
@@ -28,5 +27,4 @@ public interface IFileHandleService
     Task<ImageEnum.Status> DeleteFixedBanner(string guid);
 
     #endregion
-
 }

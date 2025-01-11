@@ -1,16 +1,17 @@
 ﻿using Domain.Entities.Discount;
+using Domain.ViewModel.User;
 
 namespace Domain.Interface;
 
 public interface IDiscountRepository
 {
-
     #region Discount Retrieval
 
     Task<List<Discount>> GetAllAsync();
     Task<Discount?> GetByIdAsync(int id);
     Task<List<Discount>> GetActiveDiscounts();
     Task<Discount?> GetHighestDiscountForProductAsync(int productId);
+    Task<List<UserDiscountViewModel>> GetUserGiftCodesAsync(int userId);
 
     #endregion
 
@@ -33,5 +34,4 @@ public interface IDiscountRepository
     Task RemoveProductDiscountAsync(int productId, int discountId);
 
     #endregion
-
 }

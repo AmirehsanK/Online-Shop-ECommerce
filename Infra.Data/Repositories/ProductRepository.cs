@@ -8,6 +8,14 @@ namespace Infra.Data.Repositories;
 
 public class ProductRepository(ApplicationDbContext context) : IProductRepository
 {
+    #region Save Changes
+
+    public async Task SaveChangeAsync()
+    {
+        await context.SaveChangesAsync();
+    }
+
+    #endregion
 
     #region Category
 
@@ -29,9 +37,8 @@ public class ProductRepository(ApplicationDbContext context) : IProductRepositor
     public async Task<List<ProductCategory>> GetAllCategory(int? parentid = null)
     {
         if (parentid.HasValue)
-        {
-            return await context.ProductCategories.Where(u => u.ParentId == parentid && u.IsDeleted == false).ToListAsync();
-        }
+            return await context.ProductCategories.Where(u => u.ParentId == parentid && u.IsDeleted == false)
+                .ToListAsync();
         return await context.ProductCategories.Where(u => u.ParentId == null && u.IsDeleted == false).ToListAsync();
     }
 
@@ -42,7 +49,8 @@ public class ProductRepository(ApplicationDbContext context) : IProductRepositor
 
     public async Task<ProductCategory> GetBaseCategory(int CategoryId)
     {
-        return (await context.ProductCategories.Where(u => u.IsDeleted == false).FirstOrDefaultAsync(u => u.Id == CategoryId))!;
+        return (await context.ProductCategories.Where(u => u.IsDeleted == false)
+            .FirstOrDefaultAsync(u => u.Id == CategoryId))!;
     }
 
     public async Task<List<ProductCategory>> GetSubCategory(int CategoryId)
@@ -66,20 +74,12 @@ public class ProductRepository(ApplicationDbContext context) : IProductRepositor
             .Where(p => !p.IsDeleted)
             .AsQueryable();
 
-        if (filter.Inventory.HasValue)
-        {
-            query = query.Where(_ => _.Inventory == filter.Inventory);
-        }
+        if (filter.Inventory.HasValue) query = query.Where(_ => _.Inventory == filter.Inventory);
 
         if (!string.IsNullOrEmpty(filter.ProductName))
-        {
             query = query.Where(_ => _.ProductName.Contains(filter.ProductName.Trim()));
-        }
 
-        if (filter.Price.HasValue)
-        {
-            query = query.Where(_ => _.ProductName.Contains(filter.ProductName!.Trim()));
-        }
+        if (filter.Price.HasValue) query = query.Where(_ => _.ProductName.Contains(filter.ProductName!.Trim()));
 
         if (filter.StartPrice != null)
             query = query.Where(p => p.Price >= filter.StartPrice);
@@ -90,14 +90,14 @@ public class ProductRepository(ApplicationDbContext context) : IProductRepositor
         if (filter.SubCategoryId.HasValue)
             query = query.Where(u => u.Category.Id == filter.SubCategoryId);
 
-        await filter.Paging(query.Select(p => new ProductViewModel()
+        await filter.Paging(query.Select(p => new ProductViewModel
         {
             ImageName = p.ImageName,
             Id = p.Id,
             Inventory = p.Inventory,
             ProductName = p.ProductName,
             SubCategoryTitle = p.Category.Title,
-            Price = p.Price,
+            Price = p.Price
         }));
 
         return filter;
@@ -143,14 +143,4 @@ public class ProductRepository(ApplicationDbContext context) : IProductRepositor
     }
 
     #endregion
-
-    #region Save Changes
-
-    public async Task SaveChangeAsync()
-    {
-        await context.SaveChangesAsync();
-    }
-
-    #endregion
-
 }

@@ -6,10 +6,7 @@ public static class ContactUsEnum
 {
     public enum Status
     {
-        [Display(Name = "پاسخ داده شده")]
-        IsAnswered,
-        [Display(Name = "در حال بررسی")]
-        InProgress,
+        [Display(Name = "پاسخ داده شده")] IsAnswered,
+        [Display(Name = "در حال بررسی")] InProgress
     }
-
 }

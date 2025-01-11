@@ -6,13 +6,20 @@ public class ImageEnum
     {
         TopClosable,
         TopTwo,
-        LeftSliderTop,      
+        LeftSliderTop,
         LeftSliderBot,
         BotSliderRight,
         BotSliderLeft,
         BotRight,
         BotLeft
     }
+
+    public enum Status
+    {
+        Success,
+        Error
+    }
+
     public static class BannerHelper
     {
         public static string GetBannerTitle(Banner bannerType)
@@ -27,14 +34,8 @@ public class ImageEnum
                 Banner.BotSliderLeft => "پایین اسلایدر چپ",
                 Banner.BotRight => "پایین راست",
                 Banner.BotLeft => "پایین چپ",
-                _ => "Unknown Banner",
+                _ => "Unknown Banner"
             };
         }
-    }
-
-    public enum Status
-    {
-        Success,
-        Error
     }
 }

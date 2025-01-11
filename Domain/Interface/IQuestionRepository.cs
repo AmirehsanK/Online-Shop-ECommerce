@@ -5,6 +5,11 @@ namespace Domain.Interface;
 
 public interface IQuestionRepository
 {
+    #region Save Changes
+
+    Task SaveAsync();
+
+    #endregion
 
     #region Question Management
 
@@ -24,11 +29,4 @@ public interface IQuestionRepository
     void UpdateLike(QuestionLiked questionLiked);
 
     #endregion
-
-    #region Save Changes
-
-    Task SaveAsync();
-
-    #endregion
-
 }

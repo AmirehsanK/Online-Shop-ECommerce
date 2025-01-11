@@ -5,7 +5,7 @@
     ViewData["Title"] = "مدیریت بنر ها";
 }
 <div class="d-flex justify-content-start mb-3">
-    </div>
+</div>
 <div class="card">
     <h5 class="card-header">@ViewData["Title"]</h5>
     <div class="table-responsive text-nowrap">
@@ -55,7 +55,8 @@
                             }
                         </td>
                         <td>
-                            <a asp-action="Details" asp-route-Title="@banner.Title" class="btn m-1 btn-warning btn-lg"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a asp-action="Details" asp-route-Title="@banner.Title"
+                               class="btn m-1 btn-warning btn-lg"><i class="fa-solid fa-pen-to-square"></i></a>
                             <form asp-action="Delete" asp-route-title="@banner.Title" method="post" class="d-inline">
                                 <button type="submit" class="btn m-1 btn-danger btn-lg"
                                         onclick="return confirm('ایا از حذف محصول اطمنینان دارید؟');">

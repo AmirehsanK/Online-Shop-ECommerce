@@ -1,19 +1,29 @@
 ﻿using Application.Services.Interfaces;
-using Domain.Entities.Permission;
-using Domain.Interface;
 using Domain.ViewModel.Permission;
 using Domain.ViewModel.User;
-using Infra.Data.Repositories;
+using Infra.Data.Statics;
 using Microsoft.AspNetCore.Mvc;
 using Web.Attributes;
-using Infra.Data.Statics;
 
 namespace Web.Areas.Admin.Controllers;
 
 [InvokePermission(PermissionName.AccessManagement)]
 public class AccessController(IPermissionService permissionService, IUserService userService) : AdminBaseController
 {
-    
+    #region Permission
+
+    private static void MarkSelectedPermissions(List<PermissionSelectionViewModel> permissions,
+        List<int> selectedPermissionIds)
+    {
+        foreach (var permission in permissions)
+        {
+            permission.IsSelected = selectedPermissionIds.Contains(permission.PermissionId);
+            if (permission.Children.Count != 0) MarkSelectedPermissions(permission.Children, selectedPermissionIds);
+        }
+    }
+
+    #endregion
+
     #region Role
 
     [InvokePermission(PermissionName.RoleList)]
@@ -27,12 +37,9 @@ public class AccessController(IPermissionService permissionService, IUserService
     [InvokePermission(PermissionName.CreateRole)]
     public async Task<IActionResult> AddRole(string roleName)
     {
-        if (string.IsNullOrEmpty(roleName))
-        {
-            return BadRequest("نام نقش الزامی است.");
-        }
+        if (string.IsNullOrEmpty(roleName)) return BadRequest("نام نقش الزامی است.");
 
-        var role = new RolePermissionsViewModel() { RoleName = roleName };
+        var role = new RolePermissionsViewModel { RoleName = roleName };
         await permissionService.AddRoleAsync(role);
         return Ok();
     }
@@ -54,10 +61,7 @@ public class AccessController(IPermissionService permissionService, IUserService
     public async Task<IActionResult> EditRole(int id)
     {
         var role = await permissionService.GetRoleByIdAsync(id);
-        if (role == null!)
-        {
-            return NotFound();
-        }
+        if (role == null!) return NotFound();
         if (!await permissionService.CanEditOrDeleteRoleAsync(id))
         {
             TempData[ErrorMessage] = "شما مجاز به حذف این نقش نیستید.";
@@ -119,25 +123,16 @@ public class AccessController(IPermissionService permissionService, IUserService
     {
         try
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model), "Model is null.");
-            }
+            if (model == null) throw new ArgumentNullException(nameof(model), "Model is null.");
 
-            if (model.UserId == 0)
-            {
-                throw new ArgumentException("User ID is not valid.");
-            }
+            if (model.UserId == 0) throw new ArgumentException("User ID is not valid.");
 
             var selectedRoles = model.AllRoles
                 .Where(r => r.IsSelected)
                 .Select(r => r.RoleName)
                 .ToList();
 
-            if (selectedRoles == null || selectedRoles.Count == 0)
-            {
-                throw new ArgumentException("No roles selected.");
-            }
+            if (selectedRoles == null || selectedRoles.Count == 0) throw new ArgumentException("No roles selected.");
 
             await permissionService.UpdateUserRolesAsync(model.UserId, selectedRoles);
             TempData[SuccessMessage] = "نقش‌ها با موفقیت به کاربر اختصاص داده شدند.";
@@ -231,21 +226,4 @@ public class AccessController(IPermissionService permissionService, IUserService
     }
 
     #endregion
-
-    #region Permission
-
-    private static void MarkSelectedPermissions(List<PermissionSelectionViewModel> permissions, List<int> selectedPermissionIds)
-    {
-        foreach (var permission in permissions)
-        {
-            permission.IsSelected = selectedPermissionIds.Contains(permission.PermissionId);
-            if (permission.Children.Count != 0)
-            {
-                MarkSelectedPermissions(permission.Children, selectedPermissionIds);
-            }
-        }
-    }
-
-    #endregion
-    
 }

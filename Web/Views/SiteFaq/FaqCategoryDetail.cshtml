@@ -2,27 +2,28 @@
 @{
     ViewData["Title"] = "سوالات متداول";
 }
+
 @section Scripts
 {
     <script>
         document.querySelectorAll('.accordion-button').forEach(button => {
-        button.addEventListener('click', function () {
-        const targetId = this.getAttribute('data-bs-target');
-        const targetElement = document.querySelector(targetId);
+            button.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-bs-target');
+                const targetElement = document.querySelector(targetId);
 
-        // بررسی وضعیت آیتم (آیا باز است یا بسته)
-        const isOpen = targetElement.classList.contains('show');
+                // بررسی وضعیت آیتم (آیا باز است یا بسته)
+                const isOpen = targetElement.classList.contains('show');
 
-        // بستن تمامی آیتم‌ها
-        document.querySelectorAll('.accordion-collapse').forEach(item => {
-        item.classList.remove('show');
-        });
+                // بستن تمامی آیتم‌ها
+                document.querySelectorAll('.accordion-collapse').forEach(item => {
+                    item.classList.remove('show');
+                });
 
-        // اگر آیتم انتخاب‌شده بسته بود، آن را باز کن
-        if (!isOpen) {
-        targetElement.classList.add('show');
-        }
-        });
+                // اگر آیتم انتخاب‌شده بسته بود، آن را باز کن
+                if (!isOpen) {
+                    targetElement.classList.add('show');
+                }
+            });
         })
     </script>
 
@@ -48,7 +49,7 @@
                         <!-- end of search-in-questions -->
                     </div>
                 </div>
-                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Id"/>
                 <h5 class="mb-5">@Model.Title</h5>
                 <!-- start of accordion -->
                 <div class="accordion" id="accordionExample">
@@ -57,16 +58,18 @@
                     {
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="heading-@item.Id">
-                                <button class="accordion-button " type="button" data-bs-target="#collapse-@item.Id" aria-expanded="false" aria-controls="collapse-@item.Id">
+                                <button class="accordion-button " type="button" data-bs-target="#collapse-@item.Id"
+                                        aria-expanded="false" aria-controls="collapse-@item.Id">
                                     @item.Question
                                 </button>
                             </h2>
-                            <div id="collapse-@item.Id" class="accordion-collapse collapse" aria-labelledby="heading-@item.Id" data-bs-parent="#accordionExample">
+                            <div id="collapse-@item.Id" class="accordion-collapse collapse"
+                                 aria-labelledby="heading-@item.Id" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <p>
                                         @item.Description
                                     </p>
-                                    
+
                                 </div>
                             </div>
                         </div>

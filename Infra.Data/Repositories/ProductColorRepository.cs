@@ -7,6 +7,14 @@ namespace Infra.Data.Repositories;
 
 public class ProductColorRepository(ApplicationDbContext context) : IProductColorRepository
 {
+    #region Save Changes
+
+    public async Task SaveChangeAsync()
+    {
+        await context.SaveChangesAsync();
+    }
+
+    #endregion
 
     #region Color Methods
 
@@ -80,14 +88,4 @@ public class ProductColorRepository(ApplicationDbContext context) : IProductColo
     }
 
     #endregion
-
-    #region Save Changes
-
-    public async Task SaveChangeAsync()
-    {
-        await context.SaveChangesAsync();
-    }
-
-    #endregion
-
 }

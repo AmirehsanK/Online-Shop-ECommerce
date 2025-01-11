@@ -28,7 +28,7 @@ namespace Application.Services.Impelementation
         var existOrderDetail = await orderRepository.GetExistOrderDetail(productId, productColorId,openOrder.Id);
         if (existOrderDetail == null)
         {
-            var orderDetail = new OrderDetail()
+            var orderDetail = new OrderDetail
             {
                 ProductId = productId,
                 Count = count,
@@ -73,6 +73,7 @@ namespace Application.Services.Impelementation
         colorRepository.UpdateProductColor(product);
         await colorRepository.SaveChangeAsync();
     }
+
     #endregion
 
         public async Task<List<BasketDetailViewModel?>> GetBasketDetail(int userId)
@@ -114,10 +115,11 @@ namespace Application.Services.Impelementation
     
 
     #region User Address for Order
+
     public async Task<GetUserAddressForOrderViewModel> GetUserAddressForOrder(int userId)
     {
         var user = await userRepository.GetUserByIdAsync(userId);
-        var userAddress = new GetUserAddressForOrderViewModel()
+        var userAddress = new GetUserAddressForOrderViewModel
         {
             Address = user.Address!,
             FullName = user.FirstName + " " + user.LastName
@@ -132,7 +134,6 @@ namespace Application.Services.Impelementation
         userRepository.UpdateUser(user);
         await userRepository.SaveChangesAsync();
     }
-    #endregion
 
         public async Task CloseOrder(int userId, int transId)
         {

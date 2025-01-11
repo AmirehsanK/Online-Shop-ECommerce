@@ -9,7 +9,7 @@
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script>
     function onSubmit(token) {
-      document.getElementById("ContactUsForm_id").submit();
+        document.getElementById("ContactUsForm_id").submit();
     }
 </script>
 <div class="page-wrapper">
@@ -19,7 +19,7 @@
             <div class="ui-box bg-white">
                 <div class="ui-box-title fs-5 fw-bold">تماس با ما</div>
                 <div class="ui-box-subtitle flex-wrap">
-                    لطفاً پیش از ارسال ایمیل یا تماس تلفنی، ابتدا 
+                    لطفاً پیش از ارسال ایمیل یا تماس تلفنی، ابتدا
                     <a href="#" class="link mx-2">پرسش های متداول</a>
                     را مشاهده کنید.
                 </div>
@@ -28,14 +28,16 @@
                         برای پیگیری یا سوال درباره سفارش و ارسال پیام بهتر است از فرم زیر استفاده کنید.
                     </div>
                     <!-- start of contact-us-form -->
-                    <form id="ContactUsForm_id" asp-action="ContactUs" asp-controller="ContactUs" class="contact-us-form">
+                    <form id="ContactUsForm_id" asp-action="ContactUs" asp-controller="ContactUs"
+                          class="contact-us-form">
                         <div class="row">
                             <div class="col-md-6">
                                 <!-- Use ViewComponent for Subject -->
                                 <div class="form-element-row mb-5">
                                     <label class="label">موضوع</label>
                                     <select asp-for="Subject" class="select2" name="subject" id="subject">
-                                        <option value="0">انتخاب موضوع</option>T
+                                        <option value="0">انتخاب موضوع</option>
+                                        T
                                         @await Component.InvokeAsync("ContactUsSubject")
                                     </select>
                                 </div>
@@ -52,7 +54,8 @@
                                 <!-- start of form-element -->
                                 <div class="form-element-row mb-5">
                                     <label class="label">ایمیل</label>
-                                    <input asp-for="Email" type="text" class="form-control" placeholder="example@example.com">
+                                    <input asp-for="Email" type="text" class="form-control"
+                                           placeholder="example@example.com">
                                 </div>
                                 <!-- end of form-element -->
                             </div>
@@ -68,7 +71,8 @@
                                 <!-- start of form-element -->
                                 <div class="form-element-row mb-5">
                                     <label class="label">پیام</label>
-                                    <textarea asp-for="Message" rows="5" class="form-control" placeholder="متن پیام"></textarea>
+                                    <textarea asp-for="Message" rows="5" class="form-control"
+                                              placeholder="متن پیام"></textarea>
                                 </div>
                                 <!-- end of form-element -->
                             </div>
@@ -76,8 +80,8 @@
                                 <div class="btn btn-primary px-4">
                                     <button class="g-recaptcha btn btn-primary"
                                             data-sitekey="@siteKey"
-                                            data-callback='onSubmit'
-                                            data-action='submit'>
+                                            data-callback="onSubmit"
+                                            data-action="submit">
                                         ثبت و ارسال
                                     </button>
                                 </div>
@@ -94,5 +98,5 @@
 
 @section Scripts
 {
-        
+
 }

@@ -1,12 +1,10 @@
-﻿
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
-namespace Domain.ViewModel.Product.ProductGallery
+namespace Domain.ViewModel.Product.ProductGallery;
+
+public class ShowProductGalleryViewModel
 {
-    public class ShowProductGalleryViewModel
-    {
-        public int ProductId { get; set; }
+    public int ProductId { get; set; }
 
-        public List<IFormFile>? Gallery { get; set; }
-    }
+    public List<IFormFile>? Gallery { get; set; }
 }

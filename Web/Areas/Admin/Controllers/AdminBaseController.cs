@@ -7,6 +7,7 @@ public class AdminBaseController : Controller
 {
     protected const string SuccessMessage = "Success";
     protected const string ErrorMessage = "Error";
+
     protected IActionResult RedirectToRefererUrl()
     {
         var url = HttpContext.Request.Headers.Referer.ToString();

@@ -3,11 +3,14 @@
     ViewData["Title"] = "مشخصات محصول";
     var id = ViewData["ID"];
 }
+
 @section Scripts
 {
     <script src="/js/site.js"></script>
 }
-<form asp-controller="ProductSpecification" asp-action="ShowProductSpecification" asp-area="Admin" method="get" id="filter-form">
+
+<form asp-controller="ProductSpecification" asp-action="ShowProductSpecification" asp-area="Admin" method="get"
+      id="filter-form">
     <input type="hidden" name="productid" value="@id">
     <input type="hidden" asp-for="Page"/>
     <div class="card">
@@ -17,14 +20,18 @@
                 <div class="form-group has-feedback">
                     <label class="col-lg-4 control-label">جستجو بر اساس کلید سوتون</label>
                     <div class="col-lg-8">
-                        <input class="form-control" asp-for="Title"><i class="form-control-feedback" data-bv-icon-for="email" style="display: none;"></i>
+                        <input class="form-control" asp-for="Title"><i class="form-control-feedback"
+                                                                       data-bv-icon-for="email"
+                                                                       style="display: none;"></i>
 
                     </div>
                 </div>
                 <div class="form-group has-feedback">
                     <label class="col-lg-4 control-label">جستجو بر اساس مقدارها</label>
                     <div class="col-lg-8">
-                        <input class="form-control" asp-for="Value"><i class="form-control-feedback" data-bv-icon-for="email" style="display: none;"></i>
+                        <input class="form-control" asp-for="Value"><i class="form-control-feedback"
+                                                                       data-bv-icon-for="email"
+                                                                       style="display: none;"></i>
 
                     </div>
                 </div>
@@ -36,7 +43,7 @@
 
                     <th>عنوان</th>
                     <th>مقدار</th>
-                        <th>ویرایش</th>
+                    <th>ویرایش</th>
 
 
                 </tr>
@@ -50,17 +57,18 @@
                         <td>@item.Title</td>
                         <td>@item.Values</td>
                         <td>
-                                <a asp-action="EditProductSpecification" asp-controller="ProductSpecification" asp-area="Admin" asp-route-SpecificationId="@item.Id"> ویرایش</a>
+                            <a asp-action="EditProductSpecification" asp-controller="ProductSpecification"
+                               asp-area="Admin" asp-route-SpecificationId="@item.Id"> ویرایش</a>
                         </td>
 
                     </tr>
                 }
                 </tbody>
-           
+
             </table>
             <div class="row">
                 <div class="col-12">
-                    <partial name="_PagingPartial" model="@Model.GetCurrentPaging()" />
+                    <partial name="_PagingPartial" model="@Model.GetCurrentPaging()"/>
                 </div>
             </div>
         </div>

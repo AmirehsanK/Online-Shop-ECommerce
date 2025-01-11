@@ -6,7 +6,6 @@ namespace Application.Services.Interfaces;
 
 public interface IPermissionService
 {
-
     #region Permission
 
     Task<List<PermissionSelectionViewModel>> GetPermissionsHierarchyAsync();
@@ -30,5 +29,4 @@ public interface IPermissionService
     Task SoftDeleteRoleAsync(int roleId);
 
     #endregion
-
 }

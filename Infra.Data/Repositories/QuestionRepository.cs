@@ -8,6 +8,14 @@ namespace Infra.Data.Repositories;
 
 public class QuestionRepository(ApplicationDbContext context) : IQuestionRepository
 {
+    #region Save Changes
+
+    public async Task SaveAsync()
+    {
+        await context.SaveChangesAsync();
+    }
+
+    #endregion
 
     #region Question Methods
 
@@ -20,10 +28,7 @@ public class QuestionRepository(ApplicationDbContext context) : IQuestionReposit
     {
         var query = context.QuestionAnswers.AsQueryable();
 
-        if (filter.ProductId.HasValue)
-        {
-            query = query.Where(u => u.ProductId == filter.ProductId);
-        }
+        if (filter.ProductId.HasValue) query = query.Where(u => u.ProductId == filter.ProductId);
 
         switch (filter.ConfirmQuestion)
         {
@@ -49,7 +54,7 @@ public class QuestionRepository(ApplicationDbContext context) : IQuestionReposit
                 break;
         }
 
-        await filter.Paging(query.Select(u => new QuestionListViewModel()
+        await filter.Paging(query.Select(u => new QuestionListViewModel
         {
             ProductId = u.ProductId,
             DateTime = u.CreateDate,
@@ -110,14 +115,4 @@ public class QuestionRepository(ApplicationDbContext context) : IQuestionReposit
     }
 
     #endregion
-
-    #region Save Changes
-
-    public async Task SaveAsync()
-    {
-        await context.SaveChangesAsync();
-    }
-
-    #endregion
-
 }

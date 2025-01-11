@@ -1,11 +1,8 @@
-﻿
+﻿namespace Domain.ViewModel.Faq.Site;
 
-namespace Domain.ViewModel.Faq.Site
+public class FaqQuestionCategoryViewModel
 {
-    public class FaqQuestionCategoryViewModel
-    {
-        public string Question { get; set; }
+    public string Question { get; set; }
 
-        public string Answer { get; set; }
-    }
+    public string Answer { get; set; }
 }

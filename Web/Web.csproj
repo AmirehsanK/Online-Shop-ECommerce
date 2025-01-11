@@ -7,11 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\IOC\IOC.csproj" />
+        <ProjectReference Include="..\IOC\IOC.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="wwwroot\theme-assets\.DS_Store" />
+        <Content Include="wwwroot\theme-assets\.DS_Store"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -19,24 +19,24 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
-        <PackageReference Include="zarinpalsandbox" Version="2.0.4" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7"/>
+        <PackageReference Include="zarinpalsandbox" Version="2.0.4"/>
     </ItemGroup>
 
     <ItemGroup>
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\Subjects\Default.cshtml" />
-        <_ContentIncludedByDefault Remove="Views\Components\ContactUs.cshtml\Default.cshtml" />
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\BotLeftSliderBanner\Default.cshtml" />
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\BotRightBanner\Default.cshtml" />
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\BotSliderLeftBanner\Default.cshtml" />
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\BotSliderRightBanner\Default.cshtml" />
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\TopClosableBanner\Default.cshtml" />
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\TopLeftSliderBanner\Default.cshtml" />
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\TopSecondBanner\Default.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\Subjects\Default.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Components\ContactUs.cshtml\Default.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\BotLeftSliderBanner\Default.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\BotRightBanner\Default.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\BotSliderLeftBanner\Default.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\BotSliderRightBanner\Default.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\TopClosableBanner\Default.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\TopLeftSliderBanner\Default.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\TopSecondBanner\Default.cshtml"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="wwwroot\images\Banners\" />
+        <Folder Include="wwwroot\images\Banners\"/>
     </ItemGroup>
 
 </Project>

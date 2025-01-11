@@ -4,7 +4,7 @@
 
 @foreach (var item in Model.Entities)
 {
-    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4" style="width=100%" >
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4" >
         <!-- start of product-card -->
         <div class="product-card">
             <div class="product-thumbnail">
@@ -29,12 +29,13 @@
                     <div class="product-price fa-num">
                         <div class="d-flex align-items-center">
                             <del class="price-old">@item.Price</del>
-                        <span class="discount ms-2">%@item.DiscountValue</span>
+                            <span class="discount ms-2">%@item.DiscountValue</span>
+                        </div>
+                        <span class="price-now">@item.OffPrice <span class="currency">تومان</span></span>
                     </div>
-                    <span class="price-now">@item.OffPrice <span class="currency">تومان</span></span>
-                </div>
                 }
-                else{
+                else
+                {
                     <div class="product-price fa-num">
                         <span class="price-now">
                            @item.Price <span class="currency">تومان</span>
@@ -47,13 +48,20 @@
                     <div class="product-actions">
                         <ul>
                             <li>
-                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a>
+                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title=""
+                                   data-bs-original-title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i
+                                        class="ri-shopping-cart-line"></i></a>
                             </li>
                             <li>
-                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
+                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title=""
+                                   data-bs-original-title="مشاهده سریع" aria-label="مشاهده سریع"
+                                   data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
                             </li>
                             <li>
-                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a>
+                                <a href="javascript:void(0);" onclick="addToFavorites(@item.Id)" data-bs-toggle="tooltip" data-bs-placement="top"
+                                   title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی">
+                                    <i class="ri-heart-3-line"></i>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -66,5 +74,46 @@
             </div>
         </div>
         <!-- end of product-card -->
-       </div>
+    </div>
 }
+
+<!-- Modal for success message -->
+<div class="remodal remodal-xs" data-remodal-id="add-to-favorite-modal" data-remodal-options="hashTracking: false">
+    <div class="remodal-header">
+        <button data-remodal-action="close" class="remodal-close"></button>
+    </div>
+    <div class="remodal-content">
+        <div class="text-success fs-7 fw-bold mb-3">
+            کالا با موفقیت به لیست مورد علاقه اضافه شد
+        </div>
+    </div>
+    <div class="remodal-footer">
+        <button data-remodal-action="close" class="btn btn-sm btn-primary px-3">باشه</button>
+    </div>
+</div>
+
+<script>
+    function addToFavorites(productId) {
+        console.log("addToFavorites called with productId:", productId);
+
+        var token = $('input[name="__RequestVerificationToken"]').val();
+
+        $.ajax({
+            url: '/UserPanel/Home/AddFavorite',
+            type: 'POST',
+            headers: { "RequestVerificationToken": token },
+            data: { productId: productId },
+            success: function(response) {
+                console.log("Product added successfully");
+                var modal = $('[data-remodal-id="add-to-favorite-modal"]').remodal();
+                modal.open();
+            },
+            error: function(xhr, status, error) {
+                console.error("ارور:", status, error);
+                alert("کالا در حال حاضر در لیست مورد علاقه شما وجود دارد!");
+            }
+        });
+    }
+
+</script>
+

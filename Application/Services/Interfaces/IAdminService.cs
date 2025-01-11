@@ -7,6 +7,6 @@ public interface IAdminService
     #region Get Admin Panel
 
     Task<AdminPanelViewModel> GetAdminPanelAsync();
-        
+
     #endregion
 }

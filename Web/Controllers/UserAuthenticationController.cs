@@ -1,19 +1,25 @@
 using System.Security.Claims;
 using Application.Services.Interfaces;
+using Application.Tools;
 using Domain.Enums;
 using Domain.ViewModel.User;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Common;
-using NuGet.Protocol.Plugins;
-using Application.Tools;
-using System.Configuration;
 
 namespace Web.Controllers;
 
 public class UserAuthenticationController(IUserService userService, IConfiguration configuration) : SiteBaseController
 {
+    #region Logout
+
+    public async Task<IActionResult> LogOut()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return Redirect("/");
+    }
+
+    #endregion
 
     #region ForgotPassword
 
@@ -22,12 +28,13 @@ public class UserAuthenticationController(IUserService userService, IConfigurati
     {
         return View();
     }
+
     [HttpPost("ForgotPassword")]
     public async Task<IActionResult> ForgotPassword(ForgotPasswordMailUserViewModel mailViewModel)
     {
         if (!ModelState.IsValid)
             return View();
-        
+
         var result = await userService.ForgotPasswordEmailSenderAsync(mailViewModel.Email);
         switch (result)
         {
@@ -38,7 +45,7 @@ public class UserAuthenticationController(IUserService userService, IConfigurati
             case ForgetPasswordEnum.UserNotFound:
                 ViewBag.message = "حساب کاربری با این ایمیل یافت نشد";
                 return View();
-            
+
             case ForgetPasswordEnum.EmailSendFailed:
                 ViewBag.message = "خطایی رخ داده است لطفا دوباره تلاش کنید";
                 return View();
@@ -48,10 +55,11 @@ public class UserAuthenticationController(IUserService userService, IConfigurati
                 return View();
         }
     }
+
     [HttpGet("ForgetPassword/{token}")]
     public async Task<IActionResult> ForgotPasswordChangePassword(string token)
     {
-        var tokenEnum=await userService.ForgotPasswordTokenCheckerAsync(token);
+        var tokenEnum = await userService.ForgotPasswordTokenCheckerAsync(token);
         TempData["Token"] = token;
         return tokenEnum switch
         {
@@ -60,6 +68,7 @@ public class UserAuthenticationController(IUserService userService, IConfigurati
             _ => RedirectToAction("Login")
         };
     }
+
     [HttpGet("ForgetPassword")]
     public async Task<IActionResult> ForgotPasswordChanger()
     {
@@ -67,6 +76,7 @@ public class UserAuthenticationController(IUserService userService, IConfigurati
         var user = await userService.EmailActivatorAsync(token!);
         return RedirectToAction("Login");
     }
+
     [HttpPost("ForgetPassword")]
     public async Task<IActionResult> ForgotPasswordChanger(ForgetPasswordUserViewModel model)
     {
@@ -74,19 +84,9 @@ public class UserAuthenticationController(IUserService userService, IConfigurati
         TempData[SuccessMessage] = "رمز عبور با موفقیت تغییر یافت";
         return RedirectToAction("Login");
     }
-    
-    #endregion
-
-    #region Logout
-
-    public async Task<IActionResult> LogOut()
-    {
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return Redirect("/");
-    }
 
     #endregion
-    
+
     #region Login
 
     [HttpGet("Login")]
@@ -95,15 +95,14 @@ public class UserAuthenticationController(IUserService userService, IConfigurati
         if (User.Identity!.IsAuthenticated) return RedirectToAction("Index", "Home");
         return View();
     }
-    
+
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginUserViewModel login)
     {
-        
         #region Validation
 
         if (!ModelState.IsValid) return View(login);
-        
+
         var googleRecaptchaToken = Request.Form["g-recaptcha-response"].ToString();
         var secretKey = configuration["ReCaptchaSettings:SecretKey"]!;
         var verificationUrl = configuration["ReCaptchaSettings:VerificationUrl"]!;
@@ -128,14 +127,15 @@ public class UserAuthenticationController(IUserService userService, IConfigurati
             {
                 TempData[ErrorMessage] = "نام کاربری یا رمز عبور شما اشتباه است";
                 return View(login);
-            } 
+            }
             case LoginUserEnum.Success:
             {
                 var user = await userService.GetUserByEmailAsync(login.Email);
                 var claims = new List<Claim>
                 {
-                    new(ClaimTypes.Name, user.FirstName ?? "کاربر"),
+                    new(ClaimTypes.Name, user.FirstName+" "+user.LastName),
                     new(ClaimTypes.Email, user.Email),
+                    new(ClaimTypes.MobilePhone, user.PhoneNumber),
                     new(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new("IsAdmin", user.IsAdmin.ToString())
                 };
@@ -154,7 +154,7 @@ public class UserAuthenticationController(IUserService userService, IConfigurati
             case LoginUserEnum.UserNotActive:
                 TempData[ErrorMessage] = "اکانت شما غیرفعال میباشد";
                 return View(login);
-            default: 
+            default:
                 return View(login);
         }
     }
@@ -174,9 +174,8 @@ public class UserAuthenticationController(IUserService userService, IConfigurati
     [HttpPost("signup")]
     public async Task<IActionResult> SignupUser(RegisterUserViewModel register)
     {
-        
         #region Validation
-        
+
         var googleRecaptchaToken = Request.Form["g-recaptcha-response"].ToString();
         var secretKey = configuration["ReCaptchaSettings:SecretKey"]!;
         var verificationUrl = configuration["ReCaptchaSettings:VerificationUrl"]!;
@@ -186,9 +185,9 @@ public class UserAuthenticationController(IUserService userService, IConfigurati
             TempData[ErrorMessage] = "کپچا را کامل کنید";
             return View("SignUp");
         }
-        
+
         #endregion
-        
+
         var result = await userService.RegisterUserValidationAsync(register);
         switch (result)
         {
@@ -204,7 +203,7 @@ public class UserAuthenticationController(IUserService userService, IConfigurati
                 return RedirectToAction(nameof(Success));
             }
 
-            default: 
+            default:
                 return View("SignUp");
         }
     }
@@ -220,12 +219,11 @@ public class UserAuthenticationController(IUserService userService, IConfigurati
     public async Task<IActionResult> EmailActive(string emailActiveCode)
     {
         var result = await userService.EmailActivatorAsync(emailActiveCode);
-        TempData[SuccessMessage] = result == ActiveEmailEnum.Failed 
-            ? "اکانت شما با موفقیت فعال سازی شد" 
+        TempData[SuccessMessage] = result == ActiveEmailEnum.Failed
+            ? "اکانت شما با موفقیت فعال سازی شد"
             : null;
         return RedirectToAction(nameof(Login));
     }
-    
+
     #endregion
-    
 }

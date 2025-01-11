@@ -5,6 +5,11 @@ namespace Application.Services.Interfaces;
 
 public interface IProductColorService
 {
+    #region Product Color Management
+
+    Task<ProductExistColor> AddColorToProduct(AddProductColorViewModel productColor, int productid);
+
+    #endregion
 
     #region Color Management
 
@@ -13,11 +18,4 @@ public interface IProductColorService
     Task DeleteColorAsync(int colorId);
 
     #endregion
-
-    #region Product Color Management
-
-    Task<ProductExistColor> AddColorToProduct(AddProductColorViewModel productColor, int productid);
-
-    #endregion
-
 }

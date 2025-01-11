@@ -8,6 +8,14 @@ namespace Infra.Data.Repositories;
 
 public class ProductSpecificationRepository(ApplicationDbContext context) : IProductSpecificationRepository
 {
+    #region Save Changes
+
+    public async Task SaveChangeAsync()
+    {
+        await context.SaveChangesAsync();
+    }
+
+    #endregion
 
     #region Specification Methods
 
@@ -28,24 +36,19 @@ public class ProductSpecificationRepository(ApplicationDbContext context) : IPro
             .ToListAsync();
     }
 
-    public async Task<FilterProductSpecification> GetProductSpecification(int productid, FilterProductSpecification filter)
+    public async Task<FilterProductSpecification> GetProductSpecification(int productid,
+        FilterProductSpecification filter)
     {
         var query = context.ProductSpecifications
             .Include(u => u.Product)
             .Where(u => u.ProductId == productid)
             .AsQueryable();
 
-        if (!string.IsNullOrEmpty(filter.Title))
-        {
-            query = query.Where(u => u.Key.Contains(filter.Title.Trim()));
-        }
+        if (!string.IsNullOrEmpty(filter.Title)) query = query.Where(u => u.Key.Contains(filter.Title.Trim()));
 
-        if (!string.IsNullOrEmpty(filter.Value))
-        {
-            query = query.Where(u => u.Value.Contains(filter.Value.Trim()));
-        }
+        if (!string.IsNullOrEmpty(filter.Value)) query = query.Where(u => u.Value.Contains(filter.Value.Trim()));
 
-        await filter.Paging(query.Select(p => new ShowProductSpecificationViewModel()
+        await filter.Paging(query.Select(p => new ShowProductSpecificationViewModel
         {
             ProductId = productid,
             Values = p.Value,
@@ -62,14 +65,4 @@ public class ProductSpecificationRepository(ApplicationDbContext context) : IPro
     }
 
     #endregion
-
-    #region Save Changes
-
-    public async Task SaveChangeAsync()
-    {
-        await context.SaveChangesAsync();
-    }
-
-    #endregion
-
 }

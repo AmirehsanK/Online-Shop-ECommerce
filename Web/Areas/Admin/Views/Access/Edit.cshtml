@@ -7,7 +7,7 @@
 <h2>@ViewData["Title"]</h2>
 
 <form asp-action="EditRole" asp-controller="Access" asp-area="Admin" method="post">
-    <input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="UserId"/>
 
     <div class="form-group">
         <label>نام کاربری: @Model.UserName</label>
@@ -18,8 +18,8 @@
         @foreach (var role in Model.AllRoles)
         {
             <div class="form-check">
-                <input type="checkbox" name="SelectedRoles" value="@role" 
-                       @(Model.AssignedRoles.Contains(role) ? "checked" : "") />
+                <input type="checkbox" name="SelectedRoles" value="@role"
+                       @(Model.AssignedRoles.Contains(role) ? "checked" : "")/>
                 <label class="form-check-label">@role</label>
             </div>
         }

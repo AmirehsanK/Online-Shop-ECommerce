@@ -9,7 +9,7 @@
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script>
     function onSubmit(token) {
-      document.getElementById("RegisterForm_id").submit();
+        document.getElementById("RegisterForm_id").submit();
     }
 </script>
 <div class="page-wrapper">
@@ -21,7 +21,8 @@
             <!-- start of auth-box -->
             <div class="auth-box ui-box">
                 <!-- start of auth-form -->
-                <form id="RegisterForm_id" asp-action="SignupUser" asp-controller="UserAuthentication" method="post" class="auth-form">
+                <form id="RegisterForm_id" asp-action="SignupUser" asp-controller="UserAuthentication" method="post"
+                      class="auth-form">
                     <!-- start of form-element -->
                     <div class="form-element-row mb-5">
                         <input asp-for="FirstName" type="text" class="form-control" placeholder="نام">
@@ -52,8 +53,8 @@
                     <div class="form-element-row mb-3">
                         <button class="g-recaptcha btn btn-primary"
                                 data-sitekey="@siteKey"
-                                data-callback='onSubmit'
-                                data-action='submit'>
+                                data-callback="onSubmit"
+                                data-action="submit">
                             ثبت نام
                         </button>
                     </div>

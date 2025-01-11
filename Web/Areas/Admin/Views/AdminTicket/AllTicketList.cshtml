@@ -10,76 +10,81 @@
     <div class="table-responsive text-nowrap">
         <table class="table">
             <thead class="table-light">
-                <tr>
-                    <th>کد</th>
-                    <th>زمان ایجاد</th>
-                    <th>بخش</th>
-                    <th>موضوع</th>
-                    <th>وضعیت</th>
-                    <th>اولویت</th>
-                    <th>آخرین برزورسانی</th>
-                    <th>عملیات</th>
+            <tr>
+                <th>کد</th>
+                <th>زمان ایجاد</th>
+                <th>بخش</th>
+                <th>موضوع</th>
+                <th>وضعیت</th>
+                <th>اولویت</th>
+                <th>آخرین برزورسانی</th>
+                <th>عملیات</th>
 
 
-                </tr>
+            </tr>
             </thead>
-            @if (Model != null && Model.Any())
+            @if (Model != null! && Model.Any())
             {
                 <tbody class="table-border-bottom-0">
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@item.Ticketid</td>
-                            <td>@item.CreateDate.ToShamsi() @item.CreateDate.ToString("hh:mm:ss")</td>
-                            <td>
-                                @item.Section.GetDisplayName()
-                            </td>
-                            <td>@item.Title</td>
-                            <td>
-                                @if (item.Status == TicketsEnum.Status.IsAnswered)
-                                {
-                                    <span class="badge bg-success rounded-pill">پاسخ داده
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Ticketid</td>
+                        <td>@item.CreateDate.ToShamsi() @item.CreateDate.ToString("hh:mm:ss")</td>
+                        <td>
+                            @item.Section.GetDisplayName()
+                        </td>
+                        <td>@item.Title</td>
+                        <td>
+                            @if (item.Status == TicketsEnum.Status.IsAnswered)
+                            {
+                                <span class="badge bg-success rounded-pill">پاسخ داده
                                         شد</span>
-                                }else if (item.Status==TicketsEnum.Status.InProgress)
-                                {
-                                    <span class="badge bg-warning rounded-pill">در حال
+                            }
+                            else if (item.Status == TicketsEnum.Status.InProgress)
+                            {
+                                <span class="badge bg-warning rounded-pill">در حال
                                         بررسی</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-danger rounded-pill">بسته</span>
-                                }
-                            </td>
-                            <td>
-                                @if (item.Priority == TicketsEnum.Priority.Normal)
-                                {
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger rounded-pill">بسته</span>
+                            }
+                        </td>
+                        <td>
+                            @switch (item.Priority)
+                            {
+                                case TicketsEnum.Priority.Normal:
                                     <span class="badge bg-success rounded-pill"> عادی
-                                    </span>
-                                }else if (item.Priority==TicketsEnum.Priority.Important)
-                                {
+                                        </span>
+                                    break;
+                                case TicketsEnum.Priority.Important:
                                     <span class="badge bg-warning rounded-pill"> مهم
-                                    </span>
-                                }
-                                else
-                                {
+                                        </span>
+                                    break;
+                                default:
                                     <span class="badge bg-danger rounded-pill">خیلی مهم</span>
-                                }
-                            </td>
+                                    break;
+                            }
+                        </td>
 
-                            <td>
-                                @item.UpdateDate.ToShamsi() @item.UpdateDate.ToString("hh:mm:ss")
-                            </td>
-                            <td>
+                        <td>
+                            @item.UpdateDate.ToShamsi() @item.UpdateDate.ToString("hh:mm:ss")
+                        </td>
+                        <td>
 
 
-                                <a asp-area="Admin" asp-action="AnswerTicket" asp-controller="AdminTicket" asp-route-TicketId="@item.Ticketid" class="btn m-1 btn-success"><i class="fa-solid fa-comments"></i></a>
-                                <a asp-area="Admin" asp-action="CloseTicket" asp-controller="AdminTicket" asp-route-TicketId="@item.Ticketid" as class="btn m-1 btn-danger"><i class="fa-solid fa-rectangle-xmark"></i></a>
+                            <a asp-area="Admin" asp-action="AnswerTicket" asp-controller="AdminTicket"
+                               asp-route-TicketId="@item.Ticketid" class="btn m-1 btn-success"><i
+                                    class="fa-solid fa-comments"></i></a>
+                            <a asp-area="Admin" asp-action="CloseTicket" asp-controller="AdminTicket"
+                               asp-route-TicketId="@item.Ticketid" as class="btn m-1 btn-danger"><i
+                                    class="fa-solid fa-rectangle-xmark"></i></a>
 
-                            </td>
-                        </tr>
-
-                    }
-                    <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 310px;"></div>
+                        </td>
+                    </tr>
+                }
+                <div class="ps__thumb-y ticket-div" tabindex="0"></div>
 
 
                 </tbody>

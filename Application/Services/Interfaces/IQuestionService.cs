@@ -5,7 +5,6 @@ namespace Application.Services.Interfaces;
 
 public interface IQuestionService
 {
-
     #region Question Management
 
     Task AddNewQuestionToProduct(QuestionAnswerViewModel model, int userid);
@@ -18,5 +17,4 @@ public interface IQuestionService
     Task ConfirmToShow(int questionId);
 
     #endregion
-
 }

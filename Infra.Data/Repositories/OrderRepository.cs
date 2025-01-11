@@ -7,6 +7,14 @@ namespace Infra.Data.Repositories;
 
 public class OrderRepository(ApplicationDbContext context) : IOrderRepository
 {
+    #region Save Changes
+
+    public async Task Save()
+    {
+        await context.SaveChangesAsync();
+    }
+
+    #endregion
 
     #region Order Methods
 
@@ -18,7 +26,7 @@ public class OrderRepository(ApplicationDbContext context) : IOrderRepository
 
         if (order != null) return order;
 
-        var newOrder = new Order()
+        var newOrder = new Order
         {
             CreateDate = DateTime.Now,
             IsDeleted = false,
@@ -79,14 +87,4 @@ public class OrderRepository(ApplicationDbContext context) : IOrderRepository
     }
 
     #endregion
-
-    #region Save Changes
-
-    public async Task Save()
-    {
-        await context.SaveChangesAsync();
-    }
-
-    #endregion
-
 }

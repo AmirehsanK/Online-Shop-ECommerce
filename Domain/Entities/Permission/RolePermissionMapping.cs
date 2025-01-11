@@ -14,11 +14,10 @@ public class RolePermissionMapping(int roleId, int permissionId) : BaseEntity
     #endregion
 
     #region Relations
-    [ForeignKey(nameof(RoleId))]
-    public Role Role { get; set; }
 
-    [ForeignKey(nameof(PermissionId))]
-    public Permission Permission { get; set; }
-    
+    [ForeignKey(nameof(RoleId))] public Role Role { get; set; }
+
+    [ForeignKey(nameof(PermissionId))] public Permission Permission { get; set; }
+
     #endregion
 }

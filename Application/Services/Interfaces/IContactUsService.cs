@@ -6,7 +6,6 @@ namespace Application.Services.Interfaces;
 
 public interface IContactUsService
 {
-    
     #region Subject Management
 
     Task<List<Subject>> GetSubjectsAsync();
@@ -27,5 +26,4 @@ public interface IContactUsService
     Task AddMessage(ContactMessageDto dto);
 
     #endregion
-    
 }

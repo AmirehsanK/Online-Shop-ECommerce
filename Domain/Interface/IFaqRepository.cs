@@ -4,6 +4,11 @@ namespace Domain.Interface;
 
 public interface IFaqRepository
 {
+    #region Save Changes
+
+    Task SaveChangeAsync();
+
+    #endregion
 
     #region Faq Category Management
 
@@ -24,11 +29,4 @@ public interface IFaqRepository
     void UpdateListQuestion(List<FaqQuestion> list);
 
     #endregion
-
-    #region Save Changes
-
-    Task SaveChangeAsync();
-
-    #endregion
-
 }

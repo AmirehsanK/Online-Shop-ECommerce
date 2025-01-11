@@ -4,6 +4,11 @@ namespace Domain.Interface;
 
 public interface INotificationRepository
 {
+    #region Save Changes
+
+    Task SaveChangesAsync();
+
+    #endregion
 
     #region Notification Management
 
@@ -13,11 +18,4 @@ public interface INotificationRepository
     Task<Notification> GetPublicNotification(int userid);
 
     #endregion
-
-    #region Save Changes
-
-    Task SaveChangesAsync();
-
-    #endregion
-
 }

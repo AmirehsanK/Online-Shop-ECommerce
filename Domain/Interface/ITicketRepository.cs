@@ -4,6 +4,11 @@ namespace Domain.Interface;
 
 public interface ITicketRepository
 {
+    #region Save Changes
+
+    Task SaveChangeAsync();
+
+    #endregion
 
     #region Ticket Management
 
@@ -24,11 +29,4 @@ public interface ITicketRepository
     Task<List<TicketsMessage>> GetMessages(int ticketid);
 
     #endregion
-
-    #region Save Changes
-
-    Task SaveChangeAsync();
-
-    #endregion
-
 }

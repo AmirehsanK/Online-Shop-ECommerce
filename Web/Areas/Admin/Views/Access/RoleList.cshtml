@@ -4,7 +4,7 @@
     ViewData["Title"] = "لیست نقش‌ها";
 }
 
-<br />
+<br/>
 
 <!-- Table to display roles -->
 <div class="card">
@@ -29,8 +29,9 @@
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
                             <form asp-action="DeleteRole" method="post" class="d-inline">
-                                <input type="hidden" name="id" value="@role.Id" />
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('آیا از حذف این نقش مطمئن هستید؟')">
+                                <input type="hidden" name="id" value="@role.Id"/>
+                                <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('آیا از حذف این نقش مطمئن هستید؟')">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </form>
@@ -46,14 +47,15 @@
         </table>
     </div>
 </div>
-<br />
+<br/>
 <!-- Button to open the modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRoleModal">
     افزودن نقش
 </button>
 
 <!-- Add Role Modal -->
-<div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -67,7 +69,7 @@
                     @Html.AntiForgeryToken() <!-- Anti-forgery token -->
                     <div class="form-group">
                         <label for="roleName">نام نقش</label>
-                        <input type="text" class="form-control" id="roleName" name="roleName" required />
+                        <input type="text" class="form-control" id="roleName" name="roleName" required/>
                     </div>
                 </form>
             </div>
@@ -80,7 +82,7 @@
 </div>
 
 @section Scripts {
-    
+
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
@@ -95,7 +97,7 @@
                 const token = $('input[name="__RequestVerificationToken"]').val();
 
                 $.ajax({
-                    url: "/Admin/Access/AddRole", 
+                    url: "/Admin/Access/AddRole",
                     type: "POST",
                     data: {
                         roleName: roleName,

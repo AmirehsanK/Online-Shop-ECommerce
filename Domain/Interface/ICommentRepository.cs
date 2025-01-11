@@ -5,6 +5,11 @@ namespace Domain.Interface;
 
 public interface ICommentRepository
 {
+    #region Comment Interaction
+
+    Task LikeCommentAsync(int commentId, string userIp, bool isLike);
+
+    #endregion
 
     #region Comment Retrieval
 
@@ -14,6 +19,7 @@ public interface ICommentRepository
     Task<int> GetCommentLikesByIdAsync(int commentId);
     Task<int> GetCommentDislikesByIdAsync(int commentId);
     Task<Comment> GetCommentByIdAsync(int id);
+    Task<List<Comment>> GetCommentsByUserIdAsync(int userId);
 
     #endregion
 
@@ -24,11 +30,4 @@ public interface ICommentRepository
     Task DeleteComment(Comment comment);
 
     #endregion
-
-    #region Comment Interaction
-
-    Task LikeCommentAsync(int commentId, string userIp, bool isLike);
-
-    #endregion
-
 }

@@ -12,19 +12,21 @@
         <div class="row mb-3">
             <div class="col-md-12">
                 <p>فیلتر نظرات:</p>
-                <a asp-action="CommentList" asp-controller="Comment" asp-area="Admin" asp-route-filterModel="notApproved" class="btn @(Model.Filter == "notApproved" ? "btn-primary" : "btn-outline-primary")">
+                <a asp-action="CommentList" asp-controller="Comment" asp-area="Admin"
+                   asp-route-filterModel="notApproved"
+                   class="btn @(Model.Filter == "notApproved" ? "btn-primary" : "btn-outline-primary")">
                     کامنت‌های تایید نشده
                 </a>
-                <a asp-action="CommentList" asp-controller="Comment" asp-area="Admin" asp-route-filterModel="approved" class="btn @(Model.Filter == "approved" ? "btn-primary" : "btn-outline-primary")">
+                <a asp-action="CommentList" asp-controller="Comment" asp-area="Admin" asp-route-filterModel="approved"
+                   class="btn @(Model.Filter == "approved" ? "btn-primary" : "btn-outline-primary")">
                     کامنت‌های تایید شده
                 </a>
-                <a asp-action="CommentList" asp-controller="Comment" asp-area="Admin" asp-route-filterModel="all" class="btn @(Model.Filter == "all" ? "btn-primary" : "btn-outline-primary")">
+                <a asp-action="CommentList" asp-controller="Comment" asp-area="Admin" asp-route-filterModel="all"
+                   class="btn @(Model.Filter == "all" ? "btn-primary" : "btn-outline-primary")">
                     همه کامنت‌ها
                 </a>
             </div>
         </div>
-
-
 
         <!-- Comments Table -->
         @if (Model.Entities.Count == 0)
@@ -55,9 +57,10 @@
                             <td>
                                 @if (!comment.IsApproved)
                                 {
-                                    <form asp-action="Approve" asp-controller="Comment" asp-area="Admin" method="post" class="d-inline">
+                                    <form asp-action="Approve" asp-controller="Comment" asp-area="Admin" method="post"
+                                          class="d-inline">
                                         @Html.AntiForgeryToken()
-                                        <input type="hidden" name="id" value="@comment.Id" />
+                                        <input type="hidden" name="id" value="@comment.Id"/>
                                         <button type="submit" class="btn btn-success">تایید</button>
                                     </form>
                                 }
@@ -75,11 +78,13 @@
             <div>
                 @if (Model.Page > 1)
                 {
-                    <a asp-action="CommentList" asp-route-Page="@(Model.Page - 1)" asp-route-Filter="@Model.Filter" class="btn btn-primary">قبلی</a>
+                    <a asp-action="CommentList" asp-route-Page="@(Model.Page - 1)" asp-route-Filter="@Model.Filter"
+                       class="btn btn-primary">قبلی</a>
                 }
                 @if (Model.Page < Model.PageCount)
                 {
-                    <a asp-action="CommentList" asp-route-Page="@(Model.Page + 1)" asp-route-Filter="@Model.Filter" class="btn btn-primary">بعدی</a>
+                    <a asp-action="CommentList" asp-route-Page="@(Model.Page + 1)" asp-route-Filter="@Model.Filter"
+                       class="btn btn-primary">بعدی</a>
                 }
             </div>
         </div>

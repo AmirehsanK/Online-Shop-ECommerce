@@ -8,19 +8,16 @@ namespace Application.Services.Impelementation;
 
 public class ProductColorService(IProductColorRepository productColorRepository) : IProductColorService
 {
-
     #region AddNewColor
 
     public async Task AddNewColor(CreateProductColorViewModel color)
     {
-         
-        var newColor = new Color()
+        var newColor = new Color
         {
             CreateDate = DateTime.Now,
             Title = color.Title,
             IsDeleted = false,
-            ColorCode = color.ColorCode,
-
+            ColorCode = color.ColorCode
         };
         await productColorRepository.AddColorAsync(newColor);
         await productColorRepository.SaveChangeAsync();
@@ -34,9 +31,8 @@ public class ProductColorService(IProductColorRepository productColorRepository)
     {
         var colors = await productColorRepository.GetAllColorAsync();
 
-        return colors.Select(u => new ColorListViewModel()
+        return colors.Select(u => new ColorListViewModel
         {
-
             CreateDate = u.CreateDate,
             Title = u.Title,
             ColorCode = u.ColorCode,
@@ -60,14 +56,12 @@ public class ProductColorService(IProductColorRepository productColorRepository)
 
     #region AddColorToProduct
 
-    public async Task<ProductExistColor> AddColorToProduct(AddProductColorViewModel productColor,int productid)
+    public async Task<ProductExistColor> AddColorToProduct(AddProductColorViewModel productColor, int productid)
     {
         var color = await productColorRepository.GetColorById(productColor.Colorid);
         if (await productColorRepository.CheckIsColorExistForProduct(productid, color.ColorCode))
-        {
             return ProductExistColor.Exist;
-        }
-        var newProductColor = new ProductColor()
+        var newProductColor = new ProductColor
         {
             CreateDate = DateTime.Now,
             ColorId = productColor.Colorid,
@@ -82,5 +76,4 @@ public class ProductColorService(IProductColorRepository productColorRepository)
     }
 
     #endregion
-  
 }

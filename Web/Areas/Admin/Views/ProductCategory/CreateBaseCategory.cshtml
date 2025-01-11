@@ -3,8 +3,9 @@
 @section Scripts{
     <partial name="_ValidationScriptsPartial"/>
 }
+
 <form asp-area="Admin" asp-controller="ProductCategory" asp-action="CreateBaseCategory" method="post">
-    <input type="hidden" />
+    <input type="hidden"/>
     <div class="col-xl-6">
         <!-- HTML5 Inputs -->
         <div class="card mb-4">
@@ -17,7 +18,9 @@
                         <span asp-validation-for="Title" class="alert-danger"></span>
                     </div>
                 </div>
-                <button asp-area="Admin" asp-controller="ProductCategory" asp-action="CreateBaseCategory"  type="submit" class="btn btn-primary">ثبت</button>
+                <button asp-area="Admin" asp-controller="ProductCategory" asp-action="CreateBaseCategory" type="submit"
+                        class="btn btn-primary">ثبت
+                </button>
             </div>
         </div>
     </div>

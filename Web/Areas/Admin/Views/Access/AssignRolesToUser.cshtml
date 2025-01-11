@@ -16,22 +16,22 @@
         <!-- Selected User Info -->
         <div id="selectedUserInfo" class="mb-3" style="display: none;">
             <h5>کاربر انتخاب شده: <span id="selectedUserName"></span></h5>
-            <input type="hidden" id="selectedUserId" name="UserId" />
+            <input type="hidden" id="selectedUserId" name="UserId"/>
         </div>
 
         <!-- Roles List -->
         <form asp-action="AssignRolesToUser" method="post">
-            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="UserId"/>
             <div class="form-group">
                 <label>نقش‌ها:</label>
                 @if (Model.AllRoles != null && Model.AllRoles.Any())
                 {
-                    for (int i = 0; i < Model.AllRoles.Count; i++)
+                    for (var i = 0; i < Model.AllRoles.Count; i++)
                     {
                         <div class="form-check">
-                            <input type="hidden" asp-for="@Model.AllRoles[i].RoleId" />
-                            <input type="hidden" asp-for="@Model.AllRoles[i].RoleName" />
-                            <input class="form-check-input" type="checkbox" asp-for="@Model.AllRoles[i].IsSelected" />
+                            <input type="hidden" asp-for="@Model.AllRoles[i].RoleId"/>
+                            <input type="hidden" asp-for="@Model.AllRoles[i].RoleName"/>
+                            <input class="form-check-input" type="checkbox" asp-for="@Model.AllRoles[i].IsSelected"/>
                             <label class="form-check-label" asp-for="@Model.AllRoles[i].IsSelected">
                                 @Model.AllRoles[i].RoleName
                             </label>
@@ -49,7 +49,8 @@
 </div>
 
 <!-- User Selection Modal -->
-<div class="modal fade" id="userSelectionModal" tabindex="-1" aria-labelledby="userSelectionModalLabel" aria-hidden="true">
+<div class="modal fade" id="userSelectionModal" tabindex="-1" aria-labelledby="userSelectionModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -59,23 +60,25 @@
             <div class="modal-body">
                 <table class="table">
                     <thead>
-                        <tr>
-                            <th>نام کاربری</th>
-                            <th>ایمیل</th>
-                            <th>عملیات</th>
-                        </tr>
+                    <tr>
+                        <th>نام کاربری</th>
+                        <th>ایمیل</th>
+                        <th>عملیات</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        @foreach (var user in ViewBag.Users)
-                        {
-                            <tr>
-                                <td>@user.UserName</td>
-                                <td>@user.Email</td>
-                                <td>
-                                    <button type="button" class="btn btn-primary btn-sm" onclick="selectUser(@user.UserId, '@user.UserName')">انتخاب</button>
-                                </td>
-                            </tr>
-                        }
+                    @foreach (var user in ViewBag.Users)
+                    {
+                        <tr>
+                            <td>@user.UserName</td>
+                            <td>@user.Email</td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm"
+                                        onclick="selectUser(@user.UserId, '@user.UserName')">انتخاب
+                                </button>
+                            </td>
+                        </tr>
+                    }
                     </tbody>
                 </table>
             </div>

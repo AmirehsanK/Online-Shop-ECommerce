@@ -1,9 +1,6 @@
-﻿
+﻿namespace Domain.ViewModel.Product.ProductColor;
 
-namespace Domain.ViewModel.Product.ProductColor
+public class ProductColorViewModel
 {
-    public class ProductColorViewModel
-    {
-        public string ColorCode { get; set; }
-    }
+    public string ColorCode { get; set; }
 }

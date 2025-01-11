@@ -1,0 +1,335 @@
+﻿@using Application.Tools
+@using Domain.ViewModel.Order
+@{
+    ViewData["Title"] = "PaymentOrder";
+    Layout = "_OrderLayout";
+    var basket = ViewData["BasketDetail"] as List<BasketDetailViewModel>;
+}
+<main class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 col-lg-8 mb-lg-0 mb-4">
+                <!-- start of box => payment-methods -->
+                <div class="ui-box bg-white payment-methods mb-5">
+                    <div class="ui-box-title">شیوه پرداخت</div>
+                    <div class="ui-box-content">
+                        <!-- start of custom-radio-outline -->
+                        <div class="custom-radio-outline">
+                            <input type="radio" class="custom-radio-outline-input" name="checkoutPayment"
+                                   id="checkoutPayment01">
+                            <label for="checkoutPayment01" class="custom-radio-outline-label">
+                                <span class="label">
+                                    <span class="icon"><i class="ri-secure-payment-fill"></i></span>
+                                    <span class="detail">
+                                        <span class="title">پرداخت اینترنتی</span>
+                                        <span class="subtitle">آنلاین با تمامی کارت‌های بانکی</span>
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+                        <!-- end of custom-radio-outline -->
+                        <!-- start of custom-radio-outline -->
+                        <div class="custom-radio-outline">
+                            <input type="radio" class="custom-radio-outline-input" name="checkoutPayment"
+                                   id="checkoutPayment02">
+                            <label for="checkoutPayment02" class="custom-radio-outline-label">
+                                <span class="label">
+                                    <span class="icon"><i class="ri-wallet-3-fill"></i></span>
+                                    <span class="detail">
+                                        <span class="title">پرداخت از طریق کیف پول</span>
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+                        <!-- end of custom-radio-outline -->
+                        <!-- start of custom-radio-outline -->
+
+                        <!-- end of custom-radio-outline -->
+                    </div>
+                </div>
+                <!-- end of box => payment-methods -->
+                <!-- start of box => coupon-gift -->
+                <div class="ui-box bg-white mb-5">
+                    <div class="ui-box-title">تخفیف و کارت هدیه</div>
+                    <div class="ui-box-content">
+                        <div class="coupon-gift--container">
+                            <!-- start of coupon -->
+                            <div class="coupon">
+                                <!-- start of coupon-form -->
+                                <form action="#" class="coupon-form">
+                                    <!-- start of form-element -->
+                                    <div class="form-element-row with-btn">
+                                        <input type="text" class="form-control" placeholder="افزودن کد تخفیف">
+                                        <button class="btn btn-primary">ثبت</button>
+                                    </div>
+                                    <!-- end of form-element -->
+                                </form>
+                                <!-- end of coupon-form -->
+                            </div>
+                            <!-- end of coupon -->
+                            <!-- start of divider -->
+                            <div class="divider-container">
+                                <span class="divider"></span>
+                            </div>
+                            <!-- end of divider -->
+                            <!-- start of gift -->
+                            <div class="gift">
+                                <!-- start of gift-form -->
+                                <form action="#" class="coupon-form">
+                                    <!-- start of form-element -->
+                                    <div class="form-element-row with-btn">
+                                        <input type="text" class="form-control" placeholder="افزودن کارت هدیه">
+                                        <button class="btn btn-primary">ثبت</button>
+                                    </div>
+                                    <!-- end of form-element -->
+                                </form>
+                                <!-- end of gift-form -->
+                            </div>
+                            <!-- end of gift -->
+                        </div>
+                    </div>
+                </div>
+                <!-- end of box => coupon-gift -->
+                <div class="ui-box bg-white mb-3">
+                    <div class="ui-box-title">خلاصه سفارش</div>
+                    <div class="ui-box-content">
+                        <!-- start of nav-tabs -->
+                        <nav>
+                            <div class="nav nav-tabs fa-num" id="shipping-type" role="tablist">
+                                <button class="nav-link fs-6 fw-bold active" id="shipping-type-1-tab"
+                                        data-bs-toggle="tab" data-bs-target="#shipping-type-1" type="button" role="tab"
+                                        aria-controls="shipping-type-1" aria-selected="true">
+                                    <span class="d-flex flex-column align-items-start">
+                                        <span class="d-flex align-items-center">مرسوله 1</span>
+                                    </span>
+                                </button>
+
+                            </div>
+                        </nav>
+                        <!-- end of nav-tabs -->
+                        <!-- start of tab-content -->
+                        <div class="tab-content" id="shipping-type-tabContent">
+                            <!-- start of tab-pane -->
+                            <div class="tab-pane py-4 fade show active" id="shipping-type-1" role="tabpanel"
+                                 aria-labelledby="shipping-type-1">
+                                <!-- start of checkout-pack -->
+                                <div class="checkout-pack">
+                                    <div class="checkout-pack-header fa-num">
+                                        <div class="checkout-pack-title">
+                                            <span class="fs-7 text-muted">
+                                                مبلغ
+                                                مرسوله:
+                                            </span> <span>@basket.Sum(u => u.FinallPrice) <span
+                                                    class="currency">تومان</span></span>
+                                        </div>
+                                        <div class="checkout-pack-detail">
+                                            <span>۳ کالا</span>
+                                            <span class="divider"></span>
+                                            <span>تامین کالا از ۱ روز کاری آینده</span>
+                                        </div>
+                                        <div class="checkout-pack-subtitle">
+                                            <i class="ri-truck-fill icon"></i>
+                                            ارسال عادی
+                                        </div>
+                                    </div>
+                                    <div class="checkout-pack-content">
+                                        <!-- Slider main container -->
+                                        <div
+                                            class="swiper checkout-pack-swiper-slider mb-5 swiper-initialized swiper-horizontal swiper-pointer-events swiper-rtl">
+                                            <!-- Additional required wrapper -->
+                                            <div class="swiper-wrapper" id="swiper-wrapper-be639fd3e3a8e1bb"
+                                                 aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
+                                                <!-- Slides -->
+                                                @foreach (var item in basket)
+                                                {
+                                                    <div class="swiper-slide">
+                                                        <div class="checkout-pack-item">
+                                                            <div class="checkout-pack-item-thumbnail">
+                                                                <a asp-area="" asp-controller="Product"
+                                                                   asp-action="ProductDetail"
+                                                                   asp-route-productid="@item.ProductId">
+                                                                    <img src="@(PathTools.FilePath + item.ImageName)"
+                                                                         alt="">
+                                                                </a>
+                                                            </div>
+                                                            <div class="checkout-pack-item-detail">
+                                                                <div class="checkout-pack-item-title">
+                                                                    @item.Title
+                                                                </div>
+                                                                <div class="checkout-pack-item-variant">
+                                                                    <span class="color"
+                                                                          style="background-color: @item.ColorCode;"></span>
+                                                                    <span class="ms-1">@item.ColorName</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+
+                                            <!-- If we need navigation buttons -->
+                                            <div class="swiper-button-prev swiper-button-disabled swiper-button-lock"
+                                                 tabindex="-1" role="button" aria-label="Previous slide"
+                                                 aria-controls="swiper-wrapper-be639fd3e3a8e1bb"
+                                                 aria-disabled="true"></div>
+                                            <div class="swiper-button-next swiper-button-disabled swiper-button-lock"
+                                                 tabindex="-1" role="button" aria-label="Next slide"
+                                                 aria-controls="swiper-wrapper-be639fd3e3a8e1bb"
+                                                 aria-disabled="true"></div>
+                                            <span class="swiper-notification" aria-live="assertive"
+                                                  aria-atomic="true"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end of checkout-pack -->
+                            </div>
+                            <!-- end of tab-pane -->
+                            <!-- start of tab-pane -->
+                            <div class="tab-pane py-4 fade" id="shipping-type-2" role="tabpanel"
+                                 aria-labelledby="shipping-type-2-tab">
+                                <!-- start of checkout-pack -->
+                                <div class="checkout-pack">
+                                    <div class="checkout-pack-header fa-num">
+                                        <div class="checkout-pack-title">
+                                            <span class="fs-7 text-muted">
+                                                مبلغ
+                                                مرسوله:
+                                            </span> <span>42,420,000 <span class="currency">تومان</span></span>
+                                        </div>
+                                        <div class="checkout-pack-detail">
+                                            <span>۳ کالا</span>
+                                            <span class="divider"></span>
+                                            <span>تامین کالا از ۱ روز کاری آینده</span>
+                                        </div>
+                                        <div class="checkout-pack-subtitle">
+                                            <i class="ri-truck-fill icon"></i>
+                                            ارسال عادی
+                                        </div>
+                                    </div>
+                                    <div class="checkout-pack-content">
+                                        <!-- Slider main container -->
+                                        <div
+                                            class="swiper checkout-pack-swiper-slider mb-5 swiper-initialized swiper-horizontal swiper-pointer-events swiper-rtl">
+                                            <!-- Additional required wrapper -->
+                                            <div class="swiper-wrapper" id="swiper-wrapper-ce41515ab2a7b864"
+                                                 aria-live="polite" style="transition-duration: 0ms;">
+                                                <!-- Slides -->
+                                                @foreach (var item in basket)
+                                                {
+                                                    <div class="swiper-slide">
+                                                        <div class="checkout-pack-item">
+                                                            <div class="checkout-pack-item-thumbnail">
+                                                                <a asp-area="" asp-controller="Product"
+                                                                   asp-action="ProductDetail"
+                                                                   asp-route-productid="@item.ProductId">
+                                                                    <img src="@(PathTools.FilePath + item.ImageName)"
+                                                                         alt="">
+                                                                </a>
+                                                            </div>
+                                                            <div class="checkout-pack-item-detail">
+                                                                <div class="checkout-pack-item-title">
+                                                                    @item.Title
+                                                                </div>
+                                                                <div class="checkout-pack-item-variant">
+                                                                    <span class="color"
+                                                                          style="background-color: @item.ColorCode;"></span>
+                                                                    <span class="ms-1">@item.ColorName</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+
+
+                                            </div>
+
+                                            <!-- If we need navigation buttons -->
+                                            <div class="swiper-button-prev" tabindex="0" role="button"
+                                                 aria-label="Previous slide"
+                                                 aria-controls="swiper-wrapper-ce41515ab2a7b864"
+                                                 aria-disabled="false"></div>
+                                            <div class="swiper-button-next" tabindex="0" role="button"
+                                                 aria-label="Next slide" aria-controls="swiper-wrapper-ce41515ab2a7b864"
+                                                 aria-disabled="false"></div>
+                                            <span class="swiper-notification" aria-live="assertive"
+                                                  aria-atomic="true"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- end of tab-pane -->
+                        </div>
+                        <!-- end of tab-content -->
+                    </div>
+                </div>
+                <a asp-area="UserPanel" asp-controller="Order" asp-action="ChooseAddress" class="link border-bottom-0">
+                    <i class="ri-arrow-right-s-fill"></i> بازگشت به شیوه ی
+                    ارسال
+                </a>
+            </div>
+            <div class="col-xl-3 col-lg-4">
+                <div class="ui-sticky ui-sticky-top">
+                    <!-- start of checkout-bill -->
+                    <div class="checkout-bill ui-box bg-white mb-5">
+                        <div class="checkout-bill-row">
+                            <div class="checkout-bill-row-label">قیمت کالاها @basket.Count)</div>
+                            <div class="checkout-bill-row-value">
+                                <span class="fs-6">@basket.Sum(u => u.FinallPrice).ToString("#,0")</span> <span
+                                    class="currency">تومان</span>
+                            </div>
+                        </div>
+                        <div class="checkout-bill-row">
+                            <div class="checkout-bill-row-label">تخفیف کالاها</div>
+                            <div class="checkout-bill-row-value">
+                                <span class="fs-6 text-danger">۵,۰۰۰</span>
+                                <span class="currency text-danger">تومان</span>
+                            </div>
+                        </div>
+                        <div class="checkout-bill-row">
+                            <div class="checkout-bill-row-label">جمع سبد خرید</div>
+                            <div class="checkout-bill-row-value">
+                                <span class="fs-6">@basket.Sum(u => u.FinallPrice)</span> <span
+                                    class="currency">تومان</span>
+                            </div>
+                        </div>
+                        <div class="checkout-bill-row checkout-bill-note">
+                            هزینه‌ی ارسال در ادامه بر اساس آدرس، زمان و نحوه‌ی ارسال انتخابی شما‌ محاسبه و به
+                            این مبلغ اضافه خواهد شد
+                        </div>
+                        <div class="checkout-bill-row checkout-bill-action">
+                            <a href="#" class="btn btn-block btn-primary">ادامه فرایند خرید</a>
+                        </div>
+                        <div class="checkout-bill-row checkout-bill-footer">
+                            <div class="checkout-bill-row-label">
+                                <span class="d-flex">
+                                    <i class="ri-copper-coin-fill text-warning me-1"></i>
+                                    <span class="fs-7">امتیاز باشگاه مشتریان</span>
+                                </span>
+                            </div>
+                            <div class="checkout-bill-row-value">۱۵۰ <span class="fs-7 fw-bold text-muted">امتیاز</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end of checkout-bill -->
+                    <!-- start of widget -->
+                    <div class="widget p-0">
+                        <div class="widget-content widget--free-shipping">
+                            <div class="free-shipping--detail">
+                                <div class="title">ارسال رایگان سفارش</div>
+                                <div class="subtitle">سفارش‌های بالای ۳۰۰ هزار تومان</div>
+                            </div>
+                            <div class="free-shipping--banner">
+                                <img src="./theme-assets/images/theme/free-shipping--banner.png"
+                                     alt="ارسال رایگان سفارش">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end of widget -->
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+

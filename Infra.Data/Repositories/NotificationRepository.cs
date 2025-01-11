@@ -7,6 +7,14 @@ namespace Infra.Data.Repositories;
 
 public class NotificationRepository(ApplicationDbContext context) : INotificationRepository
 {
+    #region Save Changes
+
+    public async Task SaveChangesAsync()
+    {
+        await context.SaveChangesAsync();
+    }
+
+    #endregion
 
     #region Add Methods
 
@@ -18,15 +26,6 @@ public class NotificationRepository(ApplicationDbContext context) : INotificatio
     public async Task AddNotificationAsync(Notification notification)
     {
         await context.Notifications.AddAsync(notification);
-    }
-
-    #endregion
-
-    #region Save Changes
-
-    public async Task SaveChangesAsync()
-    {
-        await context.SaveChangesAsync();
     }
 
     #endregion
@@ -48,5 +47,4 @@ public class NotificationRepository(ApplicationDbContext context) : INotificatio
     }
 
     #endregion
-
 }

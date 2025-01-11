@@ -1,5 +1,6 @@
-namespace Domain.ViewModel.ContactUs;
 using System.ComponentModel.DataAnnotations;
+
+namespace Domain.ViewModel.ContactUs;
 
 public class SendMessageViewModel
 {

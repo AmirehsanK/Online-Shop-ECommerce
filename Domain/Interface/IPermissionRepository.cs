@@ -6,13 +6,12 @@ namespace Domain.Interface;
 
 public interface IPermissionRepository
 {
-
     #region Admin
 
     Task SeedSuperAdminAsync(User user);
 
-        #endregion
-    
+    #endregion
+
     #region Permission
 
     Task<User> GetUserById(int userId);
@@ -44,5 +43,4 @@ public interface IPermissionRepository
     Task UpdateUserAsync(User user);
 
     #endregion
-
 }

@@ -2,6 +2,7 @@
 using Infra.Data.Statics;
 
 namespace Infra.Data.Seeds;
+
 public class PermissionSeeds
 {
     public static List<Permission> ApplicationPermissions { get; } =
@@ -13,7 +14,7 @@ public class PermissionSeeds
             ParentId = null,
             Id = 1,
             UniqueName = PermissionName.UserManagement,
-            DisplayName = "مدیریت کاربران",
+            DisplayName = "مدیریت کاربران"
         },
         new()
         {
@@ -564,37 +565,43 @@ public class PermissionSeeds
             Id = 69,
             UniqueName = PermissionName.AccessManagement,
             DisplayName = "مدیریت دسترسی ها"
-        },new()
+        },
+        new()
         {
             ParentId = 69,
             Id = 70,
             UniqueName = PermissionName.RoleList,
             DisplayName = "لیست نقش ها"
-        },new()
+        },
+        new()
         {
             ParentId = 69,
             Id = 71,
             UniqueName = PermissionName.UserRoleList,
             DisplayName = "لیست کاربران"
-        },new()
+        },
+        new()
         {
             ParentId = 69,
             Id = 72,
             UniqueName = PermissionName.AssignRoleToUser,
             DisplayName = "اضافه کردن نقش به کاربر"
-        },new()
+        },
+        new()
         {
             ParentId = 69,
             Id = 73,
             UniqueName = PermissionName.CreateRole,
             DisplayName = "اضافه کردن نقش"
-        },new()
+        },
+        new()
         {
             ParentId = 69,
             Id = 74,
             UniqueName = PermissionName.DeleteRole,
             DisplayName = "حذف نقش"
-        },new()
+        },
+        new()
         {
             ParentId = 69,
             Id = 75,
@@ -604,6 +611,7 @@ public class PermissionSeeds
 
         #endregion
     ];
+
     public static class RoleSeeds
     {
         public static List<Role> ApplicationRoles { get; } =
@@ -617,13 +625,14 @@ public class PermissionSeeds
             }
         ];
     }
+
     public static class RolePermissionSeeds
     {
         public static List<RolePermissionMapping> ApplicationRolePermissionMappings { get; } =
-            PermissionSeeds.ApplicationPermissions
-                .Select((permission, index) => new RolePermissionMapping(3,permission.Id)
+            ApplicationPermissions
+                .Select((permission, index) => new RolePermissionMapping(3, permission.Id)
                 {
-                    Id = index + 1, 
+                    Id = index + 1,
                     IsDeleted = false,
                     CreateDate = DateTime.UtcNow
                 })

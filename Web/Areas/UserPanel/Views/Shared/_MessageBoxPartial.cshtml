@@ -9,40 +9,40 @@
                 text: '@message'
             });
         })
-    
+
     </script>
 }
 else if (TempData["Success"] != null)
 {
     var message = TempData["Success"];
     <script>
-        
-        
-       document.addEventListener("DOMContentLoaded", () => {
-           Swal.fire({
-               icon: 'success',
-               title: 'اعلان',
-               text:'@message'
 
-           });
-       })
-    
+
+        document.addEventListener("DOMContentLoaded", () => {
+            Swal.fire({
+                icon: 'success',
+                title: 'اعلان',
+                text: '@message'
+
+            });
+        })
+
     </script>
 }
 else if (TempData["Warning"] != null)
 {
     var message = TempData["Warning"];
     <script>
-        
-        
+
+
         document.addEventListener("DOMContentLoaded", () => {
             Swal.fire({
                 icon: 'warning',
                 title: 'اعلان',
-                html:'<b>@message</b>'
+                html: '<b>@message</b>'
 
             });
         })
-    
+
     </script>
 }

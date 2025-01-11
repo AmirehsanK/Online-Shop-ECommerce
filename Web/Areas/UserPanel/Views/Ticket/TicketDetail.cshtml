@@ -3,15 +3,15 @@
 @model Domain.ViewModel.Ticket.TicketDetailViewModel
 @{
     ViewData["Title"] = "جزییات تیکت";
-    
 }
+
 @section Scripts
 {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
 }
 
 <div class="col-xl-9 col-lg-8 col-md-7">
-   
+
     <div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
         <div>
             سفارش شما در انتظار پرداخت است. برای جلوگیری از لغو سفارش، لطفا پرداخت را انجام دهید.
@@ -19,9 +19,9 @@
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-@if (Model.Messages != null && Model.Messages.Any())
-{
-    <div class="ui-box bg-white mb-5">
+    @if (Model.Messages != null && Model.Messages.Any())
+    {
+        <div class="ui-box bg-white mb-5">
 
             <div class="ui-box-title">
                 @Model.Ticket.Title
@@ -32,38 +32,38 @@
                     <!-- start of ticket -->
                     @foreach (var item in Model.Messages)
                     {
-
-                    @if(item.SenderId==Model.Ticket.OwnerID)
-                    {
-                        if (item.FileName!=null)
+                        @if (item.SenderId == Model.Ticket.OwnerID)
                         {
-                            <a href="@(PathTools.FilePath+item.FileName)" download>دانلود فایل</a>
-                        }
-                        <div class="ticket fa-num">
-                            <div class="avatar"></div>
-                            <div class="text">
-                            @item.Text
+                            if (item.FileName != null)
+                            {
+                                <a href="@(PathTools.FilePath + item.FileName)" download>دانلود فایل</a>
+                            }
+
+                            <div class="ticket fa-num">
+                                <div class="avatar"></div>
+                                <div class="text">
+                                    @item.Text
+                                </div>
+                                <div
+                                    class="date">@item.CreateDate.ToShamsi() @item.CreateDate.ToString("hh:mm:ss")</div>
                             </div>
-                            <div class="date">@item.CreateDate.ToShamsi() @item.CreateDate.ToString("hh:mm:ss")</div>
-                        </div>
-                    }
-                    else
-                    {
-                        if (item.FileName!=null)
+                        }
+                        else
                         {
-                                <a href="@(PathTools.FilePath+item.FileName)" download>دانلود فایل </a>
-                        }
-                        <div class="ticket reply fa-num">
-                            <div class="avatar staff"></div>
-                            <div class="text">
-                                @item.Text
+                            if (item.FileName != null)
+                            {
+                                <a href="@(PathTools.FilePath + item.FileName)" download>دانلود فایل </a>
+                            }
+
+                            <div class="ticket reply fa-num">
+                                <div class="avatar staff"></div>
+                                <div class="text">
+                                    @item.Text
+                                </div>
+                                <div
+                                    class="date">@item.CreateDate.ToShamsi() @item.CreateDate.ToString("hh:mm:ss")</div>
                             </div>
-                                <div class="date">@item.CreateDate.ToShamsi() @item.CreateDate.ToString("hh:mm:ss")</div>
-                        </div>
-                    }
-
-
-
+                        }
                     }
 
                     <!-- end of ticket -->
@@ -72,7 +72,7 @@
                     <!-- end of ticket -->
                 </div>
                 <!-- end of tickets -->
-             
+
                 <!-- start of add-ticket-form -->
                 @if (Model.Ticket.Status != TicketsEnum.Status.IsClosed)
                 {
@@ -80,14 +80,16 @@
                     <div class="ui-box-title p-0 mb-4">
                         ارسال پاسخ
                     </div>
-                    <form asp-area="UserPanel" asp-controller="Ticket" asp-action="TicketDetail" method="post" class="add-ticket-form" enctype="multipart/form-data">
+                    <form asp-area="UserPanel" asp-controller="Ticket" asp-action="TicketDetail" method="post"
+                          class="add-ticket-form" enctype="multipart/form-data">
 
                         <div class="row">
                             <div class="col-12">
                                 <!-- start of form-element -->
                                 <div class="form-element-row mb-5">
                                     <label class="label">پیام</label>
-                                    <textarea asp-for="Message" rows="5" class="form-control" placeholder="متن پیام"></textarea>
+                                    <textarea asp-for="Message" rows="5" class="form-control"
+                                              placeholder="متن پیام"></textarea>
                                 </div>
                                 <!-- end of form-element -->
                             </div>
@@ -107,7 +109,8 @@
                                         </div>
                                     </div>
                                     <div class="custom-input-file">
-                                        <input asp-for="FileName" type="file" class="custom-input-file-input" accept="" name="attachment" id="attachment">
+                                        <input asp-for="FileName" type="file" class="custom-input-file-input" accept=""
+                                               name="attachment" id="attachment">
                                         <label for="attachment" class="custom-input-file-label">
                                             <span class="label">
                                                 <i class="ri-arrow-up-fill me-1"></i> انتخاب عکس یا ویدئو
@@ -118,7 +121,9 @@
                                 <!-- end of form-element -->
                             </div>
                             <div class="col-12 text-end">
-                                <button asp-area="UserPanel" asp-controller="Ticket" asp-action="TicketDetail" type="submit" class="btn btn-primary">ارسال پاسخ <i class="ri-ball-pen-line ms-2"></i></button>
+                                <button asp-area="UserPanel" asp-controller="Ticket" asp-action="TicketDetail"
+                                        type="submit" class="btn btn-primary">ارسال پاسخ <i
+                                        class="ri-ball-pen-line ms-2"></i></button>
                             </div>
                         </div>
                     </form>
@@ -129,12 +134,12 @@
                         <div>
                             این تیکت بسته شده است
                         </div>
-                 
+
                     </div>
                 }
-          
+
                 <!-- end of add-ticket-form -->
             </div>
-    </div>
-}
+        </div>
+    }
 </div>

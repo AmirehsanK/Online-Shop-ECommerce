@@ -6,23 +6,23 @@
     <div class="widget-title">دسته‌بندی نتایج</div>
     <div class="widget-content widget--category-results">
         <ul>
-            @foreach(var MainCategory in Model.Where(u=> u.ParentId==null))
+            @foreach (var MainCategory in Model.Where(u => u.ParentId == null))
             {
-
                 <li class="category--arrow-left">
                     <a href="#"><b>@MainCategory.Title</b></a>
                     <ul>
                         @foreach (var subCategory in Model.Where(u => u.ParentId == MainCategory.Id))
                         {
                             <li class="category--arrow-down">
-                                <a asp-area="" asp-action="ProductList" asp-controller="Product" asp-route-SubCategoryId="@subCategory.Id">@subCategory.Title</a>
+                                <a asp-area="" asp-action="ProductList" asp-controller="Product"
+                                   asp-route-SubCategoryId="@subCategory.Id">@subCategory.Title</a>
                             </li>
                         }
-                      
+
                     </ul>
                 </li>
             }
-          
+
         </ul>
     </div>
 </div>

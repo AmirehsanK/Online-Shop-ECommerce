@@ -9,15 +9,17 @@ namespace Application.Services.Impelementation;
 
 public class ContactUsService(IContactUsRepository contactUsRepository) : IContactUsService
 {
-    
     #region Subjects
+
     public async Task<List<Subject>> GetSubjectsAsync()
     {
         return await contactUsRepository.GetSubjectsAsync();
     }
+
     #endregion
 
     #region Add Message
+
     public async Task AddMessage(ContactMessageDto dto)
     {
         var message = new ContactMessage
@@ -32,9 +34,11 @@ public class ContactUsService(IContactUsRepository contactUsRepository) : IConta
         };
         await contactUsRepository.AddMessageAsync(message);
     }
+
     #endregion
 
     #region Get All Messages
+
     public async Task<IEnumerable<ContactMessageDto>> GetAllMessagesAsync()
     {
         var messages = await contactUsRepository.GetMessagesAsync();
@@ -51,9 +55,11 @@ public class ContactUsService(IContactUsRepository contactUsRepository) : IConta
             RespondedAt = m.RespondedAt
         });
     }
+
     #endregion
 
     #region Get Messages for Admin
+
     public async Task<List<ContactUsAdminViewModel>> GetMessagesForAdminAsync()
     {
         var messages = await contactUsRepository.GetMessagesAsync();
@@ -65,9 +71,11 @@ public class ContactUsService(IContactUsRepository contactUsRepository) : IConta
             IsAnswered = m.IsAnswered
         }).Take(3).ToList();
     }
+
     #endregion
 
     #region Answer Message
+
     public async Task AnswerMessageAsync(int id, string messageResponse)
     {
         var message = await contactUsRepository.GetMessageByIdAsync(id);
@@ -80,21 +88,24 @@ public class ContactUsService(IContactUsRepository contactUsRepository) : IConta
             await EmailSender.SendEmail(message.Email, message.Subject, messageResponse);
         }
     }
+
     #endregion
 
     #region Get Message by ID
+
     public async Task<ContactMessageDto> GetMessageByIdAsync(int id)
     {
         var message = await contactUsRepository.GetMessageByIdAsync(id);
 
-        if (message == null!) return new ContactMessageDto
-        {
-            Id = 0,
-            Email = "not found",
-            Message = "not found",
-            IsAnswered = false,
-            CreatedAt = DateTime.UtcNow,
-        };
+        if (message == null!)
+            return new ContactMessageDto
+            {
+                Id = 0,
+                Email = "not found",
+                Message = "not found",
+                IsAnswered = false,
+                CreatedAt = DateTime.UtcNow
+            };
 
         return new ContactMessageDto
         {
@@ -110,6 +121,6 @@ public class ContactUsService(IContactUsRepository contactUsRepository) : IConta
             RespondedAt = message.RespondedAt
         };
     }
+
     #endregion
-    
 }

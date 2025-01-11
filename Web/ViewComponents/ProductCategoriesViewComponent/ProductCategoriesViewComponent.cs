@@ -5,6 +5,12 @@ namespace Web.ViewComponents.ProductCategoriesViewComponent;
 
 public class ProductCategoriesViewComponent : ViewComponent
 {
+    public async Task<IViewComponentResult> InvokeAsync()
+    {
+        var category = await _productService.GetAllCategoriesForMegaMenu();
+        return View("ProductCategories", category);
+    }
+
     #region Ctor
 
     private readonly IProductService _productService;
@@ -15,11 +21,4 @@ public class ProductCategoriesViewComponent : ViewComponent
     }
 
     #endregion
-
-    public async Task<IViewComponentResult> InvokeAsync()
-    {
-        var category = await _productService.GetAllCategoriesForMegaMenu();
-        return View("ProductCategories",category);
-    }
-
 }

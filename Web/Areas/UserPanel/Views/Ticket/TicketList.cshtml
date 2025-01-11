@@ -6,70 +6,65 @@
 }
 
 <div class="col-xl-9 col-lg-8 col-md-7">
-    <div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
-        <div>
-            سفارش شما در انتظار پرداخت است. برای جلوگیری از لغو سفارش، لطفا پرداخت را انجام دهید.
-            <a href="#" class="btn btn-sm btn-primary mx-3">سفارش های من</a>
-        </div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
     <div class="ui-box bg-white mb-5">
         <div class="ui-box-title align-items-center justify-content-between">
             تیکتهای شما
-            <a asp-area="UserPanel" asp-controller="Ticket" asp-action="AddTicket" class="btn btn-outline-light">تیکت جدید <i class="ri-add-line ms-2"></i></a>
+            <a asp-area="UserPanel" asp-controller="Ticket" asp-action="AddTicket" class="btn btn-outline-light">تیکت
+                جدید <i class="ri-add-line ms-2"></i></a>
         </div>
-
         <div class="ui-box-content">
             <div class="table-responsive">
                 @if (Model != null && Model.Any())
                 {
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>زمان ایجاد</th>
-                                <th>بخش</th>
-                                <th>موضوع</th>
-                                <th>وضعیت</th>
-                                <th>آخرین بروزرسانی</th>
-                                <th>عملیات</th>
-                            </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>زمان ایجاد</th>
+                            <th>بخش</th>
+                            <th>موضوع</th>
+                            <th>وضعیت</th>
+                            <th>آخرین بروزرسانی</th>
+                            <th>عملیات</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td class="fa-num">@item.TicketId</td>
-                                    <td class="fa-num">@item.CreateDate.ToShamsi() @item.CreateDate.ToString("hh:mm:ss") </td>
-                                    <td class="fa-num">
-                                        @item.Section.GetDisplayName()
-                                    </td>
-                                    <td class="fa-num">@item.Title</td>
-                                    <td class="fa-num">
-                                    
-                                            @if (item.Status == TicketsEnum.Status.IsAnswered)
-                                            {
-                                                <span class="badge bg-success rounded-pill">پاسخ داده
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="fa-num">@item.TicketId</td>
+                                <td class="fa-num">@item.CreateDate.ToShamsi() @item.CreateDate.ToString("hh:mm:ss") </td>
+                                <td class="fa-num">
+                                    @item.Section.GetDisplayName()
+                                </td>
+                                <td class="fa-num">@item.Title</td>
+                                <td class="fa-num">
+
+                                    @if (item.Status == TicketsEnum.Status.IsAnswered)
+                                    {
+                                        <span class="badge bg-success rounded-pill">پاسخ داده
                                                     شد</span>
-                                            }else if (item.Status==TicketsEnum.Status.InProgress)
-                                            {
-                                                <span class="badge bg-warning rounded-pill">در حال
+                                    }
+                                    else if (item.Status == TicketsEnum.Status.InProgress)
+                                    {
+                                        <span class="badge bg-warning rounded-pill">در حال
                                                     بررسی</span>
-                                            }
-                                            else
-                                            {
-                                                <span class="badge bg-danger rounded-pill">بسته</span>
-                                            }
-                                        
-                                    </td>
-                                    <td class="fa-num">@item.UpdateDate.ToShamsi() @item.UpdateDate.ToString("hh:mm:ss")</td>
-                                    <td>
-                                        <a asp-area="UserPanel" asp-controller="Ticket" asp-action="TicketDetail" asp-route-ticketid="@item.TicketId" class="btn btn-circle btn-info my-1"><i class="ri-eye-line"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger rounded-pill">بسته</span>
+                                    }
 
-                                    </td>
-                                </tr>
+                                </td>
+                                <td class="fa-num">@item.UpdateDate.ToShamsi() @item.UpdateDate.ToString("hh:mm:ss")</td>
+                                <td>
+                                    <a asp-area="UserPanel" asp-controller="Ticket" asp-action="TicketDetail"
+                                       asp-route-ticketid="@item.TicketId" class="btn btn-circle btn-info my-1"><i
+                                            class="ri-eye-line"></i></a>
 
-                            }
+                                </td>
+                            </tr>
+                        }
                         </tbody>
                     </table>
                 }

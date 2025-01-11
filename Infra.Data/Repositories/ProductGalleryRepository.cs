@@ -7,6 +7,14 @@ namespace Infra.Data.Repositories;
 
 public class ProductGalleryRepository(ApplicationDbContext context) : IProductGalleryRepository
 {
+    #region Save Changes
+
+    public async Task SaveChangeAsync()
+    {
+        await context.SaveChangesAsync();
+    }
+
+    #endregion
 
     #region Gallery Methods
 
@@ -33,14 +41,4 @@ public class ProductGalleryRepository(ApplicationDbContext context) : IProductGa
     }
 
     #endregion
-
-    #region Save Changes
-
-    public async Task SaveChangeAsync()
-    {
-        await context.SaveChangesAsync();
-    }
-
-    #endregion
-
 }

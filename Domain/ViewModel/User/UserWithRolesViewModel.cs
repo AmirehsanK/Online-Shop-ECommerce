@@ -9,6 +9,7 @@ public class UserWithRolesViewModel
     public string Email { get; set; }
     public List<string> Roles { get; set; } = [];
 }
+
 public class FilterUserWithRolesViewModel : Paging.BasePaging<UserWithRolesViewModel>
 {
     public string UserName { get; set; }

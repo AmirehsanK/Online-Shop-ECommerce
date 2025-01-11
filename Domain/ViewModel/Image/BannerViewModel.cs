@@ -9,14 +9,14 @@ public class BannerViewModel
     [Key] public int Id { get; set; }
 
     [Required] public string Title { get; set; }
-    
+
     [Required] public string Link { get; set; }
 
     public string? ExpirationDate { get; set; }
     public IFormFile? Image { get; set; }
 }
 
-public class FilterBannerViewModel :Paging
+public class FilterBannerViewModel : Paging
 {
     public string? Title { get; set; }
     public DateTime? ExpirationDate { get; set; }

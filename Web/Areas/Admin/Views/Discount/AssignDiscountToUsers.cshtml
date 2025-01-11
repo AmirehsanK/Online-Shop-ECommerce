@@ -3,7 +3,7 @@
 <h2>اختصاص تخفیف به کاربران</h2>
 
 <form asp-action="AssignDiscountToUsers" asp-controller="Discount" asp-area="Admin" method="post">
-    <input type="hidden" name="discountId" value="@Model.DiscountId" />
+    <input type="hidden" name="discountId" value="@Model.DiscountId"/>
 
     <!-- Users List -->
     <div id="userList">
@@ -12,7 +12,7 @@
         {
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" name="userIds" value="@user.Value"
-                @(Model.SelectedUserIds.Contains(int.Parse(user.Value)) ? "checked" : "") />
+                       @(Model.SelectedUserIds.Contains(int.Parse(user.Value)) ? "checked" : "")/>
                 <label class="form-check-label">@user.Text</label>
             </div>
         }

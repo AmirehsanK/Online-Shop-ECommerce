@@ -20,7 +20,7 @@
                                  height="140"
                                  alt="View Badge User"
                                  data-app-dark-img="illustrations/man-with-laptop-dark.png"
-                                 data-app-light-img="illustrations/man-with-laptop-light.png" />
+                                 data-app-light-img="illustrations/man-with-laptop-light.png"/>
                         </div>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                                 <div class="avatar flex-shrink-0">
                                     <img src="/Admin/img/icons/unicons/wallet-info.png"
                                          alt="Credit Card"
-                                         class="rounded" />
+                                         class="rounded"/>
                                 </div>
                                 <div class="dropdown">
                                     <button class="btn p-0"
@@ -83,30 +83,30 @@
                     <div class="table-responsive">
                         <table class="table table-striped mb-0">
                             <thead>
-                                <tr>
-                                    <th>نام</th>
-                                    <th>موضوع</th>
-                                    <th>پاسخ داده شده</th>
-                                </tr>
+                            <tr>
+                                <th>نام</th>
+                                <th>موضوع</th>
+                                <th>پاسخ داده شده</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (var contact in Model.ContactUsList.Take(3))
-                                {
-                                    <tr>
-                                        <td>@contact.FullName</td>
-                                        <td>@contact.Subject</td>
-                                        <td>
-                                            @if (contact.IsAnswered == true)
-                                            {
-                                                <span class="badge bg-danger rounded-pill">بسته</span>
-                                            }
-                                            else if (contact.IsAnswered == false)
-                                            {
-                                                <span class="badge bg-warning rounded-pill">در حال بررسی</span>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
+                            @foreach (var contact in Model.ContactUsList.Take(3))
+                            {
+                                <tr>
+                                    <td>@contact.FullName</td>
+                                    <td>@contact.Subject</td>
+                                    <td>
+                                        @if (contact.IsAnswered)
+                                        {
+                                            <span class="badge bg-danger rounded-pill">بسته</span>
+                                        }
+                                        else if (contact.IsAnswered == false)
+                                        {
+                                            <span class="badge bg-warning rounded-pill">در حال بررسی</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -130,39 +130,42 @@
                     <div class="table-responsive">
                         <table class="table table-striped mb-0">
                             <thead>
-                                <tr>
-                                    <th>شناسه تیکت</th>
-                                    <th>موضوع</th>
-                                    <th>وضعیت</th>
-                                </tr>
+                            <tr>
+                                <th>شناسه تیکت</th>
+                                <th>موضوع</th>
+                                <th>وضعیت</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (var ticket in Model.TicketList.Take(3))
-                                {
-                                    <tr>
-                                        <td>@ticket.Ticketid</td>
-                                        <td>@ticket.Section.GetDisplayName()</td>
-                                        <td>@if (ticket.Status == TicketsEnum.Status.IsAnswered)
-                                            {
-                                                <span class="badge bg-success rounded-pill">پاسخ داده
+                            @foreach (var ticket in Model.TicketList.Take(3))
+                            {
+                                <tr>
+                                    <td>@ticket.Ticketid</td>
+                                    <td>@ticket.Section.GetDisplayName()</td>
+                                    <td>@if (ticket.Status == TicketsEnum.Status.IsAnswered)
+                                        {
+                                            <span class="badge bg-success rounded-pill">پاسخ داده
                                                     شد</span>
-                                            }else if (ticket.Status==TicketsEnum.Status.InProgress)
-                                            {
-                                                <span class="badge bg-warning rounded-pill">در حال
+                                        }
+                                        else if (ticket.Status == TicketsEnum.Status.InProgress)
+                                        {
+                                            <span class="badge bg-warning rounded-pill">در حال
                                                     بررسی</span>
-                                            }
-                                            else
-                                            {
-                                                <span class="badge bg-danger rounded-pill">بسته</span>
-                                            }</td>
-                                    </tr>
-                                }
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger rounded-pill">بسته</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
                     <!-- Button for Tickets -->
                     <div class="text-center mt-3">
-                        <a asp-area="Admin" asp-controller="AdminTicket" asp-action="AllTicketList" class="btn btn-primary">
+                        <a asp-area="Admin" asp-controller="AdminTicket" asp-action="AllTicketList"
+                           class="btn btn-primary">
                             مشاهده همه
                         </a>
                     </div>
@@ -182,34 +185,34 @@
                     <div class="table-responsive">
                         <table class="table table-striped mb-0">
                             <thead>
-                                <tr>
-                                    <th>کد تخفیف</th>
-                                    <th>مقدار تخفیف</th>
-                                    <th>وضعیت</th>
-                                </tr>
+                            <tr>
+                                <th>کد تخفیف</th>
+                                <th>مقدار تخفیف</th>
+                                <th>وضعیت</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (var discount in Model.ActiveDiscountList.Take(3))
-                                {
-                                    <tr>
-                                        <td>@discount.Code</td>
-                                        <td>@discount.Value</td>
-                                        <td>
-                                            @if (discount.IsPercentage)
-                                            {
-                                                <span class="badge bg-success rounded-pill">
+                            @foreach (var discount in Model.ActiveDiscountList.Take(3))
+                            {
+                                <tr>
+                                    <td>@discount.Code</td>
+                                    <td>@discount.Value</td>
+                                    <td>
+                                        @if (discount.IsPercentage)
+                                        {
+                                            <span class="badge bg-success rounded-pill">
                                                     درصدی
                                                 </span>
-                                            }
-                                            else if (!discount.IsPercentage)
-                                            {
-                                                <span class="badge bg-warning rounded-pill">
+                                        }
+                                        else if (!discount.IsPercentage)
+                                        {
+                                            <span class="badge bg-warning rounded-pill">
                                                     مقدار ثابت
                                                 </span>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
+                                        }
+                                    </td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>

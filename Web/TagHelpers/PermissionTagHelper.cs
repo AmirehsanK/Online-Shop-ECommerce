@@ -1,20 +1,19 @@
 ﻿using Application.Services.Interfaces;
 using Application.Tools;
-using Infra.Data.Statics;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Web.TagHelpers;
-[HtmlTargetElement("*",Attributes="invoke-permission")]
+
+[HtmlTargetElement("*", Attributes = "invoke-permission")]
 public class PermissionTagHelper(IPermissionService permissionService) : TagHelper
 {
-    [ViewContext][HtmlAttributeNotBound] 
-    public ViewContext ViewContextData { get; set; }
-    
+    [ViewContext] [HtmlAttributeNotBound] public ViewContext ViewContextData { get; set; }
+
     [HtmlAttributeName("invoke-permission")]
     public string PermissionName { get; set; }
-    
+
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
         if (!ViewContextData.HttpContext.User.Identity!.IsAuthenticated)
@@ -31,7 +30,7 @@ public class PermissionTagHelper(IPermissionService permissionService) : TagHelp
         }
 
         var permissions = PermissionName.Split("|").Select(n => n.Trim()).ToList();
-        if(permissions==null || !permissions.Any())
+        if (permissions == null || !permissions.Any())
             return;
         foreach (var permission in permissions)
         {

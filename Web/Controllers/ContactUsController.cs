@@ -15,9 +15,9 @@ public class ContactUsController(IContactUsService contactUsService, IConfigurat
     {
         return View();
     }
-    
+
     #endregion
-    
+
     #region ContactUs
 
     [HttpPost]
@@ -34,12 +34,13 @@ public class ContactUsController(IContactUsService contactUsService, IConfigurat
             TempData[ErrorMessage] = "کپچا را کامل کنید";
             return View();
         }
-        
+
         #endregion
+
         await contactUsService.AddMessage(dto);
         TempData[SuccessMessage] = "پیام شما با موفقیت ارسال شد";
         return RedirectToAction("Index", "Home");
     }
-    
+
     #endregion
 }

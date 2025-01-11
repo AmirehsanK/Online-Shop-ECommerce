@@ -57,25 +57,29 @@
         @if (Model.Page > 1)
         {
             <li class="page-item">
-                <a class="page-link" asp-action="Index" asp-route-page="@(Model.Page - 1)" asp-route-userName="@Model.UserName" asp-route-email="@Model.Email">قبلی</a>
+                <a class="page-link" asp-action="Index" asp-route-page="@(Model.Page - 1)"
+                   asp-route-userName="@Model.UserName" asp-route-email="@Model.Email">قبلی</a>
             </li>
         }
 
-        @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+        @for (var i = Model.StartPage; i <= Model.EndPage; i++)
         {
             <li class="page-item @(i == Model.Page ? "active" : "")">
-                <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-userName="@Model.UserName" asp-route-email="@Model.Email">@i</a>
+                <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-userName="@Model.UserName"
+                   asp-route-email="@Model.Email">@i</a>
             </li>
         }
 
         @if (Model.Page < Model.PageCount)
         {
             <li class="page-item">
-                <a class="page-link" asp-action="Index" asp-route-page="@(Model.Page + 1)" asp-route-userName="@Model.UserName" asp-route-email="@Model.Email">بعدی</a>
+                <a class="page-link" asp-action="Index" asp-route-page="@(Model.Page + 1)"
+                   asp-route-userName="@Model.UserName" asp-route-email="@Model.Email">بعدی</a>
             </li>
         }
     </ul>
 </nav>
 
-<br />
-<a asp-action="AssignRolesToUser" asp-controller="Access" asp-area="Admin" class="btn btn-primary">افزودن نقش به کاربر</a>
+<br/>
+<a asp-action="AssignRolesToUser" asp-controller="Access" asp-area="Admin" class="btn btn-primary">افزودن نقش به
+    کاربر</a>

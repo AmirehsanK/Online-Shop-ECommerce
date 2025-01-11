@@ -7,16 +7,18 @@
                 <a href="#" class="vertical-menu-btn">دسته بندی کالاها <i class="ri-apps-fill icon"></i></a>
                 <div class="vertical-menu-items">
                     <ul>
-                        @foreach (var mainCategory in Model.Where(u=> u.ParentId==null))
+                        @foreach (var mainCategory in Model.Where(u => u.ParentId == null))
                         {
                             <li class="mega-menu-category show">
-                                <a asp-area="" asp-action="ProductList" asp-controller="Product" asp-route-SubCategoryTitle="@mainCategory.Title">@mainCategory.Title</a>
+                                <a asp-area="" asp-action="ProductList" asp-controller="Product"
+                                   asp-route-SubCategoryTitle="@mainCategory.Title">@mainCategory.Title</a>
                                 <ul class="mega-menu">
                                     @foreach (var subcategory in Model.Where(u => u.ParentId == mainCategory.Id))
                                     {
-                                        <li><a asp-area="" asp-action="ProductList" asp-controller="Product" asp-route-SubCategoryId="@subcategory.Id">@subcategory.Title</a></li>
+                                        <li><a asp-area="" asp-action="ProductList" asp-controller="Product"
+                                               asp-route-SubCategoryId="@subcategory.Id">@subcategory.Title</a></li>
                                     }
-                               
+
                                 </ul>
                             </li>
                         }

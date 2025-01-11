@@ -2,22 +2,21 @@
 
 public class PermissionName
 {
-    
     #region User
-    
+
     public const string UserManagement = "UserManagement";
     public const string UserList = "UserList";
     public const string CreateUser = "CreateUser";
     public const string DeleteUser = "DeleteUser";
     public const string UpdateUser = "UpdateUser";
     public const string UserProfile = "UserProfile";
-    
+
     #endregion
 
     #region Banners
 
     #region Fixed Banners
-    
+
     public const string FixedBannerManagement = "FixedBannerManagement";
     public const string FixedBannerList = "FixedBannerList";
     public const string CreateFixedBanner = "CreateFixedBanner";
@@ -34,9 +33,8 @@ public class PermissionName
     public const string DeleteSliderImage = "DeleteSliderImage";
     public const string UpdateSliderImage = "UpdateSliderImage";
 
-
     #endregion
-    
+
     #endregion
 
     #region Discount
@@ -105,7 +103,7 @@ public class PermissionName
     public const string CreateProduct = "CreateProduct";
     public const string DeleteProduct = "DeleteProduct";
     public const string UpdateProduct = "UpdateProduct";
-    
+
     #region Specification
 
     public const string SpecificationManagement = "QuestionManagement";
@@ -137,13 +135,13 @@ public class PermissionName
     public const string DeleteColor = "DeleteColor";
 
     #endregion
-    
+
     #region Question
 
     public const string QuestionManagement = "QuestionManagement";
     public const string QuestionList = "QuestionList";
     public const string AnswerQuestion = "AnswerQuestion";
-    
+
     #endregion
 
     #region Access
