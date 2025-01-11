@@ -1,4 +1,4 @@
-@if (User.Identity.IsAuthenticated)
+@if (User.Identity!.IsAuthenticated)
 {
     <div class="notification-content">
         <div class="notification-item--text">@User.Identity.Name جان خوش آمدید 👋</div>

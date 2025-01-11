@@ -1,9 +1,8 @@
-﻿@{
+﻿@using Application.Tools
+@model Domain.ViewModel.Product.Product.FilterProductViewModel
+@{
     ViewData["Title"] = "لیست محصولات";
 }
-@using Application.Tools
-@model Domain.ViewModel.Product.Product.FilterProductViewModel
-
 @if (Model.Entities.Count() != 0 && Model.Entities.Any())
 {
     <div class="card">

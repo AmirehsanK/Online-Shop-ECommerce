@@ -12,10 +12,10 @@ public class CommentController(ICommentService commentService) : AdminBaseContro
     #region Comment List
 
     [InvokePermission(PermissionName.CommentList)]
-    public async Task<IActionResult> CommentList(FilterCommentViewModel filter, string filterModel)
+    public async Task<IActionResult> CommentList(FilterCommentViewModel filters, string filterModel)
     {
-        filter.Filter = filterModel;
-        var comments = await commentService.GetCommentsAsync(filter);
+        filters.Filter = filterModel;
+        var comments = await commentService.GetCommentsAsync(filters);
         return View(comments);
     }
 

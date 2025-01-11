@@ -3,7 +3,7 @@
 @model Domain.ViewModel.Product.ProductGallery.ShowProductGalleryViewModel
 @{
     ViewData["Title"] = "گالری محصول";
-    var Gallery = ViewData["Gallery"] as List<ProductGallery>;
+    var gallery = ViewData["Gallery"] as List<ProductGallery>;
 }
 
 <div class="container-fluid">
@@ -15,10 +15,10 @@
 
 
 
-        @if (Gallery != null && Gallery.Any())
+        @if (gallery != null && gallery.Any())
         {
             <div class="row">
-                @foreach (var item in Gallery)
+                @foreach (var item in gallery)
                 {
                     <div class="col-lg-4 col-sm-12">
                         <div class="card m-2">
