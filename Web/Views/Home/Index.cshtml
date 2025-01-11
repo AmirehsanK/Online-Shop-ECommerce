@@ -23,14 +23,14 @@
                     <div class="col-lg-12 col-6 mb-lg-3">
                         <!-- start of banner -->
                         <div class="banner-img banner-side-main-slider bg-position-right banner-slider-top">
-                            @await Component.InvokeAsync("FixedImages" , new { banner = ImageEnum.Banner.LeftSliderTop})
+                           @await Component.InvokeAsync("FixedImages" , new { banner = ImageEnum.Banner.LeftSliderTop})
                         </div>
                         <!-- end of banner -->
                     </div>
                     <div class="col-lg-12 col-6">
                         <!-- start of banner -->
                         <div class="banner-img banner-side-main-slider bg-position-right banner-slider-bot">
-                            @await Component.InvokeAsync("FixedImages" , new { banner = ImageEnum.Banner.LeftSliderBot})
+                           @await Component.InvokeAsync("FixedImages" , new { banner = ImageEnum.Banner.LeftSliderBot})
                         </div>
                         <!-- end of banner -->
                     </div>
@@ -183,91 +183,10 @@
                         <!-- Additional required wrapper -->
                         <div class="swiper-wrapper">
                             <!-- Slides -->
-                            <div class="swiper-slide">
-                                <div class="category-item">
-                                    <a href="#">
-                                        <img src="/theme-assets/images/categories/01.jpg" class="category-img"
-                                             alt="">
-                                        <span class="category-title">گوشی موبایل</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="category-item">
-                                    <a href="#">
-                                        <img src="/theme-assets/images/categories/02.jpg" class="category-img"
-                                             alt="">
-                                        <span class="category-title">لوازم جانبی گوشی موبایل</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="category-item">
-                                    <a href="#">
-                                        <img src="/theme-assets/images/categories/03.jpg" class="category-img"
-                                             alt="">
-                                        <span class="category-title">کامپیوترهای All-in-One</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="category-item">
-                                    <a href="#">
-                                        <img src="/theme-assets/images/categories/04.jpg" class="category-img"
-                                             alt="">
-                                        <span class="category-title">کنسول بازی</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="category-item">
-                                    <a href="#">
-                                        <img src="/theme-assets/images/categories/05.jpg" class="category-img"
-                                             alt="">
-                                        <span class="category-title">پخش کننده خانگی</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="category-item">
-                                    <a href="#">
-                                        <img src="/theme-assets/images/categories/06.jpg" class="category-img"
-                                             alt="">
-                                        <span class="category-title">لوازم شست و شو و نظافت</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="category-item">
-                                    <a href="#">
-                                        <img src="/theme-assets/images/categories/07.jpg" class="category-img"
-                                             alt="">
-                                        <span class="category-title">لباس مردانه</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="category-item">
-                                    <a href="#">
-                                        <img src="/theme-assets/images/categories/08.jpg" class="category-img"
-                                             alt="">
-                                        <span class="category-title">لباس زنانه</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="category-item">
-                                    <a href="#">
-                                        <img src="/theme-assets/images/categories/03.jpg" class="category-img"
-                                             alt="">
-                                        <span class="category-title">کامپیوترهای All-in-One</span>
-                                    </a>
-                                </div>
-                            </div>
+                            @await Component.InvokeAsync("CategorySlider")
                         </div>
                         <!-- If we need pagination -->
                         <div class="swiper-pagination"></div>
-
                         <!-- If we need navigation buttons -->
                         <div class="swiper-button-prev"></div>
                         <div class="swiper-button-next"></div>

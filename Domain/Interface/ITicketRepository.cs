@@ -1,46 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities.Ticket;
+﻿using Domain.Entities.Ticket;
 
-namespace Domain.Interface
+namespace Domain.Interface;
+
+public interface ITicketRepository
 {
-    public interface ITicketRepository
-    {
-        Task AddTicketAsync(Ticket  ticket);
-        void UpdateTicketAsync(Ticket ticket);
-    
 
-        Task<List<Ticket>> GetAllCurrentTicketAsync(int UserId);
+    #region Ticket Management
 
-        Task SaveChangeAsync();
+    Task AddTicketAsync(Ticket ticket);
+    void UpdateTicketAsync(Ticket ticket);
+    Task<List<Ticket>> GetAllCurrentTicketAsync(int UserId);
+    Task<Ticket> GetTicketAsync(int ticketid);
+    Task<Ticket> GetAllAsync(int ticketid);
+    Task<List<Ticket>> GetAllTicketForAdminAsync();
 
-        Task AddTicketMessageAsync(TicketsMessage ticketsMessage);
+    #endregion
 
+    #region Ticket Message Management
 
+    Task AddTicketMessageAsync(TicketsMessage ticketsMessage);
+    Task<TicketsMessage> GetTicketMessageCurrentAsync(int TicketId);
+    Task<TicketsMessage> GetTicketMessageAsync(int ticketid);
+    Task<List<TicketsMessage>> GetMessages(int ticketid);
 
-        Task<TicketsMessage> GetTicketMessageCurrentAsync(int TicketId);
+    #endregion
 
-        Task<Ticket> GetTicketAsync(int ticketid);
-        Task<TicketsMessage> GetTicketMessageAsync(int ticketid); 
+    #region Save Changes
 
-        Task<Ticket> GetAllAsync(int ticketid);
+    Task SaveChangeAsync();
 
-        Task<List<Ticket>> GetAllTicketForAdminAsync();
-        Task<List<TicketsMessage>> GetMessages(int ticketid);
+    #endregion
 
-
-
-
-
-
-
-
-
-
-
-
-    }
 }

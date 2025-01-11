@@ -1,0 +1,41 @@
+﻿@model Domain.ViewModel.User.UserWithRolesViewModel
+
+@{
+    ViewData["Title"] = "ویرایش نقش‌های کاربر";
+}
+
+<div class="card">
+    <h5 class="card-header">@ViewData["Title"]</h5>
+    <div class="card-body">
+        <form asp-action="UpdateUserRoles" method="post">
+            <input type="hidden" asp-for="UserId" />
+            <div class="form-group">
+                <label>کاربر: @Model.UserName</label>
+            </div>
+            <div class="form-group">
+                <label>نقش‌ها:</label>
+                @if (ViewBag.AllRoles != null && ViewBag.AllRoles.Count > 0)
+                {
+                    foreach (var role in ViewBag.AllRoles)
+                    {
+                        <div class="form-check">
+                            <input type="checkbox"
+                                   name="SelectedRoles"
+                                   value="@role.RoleName"
+                                   @(Model.Roles != null && Model.Roles.Contains(role.RoleName) ? "checked" : "")
+                                   class="form-check-input" />
+                            <label class="form-check-label">@role.RoleName</label>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>هیچ نقشی تعریف نشده است.</p>
+                }
+            </div>
+            <button type="submit" class="btn btn-success mt-3">ذخیره تغییرات</button>
+        </form>
+    </div>
+</div>
+<br/>
+<a asp-action="Index" class="btn btn-secondary">بازگشت به لیست کاربران</a>

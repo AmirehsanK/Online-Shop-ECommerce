@@ -53,10 +53,6 @@ namespace Web.Areas.UserPanel.Controllers
                        return Redirect(HttpContext.Response.Headers.Referer);
              
                }
-                if (productColorId!=null)
-                {
-                    await orderService.MinuesColorCount(productColorId.Value);
-                }
 
             }
 

@@ -6,30 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Areas.UserPanel.Controllers;
 
-public class TicketController : UserPanelBaseController
+public class TicketController(ITicketService ticketService) : UserPanelBaseController
 {
-    #region Ctor
-
-    private readonly ITicketService _ticketService;
-
-    public TicketController(ITicketService ticketService)
-    {
-        _ticketService = ticketService;
-    }
-
-    #endregion
 
     #region TicketList
 
     [HttpGet]
     public async Task<IActionResult> TicketList()
     {
-        if (User.Identity.IsAuthenticated)
-        {
-            var model = await _ticketService.GetTicketListForShow(User.GetCurrentUserId());
-            return View(model);
-        }
-        return View();
+        if (!User.Identity!.IsAuthenticated) return View();
+        var model = await ticketService.GetTicketListForShow(User.GetCurrentUserId());
+        return View(model);
     }
 
     #endregion
@@ -41,9 +28,11 @@ public class TicketController : UserPanelBaseController
     {
         return View();
     }
+    
     [HttpPost]
     public async Task<IActionResult> AddTicket(AddTicketViewModel model)
     {
+        
         #region Validation
 
         if (!ModelState.IsValid)
@@ -53,7 +42,7 @@ public class TicketController : UserPanelBaseController
 
         #endregion
 
-        await _ticketService.AddNewTicket(model,User.GetCurrentUserId());
+        await ticketService.AddNewTicket(model,User.GetCurrentUserId());
         return RedirectToAction(nameof(TicketList));
     }
 
@@ -61,34 +50,32 @@ public class TicketController : UserPanelBaseController
 
     #region TicketDetail
 
-    [HttpGet("TicketDetail/{ticketid}")]
-    public async Task<IActionResult> TicketDetail(int ticketid)
+    [HttpGet("TicketDetail/{ticketId:int}")]
+    public async Task<IActionResult> TicketDetail(int ticketId)
     {
-        var model=await _ticketService.GetTicketDetail(ticketid);
+        var model=await ticketService.GetTicketDetail(ticketId);
         return View(model);
     }
-    [HttpPost("TicketDetail/{ticketid}")]
-    public async Task<IActionResult> TicketDetail(TicketDetailViewModel model, int ticketid)
+    [HttpPost("TicketDetail/{ticketId:int}")]
+    public async Task<IActionResult> TicketDetail(TicketDetailViewModel model, int ticketId)
     {
+        
         #region Validation
 
         if (!ModelState.IsValid)
         {
-            var models = await _ticketService.GetTicketDetail(ticketid);
+            var models = await ticketService.GetTicketDetail(ticketId);
             return View(models);
         }
 
         #endregion
-
-
-        await _ticketService.AddMessageToCurrentTicket(model, ticketid, User.GetCurrentUserId());
+        
+        await ticketService.AddMessageToCurrentTicket(model, ticketId, User.GetCurrentUserId());
         return RedirectToAction(nameof(TicketList));
     }
 
     #endregion
-
-
-
+    
 }
 
 

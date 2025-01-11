@@ -1,26 +1,21 @@
 ﻿using Application.Services.Interfaces;
 using Application.Tools;
-using Domain.Entities.Discount;
 using Domain.Interface;
 using Domain.ViewModel.Discount;
-using Infra.Data.Migrations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Discount = Domain.Entities.Discount.Discount;
 
 namespace Application.Services.Impelementation
 {
     public class DiscountService(IDiscountRepository repository) : IDiscountService
     {
+        
+        #region Get Discounts
         public async Task<List<DiscountViewModel>> GetAllAsync()
         {
             var discounts = await repository.GetAllAsync();
             return discounts.Select(d => new DiscountViewModel
             {
-                Id=d.Id,
+                Id = d.Id,
                 Code = d.Code,
                 IsPercentage = d.IsPercentage,
                 Value = d.Value,
@@ -28,8 +23,7 @@ namespace Application.Services.Impelementation
                 EndDate = d.EndDate?.ToShamsi().ToString(),
                 IsActive = d.IsActive,
                 UsageLimit = d.UsageLimit,
-                IsDeleted=false
-                
+                IsDeleted = false
             }).ToList();
         }
 
@@ -41,8 +35,8 @@ namespace Application.Services.Impelementation
             return new DiscountViewModel
             {
                 Code = discount.Code,
-                Id=discount.Id
-                ,IsDeleted = discount.IsDeleted,
+                Id = discount.Id,
+                IsDeleted = discount.IsDeleted,
                 IsPercentage = discount.IsPercentage,
                 Value = discount.Value,
                 StartDate = discount.StartDate?.ToShamsi().ToString(),
@@ -51,19 +45,21 @@ namespace Application.Services.Impelementation
                 UsageLimit = discount.UsageLimit
             };
         }
+        #endregion
 
+        #region Add/Update/Delete Discount
         public async Task AddAsync(DiscountViewModel viewModel)
         {
             var discount = new Discount
             {
                 Id = viewModel.Id,
                 IsDeleted = viewModel.IsDeleted,
-                CreateDate=DateTime.UtcNow,
+                CreateDate = DateTime.UtcNow,
                 Code = viewModel.Code,
                 IsPercentage = viewModel.IsPercentage,
                 Value = viewModel.Value,
-                StartDate = viewModel.StartDate.ToMiladiString(),
-                EndDate = viewModel.EndDate.ToMiladiString(),
+                StartDate = viewModel.StartDate!.ToMiladiString(),
+                EndDate = viewModel.EndDate!.ToMiladiString(),
                 IsActive = viewModel.IsActive,
                 UsageLimit = viewModel.UsageLimit
             };
@@ -79,9 +75,8 @@ namespace Application.Services.Impelementation
 
             discount.Code = viewModel.Code;
             discount.IsPercentage = viewModel.IsPercentage;
-            //discount.Value = viewModel.Value;
-            discount.StartDate = viewModel.StartDate.ToMiladiString();
-            discount.EndDate = viewModel.EndDate.ToMiladiString();
+            discount.StartDate = viewModel.StartDate!.ToMiladiString();
+            discount.EndDate = viewModel.EndDate!.ToMiladiString();
             discount.IsActive = (bool)viewModel.IsActive;
             discount.UsageLimit = viewModel.UsageLimit;
 
@@ -94,39 +89,16 @@ namespace Application.Services.Impelementation
             var discount = await repository.GetByIdAsync(id);
             if (discount == null) return;
 
-            discount.IsDeleted=true;
+            discount.IsDeleted = true;
             repository.Update(discount);
             await repository.SaveChangesAsync();
         }
+        #endregion
 
+        #region User Discounts
         public async Task<List<int>> GetUserDiscount(int discountId)
         {
             return await repository.GetUserDiscount(discountId);
-        }
-
-        public Task<List<int>> GetProductDiscount(int discountId)
-        {
-            return repository.GetProductDiscount(discountId);
-        }
-
-        public async Task AssignProductDiscountAsync(List<int> productIds, int discountId)
-        {
-            var existingProductIds = await repository.GetProductDiscount(discountId);
-
-            var productsToRemove = existingProductIds.Except(productIds).ToList();
-
-            var productsToAdd = productIds.Except(existingProductIds).ToList();
-
-            foreach (var productId in productsToRemove)
-            {
-                await repository.RemoveProductDiscountAsync(productId, discountId);
-            }
-
-            foreach (var productId in productsToAdd)
-            {
-                await repository.AssignProductDiscountAsync(productId, discountId);
-            }
-            await repository.SaveChangesAsync();
         }
 
         public async Task AssignUserDiscountAsync(List<int> userIds, int discountId)
@@ -134,7 +106,6 @@ namespace Application.Services.Impelementation
             var existingUserIds = await repository.GetUserDiscount(discountId);
 
             var usersToRemove = existingUserIds.Except(userIds).ToList();
-
             var usersToAdd = userIds.Except(existingUserIds).ToList();
 
             foreach (var userId in usersToRemove)
@@ -148,26 +119,51 @@ namespace Application.Services.Impelementation
             }
             await repository.SaveChangesAsync();
         }
+        #endregion
 
+        #region Product Discounts
+        public Task<List<int>> GetProductDiscount(int discountId)
+        {
+            return repository.GetProductDiscount(discountId);
+        }
+
+        public async Task AssignProductDiscountAsync(List<int> productIds, int discountId)
+        {
+            var existingProductIds = await repository.GetProductDiscount(discountId);
+
+            var productsToRemove = existingProductIds.Except(productIds).ToList();
+            var productsToAdd = productIds.Except(existingProductIds).ToList();
+
+            foreach (var productId in productsToRemove)
+            {
+                await repository.RemoveProductDiscountAsync(productId, discountId);
+            }
+
+            foreach (var productId in productsToAdd)
+            {
+                await repository.AssignProductDiscountAsync(productId, discountId);
+            }
+            await repository.SaveChangesAsync();
+        }
+        #endregion
+
+        #region Admin Discounts
         public async Task<List<DiscountListAdminViewModel>> GetAllForAdminAsync()
         {
             var activeDiscounts = await repository.GetActiveDiscounts();
 
-            var filteredDiscounts = activeDiscounts
-                .Where(d => d.ProductDiscounts != null && d.ProductDiscounts.Count > 1)
-                .Take(3)
-                .ToList();
-
-            var discountList = filteredDiscounts.Select(d => new DiscountListAdminViewModel
+            var discountList = activeDiscounts.Select(d => new DiscountListAdminViewModel
             {
                 Id = d.Id,
                 Code = d.Code,
                 IsPercentage = d.IsPercentage,
                 Value = d.Value,
                 IsActive = d.IsActive
-            }).ToList();
+            }).Take(3).ToList();
 
             return discountList;
         }
+        #endregion
+        
     }
 }

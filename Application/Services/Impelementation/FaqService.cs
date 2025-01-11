@@ -6,22 +6,13 @@ using Domain.ViewModel.Faq.Site;
 
 namespace Application.Services.Impelementation
 {
-    public class FaqService : IFaqService
+    public class FaqService(IFaqRepository faqRepository) : IFaqService
     {
-        #region Ctor
-
-        private readonly IFaqRepository _faqRepository;
-
-        public FaqService(IFaqRepository faqRepository)
-        {
-            _faqRepository = faqRepository;
-        }
-
-        #endregion
-
+        
+        #region Faq Categories
         public async Task<List<GetAllFaqCategoryViewModel>> GetAllFaqCategoriesAsync()
         {
-            var categories = await _faqRepository.GetAllFaqCategory();
+            var categories = await faqRepository.GetAllFaqCategory();
             return categories.Select(u => new GetAllFaqCategoryViewModel()
             {
                 CreateDate = u.CreateDate,
@@ -32,29 +23,28 @@ namespace Application.Services.Impelementation
 
         public async Task AddFaqCategory(AddFaqCategoryViewModel faqCategory)
         {
-            var Category = new FaqCategory()
+            var category = new FaqCategory()
             {
                 CreateDate = DateTime.Now,
                 Title = faqCategory.Title,
                 IsDeleted = false
             };
-            await _faqRepository.AddFaqCategory(Category);
-            await _faqRepository.SaveChangeAsync();
+            await faqRepository.AddFaqCategory(category);
+            await faqRepository.SaveChangeAsync();
         }
 
         public async Task EditFaqCategory(EditFaqCategoryViewModel model)
         {
-            var category = await _faqRepository.GetFaqCategoryByIdAsync(model.Id);
+            var category = await faqRepository.GetFaqCategoryByIdAsync(model.Id);
             category.Title = model.Title;
 
-            _faqRepository.UpdateFaqCategory(category);
-            await _faqRepository.SaveChangeAsync();
-
+            faqRepository.UpdateFaqCategory(category);
+            await faqRepository.SaveChangeAsync();
         }
 
         public async Task<EditFaqCategoryViewModel> GetCategoryForShow(int categoryid)
         {
-            var category = await _faqRepository.GetFaqCategoryByIdAsync(categoryid);
+            var category = await faqRepository.GetFaqCategoryByIdAsync(categoryid);
             var model = new EditFaqCategoryViewModel()
             {
                 Title = category.Title,
@@ -65,9 +55,29 @@ namespace Application.Services.Impelementation
 
         public async Task<List<FaqCategory>> GetAllCategoryForShow()
         {
-            return await _faqRepository.GetAllFaqCategory();
+            return await faqRepository.GetAllFaqCategory();
         }
 
+        public async Task DeleteFaqCategoryAndChild(int categoryid)
+        {
+            var category = await faqRepository.GetCategoryById(categoryid);
+            category.IsDeleted = true;
+            var categoryQuestion = await faqRepository.GetFaqQuestion(categoryid);
+            if (categoryQuestion != null!)
+            {
+                foreach (var item in categoryQuestion)
+                {
+                    item.IsDeleted = true;
+                }
+                faqRepository.UpdateListQuestion(categoryQuestion);
+            }
+
+            faqRepository.UpdateFaqCategory(category);
+            await faqRepository.SaveChangeAsync();
+        }
+        #endregion
+
+        #region Faq Questions
         public async Task AddFaqQuestion(CreateFaqQuestionViewModel model)
         {
             var question = new FaqQuestion()
@@ -78,14 +88,13 @@ namespace Application.Services.Impelementation
                 Description = model.Description,
                 Question = model.Question
             };
-            await _faqRepository.AddQuestion(question);
-            await _faqRepository.SaveChangeAsync();
-
+            await faqRepository.AddQuestion(question);
+            await faqRepository.SaveChangeAsync();
         }
 
         public async Task<List<FaqQuestionListViewModel>> GetAllFaqQuestionListViewModelsAsync(int categegoryid)
         {
-            var questions = await _faqRepository.GetFaqQuestion(categegoryid);
+            var questions = await faqRepository.GetFaqQuestion(categegoryid);
             return questions.Select(u => new FaqQuestionListViewModel()
             {
                 CreateDate = u.CreateDate,
@@ -97,61 +106,40 @@ namespace Application.Services.Impelementation
 
         public async Task<EditFaqQuestionViewModel> GetFaqQuestionById(int id)
         {
-            var question = await _faqRepository.GetQuestionById(id);
+            var question = await faqRepository.GetQuestionById(id);
             var viewmodel = new EditFaqQuestionViewModel()
             {
                 Answer = question.Description,
                 Question = question.Question,
                 Id = question.Id,
                 CategoryId = question.CategoryId,
-
             };
             return viewmodel;
         }
 
         public async Task EditFaqQuestion(EditFaqQuestionViewModel model)
         {
-            var Question = await _faqRepository.GetQuestionById(model.Id);
-            Question.CategoryId = model.CategoryId;
-            Question.Description = model.Answer;
-            Question.Question = model.Question;
-            _faqRepository.UpdateFaqQuestion(Question);
-            await _faqRepository.SaveChangeAsync();
-
-        }
-
-        public async Task DeleteFaqCategoryAndChild(int categoryid)
-        {
-            var Category = await _faqRepository.GetCategoryById(categoryid);
-            Category.IsDeleted = true;
-            var categoryQuestion = await _faqRepository.GetFaqQuestion(categoryid);
-            if (categoryQuestion != null)
-            {
-                foreach (var item in categoryQuestion)
-                {
-                    item.IsDeleted = true;
-                }
-                _faqRepository.UpdateListQuestion(categoryQuestion);
-            }
-
-            _faqRepository.UpdateFaqCategory(Category);
-            await _faqRepository.SaveChangeAsync();
-
-
-
+            var question = await faqRepository.GetQuestionById(model.Id);
+            question.CategoryId = model.CategoryId;
+            question.Description = model.Answer;
+            question.Question = model.Question;
+            faqRepository.UpdateFaqQuestion(question);
+            await faqRepository.SaveChangeAsync();
         }
 
         public async Task DeleteFaqQuestion(int id)
         {
-            var question = await _faqRepository.GetQuestionById(id);
+            var question = await faqRepository.GetQuestionById(id);
             question.IsDeleted = true;
-            _faqRepository.UpdateFaqQuestion(question);
-            await _faqRepository.SaveChangeAsync();
+            faqRepository.UpdateFaqQuestion(question);
+            await faqRepository.SaveChangeAsync();
         }
+        #endregion
 
+        #region Site Faq
         public async Task<List<AllFaqCategoryViewModel>> GetAllCategoryForSite()
         {
-            var category = await _faqRepository.GetAllFaqCategory();
+            var category = await faqRepository.GetAllFaqCategory();
             return category.Select(u => new AllFaqCategoryViewModel()
             {
                 CategoryTitle = u.Title,
@@ -161,24 +149,23 @@ namespace Application.Services.Impelementation
 
         public async Task<GetFaqCategoryAndChildViewModel> GetFaqCategories(int categoryid)
         {
-            var category = await _faqRepository.GetCategoryById(categoryid);
-            var Question = await _faqRepository.GetFaqQuestion(categoryid);
-            Question.Select(u => new FaqQuestionCategoryViewModel
+            var category = await faqRepository.GetCategoryById(categoryid);
+            var question = await faqRepository.GetFaqQuestion(categoryid);
+            question.Select(u => new FaqQuestionCategoryViewModel
             {
                 Question = u.Question,
                 Answer = u.Description
             }).ToList();
-            var FaqQAuestion = new GetFaqCategoryAndChildViewModel()
+            var faqQuestion = new GetFaqCategoryAndChildViewModel()
             {
                 Title = category.Title,
                 Id = categoryid,
-                ChildCategories = Question
+                ChildCategories = question
             };
-            return FaqQAuestion;
-
-
-
-
+            return faqQuestion;
         }
+        
+        #endregion
+        
     }
 }

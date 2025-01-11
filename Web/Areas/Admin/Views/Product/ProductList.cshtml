@@ -4,42 +4,45 @@
 }
 @model Domain.ViewModel.Product.Product.FilterProductViewModel
 
-<h2>لیست محصولات</h2>
-
 @if (Model.Entities.Count() != 0 && Model.Entities.Any())
 {
-    <table class="table table-bordered mt-4">
+    <div class="card">
+    <h3 class="card-header">@ViewData["Title"]</h3>
+    <div class="table-responsive text-nowrap">
+    <table class="table">
         <thead>
-            <tr>
-                <th>نام محصول</th>
-                <th>تصویر</th>
-                <th>دسته‌بندی</th>
-                <th>قیمت</th>
-                <th>موجودی</th>
-                <th>جزئیات</th>
-            </tr>
+        <tr>
+            <th>نام محصول</th>
+            <th>تصویر</th>
+            <th>دسته‌بندی</th>
+            <th>قیمت</th>
+            <th>موجودی</th>
+            <th>جزئیات</th>
+        </tr>
         </thead>
         <tbody>
-           @foreach (var product in Model.Entities)
-            {
-                <tr>
-                    <td>@product.ProductName</td>
-                    <td>
-                        <img src="@PathTools.FilePath@product.ImageName" alt="@product.ProductName" style="width: 75px; height: 75px;" />
-                    </td>
-                    <td>@product.SubCategoryTitle</td>
-                    <td>@product.Price</td>
-                    <td>@product.Inventory</td>
-                    <td>
-                        <a asp-action="UpdateProduct" asp-area="Admin" asp-controller="Product" asp-route-Productid="@product.Id" class="btn m-1 btn-info btn-sm"><i class="fa-solid fa-circle-info"></i></a>
-                        <a asp-area="Admin" asp-controller="Product" asp-action="ShowProductGallery" asp-route-Productid="@product.Id" class="btn m-1 btn-warning btn-sm"><i class="fa-regular fa-images"></i></a>
-                        <a asp-controller="ProductColor" asp-area="Admin" asp-action="AddProductColor" asp-route-productId="@product.Id" class="btn m-1 btn-success btn-sm"><i class="fa-solid fa-palette"></i></a>
-
-                    </td>
-                </tr>
-            }
+        @foreach (var product in Model.Entities)
+        {
+            <tr>
+                <td>@product.ProductName</td>
+                <td>
+                    <img src="@PathTools.FilePath@product.ImageName" alt="@product.ProductName" style="width: 75px; height: 75px;" />
+                </td>
+                <td>@product.SubCategoryTitle</td>
+                <td>@product.Price</td>
+                <td>@product.Inventory</td>
+                <td>
+                    <a asp-action="UpdateProduct" asp-area="Admin" asp-controller="Product" asp-route-Productid="@product.Id" class="btn m-1 btn-info"><i class="fa-solid fa-circle-info"></i></a>
+                    <a asp-area="Admin" asp-controller="Product" asp-action="ShowProductGallery" asp-route-Productid="@product.Id" class="btn m-1 btn-warning"><i class="fa-regular fa-images"></i></a>
+                    <a asp-controller="ProductColor" asp-area="Admin" asp-action="AddProductColor" asp-route-productId="@product.Id" class="btn m-1 btn-success"><i class="fa-solid fa-palette"></i></a>
+                </td>
+            </tr>
+        }
         </tbody>
     </table>
+    </div>
+    </div>
+
 }
 else
 {

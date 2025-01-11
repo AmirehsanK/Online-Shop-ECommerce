@@ -1,20 +1,17 @@
-﻿
-
-using Domain.Entities.Product;
-using Domain.ViewModel.Product.ProductColor;
+﻿using Domain.Entities.Product;
 using Domain.ViewModel.Product.ProductGallery;
-using Microsoft.AspNetCore.Http;
 
-namespace Application.Services.Interfaces
+namespace Application.Services.Interfaces;
+
+public interface IProductGalleryService
 {
-    public interface IProductGalleryService
-    {
-        Task<List<ProductGallery>> GetGalleryListAsync(int productid);
 
-        Task AddProductGalleries(ShowProductGalleryViewModel galleries);
+    #region Product Gallery Management
 
-        Task RemoveProductGallery(int galleryid);
+    Task<List<ProductGallery>> GetGalleryListAsync(int productid);
+    Task AddProductGalleries(ShowProductGalleryViewModel galleries);
+    Task RemoveProductGallery(int galleryid);
 
+    #endregion
 
-    }
 }

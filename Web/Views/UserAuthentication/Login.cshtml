@@ -14,7 +14,7 @@
 </script>
 <div class="page-wrapper">
     <main class="page-content page-auth">
-        @if (User.Identity.IsAuthenticated)
+        @if (User.Identity!.IsAuthenticated)
         {
             <div class="alert alert-danger">
                 شما به این بخش دسترسی ندارید

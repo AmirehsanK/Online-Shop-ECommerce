@@ -1,22 +1,20 @@
-﻿
-using Domain.Entities.Notification;
+﻿using Domain.Entities.Notification;
 using Domain.Enums;
 using Domain.ViewModel.Notification;
 
-namespace Application.Services.Interfaces
+namespace Application.Services.Interfaces;
+
+public interface INotificationService
 {
-    public interface INotificationService
-    {
-        Task AddNewMessage(AddNotificationViewModel model, int? userId);
 
+    #region Notification Management
 
-        Task<ShowNotificationViewModel> GetShowNotificationById(int userid);
+    Task AddNewMessage(AddNotificationViewModel model, int? userId);
+    Task<ShowNotificationViewModel> GetShowNotificationById(int userid);
+    Task markSeenForPrivateMessage(int? userId, int message);
+    Task<NotificationEnum> GetNotificationById(int id);
+    Task<Notification> GetpublicMessage(int userId);
 
-        Task markSeenForPrivateMessage(int? userId,int message);
+    #endregion
 
-        Task<NotificationEnum> GetNotificationById(int id);
-
-        Task<Notification> GetpublicMessage(int userId);
-
-    }
 }

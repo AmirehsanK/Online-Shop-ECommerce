@@ -1,5 +1,4 @@
-﻿using Application.Services.Impelementation;
-using Application.Services.Interfaces;
+﻿using Application.Services.Interfaces;
 using Application.Tools;
 using Azure.Core;
 using Domain.Entities.Question;
@@ -15,10 +14,11 @@ namespace Web.Controllers
     IQuestionService questionService,ICommentService commentService,IOrderService orderService) : SiteBaseController
      
     {
+        
         #region ProductList
 
         [HttpGet("ProductList/")]
-        public async Task<IActionResult> ProductList(FilterProductViewModel filter, int SubCategoryId)
+        public async Task<IActionResult> ProductList(FilterProductViewModel filter, int subCategoryId)
         {
             
             var model = await productService.GetAllProductsAsync(filter);
@@ -29,57 +29,23 @@ namespace Web.Controllers
 
         #endregion
 
+        #region Product Detail
+
         [HttpGet("product-detail")]
-        public async Task<IActionResult> ProductDetail(int productid)
+        public async Task<IActionResult> ProductDetail(int productId)
         {
-            #region averageRating
-
-            var comment = await commentService.GetCommentsByProductIdAsync(productid);
-            float avgQuality = 0;   
-            float avgDesign = 0;
-            float avgEase = 0;
-            float avgValue = 0;
-            float avgInnovation = 0;
-            float avgFeatures = 0;
-
-            foreach (var variable in comment)
-            {
-                avgQuality += variable.BuildQuality;
-                avgDesign += variable.DesignAndAppearance;
-                avgEase += variable.EaseOfUse;
-                avgValue += variable.ValueForMoney;
-                avgInnovation += variable.Innovation;
-                avgFeatures += variable.Features;
-            }
-
-            avgQuality /= comment.Count;
-            avgDesign /= comment.Count;
-            avgEase /= comment.Count;
-            avgValue /= comment.Count;
-            avgInnovation /= comment.Count;
-            avgFeatures /= comment.Count;
-            float avgOverall = (avgQuality + avgDesign + avgEase + avgValue + avgInnovation + avgFeatures) / 6;
-            Dictionary<string, float> avg = new Dictionary<string, float>();
-            avg.Add("avgQuality", avgQuality);
-            avg.Add("avgDesign", avgDesign);
-            avg.Add("avgEase", avgEase);
-            avg.Add("avgValue", avgValue);
-            avg.Add("avgInnovation", avgInnovation);
-            avg.Add("avgFeatures", avgFeatures);
-            avg.Add("avgOverall", avgOverall);
-            ViewData["Commentavg"] = avg;
-            #endregion
+            var comment = await commentService.GetCommentsByProductIdAsync(productId);
+            ViewData["CommentAvg"] = await commentService.GetCommentRatingsAsync(productId);
             ViewData["Comments"] = comment;
-            ViewData["Question"] = await questionService.GetProductQuestionsById(productid);
-            var model= await productService.GetProductDetailForSite(productid);
+            ViewData["Question"] = await questionService.GetProductQuestionsById(productId);
+            var model= await productService.GetProductDetailForSite(productId);
             return View(model);
         }
         
-   
+        #endregion
 
-        #region AddQuestionToProduct
-
-      
+        #region Add Question To Product
+        
         [HttpPost]
         public async Task<IActionResult> AddQuestionToProduct(QuestionAnswerViewModel model)
         {
@@ -102,15 +68,12 @@ namespace Web.Controllers
 
         #endregion
 
-        #region MyRegion
+        #region Toggle Question Like
 
-        
-
-     
         [HttpPost]
         public async Task<IActionResult> ToggleQuestionLike(int productId, int userId, QuestionLike questionLike)
         {
-            bool isSuccess = await questionService.ToggleQuestionLike(productId, userId, questionLike);
+            var isSuccess = await questionService.ToggleQuestionLike(productId, userId, questionLike);
             return Json(new { success = isSuccess });
         }
         #endregion
@@ -122,7 +85,11 @@ namespace Web.Controllers
             var product = await productService.GetProductByIdAsync(productId);
             ViewData["ProductName"] = product.ProductName;
             ViewData["ProductImage"] = product.ImageName;
-            return View();
+            var model = new CommentViewModel
+            {
+                ProductId = product.Id
+            };
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> ProductAddComment(CommentViewModel comment)
@@ -134,20 +101,18 @@ namespace Web.Controllers
         }
         public async Task<IActionResult> CommentLike(int commentId, bool isLike)
         {
-            var userIp = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+            var userIp = Request.HttpContext.Connection.RemoteIpAddress!.ToString();
             await commentService.LikeCommentAsync(commentId, userIp, isLike);
             return Json(new { success = true });
         }
         #endregion
 
-        #region AddToBasket
+        #region Add To Basket
       
-
-
+        
 
         #endregion
-
- 
+        
     }
 
 

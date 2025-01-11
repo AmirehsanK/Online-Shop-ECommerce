@@ -4,7 +4,6 @@ namespace Web.Controllers;
 
 public class SiteBaseController : Controller
 {
-    public string ErrorMessage = "Error";
-
-    public string SuccessMessage = "Success";
+    protected const string ErrorMessage = "Error";
+    protected const string SuccessMessage = "Success";
 }

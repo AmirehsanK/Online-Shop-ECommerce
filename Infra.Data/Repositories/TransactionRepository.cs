@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Data.Repositories
 {
-    public class TransactionRepository(ApplicationDbContext context):ITransactionRepository
+    public class TransactionRepository(ApplicationDbContext context) : ITransactionRepository
     {
         public async Task AddTransaction(Transaction transaction)
         {

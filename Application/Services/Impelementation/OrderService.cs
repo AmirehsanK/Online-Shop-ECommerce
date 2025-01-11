@@ -1,7 +1,4 @@
-﻿
-
-using System.Transactions;
-using Application.Services.Interfaces;
+﻿using Application.Services.Interfaces;
 using Domain.Entities.Account;
 using Domain.Entities.Orders;
 using Domain.Enums;
@@ -18,52 +15,65 @@ namespace Application.Services.Impelementation
             IUserRepository userRepository,
             ITransactionRepository transactionRepository) : IOrderService
     {
-        public async Task<AddToBasketResult> AddProductToOrder(int productId, int userId, int? productColorId, int count = 1)
+
+
+
+    
+    #region Add Product to Order
+
+    public async Task<AddToBasketResult> AddProductToOrder(int productId, int userId, int? productColorId,
+        int count = 1)
+    {
+        var openOrder = await orderRepository.GetUserLatestOpenOrder(userId);
+        var existOrderDetail = await orderRepository.GetExistOrderDetail(productId, productColorId,openOrder.Id);
+        if (existOrderDetail == null)
         {
-
-            var OpenOrder = await orderRepository.GetUserLatestOpenOrder(userId);
-            var exsistOrderDetial = await orderRepository.GetExistOrderDetail(productId, productColorId, OpenOrder.Id);
-            if (exsistOrderDetial == null)
+            var orderDetail = new OrderDetail()
             {
-                var orderdetail = new OrderDetail()
-                {
-                    ProductId = productId,
-                    Count = count,
-                    OrderId = OpenOrder.Id,
-                    IsDeleted = false,
-                    CreateDate = DateTime.Now,
+                ProductId = productId,
+                Count = count,
+                OrderId = openOrder.Id,
+                IsDeleted = false,
+                CreateDate = DateTime.Now,
+                ProductColorId = productColorId
+            };
 
-                    ProductColorId = productColorId
-
-                };
-
-                if (productColorId.HasValue)
-                {
-                    var colorprice = await colorRepository.GetProductColorWithid(productColorId.Value);
-                    var color = colorprice.Price;
-                    orderdetail.ColorPrice = color;
-                }
-
-                await orderRepository.AddOrderDetail(orderdetail);
-                await orderRepository.Save();
-            }
-            else
+            if (productColorId.HasValue)
             {
-                exsistOrderDetial.Count = exsistOrderDetial.Count + 1;
-                orderRepository.UpdateOrderDetail(exsistOrderDetial);
-                await orderRepository.Save();
+                var colorPrice = await colorRepository.GetProductColorWithid(productColorId.Value);
+                var color = colorPrice.Price;
+                orderDetail.ColorPrice = color;
             }
-            return AddToBasketResult.Success;
 
+            await orderRepository.AddOrderDetail(orderDetail);
+            await orderRepository.Save();
+        }
+        else
+        {
+            existOrderDetail.Count = existOrderDetail.Count + 1;
+            orderRepository.UpdateOrderDetail(existOrderDetail);
+            await orderRepository.Save();
         }
 
-        public async Task MinuesColorCount(int productColorId)
-        {
-            var product = await colorRepository.GetProductColorWithid(productColorId);
-            product.Count = product.Count - 1;
-            colorRepository.UpdateProductColor(product);
-            await colorRepository.SaveChangeAsync();
-        }
+        return AddToBasketResult.Success;
+
+    }
+
+    
+    #endregion
+
+    #region Update Product Color Count
+
+  
+
+    public async Task MinuesColorCount(int productColorId)
+    {
+        var product = await colorRepository.GetProductColorWithid(productColorId);
+        product.Count = product.Count - 1;
+        colorRepository.UpdateProductColor(product);
+        await colorRepository.SaveChangeAsync();
+    }
+    #endregion
 
         public async Task<List<BasketDetailViewModel?>> GetBasketDetail(int userId)
         {
@@ -101,26 +111,28 @@ namespace Application.Services.Impelementation
             return detailss;
 
         }
+    
 
-        public async Task<GetUserAddressForOrderViewModel> GetUserAddressForOrder(int userId)
+    #region User Address for Order
+    public async Task<GetUserAddressForOrderViewModel> GetUserAddressForOrder(int userId)
+    {
+        var user = await userRepository.GetUserByIdAsync(userId);
+        var userAddress = new GetUserAddressForOrderViewModel()
         {
-            var user = await userRepository.GetUserByIdAsync(userId);
-            var userAddress = new GetUserAddressForOrderViewModel()
-            {
-                Address = user.Address,
-                FullName = user.FirstName + " " + user.LastName
+            Address = user.Address!,
+            FullName = user.FirstName + " " + user.LastName
+        };
+        return userAddress;
+    }
 
-            };
-            return userAddress;
-        }
-
-        public async Task AddUserAddressForOrder(GetUserAddressForOrderViewModel model, int userid)
-        {
-            var user = await userRepository.GetUserByIdAsync(userid);
-            user.Address = model.Address;
-            userRepository.UpdateUser(user);
-            await userRepository.SaveChangesAsync();
-        }
+    public async Task AddUserAddressForOrder(GetUserAddressForOrderViewModel model, int userid)
+    {
+        var user = await userRepository.GetUserByIdAsync(userid);
+        user.Address = model.Address;
+        userRepository.UpdateUser(user);
+        await userRepository.SaveChangesAsync();
+    }
+    #endregion
 
         public async Task CloseOrder(int userId, int transId)
         {
@@ -150,3 +162,5 @@ namespace Application.Services.Impelementation
         }
     }
 }
+
+    

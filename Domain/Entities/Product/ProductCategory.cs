@@ -11,8 +11,7 @@ namespace Domain.Entities.Product
         public int?  ParentId { get; set; }
         [MaxLength(200)]
         public string Title { get; set; }
-     
-     
+        public string? ImageName { get; set; }
 
         #region Relations 
 

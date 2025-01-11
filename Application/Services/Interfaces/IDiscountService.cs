@@ -1,25 +1,33 @@
-﻿using Domain.Entities.Discount;
-using Domain.ViewModel.Discount;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.ViewModel.Discount;
 
-namespace Application.Services.Interfaces
+namespace Application.Services.Interfaces;
+
+public interface IDiscountService
 {
-    public interface IDiscountService
-    {
-        Task<List<DiscountViewModel>> GetAllAsync();
-        Task<List<DiscountListAdminViewModel>> GetAllForAdminAsync();
-        Task<DiscountViewModel?> GetByIdAsync(int id);
-        Task AddAsync(DiscountViewModel viewModel);
-        Task UpdateAsync(int id, DiscountEditViewModel viewModel);
-        Task DeleteAsync(int id);
 
-        Task<List<int>> GetUserDiscount(int discountId);
-        Task<List<int>> GetProductDiscount(int discountId);
-        Task AssignProductDiscountAsync(List<int> productId, int discountId);
-        Task AssignUserDiscountAsync(List<int> userId, int discountId);
-    }
+    #region Discount Retrieval
+
+    Task<List<DiscountViewModel>> GetAllAsync();
+    Task<List<DiscountListAdminViewModel>> GetAllForAdminAsync();
+    Task<DiscountViewModel?> GetByIdAsync(int id);
+
+    #endregion
+
+    #region Discount Management
+
+    Task AddAsync(DiscountViewModel viewModel);
+    Task UpdateAsync(int id, DiscountEditViewModel viewModel);
+    Task DeleteAsync(int id);
+
+    #endregion
+
+    #region Discount Assignment
+
+    Task<List<int>> GetUserDiscount(int discountId);
+    Task<List<int>> GetProductDiscount(int discountId);
+    Task AssignProductDiscountAsync(List<int> productId, int discountId);
+    Task AssignUserDiscountAsync(List<int> userId, int discountId);
+
+    #endregion
+
 }

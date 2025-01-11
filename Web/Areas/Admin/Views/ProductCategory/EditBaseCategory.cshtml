@@ -1,11 +1,13 @@
-﻿@model Domain.ViewModel.Product.CategoryAdmin.EditBaseCategoryViewModel
+﻿@using Application.Tools
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Domain.ViewModel.Product.CategoryAdmin.EditBaseCategoryViewModel
 @{
     ViewData["Title"] = "ویرایش دسته بندی اصلی";
 }
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-<form asp-area="Admin" asp-controller="ProductCategory" asp-action="CreateSubCategory" method="post">
+<form asp-area="Admin" asp-controller="ProductCategory" asp-action="EditBaseCategory" method="post" enctype="multipart/form-data">
     <input type="hidden" asp-for="CategoryId" />
     <div class="col-xl-6">
         <!-- HTML5 Inputs -->
@@ -17,6 +19,19 @@
                     <div class="col-md-10">
                         <input asp-for="CategoryTitle" class="form-control" type="text" id="html5-text-input">
                         <span asp-validation-for="CategoryTitle" class="alert-danger"></span>
+                        @if (Model.ParentId != null)
+                        {
+                            <div class="form-group">
+                                <label for="currentImage">عکس موجود</label>
+                                <div>
+                                    <img src="@PathTools.CategoryImagePath@Model.ImageName" alt="Current Image" class="img-thumbnail image-edit-show">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Image" class="form-label">عکس</label>
+                                <input asp-for="Image" type="file" class="form-control"/>
+                            </div>
+                        }
                     </div>
                 </div>
                 <button asp-area="Admin" asp-controller="ProductCategory" asp-action="EditBaseCategory"  type="submit" class="btn btn-primary">ثبت</button>

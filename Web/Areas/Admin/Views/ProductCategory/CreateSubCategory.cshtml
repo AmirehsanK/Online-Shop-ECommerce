@@ -18,8 +18,14 @@
                     <div class="col-md-10">
                         <input asp-for="Title" class="form-control" type="text" id="html5-text-input">
                         <span asp-validation-for="Title" class="alert-danger"></span>
+                        <div class="mb-3">
+                            <label asp-for="Image" class="form-label">عکس</label>
+                            <input asp-for="Image" type="file" class="form-control" required/>
+                            <span asp-validation-for="Image" class="alert-danger"></span>
+                        </div>
                     </div>
                 </div>
+
                 <button asp-area="Admin" asp-controller="ProductCategory" asp-action="CreateSubCategory" asp-route-parentid="@Model.ParentId" type="submit" class="btn btn-primary">ثبت</button>
             </div>
         </div>

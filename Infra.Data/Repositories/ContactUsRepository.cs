@@ -5,37 +5,47 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Data.Repositories;
 
-public class ContactUsRepository(ApplicationDbContext _context) : IContactUsRepository
+public class ContactUsRepository(ApplicationDbContext context) : IContactUsRepository
 {
+
+    #region Subject Methods
+
     public async Task<List<Subject>> GetSubjectsAsync()
     {
-        return await _context.Subjects.ToListAsync();
+        return await context.Subjects.ToListAsync();
     }
-    
+
     public async Task<Subject> GetSubjectByIdAsync(int id)
     {
-        return await _context.Subjects.FirstOrDefaultAsync(idSubject => idSubject.Id == id);
+        return (await context.Subjects.FirstOrDefaultAsync(idSubject => idSubject.Id == id))!;
     }
+
+    #endregion
+
+    #region Contact Message Methods
 
     public async Task AddMessageAsync(ContactMessage message)
     {
-        await _context.ContactMessages.AddAsync(message);
-        await _context.SaveChangesAsync();
+        await context.ContactMessages.AddAsync(message);
+        await context.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<ContactMessage>> GetMessagesAsync()
     {
-        return await _context.ContactMessages.ToListAsync();
+        return await context.ContactMessages.ToListAsync();
     }
 
     public async Task<ContactMessage> GetMessageByIdAsync(int id)
     {
-        return await _context.ContactMessages.FindAsync(id);
+        return (await context.ContactMessages.FindAsync(id))!;
     }
 
     public async Task UpdateMessageAsync(ContactMessage message)
     {
-        _context.ContactMessages.Update(message);
-        await _context.SaveChangesAsync();
+        context.ContactMessages.Update(message);
+        await context.SaveChangesAsync();
     }
+
+    #endregion
+
 }

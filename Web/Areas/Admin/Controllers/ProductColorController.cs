@@ -2,103 +2,100 @@
 using Domain.Enums;
 using Domain.ViewModel.Product.ProductColor;
 using Microsoft.AspNetCore.Mvc;
+using Web.Attributes;
+using Infra.Data.Statics;
 
 namespace Web.Areas.Admin.Controllers
 {
-    public class ProductColorController : AdminBaseController
+    [InvokePermission(PermissionName.ColorManagement)]
+    public class ProductColorController(IProductColorService productColorService) : AdminBaseController
     {
-        #region Ctor
 
-        private readonly IProductColorService _productColorService;
-
-        public ProductColorController(IProductColorService productColorService)
-        {
-            _productColorService = productColorService;
-        }
-
-        #endregion
-
-
-        #region CraeateColor
+        #region CreateColor
 
         [HttpGet]
+        [InvokePermission(PermissionName.CreateColor)]
         public IActionResult CreateColor()
         {
             return View();
         }
+
         [HttpPost]
+        [InvokePermission(PermissionName.CreateColor)]
         public async Task<IActionResult> CreateColor(CreateProductColorViewModel color)
         {
-            #region Validation
-
             if (!ModelState.IsValid)
             {
                 return View(color);
             }
 
-            #endregion
-
-            await _productColorService.AddNewColor(color);
+            await productColorService.AddNewColor(color);
+            TempData[SuccessMessage] = "رنگ با موفقیت اضافه شد.";
             return RedirectToAction(nameof(ColorList));
         }
 
         #endregion
 
-        #region Colorlist
+        #region ColorList
 
         [HttpGet]
+        [InvokePermission(PermissionName.ColorList)]
         public async Task<IActionResult> ColorList()
         {
-            var model = await _productColorService.GetColorList();
+            var model = await productColorService.GetColorList();
             return View(model);
         }
 
         #endregion
 
-        [HttpGet]
-        public async Task<IActionResult> DeleteColor(int colorId)
-        {
-            await _productColorService.DeleteColorAsync(colorId);
-            return RedirectToAction(nameof(ColorList));
-        }
+        #region Delete Color
 
         [HttpGet]
+        [InvokePermission(PermissionName.DeleteColor)]
+        public async Task<IActionResult> DeleteColor(int colorId)
+        {
+            await productColorService.DeleteColorAsync(colorId);
+            TempData[SuccessMessage] = "رنگ با موفقیت حذف شد.";
+            return RedirectToAction(nameof(ColorList));
+        }
+        
+        #endregion
+        
+        #region Add Product Color
+        
+        [HttpGet]
+        [InvokePermission(PermissionName.ProductManagement)]
         public async Task<IActionResult> AddProductColor(int productId)
         {
-            ViewData["Colors"] = await _productColorService.GetColorList();
+            ViewData["Colors"] = await productColorService.GetColorList();
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProductColor(AddProductColorViewModel model,int productId)
+        [InvokePermission(PermissionName.ProductManagement)]
+        public async Task<IActionResult> AddProductColor(AddProductColorViewModel model, int productId)
         {
-            #region Validation
-
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            #endregion
-            var res=await _productColorService.AddColorToProduct(model, productId);
+            var res = await productColorService.AddColorToProduct(model, productId);
             switch (res)
             {
                 case ProductExistColor.Exist:
                     TempData[ErrorMessage] = "رنگ وارد شده موجود میباشد";
-                    return RedirectToAction("Productlist","Product");
+                    return RedirectToAction("Productlist", "Product");
                 case ProductExistColor.NotFound:
-                    return RedirectToAction("Productlist","Product");
-                    break;
-            
+                    TempData[ErrorMessage] = "محصول مورد نظر یافت نشد";
+                    return RedirectToAction("Productlist", "Product");
             }
 
-            return View();
-
-
+            TempData[SuccessMessage] = "رنگ با موفقیت به محصول اضافه شد.";
+            return RedirectToAction("Productlist", "Product");
         }
-
-
-
-
+        
+        #endregion
+        
     }
 }

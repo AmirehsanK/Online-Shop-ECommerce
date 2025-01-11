@@ -9,7 +9,7 @@
         @if (id == null)
         {
             <a asp-controller="ProductCategory" asp-area="Admin" asp-action="CreateBaseCategory"
-               class="btn btn-label-success">افزودن</a>
+               class="btn btn-success">افزودن</a>
         }
 
     </div>
@@ -21,7 +21,7 @@
                 <thead>
                     <tr>
 
-                        <th>کد</th>
+                        <th>آیدی</th>
                         <th>عنوان</th>
                         <th>عملیات</th>
 
@@ -39,17 +39,14 @@
                                 @if (id == null)
                                 {
                                     <a asp-controller="ProductCategory" asp-area="Admin" asp-action="CreateSubCategory"
-                                       asp-route-parentid="@category.CategoryId" class="btn btn-label-success">افزودن زیر مجموعه</a>
+                                       asp-route-parentid="@category.CategoryId" class="btn m-1 btn-success">افزودن زیر مجموعه<i class="fa-regular fa-square-plus"></i></a>
                                 }
-
-
                                 <a asp-controller="ProductCategory" asp-area="Admin" asp-action="EditBaseCategory"
-                                   asp-route-categoryid="@category.CategoryId" class="btn btn-label-warning">ویرایش</a>
+                                   asp-route-categoryid="@category.CategoryId" class="btn m-1 btn-warning btn-lg"><i class="fa-solid fa-pen-to-square"></i></a>
                                 <a asp-controller="ProductCategory" asp-area="Admin" asp-action="BaseCategoryList"
-                                   asp-route-categoryid="@category.CategoryId" class="btn btn-label-primary">جزییات</a>
-
+                                   asp-route-categoryid="@category.CategoryId" class="btn m-1 btn-primary btn-lg"><i class="fa-solid fa-info"></i></a>
                                 <a asp-controller="ProductCategory" asp-area="Admin" asp-action="DeleteBaseCategory"
-                                   asp-route-categoryid="@category.CategoryId" class="btn btn-label-danger">حدف دسته بندی </a>
+                                   asp-route-categoryid="@category.CategoryId" class="btn m-1 btn-danger btn-lg"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
                     }

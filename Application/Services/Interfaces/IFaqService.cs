@@ -1,39 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities.Faq;
+﻿using Domain.Entities.Faq;
 using Domain.ViewModel.Faq.Admin;
 using Domain.ViewModel.Faq.Site;
 
-namespace Application.Services.Interfaces
+namespace Application.Services.Interfaces;
+
+public interface IFaqService
 {
-    public interface IFaqService
-    {
-        Task<List<GetAllFaqCategoryViewModel>> GetAllFaqCategoriesAsync();
 
-        Task AddFaqCategory(AddFaqCategoryViewModel  faqCategory);
-        Task EditFaqCategory(EditFaqCategoryViewModel model);
+    #region Faq Category Management
 
-        Task<EditFaqCategoryViewModel> GetCategoryForShow(int categoryid);
+    Task<List<GetAllFaqCategoryViewModel>> GetAllFaqCategoriesAsync();
+    Task AddFaqCategory(AddFaqCategoryViewModel faqCategory);
+    Task EditFaqCategory(EditFaqCategoryViewModel model);
+    Task<EditFaqCategoryViewModel> GetCategoryForShow(int categoryid);
+    Task<List<FaqCategory>> GetAllCategoryForShow();
+    Task DeleteFaqCategoryAndChild(int categoryid);
 
-        Task<List<FaqCategory>> GetAllCategoryForShow();
+    #endregion
 
-        Task AddFaqQuestion(CreateFaqQuestionViewModel model);
+    #region Faq Question Management
 
-        Task<List<FaqQuestionListViewModel>> GetAllFaqQuestionListViewModelsAsync(int categegoryid);
+    Task AddFaqQuestion(CreateFaqQuestionViewModel model);
+    Task<List<FaqQuestionListViewModel>> GetAllFaqQuestionListViewModelsAsync(int categegoryid);
+    Task<EditFaqQuestionViewModel> GetFaqQuestionById(int id);
+    Task EditFaqQuestion(EditFaqQuestionViewModel model);
+    Task DeleteFaqQuestion(int id);
 
-        Task<EditFaqQuestionViewModel> GetFaqQuestionById(int id);
+    #endregion
 
-        Task EditFaqQuestion(EditFaqQuestionViewModel model);
+    #region Faq Site View
 
-        Task DeleteFaqCategoryAndChild(int categoryid);
+    Task<List<AllFaqCategoryViewModel>> GetAllCategoryForSite();
+    Task<GetFaqCategoryAndChildViewModel> GetFaqCategories(int categoryid);
 
-        Task DeleteFaqQuestion(int id);
+    #endregion
 
-        Task<List<AllFaqCategoryViewModel>> GetAllCategoryForSite();
-
-        Task<GetFaqCategoryAndChildViewModel> GetFaqCategories(int categoryid);
-    }
 }

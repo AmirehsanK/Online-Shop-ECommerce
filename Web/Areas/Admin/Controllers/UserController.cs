@@ -2,52 +2,47 @@
 using Domain.Enums;
 using Domain.ViewModel.User.Admin;
 using Microsoft.AspNetCore.Mvc;
+using Web.Attributes;
+using Infra.Data.Statics;
 
 namespace Web.Areas.Admin.Controllers;
 
-public class UserController : AdminBaseController
+[InvokePermission(PermissionName.UserManagement)]
+public class UserController(IUserService userService) : AdminBaseController
 {
-    #region USerList
+
+    #region UserList
 
     [HttpGet]
+    [InvokePermission(PermissionName.UserList)]
     public async Task<IActionResult> UserList()
-
     {
-        var models = await _userService.GetUserListAsync();
+        var models = await userService.GetUserListAsync();
         return View(models);
     }
 
     #endregion
 
-    #region Userdetail
+    #region UserDetail
 
     [HttpGet]
+    [InvokePermission(PermissionName.UserList)]
     public async Task<IActionResult> UserDetail(int userId)
     {
-        var model = await _userService.GetUserDetailAsync(userId);
+        var model = await userService.GetUserDetailAsync(userId);
         return View(model);
     }
 
     #endregion
 
-    #region DeleteSUer
+    #region DeleteUser
 
     [HttpGet]
-    public async Task<IActionResult> DeleteUser(int UserId)
+    [InvokePermission(PermissionName.DeleteUser)]
+    public async Task<IActionResult> DeleteUser(int userId)
     {
-        await _userService.DeleteUserAsync(UserId);
+        await userService.DeleteUserAsync(userId);
         return RedirectToAction("UserList");
-    }
-
-    #endregion
-
-    #region Ctor
-
-    private readonly IUserService _userService;
-
-    public UserController(IUserService userService)
-    {
-        _userService = userService;
     }
 
     #endregion
@@ -55,33 +50,27 @@ public class UserController : AdminBaseController
     #region CreateUser
 
     [HttpGet]
+    [InvokePermission(PermissionName.CreateUser)]
     public IActionResult CreateUser()
     {
         return View();
     }
 
     [HttpPost]
+    [InvokePermission(PermissionName.CreateUser)]
     public async Task<IActionResult> CreateUser(CreateUserViewModel model)
     {
-        #region Validation
-
         if (!ModelState.IsValid) return View(model);
 
-        #endregion
-
-        var res = await _userService.CreateUserAsync(model);
+        var res = await userService.CreateUserAsync(model);
         switch (res)
         {
             case CreateUserEnums.Success:
-            {
                 TempData[SuccessMessage] = "کاربر مورد نظر با موفقیت اضافه شد";
                 return RedirectToAction(nameof(UserList));
-            }
             case CreateUserEnums.EmailExist:
-            {
                 TempData[ErrorMessage] = "ایمیل وارد شده موجود میباشد";
                 return View();
-            }
         }
 
         return View();
@@ -92,25 +81,24 @@ public class UserController : AdminBaseController
     #region EditUser
 
     [HttpGet]
-    public async Task<IActionResult> EditUser(int UserId)
+    [InvokePermission(PermissionName.UpdateUser)]
+    public async Task<IActionResult> EditUser(int userId)
     {
-        var model = await _userService.GetUsersByIDAsync(UserId);
+        var model = await userService.GetUsersByIDAsync(userId);
         return View(model);
     }
 
     [HttpPost]
+    [InvokePermission(PermissionName.UpdateUser)]
     public async Task<IActionResult> EditUser(EditUserViewModel model)
     {
-        #region Validation
-
         if (!ModelState.IsValid) return View(model);
 
-        #endregion
-
-        await _userService.EditUserAsync(model);
+        await userService.EditUserAsync(model);
         TempData[SuccessMessage] = "اطلاعات با موفیت ویرایش شد";
         return RedirectToAction(nameof(UserList));
     }
 
     #endregion
+    
 }

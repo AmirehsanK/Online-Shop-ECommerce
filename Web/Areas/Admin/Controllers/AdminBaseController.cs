@@ -5,9 +5,8 @@ namespace Web.Areas.Admin.Controllers;
 [Area("Admin")]
 public class AdminBaseController : Controller
 {
-    public static string SuccessMessage = "Success";
-    public static string ErrorMessage = "Error";
-
+    protected const string SuccessMessage = "Success";
+    protected const string ErrorMessage = "Error";
     protected IActionResult RedirectToRefererUrl()
     {
         var url = HttpContext.Request.Headers.Referer.ToString();

@@ -2,5 +2,5 @@
 @model Domain.ViewModel.Image.BannerFixViewModel
 @if (Model!=null)
 {
-    <a href="@Model.Link"><img src="@PathTools.FixedBannerPath@Model.Title" alt="banner"></a>
+    <a href="@Model.Link"  style="background-image: url(@PathTools.FixedBannerPath@Model.Title)"><img src="@PathTools.FixedBannerPath@Model.Title" alt="banner"></a>
 }

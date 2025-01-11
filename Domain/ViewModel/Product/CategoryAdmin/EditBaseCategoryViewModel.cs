@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace Domain.ViewModel.Product.CategoryAdmin
 {
@@ -10,5 +11,8 @@ namespace Domain.ViewModel.Product.CategoryAdmin
         [Display(Name = "عنوان")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string CategoryTitle { get; set; }
+        public int ParentId { get; set; }
+        public string? ImageName { get; set; }
+        public IFormFile? Image { get; set; }
     }
 }

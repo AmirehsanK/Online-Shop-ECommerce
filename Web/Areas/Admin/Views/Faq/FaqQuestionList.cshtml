@@ -33,13 +33,9 @@
                             <td>@question.Question</td>
                             <td>@question.Answer</td>
                             <td>@question.CreateDate.ToShamsi() @question.CreateDate.ToString("hh:mm:ss")</td>
-
                             <td>
-
-                                <a asp-controller="Faq" asp-area="Admin" asp-action="DeleteFaqQuestion" asp-route-queestionid="@question.Id" class="btn btn-label-danger">حدف</a>
-                                <a asp-controller="Faq" asp-area="Admin" asp-action="EditFaqQuestion" asp-route-questionId="@question.Id" class="btn btn-label-warning">ویرایش</a>
-                                
-
+                                <a asp-controller="Faq" asp-area="Admin" asp-action="DeleteFaqQuestion" asp-route-queestionid="@question.Id" class="btn m-1 btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                <a asp-controller="Faq" asp-area="Admin" asp-action="EditFaqQuestion" asp-route-questionId="@question.Id" class="btn m-1 btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
                             </td>
                         </tr>
                     }

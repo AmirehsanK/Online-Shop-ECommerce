@@ -16,7 +16,7 @@ namespace Web.Controllers
 
         #endregion
 
-        #region FAq Category
+        #region Faq Category
 
         [HttpGet("Faq")]
         public async Task<IActionResult> Faq()
@@ -27,19 +27,15 @@ namespace Web.Controllers
 
         #endregion
 
-
+        #region Faq Category Detail
+        
         [HttpGet("Faq-Detail")]
-        public async Task<IActionResult> FaqCategoryDetail(int categoryid)
+        public async Task<IActionResult> FaqCategoryDetail(int categoryId)
         {
-           var model= await _faqService.GetFaqCategories(categoryid);
+           var model= await _faqService.GetFaqCategories(categoryId);
             return View(model);
         }
 
-        //[HttpGet("Faq")]
-        //public IActionResult Faq()
-        //{
-        //    return View();
-        //}
-
+        #endregion
     }
 }

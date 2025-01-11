@@ -2,71 +2,62 @@
 using Application.Tools;
 using Domain.ViewModel.Ticket;
 using Microsoft.AspNetCore.Mvc;
+using Web.Attributes;
+using Infra.Data.Statics;
 
 namespace Web.Areas.Admin.Controllers
 {
-    public class AdminTicketController : AdminBaseController
+    [InvokePermission(PermissionName.TicketManagement)]
+    public class AdminTicketController(ITicketService ticketService) : AdminBaseController
     {
-        #region Ctor
 
-        private readonly ITicketService _ticketService;
+        #region ShowAllTicket
 
-        public AdminTicketController(ITicketService ticketService)
-        {
-            _ticketService = ticketService;
-        }
-
-        #endregion
-
-        #region ShowAllticket
-
+        [InvokePermission(PermissionName.TicketList)]
         public async Task<IActionResult> AllTicketList()
         {
-            var model= await _ticketService.GetAllTicketListForAdmin();
+            var model = await ticketService.GetAllTicketListForAdmin();
             return View(model);
         }
 
         #endregion
 
-        #region MyRegion
+        #region AnswerTicket
 
         [HttpGet]
-        public async Task<IActionResult> AnswerTicket(int TicketId)
+        [InvokePermission(PermissionName.AnswerTicket)]
+        public async Task<IActionResult> AnswerTicket(int ticketId)
         {
-            var model = await _ticketService.GetTicketDetail(TicketId);
+            var model = await ticketService.GetTicketDetail(ticketId);
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AnswerTicket(TicketDetailViewModel Ticket,int TicketId)
+        [InvokePermission(PermissionName.AnswerTicket)]
+        public async Task<IActionResult> AnswerTicket(TicketDetailViewModel ticket, int ticketId)
         {
-            #region Validation
-
             if (!ModelState.IsValid)
             {
-                var model = await _ticketService.GetTicketDetail(TicketId);
+                var model = await ticketService.GetTicketDetail(ticketId);
                 return View(model);
             }
-       
 
-            #endregion
-
-            await _ticketService.AddMessageToCurrentTicketFromAdmin(Ticket, TicketId, User.GetCurrentUserId());
+            await ticketService.AddMessageToCurrentTicketFromAdmin(ticket, ticketId, User.GetCurrentUserId());
             return RedirectToAction(nameof(AllTicketList));
-
         }
 
         #endregion
 
-        #region ClosedTicket
+        #region CloseTicket
 
-        public async Task<IActionResult> CloseTicket(int TicketId)
+        [InvokePermission(PermissionName.DeleteTicket)]
+        public async Task<IActionResult> CloseTicket(int ticketId)
         {
-            await _ticketService.CloseTicket(TicketId);
+            await ticketService.CloseTicket(ticketId);
             return RedirectToAction(nameof(AllTicketList));
         }
 
         #endregion
-
+        
     }
 }

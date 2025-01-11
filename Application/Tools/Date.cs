@@ -30,11 +30,9 @@ public static class Date
             var parts = shamsiDate.Split('/');
             if (parts.Length != 3)
                 throw new FormatException("Invalid Shamsi date format. Expected format: yyyy/MM/dd");
-
-            int year = int.Parse(parts[0]);
-            int month = int.Parse(parts[1]);
-            int day = int.Parse(parts[2]);
-
+            var year = int.Parse(parts[0]);
+            var month = int.Parse(parts[1]);
+            var day = int.Parse(parts[2]);
             return pc.ToDateTime(year, month, day, 0, 0, 0, 0);
         }
         catch (Exception ex)

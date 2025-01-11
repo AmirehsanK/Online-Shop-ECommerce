@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Text;
-using Application.Services.Impelementation;
 using Application.Services.Interfaces;
 using Application.Tools;
 
@@ -18,25 +17,30 @@ namespace Web.Areas.UserPanel.Controllers
     public class PaymentController(IOrderService orderService,
         ITransactionService transactionService) : UserPanelBaseController
     {
+        #region Start Pay
+
         [HttpGet("start-pay")]
         public async Task<IActionResult> StartPay(AddWalletViewModel? wallet)
         {
+
+            using var httpClient = new HttpClient();
             
-            using HttpClient httpClient = new HttpClient();
-
-
-            NovinoGetPaymentUrlRequestDto model = new NovinoGetPaymentUrlRequestDto()
+            var model = new NovinoGetPaymentUrlRequestDto();
+            
+            model = new NovinoGetPaymentUrlRequestDto()
             {
                 CallbackMethod = "POST",
-                CardPan = null,
+                CallbackUrl = "https://localhost:7271/novinocallback",
+                CardPan = null!,
+                Description = "پرداخت سبد خرید",
                 Email = "",
                 InvoiceId = User.GetCurrentUserId().ToString(),
                 MerchantId = "test",
-                Mobile = null,
+                Mobile = null!,
                 Name = "",
-
-
+                
             };
+
             if (wallet.Amount!=0&&wallet.UserId != 0)
             {
                 model.Amount = wallet.Amount * 10;
@@ -48,11 +52,11 @@ namespace Web.Areas.UserPanel.Controllers
             }
             else
             {
-                var order = await orderService.GetBasketDetail(User.GetCurrentUserId());
+              var  order = await orderService.GetBasketDetail(User.GetCurrentUserId());
                 
                 if (order == null)
                     return NotFound();
-                int amount = order.Sum(od => od.FinallPrice);
+                var amount = order.Sum(od => od.FinallPrice);
                 model.Amount = amount * 10;
                 model.Description = "پرداخت سبد خرید";
                 var id = await transactionService.AddNewTransaction(User.GetCurrentUserId(), amount);
@@ -63,7 +67,6 @@ namespace Web.Areas.UserPanel.Controllers
             string body = JsonConvert.SerializeObject(model);
 
             HttpContent content = new StringContent(body, Encoding.UTF8, "application/json");
-
             var response = await httpClient.PostAsync(
                 "https://api.novinopay.com/payment/ipg/v2/request",
                 content
@@ -72,8 +75,7 @@ namespace Web.Areas.UserPanel.Controllers
             string responseContent = await response.Content.ReadAsStringAsync();
 
             var finalResult = JsonConvert.DeserializeObject<NovinoGetPaymentUrlResponseDto>(responseContent);
-
-            if (finalResult != null && finalResult.Status == "100")
+            if (finalResult is { Status: "100" })
             {
 
                 return Redirect(finalResult.Data.PaymentUrl);
@@ -84,26 +86,33 @@ namespace Web.Areas.UserPanel.Controllers
             }
 
         }
+        
+        #endregion
+        
+        #region Novino Call back
+        
+       
 
         [HttpPost("novinocallback/{transId}") ,AllowAnonymous]
-        public async Task<IActionResult> NovinoCallback(string paymentStatus, string invoiceID, string authority, int transId)
+        public async Task<IActionResult> NovinoCallback(string paymentStatus, string invoiceId, string authority, int transId)
         {
             if (!string.IsNullOrEmpty(paymentStatus) && paymentStatus.ToLower() == "ok")
             {
-                var id = int.Parse(invoiceID);
+                var id=int.Parse(invoiceId);
+                
+                
+                HttpClient httpClient = new HttpClient();
+                id = int.Parse(invoiceId);
              
-                using HttpClient httpClient = new HttpClient();
 
-              
                 var transactionamount = await transactionService.GetTransactionByid(transId);
 
-
-                NovinoVerifyPaymentRequestDto model = new NovinoVerifyPaymentRequestDto()
+                var model = new NovinoVerifyPaymentRequestDto()
                 {
-
                     Authority = authority,
                     MerchantId = "test"
                 };
+                var body = JsonConvert.SerializeObject(model);
                 
                 var order = await orderService.GetBasketDetail(id);
                 if (order.Count == 0)
@@ -112,7 +121,6 @@ namespace Web.Areas.UserPanel.Controllers
                 }
                 else
                 {
-                    
                     int amount = order.Sum(od => od.FinallPrice);
                     if (amount == transactionamount.Price)
                     {
@@ -124,24 +132,18 @@ namespace Web.Areas.UserPanel.Controllers
                     }
                 }
                    
-             
-              
-               
-
-                string body = JsonConvert.SerializeObject(model);
+                
+                body = JsonConvert.SerializeObject(model);
 
                 HttpContent content = new StringContent(body, Encoding.UTF8, "application/json");
-
                 var response = await httpClient.PostAsync(
                           "https://api.novinopay.com/payment/ipg/v2/verification",
                           content
                           );
 
-                string responseContent = await response.Content.ReadAsStringAsync();
-
+                var responseContent = await response.Content.ReadAsStringAsync();
                 var finalResult = JsonConvert.DeserializeObject<NovinoVerifyPaymentResponseDto>(responseContent);
-
-                if (finalResult != null && finalResult.Status == "100")
+                if (finalResult is { Status: "100" })
                 {
                     await orderService.CloseOrder(id, transId);
 
@@ -149,10 +151,10 @@ namespace Web.Areas.UserPanel.Controllers
                 }
                 else
                 {
+                   
                     await orderService.ChangeTransactionStatus(transId);
                     return RedirectToAction("UnSuccessPayment");
                 }
-
             }
             else
             {
@@ -164,15 +166,16 @@ namespace Web.Areas.UserPanel.Controllers
             }
 
         }
-
+        
+        #endregion
+        
         #region SuccessPayment
+        
         [HttpGet("SuccessPayment")]
         public async Task<IActionResult> SuccessPayment()
         {
             return View();
         }
-
-
 
         #endregion
 

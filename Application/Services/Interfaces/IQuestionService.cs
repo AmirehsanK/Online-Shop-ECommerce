@@ -1,26 +1,22 @@
-﻿
-using Domain.Entities.Question;
+﻿using Domain.Entities.Question;
 using Domain.ViewModel.Question;
 
-namespace Application.Services.Interfaces
+namespace Application.Services.Interfaces;
+
+public interface IQuestionService
 {
-    public interface IQuestionService
-    {
-        Task AddNewQuestionToProduct(QuestionAnswerViewModel model,int userid);
 
-        Task<FilterQuestionListViewModel> GetQuestion(FilterQuestionListViewModel filter);
+    #region Question Management
 
-        Task<QuestionDetailViewModel> GetQuestionDetail(int questionId);
+    Task AddNewQuestionToProduct(QuestionAnswerViewModel model, int userid);
+    Task<FilterQuestionListViewModel> GetQuestion(FilterQuestionListViewModel filter);
+    Task<QuestionDetailViewModel> GetQuestionDetail(int questionId);
+    Task<List<QuestionLikeViewModel>> GetProductQuestionsById(int productId);
+    Task AddAnswerToQuestion(QuestionDetailViewModel model);
+    Task CloseQuestion(int questionId);
+    Task<bool> ToggleQuestionLike(int productId, int userId, QuestionLike questionLike);
+    Task ConfirmToShow(int questionId);
 
-        Task<List<QuestionLikeViewModel>> GetProductQuestionsById(int productId);
+    #endregion
 
-        Task AddAnswerToQuestion(QuestionDetailViewModel model);
-
-        Task CloseQuestion(int questionId);
-
-        Task<bool> ToggleQuestionLike(int productId, int userId, QuestionLike questionLike);
-
-        Task ConfirmToShow(int questionId);
-
-    }
 }

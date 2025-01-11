@@ -1,27 +1,21 @@
 ﻿using Application.Services.Interfaces;
 using Domain.ViewModel.Faq.Admin;
 using Microsoft.AspNetCore.Mvc;
+using Web.Attributes;
+using Infra.Data.Statics;
 
 namespace Web.Areas.Admin.Controllers
 {
-    public class FaqController : AdminBaseController
+    [InvokePermission(PermissionName.FaqManagement)]
+    public class FaqController(IFaqService faqService) : AdminBaseController
     {
-        #region Ctor
-        private readonly IFaqService _faqService;
-
-        public FaqController(IFaqService faqService)
-        {
-            _faqService = faqService;
-        }
-
-        #endregion
 
         #region FaqCategoryList
 
+        [InvokePermission(PermissionName.FaqList)]
         public async Task<IActionResult> FaqCategoryList()
         {
-            var model = await _faqService.GetAllFaqCategoriesAsync();
-
+            var model = await faqService.GetAllFaqCategoriesAsync();
             return View(model);
         }
 
@@ -30,50 +24,48 @@ namespace Web.Areas.Admin.Controllers
         #region AddFaqCategory
 
         [HttpGet]
+        [InvokePermission(PermissionName.CreateFaqCategory)]
         public IActionResult AddFaqCategory()
         {
-
             return View();
         }
+
         [HttpPost]
+        [InvokePermission(PermissionName.CreateFaqCategory)]
         public async Task<IActionResult> AddFaqCategory(AddFaqCategoryViewModel model)
         {
-            #region Validation
-
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            #endregion
-
-            await _faqService.AddFaqCategory(model);
+            await faqService.AddFaqCategory(model);
             return RedirectToAction(nameof(FaqCategoryList));
         }
 
         #endregion
 
         #region EditFaqCategory
+
         [HttpGet]
-        public async Task<IActionResult> EditFaqCategory(int categoryid)
+        [InvokePermission(PermissionName.UpdateFaqCategory)]
+        public async Task<IActionResult> EditFaqCategory(int categoryId)
         {
-            var model = await _faqService.GetCategoryForShow(categoryid);
+            var model = await faqService.GetCategoryForShow(categoryId);
             return View(model);
         }
+
         [HttpPost]
+        [InvokePermission(PermissionName.UpdateFaqCategory)]
         public async Task<IActionResult> EditFaqCategory(EditFaqCategoryViewModel model)
         {
-            #region Validation
-
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            #endregion
-
-            await _faqService.EditFaqCategory(model);
-            return View();
+            await faqService.EditFaqCategory(model);
+            return RedirectToAction(nameof(FaqCategoryList));
         }
 
         #endregion
@@ -81,9 +73,10 @@ namespace Web.Areas.Admin.Controllers
         #region DeleteFaqQuestionOrCategory
 
         [HttpGet]
-        public async Task<IActionResult> DeleteFaqCategory(int categoryid)
+        [InvokePermission(PermissionName.DeleteFaqCategory)]
+        public async Task<IActionResult> DeleteFaqCategory(int categoryId)
         {
-            await _faqService.DeleteFaqCategoryAndChild(categoryid);
+            await faqService.DeleteFaqCategoryAndChild(categoryId);
             return RedirectToAction(nameof(FaqCategoryList));
         }
 
@@ -92,37 +85,36 @@ namespace Web.Areas.Admin.Controllers
         #region CreateFaqQuestion
 
         [HttpGet]
+        [InvokePermission(PermissionName.CreateFaq)]
         public async Task<IActionResult> CreateFaqQuestion()
         {
-            ViewData["Categories"] = await _faqService.GetAllCategoryForShow();
+            ViewData["Categories"] = await faqService.GetAllCategoryForShow();
             return View();
         }
 
         [HttpPost]
+        [InvokePermission(PermissionName.CreateFaq)]
         public async Task<IActionResult> CreateFaqQuestion(CreateFaqQuestionViewModel model)
         {
-            #region Validation
-
             if (!ModelState.IsValid)
             {
-                ViewData["Categories"] = await _faqService.GetAllCategoryForShow();
+                ViewData["Categories"] = await faqService.GetAllCategoryForShow();
                 return View(model);
             }
 
-            #endregion
-
-            await _faqService.AddFaqQuestion(model);
-            ViewData["Categories"] = await _faqService.GetAllCategoryForShow();
-            return View();
+            await faqService.AddFaqQuestion(model);
+            ViewData["Categories"] = await faqService.GetAllCategoryForShow();
+            return RedirectToAction(nameof(FaqCategoryList));
         }
 
         #endregion
 
-        #region FAqQuestionList
+        #region FaqQuestionList
 
-        public async Task<IActionResult> FaqQuestionList(int categoryid)
+        [InvokePermission(PermissionName.FaqList)]
+        public async Task<IActionResult> FaqQuestionList(int categoryId)
         {
-            var model = await _faqService.GetAllFaqQuestionListViewModelsAsync(categoryid);
+            var model = await faqService.GetAllFaqQuestionListViewModelsAsync(categoryId);
             return View(model);
         }
 
@@ -131,41 +123,40 @@ namespace Web.Areas.Admin.Controllers
         #region EditFaqQuestion
 
         [HttpGet]
+        [InvokePermission(PermissionName.UpdateFaq)]
         public async Task<IActionResult> EditFaqQuestion(int questionId)
         {
-            var model = await _faqService.GetFaqQuestionById(questionId);
-            ViewData["Categories"] = await _faqService.GetAllCategoryForShow();
+            var model = await faqService.GetFaqQuestionById(questionId);
+            ViewData["Categories"] = await faqService.GetAllCategoryForShow();
             return View(model);
         }
+
         [HttpPost]
+        [InvokePermission(PermissionName.UpdateFaq)]
         public async Task<IActionResult> EditFaqQuestion(EditFaqQuestionViewModel model)
         {
-            #region Validation
-
             if (!ModelState.IsValid)
             {
-                ViewData["Categories"] = await _faqService.GetAllCategoryForShow();
+                ViewData["Categories"] = await faqService.GetAllCategoryForShow();
                 return View(model);
             }
 
-
-            #endregion
-
-            await _faqService.EditFaqQuestion(model);
-
+            await faqService.EditFaqQuestion(model);
             return RedirectToAction(nameof(FaqCategoryList));
         }
 
         #endregion
-
-        public async Task<IActionResult> DeleteFaqQuestion(int queestionid)
+        
+        #region DeleteFaqQuestion
+        
+        [InvokePermission(PermissionName.DeleteFaq)]
+        public async Task<IActionResult> DeleteFaqQuestion(int questionId)
         {
-            await _faqService.DeleteFaqQuestion(queestionid);
-             
-            return Redirect(HttpContext.Request.Headers.Referer);
+            await faqService.DeleteFaqQuestion(questionId);
+            return Redirect(HttpContext.Request.Headers.Referer!);
         }
-
-
-
+        
+        #endregion
+        
     }
 }

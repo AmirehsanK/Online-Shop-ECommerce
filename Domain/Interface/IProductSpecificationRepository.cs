@@ -1,23 +1,25 @@
-﻿
-using Domain.Entities.Product;
+﻿using Domain.Entities.Product;
 using Domain.ViewModel.Product.ProductSpecification;
 
-namespace Domain.Interface
+namespace Domain.Interface;
+
+public interface IProductSpecificationRepository
 {
-    public interface IProductSpecificationRepository
-    {
-        Task AddSpecificationAsync(ProductSpecification productSpecification);
 
+    #region Specification Management
 
-        void UpdateSpecification(ProductSpecification productSpecification);
+    Task AddSpecificationAsync(ProductSpecification productSpecification);
+    void UpdateSpecification(ProductSpecification productSpecification);
+    Task<List<ProductSpecification>> GetSpecificationAsync(int productId);
+    Task<FilterProductSpecification> GetProductSpecification(int productid, FilterProductSpecification filter);
+    Task<ProductSpecification> GetSpecificationById(int SpecificationId);
 
-        Task<List<ProductSpecification>> GetSpecificationAsync(int productId);
+    #endregion
 
-        Task<FilterProductSpecification> GetProductSpecification(int productid,FilterProductSpecification filter);
+    #region Save Changes
 
-        Task<ProductSpecification> GetSpecificationById(int SpecificationId);
+    Task SaveChangeAsync();
 
+    #endregion
 
-        Task SaveChangeAsync();
-    }
 }

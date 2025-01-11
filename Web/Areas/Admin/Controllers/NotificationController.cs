@@ -1,44 +1,43 @@
 ﻿using Application.Services.Interfaces;
 using Domain.ViewModel.Notification;
 using Microsoft.AspNetCore.Mvc;
+using Web.Attributes;
+using Infra.Data.Statics;
 
 namespace Web.Areas.Admin.Controllers
 {
-    public class NotificationController : AdminBaseController
+    [InvokePermission(PermissionName.NotificationManagement)]
+    public class NotificationController(INotificationService notificationService) : AdminBaseController
     {
-        #region Ctor
+        
+        #region Add New Notification
 
-        private readonly INotificationService _notificationService;
-
-        public NotificationController(INotificationService notificationService)
-        {
-            _notificationService = notificationService;
-        }
-
-        #endregion
         [HttpGet]
+        [InvokePermission(PermissionName.CreateNotification)]
         public IActionResult AddNewNotification(int? userId)
         {
             if (userId.HasValue)
             {
-                ViewData["Id"]=userId.Value;
+                ViewData["Id"] = userId.Value;
             }
             return View();
         }
+
         [HttpPost]
-        public async Task<IActionResult> AddNewNotification(AddNotificationViewModel model,int? userId=null)
+        [InvokePermission(PermissionName.CreateNotification)]
+        public async Task<IActionResult> AddNewNotification(AddNotificationViewModel model, int? userId = null)
         {
-            #region Validation
-            
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            #endregion
-
-            await _notificationService.AddNewMessage(model, userId);
-            return View();
+            await notificationService.AddNewMessage(model, userId);
+            TempData[SuccessMessage] = "اعلان با موفقیت ارسال شد.";
+            return RedirectToAction(nameof(AddNewNotification));
         }
+        
+        #endregion
+        
     }
 }

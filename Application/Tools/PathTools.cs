@@ -19,7 +19,7 @@ public class PathTools
 
     #endregion
 
-    #region ProductGallery
+    #region Product Gallery
 
     public static string ProductGalleryImageServerPath = Path.Join(Directory.GetCurrentDirectory(), "wwwroot/images/product-galleries/main/");
     public static string ProductGalleryImagePath = "/images/product-galleries/main/";
@@ -28,6 +28,13 @@ public class PathTools
 
     #endregion
 
+    #region Product Category
+
+    public static string CategoryImageServerPath = Path.Join(Directory.GetCurrentDirectory(), "wwwroot/images/Product-Category/");
+    public static string CategoryImagePath = "/images/Product-Category/";
+
+
+    #endregion
 
 
 

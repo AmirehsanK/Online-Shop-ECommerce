@@ -12,20 +12,8 @@ using System.Configuration;
 
 namespace Web.Controllers;
 
-public class UserAuthenticationController : SiteBaseController
+public class UserAuthenticationController(IUserService userService, IConfiguration configuration) : SiteBaseController
 {
-    #region ctor
-
-    private readonly IUserService _userService;
-    private readonly IConfiguration _configuration;
-
-    public UserAuthenticationController(IUserService userService, IConfiguration configuration)
-    {
-        _userService = userService;
-        _configuration = configuration;
-    }
-
-    #endregion
 
     #region ForgotPassword
 
@@ -40,7 +28,7 @@ public class UserAuthenticationController : SiteBaseController
         if (!ModelState.IsValid)
             return View();
         
-        var result = await _userService.ForgotPasswordEmailSenderAsync(mailViewModel.Email);
+        var result = await userService.ForgotPasswordEmailSenderAsync(mailViewModel.Email);
         switch (result)
         {
             case ForgetPasswordEnum.Success:
@@ -63,7 +51,7 @@ public class UserAuthenticationController : SiteBaseController
     [HttpGet("ForgetPassword/{token}")]
     public async Task<IActionResult> ForgotPasswordChangePassword(string token)
     {
-        var tokenEnum=await _userService.ForgotPasswordTokenCheckerAsync(token);
+        var tokenEnum=await userService.ForgotPasswordTokenCheckerAsync(token);
         TempData["Token"] = token;
         return tokenEnum switch
         {
@@ -76,16 +64,17 @@ public class UserAuthenticationController : SiteBaseController
     public async Task<IActionResult> ForgotPasswordChanger()
     {
         var token = TempData["Token"] as string;
-        var user = await _userService.EmailActivatorAsync(token);
+        var user = await userService.EmailActivatorAsync(token!);
         return RedirectToAction("Login");
     }
     [HttpPost("ForgetPassword")]
     public async Task<IActionResult> ForgotPasswordChanger(ForgetPasswordUserViewModel model)
     {
-        await _userService.ResetPasswordAsync(model.ActivationCode, model.NewPassword);
+        await userService.ResetPasswordAsync(model.ActivationCode, model.NewPassword);
         TempData[SuccessMessage] = "رمز عبور با موفقیت تغییر یافت";
         return RedirectToAction("Login");
     }
+    
     #endregion
 
     #region Logout
@@ -97,31 +86,28 @@ public class UserAuthenticationController : SiteBaseController
     }
 
     #endregion
-
-
-
+    
     #region Login
 
     [HttpGet("Login")]
     public IActionResult Login()
     {
-        if (User.Identity.IsAuthenticated) return RedirectToAction("Index", "Home");
+        if (User.Identity!.IsAuthenticated) return RedirectToAction("Index", "Home");
         return View();
     }
     
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginUserViewModel login)
     {
+        
         #region Validation
 
         if (!ModelState.IsValid) return View(login);
         
-        string googleRecaptchaToken = Request.Form["g-recaptcha-response"].ToString();
-
-        //verify the token
-        string secretkey = _configuration["ReCaptchaSettings:SecrectKey"]!;
-        string verificationUrl = _configuration["ReCaptchaSettings:VerificationUrl"]!;
-        bool isValid = await VerifyRecaptcha.VerifyRecaptchaV3(googleRecaptchaToken, secretkey, verificationUrl);
+        var googleRecaptchaToken = Request.Form["g-recaptcha-response"].ToString();
+        var secretKey = configuration["ReCaptchaSettings:SecretKey"]!;
+        var verificationUrl = configuration["ReCaptchaSettings:VerificationUrl"]!;
+        var isValid = await VerifyRecaptcha.VerifyRecaptchaV3(googleRecaptchaToken, secretKey, verificationUrl);
         if (!isValid)
         {
             TempData[ErrorMessage] = "کپچا را کامل کنید";
@@ -129,10 +115,8 @@ public class UserAuthenticationController : SiteBaseController
         }
 
         #endregion
-        
-     
-  
-        var result = await _userService.LoginUserAsync(login);
+
+        var result = await userService.LoginUserAsync(login);
         switch (result)
         {
             case LoginUserEnum.PasswordInvalid:
@@ -147,7 +131,7 @@ public class UserAuthenticationController : SiteBaseController
             } 
             case LoginUserEnum.Success:
             {
-                var user = await _userService.GetUserByEmailAsync(login.Email);
+                var user = await userService.GetUserByEmailAsync(login.Email);
                 var claims = new List<Claim>
                 {
                     new(ClaimTypes.Name, user.FirstName ?? "کاربر"),
@@ -182,7 +166,7 @@ public class UserAuthenticationController : SiteBaseController
     [HttpGet("signup")]
     public IActionResult SignUp()
     {
-        if (User.Identity.IsAuthenticated) return RedirectToAction("Index", "Home");
+        if (User.Identity!.IsAuthenticated) return RedirectToAction("Index", "Home");
 
         return View();
     }
@@ -190,19 +174,22 @@ public class UserAuthenticationController : SiteBaseController
     [HttpPost("signup")]
     public async Task<IActionResult> SignupUser(RegisterUserViewModel register)
     {
+        
         #region Validation
-        string googleRecaptchaToken = Request.Form["g-recaptcha-response"].ToString();
-
-        //verify the token
-        string secretkey = _configuration["ReCaptchaSettings:SecrectKey"]!;
-        string verificationUrl = _configuration["ReCaptchaSettings:VerificationUrl"]!;
-        bool isValid = await VerifyRecaptcha.VerifyRecaptchaV3(googleRecaptchaToken, secretkey, verificationUrl);
+        
+        var googleRecaptchaToken = Request.Form["g-recaptcha-response"].ToString();
+        var secretKey = configuration["ReCaptchaSettings:SecretKey"]!;
+        var verificationUrl = configuration["ReCaptchaSettings:VerificationUrl"]!;
+        var isValid = await VerifyRecaptcha.VerifyRecaptchaV3(googleRecaptchaToken, secretKey, verificationUrl);
         if (!isValid)
         {
             TempData[ErrorMessage] = "کپچا را کامل کنید";
-            return View();
+            return View("SignUp");
         }
-        var result = await _userService.RegisterUserValidationAsync(register);
+        
+        #endregion
+        
+        var result = await userService.RegisterUserValidationAsync(register);
         switch (result)
         {
             case RegisterUserEnum.EmailUsed:
@@ -213,15 +200,13 @@ public class UserAuthenticationController : SiteBaseController
             case RegisterUserEnum.Success:
             {
                 TempData["Name"] = register.FirstName;
-                await _userService.RegisterUserAsync(register);
+                await userService.RegisterUserAsync(register);
                 return RedirectToAction(nameof(Success));
             }
 
             default: 
                 return View("SignUp");
         }
-
-        #endregion
     }
 
     [Route("Success")]
@@ -234,7 +219,7 @@ public class UserAuthenticationController : SiteBaseController
     [Route("EmailActive/{emailActiveCode}")]
     public async Task<IActionResult> EmailActive(string emailActiveCode)
     {
-        var result = await _userService.EmailActivatorAsync(emailActiveCode);
+        var result = await userService.EmailActivatorAsync(emailActiveCode);
         TempData[SuccessMessage] = result == ActiveEmailEnum.Failed 
             ? "اکانت شما با موفقیت فعال سازی شد" 
             : null;
@@ -242,4 +227,5 @@ public class UserAuthenticationController : SiteBaseController
     }
     
     #endregion
+    
 }

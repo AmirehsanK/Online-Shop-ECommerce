@@ -16,6 +16,5 @@ namespace Domain.ViewModel.User.Admin
         public List<ContactUsAdminViewModel> ContactUsList { get; set; }
         public List<DiscountListAdminViewModel> ActiveDiscountList { get; set; }
         
-
     }
 }
