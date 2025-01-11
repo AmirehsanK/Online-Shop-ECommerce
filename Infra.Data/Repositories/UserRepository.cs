@@ -8,6 +8,14 @@ namespace Infra.Data.Repositories;
 
 public class UserRepository(ApplicationDbContext context) : IUserRepository
 {
+    #region Save Changes
+
+    public async Task SaveChangesAsync()
+    {
+        await context.SaveChangesAsync();
+    }
+
+    #endregion
 
     #region Get Methods
 
@@ -47,10 +55,7 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     public async Task<string> GetUserNameByIdAsync(int userid)
     {
         var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userid);
-        if (user == null)
-        {
-            return "ناشناس";
-        }
+        if (user == null) return "ناشناس";
         return user.FirstName + " " + user.LastName;
     }
 
@@ -83,14 +88,4 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     }
 
     #endregion
-
-    #region Save Changes
-
-    public async Task SaveChangesAsync()
-    {
-        await context.SaveChangesAsync();
-    }
-
-    #endregion
-
 }

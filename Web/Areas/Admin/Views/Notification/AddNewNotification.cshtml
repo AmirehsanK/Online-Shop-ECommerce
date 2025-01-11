@@ -3,6 +3,7 @@
     ViewData["Title"] = "افزودن پیام";
     var id = ViewData["Id"] as int?;
 }
+
 @section Scripts{
     <script>
         ClassicEditor
@@ -19,6 +20,7 @@
             });
     </script>
 }
+
 <form asp-area="Admin" asp-controller="Notification" asp-action="AddNewNotification">
     <input asp-for="UserId" type="hidden"/>
 
@@ -29,7 +31,8 @@
             <div class="card-body">
                 <div class="form-floating">
                     <label asp-for="Message" class="label">پیام</label>
-                    <textarea asp-for="Message" rows="5" class="form-control"  id="editor" placeholder="متن پیام"></textarea>
+                    <textarea asp-for="Message" rows="5" class="form-control" id="editor"
+                              placeholder="متن پیام"></textarea>
                     <span asp-validation-for="Message" class="alert-danger"></span>
                 </div>
                 <br/>

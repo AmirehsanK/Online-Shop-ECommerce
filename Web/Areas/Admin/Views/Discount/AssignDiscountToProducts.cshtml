@@ -3,9 +3,9 @@
 <h2>اختصاص تخفیف به محصولات</h2>
 
 <form asp-action="AssignDiscountToProducts" asp-controller="Discount" asp-area="Admin" method="post">
-    <input asp-for="DiscountId" type="hidden" name="discountId" value="@Model.DiscountId" />
+    <input asp-for="DiscountId" type="hidden" name="discountId" value="@Model.DiscountId"/>
 
-@*     <!-- Category Filter -->
+    @*     <!-- Category Filter -->
     <div class="form-group">
         <label for="categoryFilter">فیلتر دسته‌بندی</label>
         <select id="categoryFilter" class="form-control" onchange="filterProducts(this.value)">
@@ -23,8 +23,8 @@
         @foreach (var product in Model.Products)
         {
             <div class="form-check">
-                <input  type="checkbox" class="form-check-input" name="ProductIds" value="@product.Value"
-                @(Model.SelectedProductIds.Contains(int.Parse(product.Value)) ? "checked" : "") />
+                <input type="checkbox" class="form-check-input" name="ProductIds" value="@product.Value"
+                       @(Model.SelectedProductIds.Contains(int.Parse(product.Value)) ? "checked" : "")/>
                 <label class="form-check-label">@product.Text</label>
             </div>
         }

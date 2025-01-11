@@ -2,14 +2,17 @@
 .validation-summary-errors {
     color: red;
 }
+
 .offprice {
     text-decoration-color: red;
     text-decoration: line-through;
 }
+
 .offimage {
     width: 150px !important;
     height: 150px !important;
 }
+
 /*# sourceMappingURL=custom.css.map */
 
 /*# Product Details */
@@ -26,5 +29,6 @@
 .custom-radio-circle {
     display: inline-block;
 }
+
 /*# End Of Product Details */
 

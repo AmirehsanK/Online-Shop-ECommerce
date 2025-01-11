@@ -5,7 +5,6 @@ namespace Application.Services.Interfaces;
 
 public interface IProductService
 {
-
     #region Category
 
     Task AddBaseCategory(BaseCategoryViewModel category, int? parentid = null);
@@ -33,5 +32,4 @@ public interface IProductService
     Task<List<ProductViewModel>> GetAllProductsNoFilter();
 
     #endregion
-
 }

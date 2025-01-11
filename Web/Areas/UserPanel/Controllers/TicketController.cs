@@ -1,6 +1,5 @@
 ﻿using Application.Services.Interfaces;
 using Application.Tools;
-using Domain.Entities.Ticket;
 using Domain.ViewModel.Ticket;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +7,6 @@ namespace Web.Areas.UserPanel.Controllers;
 
 public class TicketController(ITicketService ticketService) : UserPanelBaseController
 {
-
     #region TicketList
 
     [HttpGet]
@@ -28,21 +26,17 @@ public class TicketController(ITicketService ticketService) : UserPanelBaseContr
     {
         return View();
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> AddTicket(AddTicketViewModel model)
     {
-        
         #region Validation
 
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
+        if (!ModelState.IsValid) return View(model);
 
         #endregion
 
-        await ticketService.AddNewTicket(model,User.GetCurrentUserId());
+        await ticketService.AddNewTicket(model, User.GetCurrentUserId());
         return RedirectToAction(nameof(TicketList));
     }
 
@@ -53,13 +47,13 @@ public class TicketController(ITicketService ticketService) : UserPanelBaseContr
     [HttpGet("TicketDetail/{ticketId:int}")]
     public async Task<IActionResult> TicketDetail(int ticketId)
     {
-        var model=await ticketService.GetTicketDetail(ticketId);
+        var model = await ticketService.GetTicketDetail(ticketId);
         return View(model);
     }
+
     [HttpPost("TicketDetail/{ticketId:int}")]
     public async Task<IActionResult> TicketDetail(TicketDetailViewModel model, int ticketId)
     {
-        
         #region Validation
 
         if (!ModelState.IsValid)
@@ -69,13 +63,10 @@ public class TicketController(ITicketService ticketService) : UserPanelBaseContr
         }
 
         #endregion
-        
+
         await ticketService.AddMessageToCurrentTicket(model, ticketId, User.GetCurrentUserId());
         return RedirectToAction(nameof(TicketList));
     }
 
     #endregion
-    
 }
-
-

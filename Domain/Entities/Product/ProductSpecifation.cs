@@ -1,27 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Entities.Common;
 
-namespace Domain.Entities.Product
+namespace Domain.Entities.Product;
+
+public class ProductSpecification : BaseEntity
 {
-    public class ProductSpecification:BaseEntity
-    {
-        [ForeignKey(nameof(Product))]
-        public int  ProductId { get; set; }
-        public string Key { get; set; }
+    [ForeignKey(nameof(Product))] public int ProductId { get; set; }
 
-        public string Value { get; set; }
+    public string Key { get; set; }
 
-        #region Relation
+    public string Value { get; set; }
 
-        public Product Product { get; set; }
+    #region Relation
 
-        #endregion
-    
+    public Product Product { get; set; }
 
-    }
+    #endregion
 }

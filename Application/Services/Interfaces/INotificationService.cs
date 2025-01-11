@@ -6,7 +6,6 @@ namespace Application.Services.Interfaces;
 
 public interface INotificationService
 {
-
     #region Notification Management
 
     Task AddNewMessage(AddNotificationViewModel model, int? userId);
@@ -16,5 +15,4 @@ public interface INotificationService
     Task<Notification> GetpublicMessage(int userId);
 
     #endregion
-
 }

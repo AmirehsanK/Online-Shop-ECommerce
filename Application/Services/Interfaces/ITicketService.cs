@@ -5,7 +5,6 @@ namespace Application.Services.Interfaces;
 
 public interface ITicketService
 {
-
     #region Ticket Management
 
     Task<List<TicketListViewModel>> GetTicketListForShow(int userId);
@@ -17,5 +16,4 @@ public interface ITicketService
     Task CloseTicket(int ticketid);
 
     #endregion
-
 }

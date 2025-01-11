@@ -1,12 +1,8 @@
-﻿
-namespace Domain.ViewModel.Faq.Site
+﻿namespace Domain.ViewModel.Faq.Site;
+
+public class AllFaqCategoryViewModel
 {
-    public class AllFaqCategoryViewModel
-    {
-        public int Categoryid { get; set; }
+    public int Categoryid { get; set; }
 
-        public string CategoryTitle { get; set; }
-
-
-    }
+    public string CategoryTitle { get; set; }
 }

@@ -1,6 +1,5 @@
 ﻿@model Domain.ViewModel.Product.Product.FilterProductViewModel
 @{
-
     ViewData["Title"] = "ProductList";
 }
 
@@ -26,7 +25,7 @@
                             </div>
                             <!-- end of widget -->
                             <!-- start of widget -->
-                           @*  <div class="widget mb-3">
+                            @*  <div class="widget mb-3">
                                 <div class="widget-title">دسته‌بندی نتایج</div>
                      
                                         @foreach (var item in Model.Entities)
@@ -47,14 +46,14 @@
                             <div class="widget mb-3">
                                 <div class="widget-title">جستجو در نتایج:</div>
                                 <div class="widget-content widget--search">
-                                   
-                                        <div class="form-element-row">
-                                            <input asp-for="StartPrice" type="text" class="form-control"
-                                                   placeholder="قیمت از">
-                                            <i class="ri-search-line icon"></i>
-                                        </div>
+
                                     <div class="form-element-row">
-                                        <input asp-for="EndPrice"  type="text"  class="form-control"
+                                        <input asp-for="StartPrice" type="text" class="form-control"
+                                               placeholder="قیمت از">
+                                        <i class="ri-search-line icon"></i>
+                                    </div>
+                                    <div class="form-element-row">
+                                        <input asp-for="EndPrice" type="text" class="form-control"
                                                placeholder="تا">
                                         <i class="ri-search-line icon"></i>
                                     </div>
@@ -62,12 +61,12 @@
                                         <button type="submit" class="btn btn-success"> اعمال فیلتر</button>
                                     </div>
 
-                                 
+
                                 </div>
                             </div>
                             <!-- end of widget -->
                             <!-- start of widget -->
-                           @*  <div class="widget widget-collapse mb-3">
+                            @*  <div class="widget widget-collapse mb-3">
                                 <div class="widget-title widget-title--collapse-btn" data-bs-toggle="collapse"
                                      data-bs-target="#collapseBrandFilter" aria-expanded="false"
                                      aria-controls="collapseBrandFilter" role="button">
@@ -242,7 +241,7 @@
                                     </div>
                                 </div>
                             </div>
-                          @*   <!-- end of widget -->
+                            @*   <!-- end of widget -->
                             <!-- start of widget -->
                             <div class="widget widget-collapse mb-3">
                                 <div class="widget-title widget-title--collapse-btn" data-bs-toggle="collapse"
@@ -409,40 +408,71 @@
                         <div class="listing-products-header mb-4">
                             <div class="listing-products-filter-container do-simplebar me-4" data-simplebar="init">
                                 <div class="simplebar-wrapper" style="margin: 0px;">
-                                    <div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask">
+                                    <div class="simplebar-height-auto-observer-wrapper">
+                                        <div class="simplebar-height-auto-observer"></div>
+                                    </div>
+                                    <div class="simplebar-mask">
                                         <div class="simplebar-offset" style="left: 0px; bottom: 0px;">
-                                            <div class="simplebar-content-wrapper" style="height: auto; overflow: hidden;">
+                                            <div class="simplebar-content-wrapper"
+                                                 style="height: auto; overflow: hidden;">
                                                 <div class="simplebar-content" style="padding: 0px;">
                                                     <div class="listing-products-filter">
                                                         <!-- start of nav-tabs -->
-                                                        <ul class="nav nav-pills nav-tabs align-items-center" id="sort-tab" role="tablist">
+                                                        <ul class="nav nav-pills nav-tabs align-items-center"
+                                                            id="sort-tab" role="tablist">
                                                             <li class="d-inline-flex align-items-center nav-item me-3 text-muted">
                                                                 <i class="ri-equalizer-line me-2"></i>
                                                                 مرتب سازی بر اساس:
                                                             </li>
                                                             <li class="nav-item" role="presentation">
-                                                                <button class="nav-link active" id="most-visited-tab" data-bs-toggle="tab" data-bs-target="#most-visited" type="button" role="tab" aria-controls="most-visited" aria-selected="true">پربازدید ترین</button>
+                                                                <button class="nav-link active" id="most-visited-tab"
+                                                                        data-bs-toggle="tab"
+                                                                        data-bs-target="#most-visited" type="button"
+                                                                        role="tab" aria-controls="most-visited"
+                                                                        aria-selected="true">پربازدید ترین
+                                                                </button>
                                                             </li>
                                                             <li class="nav-item" role="presentation">
-                                                                <button class="nav-link" id="best-selling-tab" data-bs-toggle="tab" data-bs-target="#best-selling" type="button" role="tab" aria-controls="best-selling" aria-selected="false">
+                                                                <button class="nav-link" id="best-selling-tab"
+                                                                        data-bs-toggle="tab"
+                                                                        data-bs-target="#best-selling" type="button"
+                                                                        role="tab" aria-controls="best-selling"
+                                                                        aria-selected="false">
                                                                     پرفروش
                                                                     ترین
                                                                 </button>
                                                             </li>
                                                             <li class="nav-item" role="presentation">
-                                                                <button class="nav-link" id="most-popular-tab" data-bs-toggle="tab" data-bs-target="#most-popular" type="button" role="tab" aria-controls="most-popular" aria-selected="false">
+                                                                <button class="nav-link" id="most-popular-tab"
+                                                                        data-bs-toggle="tab"
+                                                                        data-bs-target="#most-popular" type="button"
+                                                                        role="tab" aria-controls="most-popular"
+                                                                        aria-selected="false">
                                                                     محبوب
                                                                     ترین
                                                                 </button>
                                                             </li>
                                                             <li class="nav-item" role="presentation">
-                                                                <button class="nav-link" id="newest-tab" data-bs-toggle="tab" data-bs-target="#newest" type="button" role="tab" aria-controls="newest" aria-selected="false">جدید ترین</button>
+                                                                <button class="nav-link" id="newest-tab"
+                                                                        data-bs-toggle="tab" data-bs-target="#newest"
+                                                                        type="button" role="tab" aria-controls="newest"
+                                                                        aria-selected="false">جدید ترین
+                                                                </button>
                                                             </li>
                                                             <li class="nav-item" role="presentation">
-                                                                <button class="nav-link" id="cheapest-tab" data-bs-toggle="tab" data-bs-target="#cheapest" type="button" role="tab" aria-controls="cheapest" aria-selected="false">ارزان ترین</button>
+                                                                <button class="nav-link" id="cheapest-tab"
+                                                                        data-bs-toggle="tab" data-bs-target="#cheapest"
+                                                                        type="button" role="tab"
+                                                                        aria-controls="cheapest" aria-selected="false">
+                                                                    ارزان ترین
+                                                                </button>
                                                             </li>
                                                             <li class="nav-item" role="presentation">
-                                                                <button class="nav-link" id="most-expensive-tab" data-bs-toggle="tab" data-bs-target="#most-expensive" type="button" role="tab" aria-controls="most-expensive" aria-selected="false">
+                                                                <button class="nav-link" id="most-expensive-tab"
+                                                                        data-bs-toggle="tab"
+                                                                        data-bs-target="#most-expensive" type="button"
+                                                                        role="tab" aria-controls="most-expensive"
+                                                                        aria-selected="false">
                                                                     گران
                                                                     ترین
                                                                 </button>
@@ -453,18 +483,28 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div><div class="simplebar-placeholder" style="width: auto; height: 55px;"></div>
-                                </div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar simplebar-visible" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar simplebar-visible" style="height: 0px; display: none;"></div></div>
+                                    </div>
+                                    <div class="simplebar-placeholder" style="width: auto; height: 55px;"></div>
+                                </div>
+                                <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+                                    <div class="simplebar-scrollbar simplebar-visible"
+                                         style="width: 0px; display: none;"></div>
+                                </div>
+                                <div class="simplebar-track simplebar-vertical" style="visibility: hidden;">
+                                    <div class="simplebar-scrollbar simplebar-visible"
+                                         style="height: 0px; display: none;"></div>
+                                </div>
                             </div>
                         </div>
 
-                        <input asp-for="Page" type="hidden" />
+                        <input asp-for="Page" type="hidden"/>
                         <div class="listing-products-content">
                             <!-- start of tab-content -->
                             <div class="tab-content" id="sort-tabContent">
                                 <!-- start of tab-pane -->
 
-                                <div class="tab-pane fade show active" id="most-visited" role="tabpanel" aria-labelledby="most-visited-tab">
+                                <div class="tab-pane fade show active" id="most-visited" role="tabpanel"
+                                     aria-labelledby="most-visited-tab">
                                     <div class="ui-box pt-3 pb-0 px-0 mb-4">
                                         <div class="ui-box-content">
                                             <div class="row mx-0">
@@ -472,9 +512,6 @@
                                                 {
                                                     <partial name="_PartialCart" model="@Model"/>
                                                 }
-                                               
-
-
                                             </div>
                                         </div>
                                     </div>
@@ -485,7 +522,7 @@
                             <!-- end of tab-content -->
                             <div class="row">
                                 <div class="col-12">
-                                    <partial name="_PagingPartial" model="@Model.GetCurrentPaging()" />
+                                    <partial name="_PagingPartial" model="@Model.GetCurrentPaging()"/>
                                 </div>
                             </div>
                         </div>

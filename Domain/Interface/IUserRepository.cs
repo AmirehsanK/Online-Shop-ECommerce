@@ -5,6 +5,11 @@ namespace Domain.Interface;
 
 public interface IUserRepository
 {
+    #region Save Changes
+
+    Task SaveChangesAsync();
+
+    #endregion
 
     #region User Retrieval
 
@@ -25,11 +30,4 @@ public interface IUserRepository
     void UpdateUser(User user);
 
     #endregion
-
-    #region Save Changes
-
-    Task SaveChangesAsync();
-
-    #endregion
-
 }

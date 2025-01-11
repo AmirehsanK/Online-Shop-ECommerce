@@ -1,50 +1,38 @@
-﻿
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Entities.Account;
 using Domain.Entities.Common;
 
-namespace Domain.Entities.Question
+namespace Domain.Entities.Question;
+
+public class QuestionAnswer : BaseEntity
 {
-    public class QuestionAnswer : BaseEntity
-    {
-        [ForeignKey(nameof(Product))]
-        public int ProductId { get; set; }
-        [ForeignKey(nameof(UserId))]
-        public int UserId { get; set; }
-        public string Question { get; set; }
+    [ForeignKey(nameof(Product))] public int ProductId { get; set; }
 
-        public string? Answer { get; set; }
+    [ForeignKey(nameof(UserId))] public int UserId { get; set; }
 
-        
-        public bool IsConfirmed { get; set; }
+    public string Question { get; set; }
 
-        public bool IsClosed { get; set; }
+    public string? Answer { get; set; }
 
 
-        #region Relation
+    public bool IsConfirmed { get; set; }
 
-        public Product.Product Product { get; set; }
-        public User User { get; set; }
-
-
-        #endregion
+    public bool IsClosed { get; set; }
 
 
+    #region Relation
 
-    }
+    public Product.Product Product { get; set; }
+    public User User { get; set; }
 
-    public enum QuestionStatus
-    {
-        [Display(Name = "پاسخ داده شده")]
-        Answered,
-        [Display(Name = "تایید نشده")]
-        NotConfirmed,
-        [Display(Name = "تایید شده")]
-        Confirmed,
-        [Display(Name = "بسته شده")]
-        IsClosed
-    }
+    #endregion
+}
 
+public enum QuestionStatus
+{
+    [Display(Name = "پاسخ داده شده")] Answered,
+    [Display(Name = "تایید نشده")] NotConfirmed,
+    [Display(Name = "تایید شده")] Confirmed,
+    [Display(Name = "بسته شده")] IsClosed
 }

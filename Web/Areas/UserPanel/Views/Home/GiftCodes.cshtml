@@ -1,0 +1,60 @@
+﻿@using Application.Tools
+@model List<Domain.ViewModel.User.UserDiscountViewModel>
+@{
+    ViewData["Title"] = "لیست کد های تخفیف";
+}
+
+<!-- Comments Table -->
+<div class="col-xl-9 col-lg-8 col-md-7">
+    <div class="ui-box bg-white mb-5">
+        <div class="ui-box-title align-items-center justify-content-between">
+            @ViewData["Title"]
+        </div>
+        <div class="ui-box-content">
+            <div class="table-responsive">
+                @if (Model != null && Model.Any())
+                {
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>کد تخیف</th>
+                            <th>تاریخ پایان</th>
+                            <th>لینک محصول(مخصوص تخفیف های تک محصول)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="fa-num">@item.Id</td>
+                                <td class="fa-num"><span class="badge bg-success">@item.Code</span></td>
+                                <td class="fa-num">@item.EndDate.ToShamsi() @item.EndDate.ToString("hh:mm:ss") </td>
+                                @if (item.ProductId != null || item.ProductId == 0)
+                                {
+                                    <td class="fa-num">-</td>
+                                }
+                                else
+                                {
+                                    <td class="fa-num"><a class="btn btn-primary" asp-action="ProductDetail" asp-controller="Product" asp-route-productId="@item.ProductId">محصول</a></td>
+                                }
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="ui-box-empty-content">
+                        <div class="ui-box-empty-content-icon">
+                            <img src="/theme-assets/images/theme/orders.svg" alt="">
+                        </div>
+                        <div class="ui-box-empty-content-message">
+                            کد تخفیف فعالی ندارید
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

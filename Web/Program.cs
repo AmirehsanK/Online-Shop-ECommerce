@@ -1,5 +1,4 @@
 using Application.Security;
-using Application.Services.Interfaces;
 using Infra.Data.Context;
 using IOC.DiContainer;
 using Microsoft.AspNetCore.Authentication.Cookies;

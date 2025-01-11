@@ -4,10 +4,12 @@
 @{
     ViewData["Title"] = "لیست سوالات محصول";
 }
+
 @section Scripts
 {
     <script src="/js/site.js"></script>
 }
+
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mb-4">
         <div class="card">
@@ -18,12 +20,13 @@
             </div>
             <div class="body">
                 <form method="get" asp-action="QuestionList" id="filter-form">
-                    <input type="hidden" asp-for="Page" />
+                    <input type="hidden" asp-for="Page"/>
                     <div class="row clearfix">
                         <div class="col-sm-12  col-md-4">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input asp-for="ProductId" placeholder="جستجو بر اساس ایدی کالا" type="text" class="form-control">
+                                    <input asp-for="ProductId" placeholder="جستجو بر اساس ایدی کالا" type="text"
+                                           class="form-control">
 
                                 </div>
                             </div>
@@ -32,7 +35,8 @@
                         <div class="col-sm-12 col-md-4">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <select asp-for="ConfirmQuestion" class="form-control" asp-items="Html.GetEnumSelectList<ConfirmQuestion>()"></select>
+                                    <select asp-for="ConfirmQuestion" class="form-control"
+                                            asp-items="Html.GetEnumSelectList<ConfirmQuestion>()"></select>
 
                                 </div>
                             </div>
@@ -40,7 +44,8 @@
                         <div class="col-sm-12 col-md-4">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <select asp-for="CloseQuestion" class="form-control" asp-items="Html.GetEnumSelectList<CloseQuestion>()"></select>
+                                    <select asp-for="CloseQuestion" class="form-control"
+                                            asp-items="Html.GetEnumSelectList<CloseQuestion>()"></select>
 
                                 </div>
                             </div>
@@ -67,35 +72,41 @@
                 <div class="body table-responsive">
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th>آیدی</th>
-                                <th>سوال</th>
-                                <th>وضعیت</th>
-                                <th>تاریخ ایجاد</th>
-                                <th>عملیات</th>
-                            </tr>
+                        <tr>
+                            <th>آیدی</th>
+                            <th>سوال</th>
+                            <th>وضعیت</th>
+                            <th>تاریخ ایجاد</th>
+                            <th>عملیات</th>
+                        </tr>
                         </thead>
                         <tbody>
 
-                            @foreach (var item in Model.Entities)
-                            {
-                                <tr>
+                        @foreach (var item in Model.Entities)
+                        {
+                            <tr>
 
-                                    <th scope="row">@item.Id</th>
-                                    <th>@item.Question</th>
-                                    <th>@item.QuestionStatus.GetDisplayName()</th>
-                                    <th>@item.DateTime.ToShamsi()</th>
-                                    <th>
-                                        <a class="btn btn-warning" asp-area="Admin" asp-controller="Question" asp-action="QuestionDetail" asp-route-QuestionId="@item.Id"><i class="fa-solid fa-circle-info"></i></a>
-                                        <a class="btn btn-danger" asp-area="Admin" asp-controller="Question" asp-action="CloseQuestion" asp-route-QuestionId="@item.Id"><i class="fa-solid fa-circle-xmark"></i></a>
-                                        <a class="btn btn-primary" asp-area="Admin" asp-controller="Question" asp-action="ConfirmQuestion" asp-route-QuestionId="@item.Id"><i class="fa-solid fa-circle-check"></i></a>
-                                    </th>
-                                </tr>
-                            }
+                                <th scope="row">@item.Id</th>
+                                <th>@item.Question</th>
+                                <th>@item.QuestionStatus.GetDisplayName()</th>
+                                <th>@item.DateTime.ToShamsi()</th>
+                                <th>
+                                    <a class="btn btn-warning" asp-area="Admin" asp-controller="Question"
+                                       asp-action="QuestionDetail" asp-route-QuestionId="@item.Id"><i
+                                            class="fa-solid fa-circle-info"></i></a>
+                                    <a class="btn btn-danger" asp-area="Admin" asp-controller="Question"
+                                       asp-action="CloseQuestion" asp-route-QuestionId="@item.Id"><i
+                                            class="fa-solid fa-circle-xmark"></i></a>
+                                    <a class="btn btn-primary" asp-area="Admin" asp-controller="Question"
+                                       asp-action="ConfirmQuestion" asp-route-QuestionId="@item.Id"><i
+                                            class="fa-solid fa-circle-check"></i></a>
+                                </th>
+                            </tr>
+                        }
 
                         </tbody>
                     </table>
-                    <partial name="_PagingPartial" model="@Model.GetCurrentPaging()" />
+                    <partial name="_PagingPartial" model="@Model.GetCurrentPaging()"/>
                 </div>
             </div>
         </div>

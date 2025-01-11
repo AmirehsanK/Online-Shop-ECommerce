@@ -1,16 +1,15 @@
 using Application.Services.Interfaces;
 using Domain.Enums;
 using Domain.ViewModel.Image;
+using Infra.Data.Statics;
 using Microsoft.AspNetCore.Mvc;
 using Web.Attributes;
-using Infra.Data.Statics;
 
 namespace Web.Areas.Admin.Controllers;
 
 [InvokePermission(PermissionName.SliderImageManagement)]
 public class ImageController(IFileHandleService fileHandleService) : AdminBaseController
 {
-    
     #region Slider Images
 
     [InvokePermission(PermissionName.SliderImageList)]
@@ -96,9 +95,7 @@ public class ImageController(IFileHandleService fileHandleService) : AdminBaseCo
         }
 
         if (await fileHandleService.GetBannerByPosition(banner.Position) != null!)
-        {
             TempData[ErrorMessage] = "مکان عکس تکراری میباشد";
-        }
 
         await fileHandleService.AddFixedBanner(banner);
         TempData[SuccessMessage] = "عکس با موفقیت اضافه شد";
@@ -150,5 +147,4 @@ public class ImageController(IFileHandleService fileHandleService) : AdminBaseCo
     }
 
     #endregion
-    
 }

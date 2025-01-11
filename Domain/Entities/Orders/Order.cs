@@ -1,29 +1,29 @@
-﻿
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Entities.Account;
 using Domain.Entities.Common;
 
-namespace Domain.Entities.Orders
+namespace Domain.Entities.Orders;
+
+public class Order : BaseEntity
 {
-    public class Order:BaseEntity
-    {
-        #region Proprties
-        [ForeignKey(nameof(User))]
-        public int UserId { get; set; }
+    #region Proprties
 
-        public DateTime? PaymentDate { get; set; }
+    [ForeignKey(nameof(User))] public int UserId { get; set; }
 
-        public bool IsFinally { get; set; }
+    public DateTime? PaymentDate { get; set; }
+
+    public bool IsFinally { get; set; }
 
 
-        public string? RefCode { get; set; }
-        #endregion
+    public string? RefCode { get; set; }
 
-        #region Relation
+    #endregion
 
-        public User User { get; set; }
+    #region Relation
 
-        public ICollection<OrderDetail> OrderDetails { get; set; }
-        #endregion
-    }
+    public User User { get; set; }
+
+    public ICollection<OrderDetail> OrderDetails { get; set; }
+
+    #endregion
 }

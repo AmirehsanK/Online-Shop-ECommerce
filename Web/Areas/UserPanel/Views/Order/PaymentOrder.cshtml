@@ -1,6 +1,5 @@
 ﻿@using Application.Tools
 @using Domain.ViewModel.Order
-
 @{
     ViewData["Title"] = "PaymentOrder";
     Layout = "_OrderLayout";
@@ -16,7 +15,8 @@
                     <div class="ui-box-content">
                         <!-- start of custom-radio-outline -->
                         <div class="custom-radio-outline">
-                            <input type="radio" class="custom-radio-outline-input" name="checkoutPayment" id="checkoutPayment01">
+                            <input type="radio" class="custom-radio-outline-input" name="checkoutPayment"
+                                   id="checkoutPayment01">
                             <label for="checkoutPayment01" class="custom-radio-outline-label">
                                 <span class="label">
                                     <span class="icon"><i class="ri-secure-payment-fill"></i></span>
@@ -30,7 +30,8 @@
                         <!-- end of custom-radio-outline -->
                         <!-- start of custom-radio-outline -->
                         <div class="custom-radio-outline">
-                            <input type="radio" class="custom-radio-outline-input" name="checkoutPayment" id="checkoutPayment02">
+                            <input type="radio" class="custom-radio-outline-input" name="checkoutPayment"
+                                   id="checkoutPayment02">
                             <label for="checkoutPayment02" class="custom-radio-outline-label">
                                 <span class="label">
                                     <span class="icon"><i class="ri-wallet-3-fill"></i></span>
@@ -42,7 +43,7 @@
                         </div>
                         <!-- end of custom-radio-outline -->
                         <!-- start of custom-radio-outline -->
-                      
+
                         <!-- end of custom-radio-outline -->
                     </div>
                 </div>
@@ -95,19 +96,22 @@
                         <!-- start of nav-tabs -->
                         <nav>
                             <div class="nav nav-tabs fa-num" id="shipping-type" role="tablist">
-                                <button class="nav-link fs-6 fw-bold active" id="shipping-type-1-tab" data-bs-toggle="tab" data-bs-target="#shipping-type-1" type="button" role="tab" aria-controls="shipping-type-1" aria-selected="true">
+                                <button class="nav-link fs-6 fw-bold active" id="shipping-type-1-tab"
+                                        data-bs-toggle="tab" data-bs-target="#shipping-type-1" type="button" role="tab"
+                                        aria-controls="shipping-type-1" aria-selected="true">
                                     <span class="d-flex flex-column align-items-start">
                                         <span class="d-flex align-items-center">مرسوله 1</span>
                                     </span>
                                 </button>
-                               
+
                             </div>
                         </nav>
                         <!-- end of nav-tabs -->
                         <!-- start of tab-content -->
                         <div class="tab-content" id="shipping-type-tabContent">
                             <!-- start of tab-pane -->
-                            <div class="tab-pane py-4 fade show active" id="shipping-type-1" role="tabpanel" aria-labelledby="shipping-type-1">
+                            <div class="tab-pane py-4 fade show active" id="shipping-type-1" role="tabpanel"
+                                 aria-labelledby="shipping-type-1">
                                 <!-- start of checkout-pack -->
                                 <div class="checkout-pack">
                                     <div class="checkout-pack-header fa-num">
@@ -115,7 +119,8 @@
                                             <span class="fs-7 text-muted">
                                                 مبلغ
                                                 مرسوله:
-                                            </span> <span>@basket.Sum(u=> u.FinallPrice) <span class="currency">تومان</span></span>
+                                            </span> <span>@basket.Sum(u => u.FinallPrice) <span
+                                                    class="currency">تومان</span></span>
                                         </div>
                                         <div class="checkout-pack-detail">
                                             <span>۳ کالا</span>
@@ -129,17 +134,22 @@
                                     </div>
                                     <div class="checkout-pack-content">
                                         <!-- Slider main container -->
-                                        <div class="swiper checkout-pack-swiper-slider mb-5 swiper-initialized swiper-horizontal swiper-pointer-events swiper-rtl">
+                                        <div
+                                            class="swiper checkout-pack-swiper-slider mb-5 swiper-initialized swiper-horizontal swiper-pointer-events swiper-rtl">
                                             <!-- Additional required wrapper -->
-                                            <div class="swiper-wrapper" id="swiper-wrapper-be639fd3e3a8e1bb" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
+                                            <div class="swiper-wrapper" id="swiper-wrapper-be639fd3e3a8e1bb"
+                                                 aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
                                                 <!-- Slides -->
                                                 @foreach (var item in basket)
                                                 {
                                                     <div class="swiper-slide">
                                                         <div class="checkout-pack-item">
                                                             <div class="checkout-pack-item-thumbnail">
-                                                                <a asp-area="" asp-controller="Product" asp-action="ProductDetail" asp-route-productid="@item.ProductId">
-                                                                    <img src="@(PathTools.FilePath+item.ImageName)" alt="">
+                                                                <a asp-area="" asp-controller="Product"
+                                                                   asp-action="ProductDetail"
+                                                                   asp-route-productid="@item.ProductId">
+                                                                    <img src="@(PathTools.FilePath + item.ImageName)"
+                                                                         alt="">
                                                                 </a>
                                                             </div>
                                                             <div class="checkout-pack-item-detail">
@@ -147,7 +157,8 @@
                                                                     @item.Title
                                                                 </div>
                                                                 <div class="checkout-pack-item-variant">
-                                                                    <span class="color" style="background-color: @item.ColorCode;"></span>
+                                                                    <span class="color"
+                                                                          style="background-color: @item.ColorCode;"></span>
                                                                     <span class="ms-1">@item.ColorName</span>
                                                                 </div>
                                                             </div>
@@ -157,9 +168,16 @@
                                             </div>
 
                                             <!-- If we need navigation buttons -->
-                                            <div class="swiper-button-prev swiper-button-disabled swiper-button-lock" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-be639fd3e3a8e1bb" aria-disabled="true"></div>
-                                            <div class="swiper-button-next swiper-button-disabled swiper-button-lock" tabindex="-1" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-be639fd3e3a8e1bb" aria-disabled="true"></div>
-                                            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                                            <div class="swiper-button-prev swiper-button-disabled swiper-button-lock"
+                                                 tabindex="-1" role="button" aria-label="Previous slide"
+                                                 aria-controls="swiper-wrapper-be639fd3e3a8e1bb"
+                                                 aria-disabled="true"></div>
+                                            <div class="swiper-button-next swiper-button-disabled swiper-button-lock"
+                                                 tabindex="-1" role="button" aria-label="Next slide"
+                                                 aria-controls="swiper-wrapper-be639fd3e3a8e1bb"
+                                                 aria-disabled="true"></div>
+                                            <span class="swiper-notification" aria-live="assertive"
+                                                  aria-atomic="true"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -167,7 +185,8 @@
                             </div>
                             <!-- end of tab-pane -->
                             <!-- start of tab-pane -->
-                            <div class="tab-pane py-4 fade" id="shipping-type-2" role="tabpanel" aria-labelledby="shipping-type-2-tab">
+                            <div class="tab-pane py-4 fade" id="shipping-type-2" role="tabpanel"
+                                 aria-labelledby="shipping-type-2-tab">
                                 <!-- start of checkout-pack -->
                                 <div class="checkout-pack">
                                     <div class="checkout-pack-header fa-num">
@@ -189,17 +208,22 @@
                                     </div>
                                     <div class="checkout-pack-content">
                                         <!-- Slider main container -->
-                                        <div class="swiper checkout-pack-swiper-slider mb-5 swiper-initialized swiper-horizontal swiper-pointer-events swiper-rtl">
+                                        <div
+                                            class="swiper checkout-pack-swiper-slider mb-5 swiper-initialized swiper-horizontal swiper-pointer-events swiper-rtl">
                                             <!-- Additional required wrapper -->
-                                            <div class="swiper-wrapper" id="swiper-wrapper-ce41515ab2a7b864" aria-live="polite" style="transition-duration: 0ms;">
+                                            <div class="swiper-wrapper" id="swiper-wrapper-ce41515ab2a7b864"
+                                                 aria-live="polite" style="transition-duration: 0ms;">
                                                 <!-- Slides -->
                                                 @foreach (var item in basket)
                                                 {
                                                     <div class="swiper-slide">
                                                         <div class="checkout-pack-item">
                                                             <div class="checkout-pack-item-thumbnail">
-                                                                <a asp-area="" asp-controller="Product" asp-action="ProductDetail" asp-route-productid="@item.ProductId">
-                                                                    <img src="@(PathTools.FilePath+item.ImageName)" alt="">
+                                                                <a asp-area="" asp-controller="Product"
+                                                                   asp-action="ProductDetail"
+                                                                   asp-route-productid="@item.ProductId">
+                                                                    <img src="@(PathTools.FilePath + item.ImageName)"
+                                                                         alt="">
                                                                 </a>
                                                             </div>
                                                             <div class="checkout-pack-item-detail">
@@ -207,25 +231,32 @@
                                                                     @item.Title
                                                                 </div>
                                                                 <div class="checkout-pack-item-variant">
-                                                                    <span class="color" style="background-color: @item.ColorCode;"></span>
+                                                                    <span class="color"
+                                                                          style="background-color: @item.ColorCode;"></span>
                                                                     <span class="ms-1">@item.ColorName</span>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 }
-                                             
-                                             
+
+
                                             </div>
 
                                             <!-- If we need navigation buttons -->
-                                            <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-ce41515ab2a7b864" aria-disabled="false"></div>
-                                            <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-ce41515ab2a7b864" aria-disabled="false"></div>
-                                            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                                            <div class="swiper-button-prev" tabindex="0" role="button"
+                                                 aria-label="Previous slide"
+                                                 aria-controls="swiper-wrapper-ce41515ab2a7b864"
+                                                 aria-disabled="false"></div>
+                                            <div class="swiper-button-next" tabindex="0" role="button"
+                                                 aria-label="Next slide" aria-controls="swiper-wrapper-ce41515ab2a7b864"
+                                                 aria-disabled="false"></div>
+                                            <span class="swiper-notification" aria-live="assertive"
+                                                  aria-atomic="true"></span>
                                         </div>
                                     </div>
                                 </div>
-                           
+
                             </div>
                             <!-- end of tab-pane -->
                         </div>
@@ -244,7 +275,8 @@
                         <div class="checkout-bill-row">
                             <div class="checkout-bill-row-label">قیمت کالاها @basket.Count)</div>
                             <div class="checkout-bill-row-value">
-                                <span class="fs-6">@basket.Sum(u=> u.FinallPrice).ToString("#,0")</span> <span class="currency">تومان</span>
+                                <span class="fs-6">@basket.Sum(u => u.FinallPrice).ToString("#,0")</span> <span
+                                    class="currency">تومان</span>
                             </div>
                         </div>
                         <div class="checkout-bill-row">
@@ -257,7 +289,8 @@
                         <div class="checkout-bill-row">
                             <div class="checkout-bill-row-label">جمع سبد خرید</div>
                             <div class="checkout-bill-row-value">
-                                <span class="fs-6">@basket.Sum(u=>u.FinallPrice)</span> <span class="currency">تومان</span>
+                                <span class="fs-6">@basket.Sum(u => u.FinallPrice)</span> <span
+                                    class="currency">تومان</span>
                             </div>
                         </div>
                         <div class="checkout-bill-row checkout-bill-note">
@@ -274,7 +307,8 @@
                                     <span class="fs-7">امتیاز باشگاه مشتریان</span>
                                 </span>
                             </div>
-                            <div class="checkout-bill-row-value">۱۵۰ <span class="fs-7 fw-bold text-muted">امتیاز</span></div>
+                            <div class="checkout-bill-row-value">۱۵۰ <span class="fs-7 fw-bold text-muted">امتیاز</span>
+                            </div>
                         </div>
                     </div>
                     <!-- end of checkout-bill -->
@@ -286,7 +320,8 @@
                                 <div class="subtitle">سفارش‌های بالای ۳۰۰ هزار تومان</div>
                             </div>
                             <div class="free-shipping--banner">
-                                <img src="./theme-assets/images/theme/free-shipping--banner.png" alt="ارسال رایگان سفارش">
+                                <img src="./theme-assets/images/theme/free-shipping--banner.png"
+                                     alt="ارسال رایگان سفارش">
                             </div>
                         </div>
                     </div>

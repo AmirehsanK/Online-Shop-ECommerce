@@ -2,8 +2,9 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model List<Domain.ViewModel.Product.CategoryAdmin.SubCategoryViewModel>
 
-@foreach(var item in Model)
-{<div class="swiper-slide">
+@foreach (var item in Model)
+{
+    <div class="swiper-slide">
         <div class="category-item">
             <a asp-area="" asp-action="ProductList" asp-controller="Product" asp-route-SubCategoryId="@item.Id">
                 <img src="@PathTools.CategoryImagePath@item.ImageName" class="category-img"

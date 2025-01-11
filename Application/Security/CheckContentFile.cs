@@ -1,179 +1,155 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Text;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Http;
 
-namespace Application.Security
+namespace Application.Security;
+
+public static class CheckContentFile
 {
-    public static class CheckContentFile
+    public const int ImageMinimumBytes = 512;
+
+    public static bool IsFile(this IFormFile postedFile, bool checkFileExtension = true)
     {
-        public const int ImageMinimumBytes = 512;
-
-        public static bool IsFile(this IFormFile postedFile, bool checkFileExtension = true)
-        {
-            if (checkFileExtension)
-            {
-                if (Path.GetExtension(postedFile.FileName)?.ToLower() != ".rar" &&
-                    Path.GetExtension(postedFile.FileName)?.ToLower() != ".zip" &&
-                    Path.GetExtension(postedFile.FileName)?.ToLower() != ".pdf"&&
-                    Path.GetExtension(postedFile.FileName).ToLower() != ".jpg"  &&
-                    Path.GetExtension(postedFile.FileName).ToLower() != ".png"  &&
-                     Path.GetExtension(postedFile.FileName).ToLower() != ".jpeg")
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        public static bool HasLength(this IFormFile postedFile, int length)
-        {
-            if (postedFile.Length > length)
-            {
+        if (checkFileExtension)
+            if (Path.GetExtension(postedFile.FileName)?.ToLower() != ".rar" &&
+                Path.GetExtension(postedFile.FileName)?.ToLower() != ".zip" &&
+                Path.GetExtension(postedFile.FileName)?.ToLower() != ".pdf" &&
+                Path.GetExtension(postedFile.FileName).ToLower() != ".jpg" &&
+                Path.GetExtension(postedFile.FileName).ToLower() != ".png" &&
+                Path.GetExtension(postedFile.FileName).ToLower() != ".jpeg")
                 return false;
-            }
 
-            return true;
-        }
+        return true;
+    }
 
-        public static bool IsImage(this IFormFile postedFile, bool checkImage = true)
-        {
-            if (checkImage)
-            {
-                //-------------------------------------------
-                //  Check the image mime types
-                //-------------------------------------------
-                if (postedFile.ContentType.ToLower() != "image/jpg" &&
-                            postedFile.ContentType.ToLower() != "image/jpeg" &&
-                            postedFile.ContentType.ToLower() != "image/x-png" &&
-                            postedFile.ContentType.ToLower() != "image/png"&&
-                            postedFile.ContentType.ToLower() != "image/gif")
-                {
-                    return false;
-                }
+    public static bool HasLength(this IFormFile postedFile, int length)
+    {
+        if (postedFile.Length > length) return false;
 
-                //-------------------------------------------
-                //  Check the image extension
-                //-------------------------------------------
-                if (Path.GetExtension(postedFile.FileName).ToLower() != ".jpg"
-                    && Path.GetExtension(postedFile.FileName).ToLower() != ".png"
-                    && Path.GetExtension(postedFile.FileName).ToLower() != ".jpeg")
-                {
-                    return false;
-                }
+        return true;
+    }
 
-                //-------------------------------------------
-                //  Attempt to read the file and check the first bytes
-                //-------------------------------------------
-                try
-                {
-                    if (!postedFile.OpenReadStream().CanRead)
-                    {
-                        return false;
-                    }
-                    //------------------------------------------
-                    //check whether the image size exceeding the limit or not
-                    //------------------------------------------ 
-                    if (postedFile.Length < ImageMinimumBytes)
-                    {
-                        return false;
-                    }
-
-                    byte[] buffer = new byte[ImageMinimumBytes];
-                    postedFile.OpenReadStream().Read(buffer, 0, ImageMinimumBytes);
-                    string content = Encoding.UTF8.GetString(buffer);
-                    if (Regex.IsMatch(content, @"<script|<html|<head|<title|<body|<pre|<table|<a\s+href|<img|<plaintext|<cross\-domain\-policy",
-                        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline))
-                    {
-                        return false;
-                    }
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-
-                //-------------------------------------------
-                //  Try to instantiate new Bitmap, if .NET will throw exception
-                //  we can assume that it's not a valid image
-                //-------------------------------------------
-                try
-                {
-                    using (var bitmap = new Bitmap(postedFile.OpenReadStream())) { }
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-                finally
-                {
-                    postedFile.OpenReadStream().Position = 0;
-                }
-
-                return true;
-            }
-
-            return true;
-        }
-
-        public static bool IsVideo(this IFormFile postedFile)
+    public static bool IsImage(this IFormFile postedFile, bool checkImage = true)
+    {
+        if (checkImage)
         {
             //-------------------------------------------
-            //  Check the video mime types
+            //  Check the image mime types
             //-------------------------------------------
-            if (Path.GetExtension(postedFile.FileName).ToLower() != ".mp4"
-                && Path.GetExtension(postedFile.FileName).ToLower() != ".avi"
-                && Path.GetExtension(postedFile.FileName).ToLower() != ".wmv"
-                && Path.GetExtension(postedFile.FileName).ToLower() != ".mpeg-2"
-                && Path.GetExtension(postedFile.FileName).ToLower() != ".mov")
-            {
+            if (postedFile.ContentType.ToLower() != "image/jpg" &&
+                postedFile.ContentType.ToLower() != "image/jpeg" &&
+                postedFile.ContentType.ToLower() != "image/x-png" &&
+                postedFile.ContentType.ToLower() != "image/png" &&
+                postedFile.ContentType.ToLower() != "image/gif")
                 return false;
-            }
 
             //-------------------------------------------
-            //  Check the video extension
+            //  Check the image extension
             //-------------------------------------------
-            if (Path.GetExtension(postedFile.FileName).ToLower() != ".mp4"
-                && Path.GetExtension(postedFile.FileName).ToLower() != ".avi"
-                && Path.GetExtension(postedFile.FileName).ToLower() != ".wmv"
-                && Path.GetExtension(postedFile.FileName).ToLower() != ".mpeg-2"
-                && Path.GetExtension(postedFile.FileName).ToLower() != ".mov")
-            {
+            if (Path.GetExtension(postedFile.FileName).ToLower() != ".jpg"
+                && Path.GetExtension(postedFile.FileName).ToLower() != ".png"
+                && Path.GetExtension(postedFile.FileName).ToLower() != ".jpeg")
                 return false;
-            }
 
             //-------------------------------------------
             //  Attempt to read the file and check the first bytes
             //-------------------------------------------
             try
             {
-                if (!postedFile.OpenReadStream().CanRead)
-                {
-                    return false;
-                }
+                if (!postedFile.OpenReadStream().CanRead) return false;
                 //------------------------------------------
                 //check whether the image size exceeding the limit or not
                 //------------------------------------------ 
-                //if (postedFile.Length < ImageMinimumBytes)
-                //{
-                //    return false;
-                //}
+                if (postedFile.Length < ImageMinimumBytes) return false;
 
-                byte[] buffer = new byte[ImageMinimumBytes];
+                var buffer = new byte[ImageMinimumBytes];
                 postedFile.OpenReadStream().Read(buffer, 0, ImageMinimumBytes);
-                string content = Encoding.UTF8.GetString(buffer);
-                if (Regex.IsMatch(content, @"<script|<html|<head|<title|<body|<pre|<table|<a\s+href|<img|<plaintext|<cross\-domain\-policy",
-                    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline))
-                {
+                var content = Encoding.UTF8.GetString(buffer);
+                if (Regex.IsMatch(content,
+                        @"<script|<html|<head|<title|<body|<pre|<table|<a\s+href|<img|<plaintext|<cross\-domain\-policy",
+                        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline))
                     return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            //-------------------------------------------
+            //  Try to instantiate new Bitmap, if .NET will throw exception
+            //  we can assume that it's not a valid image
+            //-------------------------------------------
+            try
+            {
+                using (var bitmap = new Bitmap(postedFile.OpenReadStream()))
+                {
                 }
             }
             catch (Exception)
             {
                 return false;
             }
+            finally
+            {
+                postedFile.OpenReadStream().Position = 0;
+            }
+
             return true;
         }
+
+        return true;
+    }
+
+    public static bool IsVideo(this IFormFile postedFile)
+    {
+        //-------------------------------------------
+        //  Check the video mime types
+        //-------------------------------------------
+        if (Path.GetExtension(postedFile.FileName).ToLower() != ".mp4"
+            && Path.GetExtension(postedFile.FileName).ToLower() != ".avi"
+            && Path.GetExtension(postedFile.FileName).ToLower() != ".wmv"
+            && Path.GetExtension(postedFile.FileName).ToLower() != ".mpeg-2"
+            && Path.GetExtension(postedFile.FileName).ToLower() != ".mov")
+            return false;
+
+        //-------------------------------------------
+        //  Check the video extension
+        //-------------------------------------------
+        if (Path.GetExtension(postedFile.FileName).ToLower() != ".mp4"
+            && Path.GetExtension(postedFile.FileName).ToLower() != ".avi"
+            && Path.GetExtension(postedFile.FileName).ToLower() != ".wmv"
+            && Path.GetExtension(postedFile.FileName).ToLower() != ".mpeg-2"
+            && Path.GetExtension(postedFile.FileName).ToLower() != ".mov")
+            return false;
+
+        //-------------------------------------------
+        //  Attempt to read the file and check the first bytes
+        //-------------------------------------------
+        try
+        {
+            if (!postedFile.OpenReadStream().CanRead) return false;
+            //------------------------------------------
+            //check whether the image size exceeding the limit or not
+            //------------------------------------------ 
+            //if (postedFile.Length < ImageMinimumBytes)
+            //{
+            //    return false;
+            //}
+
+            var buffer = new byte[ImageMinimumBytes];
+            postedFile.OpenReadStream().Read(buffer, 0, ImageMinimumBytes);
+            var content = Encoding.UTF8.GetString(buffer);
+            if (Regex.IsMatch(content,
+                    @"<script|<html|<head|<title|<body|<pre|<table|<a\s+href|<img|<plaintext|<cross\-domain\-policy",
+                    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline))
+                return false;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

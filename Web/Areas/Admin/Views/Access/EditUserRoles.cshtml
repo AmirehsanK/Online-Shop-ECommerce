@@ -8,7 +8,7 @@
     <h5 class="card-header">@ViewData["Title"]</h5>
     <div class="card-body">
         <form asp-action="UpdateUserRoles" method="post">
-            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="UserId"/>
             <div class="form-group">
                 <label>کاربر: @Model.UserName</label>
             </div>
@@ -23,7 +23,7 @@
                                    name="SelectedRoles"
                                    value="@role.RoleName"
                                    @(Model.Roles != null && Model.Roles.Contains(role.RoleName) ? "checked" : "")
-                                   class="form-check-input" />
+                                   class="form-check-input"/>
                             <label class="form-check-label">@role.RoleName</label>
                         </div>
                     }

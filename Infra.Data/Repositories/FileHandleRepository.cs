@@ -8,7 +8,6 @@ namespace Infra.Data.Repositories;
 
 public class FileHandleRepository(ApplicationDbContext context) : IFileHandleRepository
 {
-
     #region Save Changes
 
     public async Task SaveChangesAsync()
@@ -88,5 +87,4 @@ public class FileHandleRepository(ApplicationDbContext context) : IFileHandleRep
     }
 
     #endregion
-
 }

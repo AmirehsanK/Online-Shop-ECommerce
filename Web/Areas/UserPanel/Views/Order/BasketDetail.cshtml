@@ -2,7 +2,7 @@
 @model List<Domain.ViewModel.Order.BasketDetailViewModel>
 @{
     ViewData["Title"] = "جزییات سبد خرید";
-    var price=Model.Sum(u => u.FinallPrice);
+    var price = Model.Sum(u => u.FinallPrice);
     Layout = "_Layout";
 }
 
@@ -13,7 +13,9 @@
                 <!-- start of nav-tabs -->
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <button class="nav-link fs-6 fw-bold active" id="nav-1-tab" data-bs-toggle="tab" data-bs-target="#nav-1" type="button" role="tab" aria-controls="nav-1" aria-selected="true">
+                        <button class="nav-link fs-6 fw-bold active" id="nav-1-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-1" type="button" role="tab" aria-controls="nav-1"
+                                aria-selected="true">
                             سبد خرید
                             <span class="counter fa-num">3</span>
                         </button>
@@ -22,103 +24,106 @@
                 <!-- end of nav-tabs -->
                 <!-- start of tab-content -->
                 <div class="tab-content" id="nav-tabContent">
-                <!-- start of tab-pane -->
-                @if (Model != null && Model.Any())
-                {
-                    @foreach (var item in Model)
+                    <!-- start of tab-pane -->
+                    @if (Model != null && Model.Any())
                     {
-                            <div class="tab-pane py-4 fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav-1-tab">
+                        @foreach (var item in Model)
+                        {
+                            <div class="tab-pane py-4 fade show active" id="nav-1" role="tabpanel"
+                                 aria-labelledby="nav-1-tab">
                                 <div class="ui-box bg-white p-2">
-                                <div class="ui-box-content">
-                                 
-                                <!-- start of cart-items -->
-                                <div class="cart-items">
-                                <!-- start of cart-item -->
-                                <div class="cart-item">
-                                    <div class="cart-item--thumbnail">
-                                        <a href="#">
-                                            <img src="@(PathTools.FilePath+item.ImageName)" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="cart-item--detail">
-                                        <h2 class="cart-item--title mb-2">
-                                            <a href="#">
-                                                @item.Title
-                                            </a>
-                                        </h2>
-                                        <div class="cart-item--variant mb-2">
-                                            <span class="color" style="background-color: @item.ColorCode"></span>
-                                            <span class="ms-1">@item.ColorName</span>
-                                        </div>
-                                        <div class="cart-item--data mb-4">
-                                            <ul>
-                                                <li>
-                                                    <i class="ri-shield-check-fill text-secondary"></i>
-                                                    <span>
+                                    <div class="ui-box-content">
+
+                                        <!-- start of cart-items -->
+                                        <div class="cart-items">
+                                            <!-- start of cart-item -->
+                                            <div class="cart-item">
+                                                <div class="cart-item--thumbnail">
+                                                    <a href="#">
+                                                        <img src="@(PathTools.FilePath + item.ImageName)" alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="cart-item--detail">
+                                                    <h2 class="cart-item--title mb-2">
+                                                        <a href="#">
+                                                            @item.Title
+                                                        </a>
+                                                    </h2>
+                                                    <div class="cart-item--variant mb-2">
+                                                        <span class="color"
+                                                              style="background-color: @item.ColorCode"></span>
+                                                        <span class="ms-1">@item.ColorName</span>
+                                                    </div>
+                                                    <div class="cart-item--data mb-4">
+                                                        <ul>
+                                                            <li>
+                                                                <i class="ri-shield-check-fill text-secondary"></i>
+                                                                <span>
                                                         گارانتی
                                                         اصالت و
                                                         سلامت فیزیکی
                                                         کالا
                                                     </span>
-                                                </li>
-                                                <li>
-                                                    <i class="ri-store-3-fill text-secondary"></i>
-                                                    <span>
+                                                            </li>
+                                                            <li>
+                                                                <i class="ri-store-3-fill text-secondary"></i>
+                                                                <span>
                                                         اسم
                                                         فروشگاه
                                                     </span>
-                                                </li>
-                                                <li>
-                                                    <i class="ri-checkbox-multiple-fill text-primary"></i>
-                                                    <span>
+                                                            </li>
+                                                            <li>
+                                                                <i class="ri-checkbox-multiple-fill text-primary"></i>
+                                                                <span>
                                                         موجود
                                                         در
                                                         انبار
                                                     </span>
-                                                    <span class="text-secondary mx-2">|</span>
-                                                    <i class="ri-truck-fill text-danger"></i>
-                                                    <span>
+                                                                <span class="text-secondary mx-2">|</span>
+                                                                <i class="ri-truck-fill text-danger"></i>
+                                                                <span>
                                                         ارسال
                                                         (نحوه
                                                         ارسال)
                                                     </span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="cart-item--price--actions">
-                                            <div class="cart-item--actions">
-                                                <div class="num-block fa-num me-3">
-                                                    <div class="num-in">
-                                                        <span class="plus"></span>
-                                                        <input type="text" class="in-num" value="@item.ProductCount" readonly="">
-                                                        <span class="minus dis"></span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="cart-item--price--actions">
+                                                        <div class="cart-item--actions">
+                                                            <div class="num-block fa-num me-3">
+                                                                <div class="num-in">
+                                                                    <span class="plus"></span>
+                                                                    <input type="text" class="in-num"
+                                                                           value="@item.ProductCount" readonly="">
+                                                                    <span class="minus dis"></span>
+                                                                </div>
+                                                            </div>
+                                                            <button class="btn btn-link btn-sm text-secondary"><i
+                                                                    class="ri-delete-bin-5-line me-1"></i><span>حذف</span>
+                                                            </button>
+
+                                                        </div>
+                                                        <div class="cart-item--price fa-num">
+
+                                                            <div class="cart-item--price-now">
+                                                                <span>@item.FinallPrice.ToString("#,0"))</span>
+                                                                <span class="currency">تومان</span>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <button class="btn btn-link btn-sm text-secondary"><i class="ri-delete-bin-5-line me-1"></i><span>حذف</span></button>
+                                            </div>
 
-                                            </div>
-                                            <div class="cart-item--price fa-num">
-                                                
-                                                <div class="cart-item--price-now">
-                                                    <span>@item.FinallPrice.ToString("#,0"))</span>
-                                                    <span class="currency">تومان</span>
-                                                </div>
-                                            </div>
+                                            <!-- end of cart-item -->
                                         </div>
+                                        <!-- end of cart-items -->
                                     </div>
                                 </div>
-                       
-                                <!-- end of cart-item -->
-                                </div>
-                                <!-- end of cart-items -->
-                                </div>
-                                </div>
                             </div>
+                        }
                     }
-                        
 
-                }
-                   
                 </div>
                 <!-- end of tab-content -->
             </div>
@@ -142,7 +147,8 @@
                         <div class="checkout-bill-row">
                             <div class="checkout-bill-row-label">جمع سبد خرید</div>
                             <div class="checkout-bill-row-value">
-                                <span class="fs-6">@(Model?.Sum(u=> u.FinallPrice).ToString("#,0"))</span> <span class="currency">تومان</span>
+                                <span class="fs-6">@(Model?.Sum(u => u.FinallPrice).ToString("#,0"))</span> <span
+                                    class="currency">تومان</span>
                             </div>
                         </div>
                         <div class="checkout-bill-row checkout-bill-note">
@@ -150,7 +156,8 @@
                             این مبلغ اضافه خواهد شد
                         </div>
                         <div class="checkout-bill-row checkout-bill-action">
-                            <a asp-area="UserPanel" asp-controller="Order" asp-action="ChooseAddress" class="btn btn-block btn-primary">ادامه فرایند خرید</a>
+                            <a asp-area="UserPanel" asp-controller="Order" asp-action="ChooseAddress"
+                               class="btn btn-block btn-primary">ادامه فرایند خرید</a>
                         </div>
                         <div class="checkout-bill-row checkout-bill-footer">
                             <div class="checkout-bill-row-label">
@@ -159,7 +166,8 @@
                                     <span class="fs-7">امتیاز باشگاه مشتریان</span>
                                 </span>
                             </div>
-                            <div class="checkout-bill-row-value">۱۵۰ <span class="fs-7 fw-bold text-muted">امتیاز</span></div>
+                            <div class="checkout-bill-row-value">۱۵۰ <span class="fs-7 fw-bold text-muted">امتیاز</span>
+                            </div>
                         </div>
                     </div>
                     <!-- end of checkout-bill -->
@@ -171,7 +179,8 @@
                                 <div class="subtitle">سفارش‌های بالای ۳۰۰ هزار تومان</div>
                             </div>
                             <div class="free-shipping--banner">
-                                <img src="./theme-assets/images/theme/free-shipping--banner.png" alt="ارسال رایگان سفارش">
+                                <img src="./theme-assets/images/theme/free-shipping--banner.png"
+                                     alt="ارسال رایگان سفارش">
                             </div>
                         </div>
                     </div>

@@ -10,17 +10,15 @@ public class PermissionService(
     IUserRepository userRepository,
     IPermissionRepository permissionRepository) : IPermissionService
 {
-    
     #region Permission
+
     public async Task<bool> CheckUserPermissionAsync(int userId, string permissionName)
     {
         var user = await permissionRepository.GetUserById(userId);
-        if (user is null)
-        {
-            return false;
-        }
+        if (user is null) return false;
         var permission = await permissionRepository.GetUniquePermission(permissionName);
-        return permission is not null && user.UserRoleMappings.Any(s => permission.RolePermissionMappings.Any(p => p.RoleId == s.RoleId));
+        return permission is not null &&
+               user.UserRoleMappings.Any(s => permission.RolePermissionMappings.Any(p => p.RoleId == s.RoleId));
     }
 
     public async Task<List<PermissionSelectionViewModel>> GetPermissionsHierarchyAsync()
@@ -38,13 +36,11 @@ public class PermissionService(
         return BuildPermissionTree(permissionHierarchy);
     }
 
-    private static List<PermissionSelectionViewModel> BuildPermissionTree(List<PermissionSelectionViewModel> permissions)
+    private static List<PermissionSelectionViewModel> BuildPermissionTree(
+        List<PermissionSelectionViewModel> permissions)
     {
         var lookup = permissions.ToLookup(p => p.ParentId);
-        foreach (var permission in permissions)
-        {
-            permission.Children = lookup[permission.PermissionId].ToList();
-        }
+        foreach (var permission in permissions) permission.Children = lookup[permission.PermissionId].ToList();
         return lookup[0].ToList();
     }
 
@@ -52,16 +48,15 @@ public class PermissionService(
     {
         return await permissionRepository.GetSelectedPermissionIdsAsync(roleId);
     }
+
     #endregion
 
     #region Role
+
     public async Task<bool> CanEditOrDeleteRoleAsync(int roleId)
     {
         var role = await permissionRepository.GetRoleByIdAsync(roleId);
-        if (role == null!)
-        {
-            return false;
-        }
+        if (role == null!) return false;
         return role.RoleName != "ادمین کل";
     }
 
@@ -94,10 +89,7 @@ public class PermissionService(
     public async Task UpdateRoleAsync(RolePermissionsViewModel viewModel)
     {
         var role = await permissionRepository.GetRoleByIdAsync(viewModel.RoleId);
-        if (role == null)
-        {
-            throw new KeyNotFoundException("Role not found.");
-        }
+        if (role == null) throw new KeyNotFoundException("Role not found.");
 
         role.RoleName = viewModel.RoleName;
         await permissionRepository.UpdateRoleAsync(role);
@@ -122,10 +114,7 @@ public class PermissionService(
         foreach (var permissionId in selectedPermissionIds)
         {
             var permission = await permissionRepository.GetPermissionByIdAsync(permissionId);
-            if (permission == null)
-            {
-                throw new KeyNotFoundException($"Permission with ID {permissionId} not found.");
-            }
+            if (permission == null) throw new KeyNotFoundException($"Permission with ID {permissionId} not found.");
             var rolePermissionMapping = new RolePermissionMapping(role.Id, permissionId);
             await permissionRepository.AddRolePermissionAsync(rolePermissionMapping);
         }
@@ -154,10 +143,7 @@ public class PermissionService(
     public async Task UpdateUserRolesAsync(int userId, List<string> selectedRoles)
     {
         var user = await permissionRepository.GetUserByIdAsync(userId);
-        if (user == null)
-        {
-            throw new KeyNotFoundException("User not found.");
-        }
+        if (user == null) throw new KeyNotFoundException("User not found.");
 
         var existingMappings = user.UserRoleMappings
             .Where(urm => !urm.IsDeleted)
@@ -169,11 +155,11 @@ public class PermissionService(
             mapping.CreateDate = DateTime.UtcNow;
         }
 
-        foreach (var roleName in selectedRoles.Where(roleName => !existingMappings.Any(urm => urm.Role.RoleName == roleName)))
+        foreach (var roleName in selectedRoles.Where(roleName =>
+                     !existingMappings.Any(urm => urm.Role.RoleName == roleName)))
         {
             var role = await permissionRepository.GetRoleByNameAsync(roleName);
             if (role != null!)
-            {
                 user.UserRoleMappings.Add(new UserRoleMapping
                 {
                     RoleId = role.Id,
@@ -181,11 +167,10 @@ public class PermissionService(
                     IsDeleted = false,
                     CreateDate = DateTime.UtcNow
                 });
-            }
         }
 
         await permissionRepository.UpdateUserAsync(user);
     }
+
     #endregion
-    
 }

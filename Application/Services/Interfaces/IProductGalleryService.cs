@@ -5,7 +5,6 @@ namespace Application.Services.Interfaces;
 
 public interface IProductGalleryService
 {
-
     #region Product Gallery Management
 
     Task<List<ProductGallery>> GetGalleryListAsync(int productid);
@@ -13,5 +12,4 @@ public interface IProductGalleryService
     Task RemoveProductGallery(int galleryid);
 
     #endregion
-
 }

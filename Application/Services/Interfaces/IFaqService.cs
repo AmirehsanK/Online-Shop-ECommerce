@@ -6,7 +6,6 @@ namespace Application.Services.Interfaces;
 
 public interface IFaqService
 {
-
     #region Faq Category Management
 
     Task<List<GetAllFaqCategoryViewModel>> GetAllFaqCategoriesAsync();
@@ -34,5 +33,4 @@ public interface IFaqService
     Task<GetFaqCategoryAndChildViewModel> GetFaqCategories(int categoryid);
 
     #endregion
-
 }

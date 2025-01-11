@@ -1,0 +1,53 @@
+﻿@using Application.Tools
+@model List<Domain.ViewModel.Comment.CommentViewModel>
+@{
+    ViewData["Title"] = "لیست نظرات";
+}
+
+<!-- Comments Table -->
+<div class="col-xl-9 col-lg-8 col-md-7">
+    <div class="ui-box bg-white mb-5">
+        <div class="ui-box-title align-items-center justify-content-between">
+            @ViewData["Title"]
+        </div>
+        <div class="ui-box-content">
+            <div class="table-responsive">
+                @if (Model != null && Model.Any())
+                {
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>تاریخ ثبت</th>
+                            <th>عنوان</th>
+                            <th>متن نظر</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="fa-num">@item.Id</td>
+                                <td class="fa-num">@item.CreateDate.ToShamsi() @item.CreateDate.ToString("hh:mm:ss") </td>
+                                <td class="fa-num">@item.Title</td>
+                                <td class="fa-num">@item.Content</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="ui-box-empty-content">
+                        <div class="ui-box-empty-content-icon">
+                            <img src="/theme-assets/images/theme/orders.svg" alt="">
+                        </div>
+                        <div class="ui-box-empty-content-message">
+                            نظری تا به الان ایجاد نکرده اید.
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

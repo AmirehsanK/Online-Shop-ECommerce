@@ -1,7 +1,6 @@
 ﻿@using Application.Tools
 @using Domain.Entities.Product
-@using Domain.ViewModel.Product.ProductGallery
-@model ShowProductGalleryViewModel
+@model Domain.ViewModel.Product.ProductGallery.ShowProductGalleryViewModel
 @{
     ViewData["Title"] = "گالری محصول";
     var Gallery = ViewData["Gallery"] as List<ProductGallery>;
@@ -9,35 +8,35 @@
 
 <div class="container-fluid">
 
-<form asp-area="Admin" asp-action="ShowProductGallery" asp-controller="Product" enctype="multipart/form-data">
-    <input type="hidden" asp-for="ProductId"/>
-    <input asp-for="Gallery" accept=".png,.jpeg" />
-    <button type="submit" asp-action="ShowProductGallery" class="btn btn-success">افزودن عکس</button>
+    <form asp-area="Admin" asp-action="ShowProductGallery" asp-controller="Product" enctype="multipart/form-data">
+        <input type="hidden" asp-for="ProductId"/>
+        <input asp-for="Gallery" accept=".png,.jpeg"/>
+        <button type="submit" asp-action="ShowProductGallery" class="btn btn-success">افزودن عکس</button>
 
 
 
-    @if (Gallery != null && Gallery.Any())
-    {
-        <div class="row">
-            @foreach (var item in Gallery)
-            {
-                <div class="col-lg-4 col-sm-12">
-                    <div class="card m-2">
-                        <img src="@(PathTools.ProductGalleryImagePath + item.Image)" alt="Cinque Terre" style="width: 100%; height:300px; object-fit: cover;">
-                        <a class="btn btn-danger btn-block" asp-controller="Product" asp-area="Admin" asp-action="RemoveProductGallery" asp-route-galleryid="@item.Id"> حذف</a>
+        @if (Gallery != null && Gallery.Any())
+        {
+            <div class="row">
+                @foreach (var item in Gallery)
+                {
+                    <div class="col-lg-4 col-sm-12">
+                        <div class="card m-2">
+                            <img src="@(PathTools.ProductGalleryImagePath + item.Image)" alt="Cinque Terre"
+                                 style="width: 100%; height:300px; object-fit: cover;">
+                            <a class="btn btn-danger btn-block" asp-controller="Product" asp-area="Admin"
+                               asp-action="RemoveProductGallery" asp-route-galleryid="@item.Id"> حذف</a>
+                        </div>
+
                     </div>
+                }
 
-                </div>
-            }
+            </div>
+        }
+        else
+        {
+            <p> nothing</p>
+        }
 
-        </div>
-
-
-    }
-    else
-    {
-        <p> nothing</p>
-    }
-
-</form>
+    </form>
 </div>

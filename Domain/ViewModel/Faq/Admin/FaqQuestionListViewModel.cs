@@ -1,15 +1,12 @@
-﻿namespace Domain.ViewModel.Faq.Admin
+﻿namespace Domain.ViewModel.Faq.Admin;
+
+public class FaqQuestionListViewModel
 {
-    public class FaqQuestionListViewModel
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string Question { get; set; }
+    public string Question { get; set; }
 
-        public string Answer { get; set; }
+    public string Answer { get; set; }
 
-        public DateTime CreateDate { get; set; }
-
-
-    }
+    public DateTime CreateDate { get; set; }
 }

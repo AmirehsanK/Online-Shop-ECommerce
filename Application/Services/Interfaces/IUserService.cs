@@ -7,28 +7,9 @@ namespace Application.Services.Interfaces;
 
 public interface IUserService
 {
-
     #region User List
 
     Task<List<UserListViewModel>> GetUserListAsync();
-
-    #endregion
-
-    #region Password Management
-
-    Task<bool> IsPasswordCorrectAsync(string email, string password);
-    bool ComparePasswordAsync(string hashedPassword, string providedPassword);
-    Task ChangePasswordAsync(int userId, string newPassword);
-    Task<ForgetPasswordEnum> ForgotPasswordEmailSenderAsync(string email);
-    Task<ForgetPasswordTokenCheckEnum> ForgotPasswordTokenCheckerAsync(string token);
-    Task ResetPasswordAsync(string token, string newPassword);
-
-    #endregion
-
-    #region User Retrieval
-
-    Task<User> GetUserByEmailAsync(string email);
-    Task<User> GetUserById(int userid);
 
     #endregion
 
@@ -41,21 +22,6 @@ public interface IUserService
     #region Email
 
     Task<bool> IsEmailExistAsync(string email);
-
-    #endregion
-
-    #region User Registration
-
-    Task RegisterUserAsync(RegisterUserViewModel model);
-    Task<CreateUserEnums> CreateUserAsync(CreateUserViewModel model);
-    Task<RegisterUserEnum> RegisterUserValidationAsync(RegisterUserViewModel model);
-
-    #endregion
-
-    #region User Editing
-
-    Task EditUserAsync(EditUserViewModel model);
-    Task<EditUserViewModel> GetUsersByIDAsync(int userid);
 
     #endregion
 
@@ -83,4 +49,36 @@ public interface IUserService
 
     #endregion
 
+    #region Password Management
+
+    Task<bool> IsPasswordCorrectAsync(string email, string password);
+    bool ComparePasswordAsync(string hashedPassword, string providedPassword);
+    Task ChangePasswordAsync(int userId, string newPassword);
+    Task<ForgetPasswordEnum> ForgotPasswordEmailSenderAsync(string email);
+    Task<ForgetPasswordTokenCheckEnum> ForgotPasswordTokenCheckerAsync(string token);
+    Task ResetPasswordAsync(string token, string newPassword);
+
+    #endregion
+
+    #region User Retrieval
+
+    Task<User> GetUserByEmailAsync(string email);
+    Task<User> GetUserById(int userid);
+
+    #endregion
+
+    #region User Registration
+
+    Task RegisterUserAsync(RegisterUserViewModel model);
+    Task<CreateUserEnums> CreateUserAsync(CreateUserViewModel model);
+    Task<RegisterUserEnum> RegisterUserValidationAsync(RegisterUserViewModel model);
+
+    #endregion
+
+    #region User Editing
+
+    Task EditUserAsync(EditUserViewModel model);
+    Task<EditUserViewModel> GetUsersByIDAsync(int userid);
+
+    #endregion
 }

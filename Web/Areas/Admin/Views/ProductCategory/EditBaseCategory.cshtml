@@ -4,11 +4,14 @@
 @{
     ViewData["Title"] = "ویرایش دسته بندی اصلی";
 }
+
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
 }
-<form asp-area="Admin" asp-controller="ProductCategory" asp-action="EditBaseCategory" method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="CategoryId" />
+
+<form asp-area="Admin" asp-controller="ProductCategory" asp-action="EditBaseCategory" method="post"
+      enctype="multipart/form-data">
+    <input type="hidden" asp-for="CategoryId"/>
     <div class="col-xl-6">
         <!-- HTML5 Inputs -->
         <div class="card mb-4">
@@ -24,7 +27,8 @@
                             <div class="form-group">
                                 <label for="currentImage">عکس موجود</label>
                                 <div>
-                                    <img src="@PathTools.CategoryImagePath@Model.ImageName" alt="Current Image" class="img-thumbnail image-edit-show">
+                                    <img src="@PathTools.CategoryImagePath@Model.ImageName" alt="Current Image"
+                                         class="img-thumbnail image-edit-show">
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -34,7 +38,9 @@
                         }
                     </div>
                 </div>
-                <button asp-area="Admin" asp-controller="ProductCategory" asp-action="EditBaseCategory"  type="submit" class="btn btn-primary">ثبت</button>
+                <button asp-area="Admin" asp-controller="ProductCategory" asp-action="EditBaseCategory" type="submit"
+                        class="btn btn-primary">ثبت
+                </button>
             </div>
         </div>
     </div>

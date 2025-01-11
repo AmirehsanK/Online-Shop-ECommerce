@@ -1,11 +1,10 @@
-﻿@using Domain.ViewModel.Faq.Admin
-@model AddFaqCategoryViewModel
+﻿@model Domain.ViewModel.Faq.Admin.AddFaqCategoryViewModel
 @{
     ViewData["Title"] = "افزودن دسته بندی";
 }
 <form asp-area="Admin" asp-controller="Faq" asp-action="CreateFaqQuestion" method="post">
-    <input type="hidden" />
-    <div >
+    <input type="hidden"/>
+    <div>
         <!-- HTML5 Inputs -->
         <div class="card mb-4">
             <h5 class="card-header">ایجاد دسته بندی جدید</h5>
@@ -17,7 +16,7 @@
                         <span asp-validation-for="Title" class="alert-danger"></span>
                     </div>
                 </div>
-                <button  type="submit" class="btn btn-primary btn-lg">ثبت</button>
+                <button type="submit" class="btn btn-primary btn-lg">ثبت</button>
             </div>
         </div>
     </div>

@@ -9,25 +9,21 @@ namespace Infra.Data.Repositories;
 
 public class PermissionRepository(ApplicationDbContext context) : IPermissionRepository
 {
-
     #region Admin
 
     public async Task SeedSuperAdminAsync(User user)
     {
-        if (await context.Users.AnyAsync(u => u.FirstName == "superAdmin"))
-        {
-            return;
-        }
+        if (await context.Users.AnyAsync(u => u.FirstName == "superAdmin")) return;
         var superAdminUser = new User
         {
             FirstName = "superAdmin",
             Email = "superadmin@example.com",
-            Password = ("SuperAdminPassword123!"),
+            Password = "SuperAdminPassword123!",
             UserRoleMappings = new List<UserRoleMapping>
             {
-                new UserRoleMapping
+                new()
                 {
-                    RoleId = ((await context.Roles.FirstOrDefaultAsync(r => r.RoleName == "ادمین کل"))!).Id
+                    RoleId = (await context.Roles.FirstOrDefaultAsync(r => r.RoleName == "ادمین کل"))!.Id
                 }
             }
         };
@@ -111,15 +107,9 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
                     .ToList()
             });
 
-        if (!string.IsNullOrEmpty(filter.UserName))
-        {
-            query = query.Where(u => u.UserName.Contains(filter.UserName));
-        }
+        if (!string.IsNullOrEmpty(filter.UserName)) query = query.Where(u => u.UserName.Contains(filter.UserName));
 
-        if (!string.IsNullOrEmpty(filter.Email))
-        {
-            query = query.Where(u => u.Email.Contains(filter.Email));
-        }
+        if (!string.IsNullOrEmpty(filter.Email)) query = query.Where(u => u.Email.Contains(filter.Email));
 
         var pagingResult = await filter.Paging(query);
         var result = new FilterUserWithRolesViewModel
@@ -250,22 +240,19 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
             .ThenInclude(urm => urm.Role)
             .FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
 
-        if (user == null)
-        {
-            throw new KeyNotFoundException("User not found.");
-        }
+        if (user == null) throw new KeyNotFoundException("User not found.");
 
         var existingMappings = user.UserRoleMappings
             .Where(urm => !urm.IsDeleted)
             .ToList();
 
-        foreach (var roleName in selectedRoles.Where(roleName => existingMappings.All(urm => urm.Role.RoleName != roleName)))
+        foreach (var roleName in selectedRoles.Where(roleName =>
+                     existingMappings.All(urm => urm.Role.RoleName != roleName)))
         {
             var role = await context.Roles
                 .FirstOrDefaultAsync(r => r.RoleName == roleName && !r.IsDeleted);
 
             if (role != null)
-            {
                 user.UserRoleMappings.Add(new UserRoleMapping
                 {
                     RoleId = role.Id,
@@ -273,7 +260,6 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
                     IsDeleted = false,
                     CreateDate = DateTime.UtcNow
                 });
-            }
         }
 
         await context.SaveChangesAsync();
@@ -313,10 +299,7 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
             .ThenInclude(urm => urm.Role)
             .FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
 
-        if (user is { UserRoleMappings: null })
-        {
-            user.UserRoleMappings = new List<UserRoleMapping>();
-        }
+        if (user is { UserRoleMappings: null }) user.UserRoleMappings = new List<UserRoleMapping>();
 
         return user!;
     }
@@ -329,5 +312,4 @@ public class PermissionRepository(ApplicationDbContext context) : IPermissionRep
     }
 
     #endregion
-
 }

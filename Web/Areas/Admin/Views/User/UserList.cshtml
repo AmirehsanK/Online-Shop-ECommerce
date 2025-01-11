@@ -34,9 +34,11 @@
                             <a asp-controller="User" asp-area="Admin" asp-action="DeleteUser"
                                asp-route-UserId="@user.Id" class="btn m-1 btn-danger"><i class="fa-solid fa-trash"></i></a>
                             <a asp-controller="User" asp-area="Admin" asp-action="UserDetail"
-                               asp-route-UserId="@user.Id" class="btn m-1 btn-secondary"><i class="fa-solid fa-info"></i></a>
-                                <a asp-controller="Notification" asp-area="Admin" asp-action="AddNewNotification"
-                                   asp-route-userId="@user.Id" class="btn m-1 btn-primary"><i class="fa-solid fa-envelope"></i></a>
+                               asp-route-UserId="@user.Id" class="btn m-1 btn-secondary"><i
+                                    class="fa-solid fa-info"></i></a>
+                            <a asp-controller="Notification" asp-area="Admin" asp-action="AddNewNotification"
+                               asp-route-userId="@user.Id" class="btn m-1 btn-primary"><i
+                                    class="fa-solid fa-envelope"></i></a>
                         </td>
                     </tr>
                 }

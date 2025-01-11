@@ -2,14 +2,16 @@
 @{
     ViewData["Title"] = "ویرایش ویژگی";
 }
+
 @section Style
 {
-    <link rel="stylesheet" href="/Admin/vendor/libs/tagify/tagify.css" />
-    <link href="https://cdn.jsdelivr.net/npm/@@yaireo/tagify/dist/tagify.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/Admin/vendor/libs/tagify/tagify.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/@@yaireo/tagify/dist/tagify.css" rel="stylesheet"/>
 }
+
 @section Scripts
 {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
     <script src="https://cdn.jsdelivr.net/npm/@@yaireo/tagify"></script>
     <script>
         // تبدیل فیلد "tagInput" به TagInput
@@ -28,19 +30,20 @@
         });
     </script>
 }
+
 <form asp-controller="ProductSpecification" asp-action="EditProductSpecification" asp-area="Admin" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <input asp-for="Id" type="hidden" />
+    <input asp-for="Id" type="hidden"/>
     <div class="form-group">
         <label asp-for="Key"></label>
-        <input asp-for="Key" type="text" id="simpleInput" class="form-control" />
+        <input asp-for="Key" type="text" id="simpleInput" class="form-control"/>
         <span asp-validation-for="Key" class="text-danger"></span>
     </div>
-    
+
     <div class="form-group">
         <label asp-for="Value"></label>
-        <input asp-for="Value" type="text" id="tagInput" class="form-control" />
+        <input asp-for="Value" type="text" id="tagInput" class="form-control"/>
 
         <span asp-validation-for="Value" class="text-danger"></span>
     </div>

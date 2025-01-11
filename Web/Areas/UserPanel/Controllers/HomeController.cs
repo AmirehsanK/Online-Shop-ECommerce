@@ -2,18 +2,23 @@
 using Application.Services.Interfaces;
 using Application.Tools;
 using Domain.Enums;
+using Domain.ViewModel.Favorites;
 using Domain.ViewModel.User;
 using Domain.ViewModel.User.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 namespace Web.Areas.UserPanel.Controllers;
 
 [Authorize]
-public class HomeController(IUserService userService, INotificationService notificationService)
+public class HomeController(IUserService userService,
+    INotificationService notificationService,
+    ICommentService commentService,
+    IDiscountService discountService,
+    IFavoritesService favoritesService)
     : UserPanelBaseController
 {
+    
     #region Index
 
     public async Task<IActionResult> Index()
@@ -28,17 +33,15 @@ public class HomeController(IUserService userService, INotificationService notif
 
             case NotificationEnum.NotFound:
                 if (publicMessage == null!) return View();
-                TempData[WarningMessage] =  publicMessage.Message;
+                TempData[WarningMessage] = publicMessage.Message;
                 await notificationService.markSeenForPrivateMessage(User.GetCurrentUserId(), publicMessage.Id);
                 return View();
         }
 
 
-
         return View();
-
     }
-    
+
     #endregion
 
     #region ChangePassword
@@ -64,12 +67,24 @@ public class HomeController(IUserService userService, INotificationService notif
 
         ViewBag.IsSuccess = true;
         return View();
-
-
     }
-    
+
     #endregion
-    
+
+    #region UserNotification
+
+    [HttpGet]
+    public async Task<IActionResult> UserNotification()
+    {
+        var message = await notificationService.GetShowNotificationById(User.GetCurrentUserId());
+        if (message != null!)
+            await notificationService.markSeenForPrivateMessage(User.GetCurrentUserId(), message.MessageId);
+
+        return View(message);
+    }
+
+    #endregion
+
     #region Profile Info
 
     [HttpGet]
@@ -78,18 +93,15 @@ public class HomeController(IUserService userService, INotificationService notif
         var model = await userService.GetUsersByIDAsync(User.GetCurrentUserId());
         return View(model);
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> UserInfo(EditUserViewModel model)
     {
         model.Id = User.GetCurrentUserId();
-        
+
         #region Validation
 
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
+        if (!ModelState.IsValid) return View(model);
 
         #endregion
 
@@ -98,20 +110,74 @@ public class HomeController(IUserService userService, INotificationService notif
     }
 
     #endregion
-    
-    #region UserNotification
 
-    [HttpGet]
-    public async Task<IActionResult> UserNotification()
+    #region Comments
+
+    public async Task<IActionResult> Comments()
     {
-        var message = await notificationService.GetShowNotificationById(User.GetCurrentUserId());
-        if (message != null!)
-        {
-            await notificationService.markSeenForPrivateMessage(User.GetCurrentUserId(), message.MessageId);
-        }
-
-        return View(message);
+        var comments=await commentService.GetCommentsByUserIdAsync(User.GetCurrentUserId());
+        return View(comments);
     }
 
     #endregion
+
+    #region Gift Codes
+
+    public async Task<IActionResult> GiftCodes()
+    {
+        var model = await discountService.GetUserGiftCodes(User.GetCurrentUserId());
+        return View(model);
+    }
+
+    #endregion
+
+    #region Favorite List
+
+    [HttpGet]
+    public async Task<IActionResult> FavoritesList()
+    {
+        var favoriteProducts = await favoritesService.GetFavoriteProductsAsync(User.GetCurrentUserId());
+        return View(favoriteProducts);
+    }
+    [HttpPost]
+    public async Task<IActionResult> AddFavorite(int productId)
+    {
+        var model = new AddFavoriteProductViewModel()
+        {
+            ProductId = productId,
+            UserId = User.GetCurrentUserId()
+        };
+        if (!ModelState.IsValid)
+            return BadRequest("یک مشکلی پیش آمده!");
+        try
+        {
+            await favoritesService.AddFavoriteAsync(model.UserId, model.ProductId);
+            return Ok();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest("این کالا در لیست مورد علاقه شما حضور دارد!");
+        }
+        catch (Exception)
+        {
+            return StatusCode(500,"یک مشکلی پیش آمده!");
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> RemoveFavorite(int productId)
+    {
+        var model = new RemoveFavoriteProductViewModel()
+        {
+            UserId = User.GetCurrentUserId(),
+            ProductId = productId,
+        };
+        if (!ModelState.IsValid)
+            TempData[ErrorMessage] = "مشکلی در حذف کالا پیش آمد!";
+        await favoritesService.RemoveFavoriteAsync(model.UserId, model.ProductId);
+        return RedirectToAction(nameof(FavoritesList));
+    }
+
+    #endregion
+    
 }

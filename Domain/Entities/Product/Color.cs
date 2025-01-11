@@ -1,20 +1,16 @@
-﻿
-using Domain.Entities.Common;
+﻿using Domain.Entities.Common;
 
-namespace Domain.Entities.Product
+namespace Domain.Entities.Product;
+
+public class Color : BaseEntity
 {
-        public class Color : BaseEntity
-        {
-            public string ColorCode { get; set; }
+    public string ColorCode { get; set; }
 
-            public string Title { get; set; }
+    public string Title { get; set; }
 
-            #region Realtion
+    #region Realtion
 
-            public ICollection<ProductColor> ProductColors { get; set; }
+    public ICollection<ProductColor> ProductColors { get; set; }
 
-
-
-            #endregion
-        }
+    #endregion
 }

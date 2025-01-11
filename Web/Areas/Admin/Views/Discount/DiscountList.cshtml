@@ -31,7 +31,7 @@
                         {
                             <span class="badge bg-success">درصدی</span>
                         }
-                        </td>
+                    </td>
                     <td>@discount.Value</td>
                     <td>@discount.UsageLimit</td>
                     <td>@discount.StartDate</td>
@@ -44,12 +44,16 @@
                         {
                             <span class="badge bg-success">فعال</span>
                         }
-                        </td>
+                    </td>
                     <td>
-                        <a asp-action="AssignDiscountToUsers" asp-controller="Discount" asp-area="Admin" asp-route-Id="@discount.Id" class="btn m-1 btn-success"><i class="fa-solid fa-user-plus"></i></a>
-                        <a asp-action="AssignDiscountToProducts" asp-controller="Discount" asp-area="Admin" asp-route-Id="@discount.Id" class="btn m-1 btn-success"><i class="fa-solid fa-cart-plus"></i></a>
-                        <a asp-action="Edit" asp-controller="Discount" asp-area="Admin" asp-route-Id="@discount.Id" class="btn m-1 btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <form asp-action="Delete" asp-controller="Discount" asp-area="Admin" asp-route-id="@discount.Id" method="post">
+                        <a asp-action="AssignDiscountToUsers" asp-controller="Discount" asp-area="Admin"
+                           asp-route-Id="@discount.Id" class="btn m-1 btn-success"><i class="fa-solid fa-user-plus"></i></a>
+                        <a asp-action="AssignDiscountToProducts" asp-controller="Discount" asp-area="Admin"
+                           asp-route-Id="@discount.Id" class="btn m-1 btn-success"><i class="fa-solid fa-cart-plus"></i></a>
+                        <a asp-action="Edit" asp-controller="Discount" asp-area="Admin" asp-route-Id="@discount.Id"
+                           class="btn m-1 btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <form asp-action="Delete" asp-controller="Discount" asp-area="Admin" asp-route-id="@discount.Id"
+                              method="post">
                             <button type="submit" class="btn m-1 btn-danger"><i class="fa-solid fa-trash"></i></button>
                         </form>
                     </td>

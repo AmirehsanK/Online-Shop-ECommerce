@@ -5,6 +5,11 @@ namespace Domain.Interface;
 
 public interface IProductSpecificationRepository
 {
+    #region Save Changes
+
+    Task SaveChangeAsync();
+
+    #endregion
 
     #region Specification Management
 
@@ -15,11 +20,4 @@ public interface IProductSpecificationRepository
     Task<ProductSpecification> GetSpecificationById(int SpecificationId);
 
     #endregion
-
-    #region Save Changes
-
-    Task SaveChangeAsync();
-
-    #endregion
-
 }

@@ -11,19 +11,18 @@ namespace Application.Services.Impelementation;
 
 public class UserService(IUserRepository userRepository) : IUserService
 {
-    
     #region User List
 
     public async Task<List<UserListViewModel>> GetUserListAsync()
     {
         var users = await userRepository.GetAllAsync();
-        return users.Where(u => u.IsDeleted == false).Select(u => new UserListViewModel()
+        return users.Where(u => u.IsDeleted == false).Select(u => new UserListViewModel
         {
             Id = u.Id,
             FirstName = u.FirstName,
             LastName = u.LastName,
             Email = u.Email,
-            IsDeleted = u.IsDeleted,
+            IsDeleted = u.IsDeleted
         }).ToList();
     }
 
@@ -36,7 +35,7 @@ public class UserService(IUserRepository userRepository) : IUserService
         model.Email = model.Email.ToLower().Trim();
         var exist = await userRepository.GetUserByEmailAsync(model.Email);
         if (exist != null!) return CreateUserEnums.EmailExist;
-        var user = new User()
+        var user = new User
         {
             FirstName = model.FirstName,
             LastName = model.LastName,
@@ -69,6 +68,71 @@ public class UserService(IUserRepository userRepository) : IUserService
     public async Task<bool> IsEmailExistAsync(string email)
     {
         return await userRepository.IsEmailExistAsync(email);
+    }
+
+    #endregion
+
+    #region Email Activation
+
+    public async Task<ActiveEmailEnum> EmailActivatorAsync(string emailActiveCode)
+    {
+        var user = await userRepository.GetUserByGUIDAsync(emailActiveCode);
+        if (user == null!)
+            return ActiveEmailEnum.Failed;
+        user.IsEmailActive = true;
+        user.EmailActiveCode = Guid.NewGuid().ToString("N");
+        await userRepository.SaveChangesAsync();
+        return ActiveEmailEnum.Success;
+    }
+
+    #endregion
+
+    #region User Login
+
+    public async Task<LoginUserEnum> LoginUserAsync(LoginUserViewModel model)
+    {
+        var user = await userRepository.GetUserByEmailAsync(model.Email);
+        if (user != null!)
+        {
+            if (PasswordHasher.VerifyHashedPassword(user.Password, model.Password))
+                return user.IsEmailActive ? LoginUserEnum.Success : LoginUserEnum.UserNotActive;
+
+            return LoginUserEnum.PasswordInvalid;
+        }
+
+        return LoginUserEnum.EmailInvalid;
+    }
+
+    #endregion
+
+    #region User Deletion
+
+    public async Task DeleteUserAsync(int userid)
+    {
+        var user = await userRepository.GetUserByIdAsync(userid);
+        user.IsDeleted = true;
+        userRepository.UpdateUser(user);
+        await userRepository.SaveChangesAsync();
+    }
+
+    #endregion
+
+    #region User Details
+
+    public async Task<UserDetailViewModel> GetUserDetailAsync(int userid)
+    {
+        var user = await userRepository.GetUserByIdAsync(userid);
+        var detail = new UserDetailViewModel
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            IsAdmin = user.IsAdmin,
+            CreatedDate = user.CreateDate,
+            Id = userid,
+            IsActive = user.IsEmailActive
+        };
+        return detail;
     }
 
     #endregion
@@ -166,14 +230,9 @@ public class UserService(IUserRepository userRepository) : IUserService
 
     public async Task<RegisterUserEnum> RegisterUserValidationAsync(RegisterUserViewModel model)
     {
-        if (await IsEmailExistAsync(model.Email))
-        {
-            return RegisterUserEnum.EmailUsed;
-        }
-        else
-        {
-            return RegisterUserEnum.Success;
-        }
+        if (await IsEmailExistAsync(model.Email)) return RegisterUserEnum.EmailUsed;
+
+        return RegisterUserEnum.Success;
     }
 
     #endregion
@@ -192,7 +251,8 @@ public class UserService(IUserRepository userRepository) : IUserService
         user.Address = model.Address;
         user.Address = model.Address;
         user.Password = !string.IsNullOrEmpty(model.Password?.Trim())
-            ? PasswordHasher.HashPassword(model.Password) : user.Password;
+            ? PasswordHasher.HashPassword(model.Password)
+            : user.Password;
         userRepository.UpdateUser(user);
         await userRepository.SaveChangesAsync();
     }
@@ -200,7 +260,7 @@ public class UserService(IUserRepository userRepository) : IUserService
     public async Task<EditUserViewModel> GetUsersByIDAsync(int userid)
     {
         var user = await userRepository.GetUserByIdAsync(userid);
-        var edit = new EditUserViewModel()
+        var edit = new EditUserViewModel
         {
             FirstName = user.FirstName,
             LastName = user.LastName,
@@ -210,82 +270,10 @@ public class UserService(IUserRepository userRepository) : IUserService
             Password = user.Password,
             Id = userid,
             Address = user.Address,
-            PhoneNumber = user.PhoneNumber,
+            PhoneNumber = user.PhoneNumber
         };
         return edit;
     }
 
     #endregion
-
-    #region Email Activation
-
-    public async Task<ActiveEmailEnum> EmailActivatorAsync(string emailActiveCode)
-    {
-        var user = await userRepository.GetUserByGUIDAsync(emailActiveCode);
-        if (user == null!)
-            return ActiveEmailEnum.Failed;
-        user.IsEmailActive = true;
-        user.EmailActiveCode = Guid.NewGuid().ToString("N");
-        await userRepository.SaveChangesAsync();
-        return ActiveEmailEnum.Success;
-    }
-
-    #endregion
-
-    #region User Login
-
-    public async Task<LoginUserEnum> LoginUserAsync(LoginUserViewModel model)
-    {
-        var user = await userRepository.GetUserByEmailAsync(model.Email);
-        if (user != null!)
-        {
-            if (PasswordHasher.VerifyHashedPassword(user.Password, model.Password))
-            {
-                return user.IsEmailActive ? LoginUserEnum.Success : LoginUserEnum.UserNotActive;
-            }
-            else
-            {
-                return LoginUserEnum.PasswordInvalid;
-            }
-        }
-        else
-        {
-            return LoginUserEnum.EmailInvalid;
-        }
-    }
-
-    #endregion
-
-    #region User Deletion
-
-    public async Task DeleteUserAsync(int userid)
-    {
-        var user = await userRepository.GetUserByIdAsync(userid);
-        user.IsDeleted = true;
-        userRepository.UpdateUser(user);
-        await userRepository.SaveChangesAsync();
-    }
-
-    #endregion
-
-    #region User Details
-
-    public async Task<UserDetailViewModel> GetUserDetailAsync(int userid)
-    {
-        var user = await userRepository.GetUserByIdAsync(userid);
-        var detail = new UserDetailViewModel()
-        {
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Email = user.Email,
-            IsAdmin = user.IsAdmin,
-            CreatedDate = user.CreateDate,
-            Id = userid,
-            IsActive = user.IsEmailActive
-        };
-        return detail;
-    }
-
-    #endregion
-    
 }

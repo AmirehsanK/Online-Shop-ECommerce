@@ -5,7 +5,6 @@ namespace Application.Services.Interfaces;
 
 public interface IOrderService
 {
-
     #region Order Management
 
     Task AddProductToOrder(int productId, int userId, int? productColorId, int count = 1);
@@ -16,5 +15,4 @@ public interface IOrderService
     Task CloseOrder(int userId);
 
     #endregion
-
 }

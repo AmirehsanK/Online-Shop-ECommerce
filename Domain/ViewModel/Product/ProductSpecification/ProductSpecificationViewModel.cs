@@ -1,12 +1,9 @@
-﻿
-namespace Domain.ViewModel.Product.ProductSpecification
+﻿namespace Domain.ViewModel.Product.ProductSpecification;
+
+public class ProductSpecificationViewModel
 {
-    public class ProductSpecificationViewModel
-    {
-        public int ProductId { get; set; }
-        public string key { get; set; }
+    public int ProductId { get; set; }
+    public string key { get; set; }
 
-        public string Value { get; set; }
-
-    }
+    public string Value { get; set; }
 }

@@ -7,6 +7,14 @@ namespace Infra.Data.Repositories;
 
 public class TicketRepository(ApplicationDbContext context) : ITicketRepository
 {
+    #region Save Changes
+
+    public async Task SaveChangeAsync()
+    {
+        await context.SaveChangesAsync();
+    }
+
+    #endregion
 
     #region Ticket Methods
 
@@ -75,14 +83,4 @@ public class TicketRepository(ApplicationDbContext context) : ITicketRepository
     }
 
     #endregion
-
-    #region Save Changes
-
-    public async Task SaveChangeAsync()
-    {
-        await context.SaveChangesAsync();
-    }
-
-    #endregion
-
 }

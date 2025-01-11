@@ -2,10 +2,7 @@
 @{
     var user = ViewData["User"] as User;
 }
-
 <div class="ui-sticky ui-sticky-top">
-
-
     <div class="profile-user-info py-3 ui-box bg-white">
         <div class="profile-detail">
             <div class="d-flex align-items-center">
@@ -14,9 +11,9 @@
                 </div>
                 <div class="profile-info">
                     <a href="#" class="text-decoration-none text-dark fw-bold mb-2">
-                       @user.FirstName @user.LastName
+                        @user!.FirstName @user.LastName
                     </a>
-                    <div class="text-muted fs-7 fw-bold">۰۹xxxxxxxxx</div>
+                    <div class="text-muted fs-7 fw-bold">@user.PhoneNumber</div>
                 </div>
             </div>
             <div class="user-options">
@@ -32,14 +29,6 @@
                                 افزایش
                                 موجودی <i class="ri-arrow-left-s-line"></i>
                             </a>
-                        </span>
-                    </li>
-                    <li>
-                        <span class="label">باشگاه مشتریان</span>
-                        <span class="detail">
-                            <span class="d-block">
-                                ۰ <span class="score text-muted fs-7">امتیاز</span>
-                            </span>
                         </span>
                     </li>
                 </ul>
@@ -60,13 +49,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="nav-link-icon ri-heart-3-line"></i> لیست
-                    ها
+                <a class="nav-link" asp-action="FavoritesList" asp-controller="Home" asp-area="UserPanel">
+                    <i class="nav-link-icon ri-heart-3-line"></i>کالا های مورد علاقه
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" asp-controller="Home" asp-action="Comments" asp-area="UserPanel">
                     <i class="nav-link-icon ri-chat-1-line"></i>
                     نظرات
                 </a>
@@ -78,22 +66,14 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="nav-link-icon ri-gift-line"></i> کارت های
-                    هدیه
+                <a class="nav-link" asp-action="GiftCodes" asp-controller="Home" asp-area="UserPanel">
+                    <i class="nav-link-icon ri-gift-line"></i>کد های تخفیف
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" asp-area="UserPanel" asp-controller="Home" asp-action="UserNotification">
                     <i class="nav-link-icon ri-notification-line"></i>
                     پیغام ها
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="nav-link-icon ri-time-line"></i> بازدید
-                    های
-                    اخیر
                 </a>
             </li>
             <li class="nav-item">

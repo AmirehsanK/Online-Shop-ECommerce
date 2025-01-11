@@ -7,6 +7,14 @@ namespace Infra.Data.Repositories;
 
 public class FaqRepository(ApplicationDbContext context) : IFaqRepository
 {
+    #region Save Changes
+
+    public async Task SaveChangeAsync()
+    {
+        await context.SaveChangesAsync();
+    }
+
+    #endregion
 
     #region Faq Category Methods
 
@@ -65,14 +73,4 @@ public class FaqRepository(ApplicationDbContext context) : IFaqRepository
     }
 
     #endregion
-
-    #region Save Changes
-
-    public async Task SaveChangeAsync()
-    {
-        await context.SaveChangesAsync();
-    }
-
-    #endregion
-
 }

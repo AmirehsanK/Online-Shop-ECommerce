@@ -4,6 +4,11 @@ namespace Domain.Interface;
 
 public interface IProductGalleryRepository
 {
+    #region Save Changes
+
+    Task SaveChangeAsync();
+
+    #endregion
 
     #region Gallery Management
 
@@ -13,11 +18,4 @@ public interface IProductGalleryRepository
     void RemoveProductGallery(ProductGallery gallery);
 
     #endregion
-
-    #region Save Changes
-
-    Task SaveChangeAsync();
-
-    #endregion
-
 }

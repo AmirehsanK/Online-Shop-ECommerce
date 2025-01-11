@@ -49,23 +49,20 @@
     <ul class="pagination justify-content-center fa-num">
         @if (Model.Page != 1)
         {
-       
             <li class="page-item prev">
-                <a onclick="FillPageNumber(@(Model.Page-1))" class="page-link" href="javascript:void(0);">
+                <a onclick="FillPageNumber(@(Model.Page - 1))" class="page-link" href="javascript:void(0);">
                     <i class="ri-arrow-right-s-line"></i>
                 </a>
             </li>
         }
-        @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+        @for (var i = Model.StartPage; i <= Model.EndPage; i++)
         {
             <li class="page-item @(Model.Page == i ? "active" : "")">
                 <a onclick="FillPageNumber(@i)" class="page-link" href="javascript:void(0);">@i</a>
             </li>
-
         }
         @if (Model.EndPage != Model.Page)
         {
-          
             <li class="page-item next">
                 <a onclick="FillPageNumber(@(Model.Page + 1))" class="page-link" href="javascript:void(0);">
                     <i class="ri-arrow-left-s-line"></i>

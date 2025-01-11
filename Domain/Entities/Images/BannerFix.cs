@@ -9,7 +9,6 @@ public class BannerFix : BaseEntity
     [Required] public string Title { get; set; }
 
     public string Link { get; set; }
-    
-    public ImageEnum.Banner Position{get;set;}
 
+    public ImageEnum.Banner Position { get; set; }
 }

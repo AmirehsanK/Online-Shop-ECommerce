@@ -1,14 +1,8 @@
-﻿
+﻿namespace Domain.ViewModel.Notification;
 
-namespace Domain.ViewModel.Notification
+public class AddNotificationViewModel
 {
-    public class AddNotificationViewModel
-    {
+    public int? UserId { get; set; } = null;
 
-        public int? UserId { get; set; } = null;
-
-        public string Message { get; set; }
-
-
-    }
+    public string Message { get; set; }
 }

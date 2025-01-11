@@ -10,10 +10,12 @@
 <head>
     <title>Contact Us</title>
 </head>
+
 @section Scripts{
     <script src="/Admin/js/app-chat.js"></script>
     <script src="/Admin/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 }
+
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="app-chat overflow-hidden card">
         <div class="row g-0">
@@ -40,7 +42,7 @@
                     <div class="mb-3">
                         <strong>تاریخ پیام :</strong> @Model.CreatedAt.ToShamsi()
                     </div>
-                    @if (Model.IsAnswered && Model.AdminResponse != null)
+                    @if (Model is { IsAnswered: true, AdminResponse: not null })
                     {
                         <div class="mb-3">
                             <strong>پاسخ ادمین :</strong>
@@ -60,9 +62,10 @@
                     <div class="card-body">
                         <h4 class="card-title">پاسخ به پیام</h4>
                         <form method="post" asp-action="Respond" asp-controller="ContactUs" asp-area="Admin">
-                            <input type="hidden" name="Id" value="@Model.Id" />
+                            <input type="hidden" name="Id" value="@Model.Id"/>
                             <div class="mb-3">
-                                <textarea asp-for="AdminResponse" class="form-control" name="AdminResponse" rows="5" placeholder="پیام خود را وارد کنید..."></textarea>
+                                <textarea asp-for="AdminResponse" class="form-control" name="AdminResponse" rows="5"
+                                          placeholder="پیام خود را وارد کنید..."></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">ارسال</button>
                         </form>

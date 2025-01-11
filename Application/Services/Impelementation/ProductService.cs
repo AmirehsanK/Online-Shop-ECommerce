@@ -2,7 +2,6 @@
 using Application.Security;
 using Application.Services.Interfaces;
 using Application.Tools;
-using Domain.Entities.Discount;
 using Domain.Entities.Product;
 using Domain.Interface;
 using Domain.ViewModel.Product.CategoryAdmin;
@@ -16,20 +15,17 @@ public class ProductService(
     IDiscountRepository discountRepository)
     : IProductService
 {
-        
     #region Category
+
     public async Task AddBaseCategory(BaseCategoryViewModel model, int? parentid = null)
     {
-        var category = new ProductCategory()
+        var category = new ProductCategory
         {
             CreateDate = DateTime.Now,
             IsDeleted = false,
-            Title = model.Title,
+            Title = model.Title
         };
-        if (parentid.HasValue)
-        {
-            category.ParentId = parentid.Value;
-        }
+        if (parentid.HasValue) category.ParentId = parentid.Value;
 
         await productRepository.AddCategoryAsync(category);
         await productRepository.SaveChangeAsync();
@@ -38,7 +34,7 @@ public class ProductService(
     public async Task<List<CategoryListViewModel>> GetAllCategories(int? parentid)
     {
         var subcategory = await productRepository.GetAllCategory(parentid);
-        return subcategory.Select(u => new CategoryListViewModel()
+        return subcategory.Select(u => new CategoryListViewModel
         {
             Title = u.Title,
             ParentId = parentid,
@@ -49,7 +45,7 @@ public class ProductService(
     public async Task<List<CategoriesListViewModel>> GetAllCategoriesForMegaMenu()
     {
         var category = await productRepository.GetAllCategoriesAsync();
-        return category.Select(u => new CategoriesListViewModel()
+        return category.Select(u => new CategoriesListViewModel
         {
             Title = u.Title,
             Id = u.Id,
@@ -60,7 +56,7 @@ public class ProductService(
     public async Task<List<CategoryListViewModel>> GetAllSubCategories()
     {
         var subcategory = await productRepository.GetAllSubCategory();
-        return subcategory.Select(u => new CategoryListViewModel()
+        return subcategory.Select(u => new CategoryListViewModel
         {
             Title = u.Title,
             ParentId = u.ParentId,
@@ -71,7 +67,7 @@ public class ProductService(
     public async Task<List<SubCategoryViewModel>> GetAllSubCategoriesForSlider()
     {
         var subcategory = await productRepository.GetAllSubCategory();
-        return subcategory.Select(u => new SubCategoryViewModel()
+        return subcategory.Select(u => new SubCategoryViewModel
         {
             Title = u.Title,
             ParentId = (int)u.ParentId!,
@@ -85,7 +81,7 @@ public class ProductService(
         var category = await productRepository.GetBaseCategory(model.ParentId);
         var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(model.Image.FileName);
         model.Image.AddImageToServer(imageName, PathTools.CategoryImageServerPath, null, null);
-        var subCategory = new ProductCategory()
+        var subCategory = new ProductCategory
         {
             CreateDate = DateTime.Now,
             Title = model.Title,
@@ -100,7 +96,7 @@ public class ProductService(
     public async Task<EditBaseCategoryViewModel> GetBaseCategoryForEdit(int categoryid)
     {
         var category = await productRepository.GetBaseCategory(categoryid);
-        var viewmodel = new EditBaseCategoryViewModel()
+        var viewmodel = new EditBaseCategoryViewModel
         {
             CategoryId = category.Id,
             CategoryTitle = category.Title
@@ -118,6 +114,7 @@ public class ProductService(
             category.ImageName?.DeleteImage(PathTools.CategoryImagePath, null);
             category.ImageName = imageName;
         }
+
         category.Title = model.CategoryTitle;
         productRepository.UpdateCategoryAsync(category);
         await productRepository.SaveChangeAsync();
@@ -133,19 +130,20 @@ public class ProductService(
             foreach (var item in subCategory)
             {
                 item.IsDeleted = true;
-                if (item.ImageName != null)
-                {
-                    item.ImageName.DeleteImage(PathTools.CategoryImagePath, null);
-                }
+                if (item.ImageName != null) item.ImageName.DeleteImage(PathTools.CategoryImagePath, null);
             }
+
             productRepository.UpdateCategoryList(subCategory);
         }
+
         productRepository.UpdateCategoryAsync(mainCategory);
         await productRepository.SaveChangeAsync();
     }
+
     #endregion
 
     #region Product
+
     public async Task<List<ProductViewModel>> GetAllProductsNoFilter()
     {
         var products = await productRepository.GetAllProductsNoFilterAsync();
@@ -186,17 +184,13 @@ public class ProductService(
             if (discount != null)
             {
                 if (discount.IsPercentage)
-                {
                     item.DiscountValue = discount.Value;
-                }
                 else
-                {
-                    item.DiscountValue = (int)Math.Ceiling(((double)discount.Value / item.Price) * 100);
-                }
+                    item.DiscountValue = (int)Math.Ceiling((double)discount.Value / item.Price * 100);
 
                 item.DiscountEndDate = productDiscount!.EndDate;
                 var offPrice = discount.IsPercentage
-                    ? item.Price * (1 - (discount.Value / 100.0))
+                    ? item.Price * (1 - discount.Value / 100.0)
                     : item.Price - discount.Value;
 
                 item.OffPrice = (int)Math.Max(0, offPrice);
@@ -207,6 +201,7 @@ public class ProductService(
                 item.DiscountValue = 0;
             }
         }
+
         return products;
     }
 
@@ -298,6 +293,7 @@ public class ProductService(
             product.Image.AddImageToServer(title, PathTools.FileServerPath, null, null);
             newProduct.ImageName = title;
         }
+
         newProduct.ProductName = product.ProductName;
         newProduct.ShortDescription = product.ShortDescription;
         newProduct.Review = product.Review;
@@ -329,7 +325,7 @@ public class ProductService(
                 (!d.StartDate.HasValue || d.StartDate <= DateTime.UtcNow) &&
                 (!d.EndDate.HasValue || d.EndDate >= DateTime.UtcNow))
             : null;
-        var viewmodel = new ProductDetailViewModel()
+        var viewmodel = new ProductDetailViewModel
         {
             ExpertReview = item.ExpertReview,
             ImageName = item.ImageName,
@@ -345,16 +341,12 @@ public class ProductService(
         if (discount != null)
         {
             if (discount.IsPercentage)
-            {
                 viewmodel.DiscountValue = discount.Value;
-            }
             else
-            {
-                viewmodel.DiscountValue = (int)Math.Ceiling(((double)discount.Value / item.Price) * 100);
-            }
+                viewmodel.DiscountValue = (int)Math.Ceiling((double)discount.Value / item.Price * 100);
 
             var offPrice = discount.IsPercentage
-                ? item.Price * (1 - (discount.Value / 100.0))
+                ? item.Price * (1 - discount.Value / 100.0)
                 : item.Price - discount.Value;
 
             viewmodel.OffPrice = (int)Math.Max(0, offPrice);
@@ -364,8 +356,9 @@ public class ProductService(
             viewmodel.OffPrice = 0;
             viewmodel.DiscountValue = 0;
         }
+
         return viewmodel;
     }
+
     #endregion
-        
 }

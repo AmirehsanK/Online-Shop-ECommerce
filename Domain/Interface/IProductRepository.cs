@@ -5,6 +5,11 @@ namespace Domain.Interface;
 
 public interface IProductRepository
 {
+    #region Save Changes
+
+    Task SaveChangeAsync();
+
+    #endregion
 
     #region Category
 
@@ -30,11 +35,4 @@ public interface IProductRepository
     Task<List<Product>> GetProductsByCategoryAsync(int categoryId);
 
     #endregion
-
-    #region Save Changes
-
-    Task SaveChangeAsync();
-
-    #endregion
-
 }

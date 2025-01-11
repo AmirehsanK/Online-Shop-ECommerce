@@ -7,7 +7,6 @@ namespace Infra.Data.Repositories;
 
 public class ContactUsRepository(ApplicationDbContext context) : IContactUsRepository
 {
-
     #region Subject Methods
 
     public async Task<List<Subject>> GetSubjectsAsync()
@@ -47,5 +46,4 @@ public class ContactUsRepository(ApplicationDbContext context) : IContactUsRepos
     }
 
     #endregion
-
 }

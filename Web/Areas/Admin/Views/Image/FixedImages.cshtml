@@ -1,7 +1,7 @@
 @using Application.Tools
 @using Domain.Enums
 @using Microsoft.IdentityModel.Tokens
-@model System.Collections.Generic.IEnumerable<Domain.ViewModel.Image.BannerFixViewModel>
+@model IEnumerable<Domain.ViewModel.Image.BannerFixViewModel>
 @{
     ViewData["Title"] = "مدیریت بنر ها";
 }
@@ -20,7 +20,7 @@
             </tr>
             </thead>
             <tbody>
-        
+
             @if (Model.IsNullOrEmpty())
             {
                 <div class="alert alert-danger">عکس اضافه کنید</div>
@@ -29,12 +29,18 @@
             {
                 <tr>
                     <td>@banner.Id</td>
-                    <td><div class="banner-div"><img class="banner-img" src="@PathTools.FixedBannerPath@banner.Title" /></div></td>
-                    <td>@ImageEnum.BannerHelper.GetBannerTitle((Domain.Enums.ImageEnum.Banner)banner.Position)</td>
+                    <td>
+                        <div class="banner-div"><img class="banner-img" src="@PathTools.FixedBannerPath@banner.Title"/>
+                        </div>
+                    </td>
+                    <td>@ImageEnum.BannerHelper.GetBannerTitle(banner.Position)</td>
                     <td><a href="@banner.Link"><i class="fa-solid fa-link"></i></a></td>
                     <td>
-                        <a asp-action="Edit" asp-controller="Image" asp-area="Admin" asp-route-title="@banner.Title" class="btn m-1 btn-warning btn-lg"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a asp-action="DeleteFixedImage" asp-controller="Image" asp-area="Admin" asp-route-title="@banner.Title" class="btn m-1 btn-danger btn-lg"><i class="fa-solid fa-trash"></i></a>
+                        <a asp-action="Edit" asp-controller="Image" asp-area="Admin" asp-route-title="@banner.Title"
+                           class="btn m-1 btn-warning btn-lg"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a asp-action="DeleteFixedImage" asp-controller="Image" asp-area="Admin"
+                           asp-route-title="@banner.Title" class="btn m-1 btn-danger btn-lg"><i
+                                class="fa-solid fa-trash"></i></a>
                     </td>
                 </tr>
             }
@@ -43,4 +49,4 @@
     </div>
 </div>
 <hr/>
-    <a asp-action="AddFixedBanner" asp-controller="Image" asp-area="Admin" class="btn btn-primary btn-lg">اضافه کردن عکس</a>
+<a asp-action="AddFixedBanner" asp-controller="Image" asp-area="Admin" class="btn btn-primary btn-lg">اضافه کردن عکس</a>

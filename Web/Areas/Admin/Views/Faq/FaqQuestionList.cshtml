@@ -14,31 +14,34 @@
         {
             <table class="table">
                 <thead>
-                    <tr>
+                <tr>
 
-                        <th>کد</th>
-                        <th>سوال</th>
-                        <th>جواب</th>
-                        <th>زمان ایجاد</th>
-                        <th>عملیات</th>
+                    <th>کد</th>
+                    <th>سوال</th>
+                    <th>جواب</th>
+                    <th>زمان ایجاد</th>
+                    <th>عملیات</th>
 
-                    </tr>
+                </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                    @foreach (var question in Model)
-                    {
-
-                        <tr>
-                            <td> <strong>@question.Id</strong></td>
-                            <td>@question.Question</td>
-                            <td>@question.Answer</td>
-                            <td>@question.CreateDate.ToShamsi() @question.CreateDate.ToString("hh:mm:ss")</td>
-                            <td>
-                                <a asp-controller="Faq" asp-area="Admin" asp-action="DeleteFaqQuestion" asp-route-queestionid="@question.Id" class="btn m-1 btn-danger"><i class="fa-solid fa-trash"></i></a>
-                                <a asp-controller="Faq" asp-area="Admin" asp-action="EditFaqQuestion" asp-route-questionId="@question.Id" class="btn m-1 btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-                            </td>
-                        </tr>
-                    }
+                @foreach (var question in Model)
+                {
+                    <tr>
+                        <td><strong>@question.Id</strong></td>
+                        <td>@question.Question</td>
+                        <td>@question.Answer</td>
+                        <td>@question.CreateDate.ToShamsi() @question.CreateDate.ToString("hh:mm:ss")</td>
+                        <td>
+                            <a asp-controller="Faq" asp-area="Admin" asp-action="DeleteFaqQuestion"
+                               asp-route-queestionid="@question.Id" class="btn m-1 btn-danger"><i
+                                    class="fa-solid fa-trash"></i></a>
+                            <a asp-controller="Faq" asp-area="Admin" asp-action="EditFaqQuestion"
+                               asp-route-questionId="@question.Id" class="btn m-1 btn-warning"><i
+                                    class="fa-solid fa-pen-to-square"></i></a>
+                        </td>
+                    </tr>
+                }
 
 
                 </tbody>
@@ -48,9 +51,9 @@
         {
             <div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
                 <div>
-                   سوالی هنوز ثبت نشده است
+                    سوالی هنوز ثبت نشده است
                 </div>
-                 
+
             </div>
         }
 

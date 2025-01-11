@@ -11,15 +11,15 @@ public class OrderService(
     IProductColorRepository colorRepository,
     IUserRepository userRepository) : IOrderService
 {
-    
     #region Add Product to Order
+
     public async Task AddProductToOrder(int productId, int userId, int? productColorId, int count = 1)
     {
         var openOrder = await orderRepository.GetUserLatestOpenOrder(userId);
         var existOrderDetail = await orderRepository.GetExistOrderDetail(productId, productColorId!.Value);
         if (existOrderDetail == null!)
         {
-            var orderDetail = new OrderDetail()
+            var orderDetail = new OrderDetail
             {
                 ProductId = productId,
                 Count = count,
@@ -43,11 +43,14 @@ public class OrderService(
             existOrderDetail.Count = existOrderDetail.Count + 1;
             orderRepository.UpdateOrderDetail(existOrderDetail);
         }
+
         await orderRepository.Save();
     }
+
     #endregion
 
     #region Update Product Color Count
+
     public async Task MinuesColorCount(int productColorId)
     {
         var product = await colorRepository.GetProductColorWithid(productColorId);
@@ -55,9 +58,11 @@ public class OrderService(
         colorRepository.UpdateProductColor(product);
         await colorRepository.SaveChangeAsync();
     }
+
     #endregion
 
     #region Get Basket Details
+
     public async Task<List<BasketDetailViewModel>> GetBasketDetail(int userId)
     {
         var details = await orderRepository.GetUserBasketDetail(userId);
@@ -81,15 +86,31 @@ public class OrderService(
             };
             details2.Add(newDetail);
         }
+
         return details2;
     }
+
+    #endregion
+
+    #region Close Order
+
+    public async Task CloseOrder(int userId)
+    {
+        var order = await orderRepository.GetUserLatestOpenOrder(userId);
+        order.IsFinally = true;
+        order.PaymentDate = DateTime.Now;
+        orderRepository.UpdateOrder(order);
+        await orderRepository.Save();
+    }
+
     #endregion
 
     #region User Address for Order
+
     public async Task<GetUserAddressForOrderViewModel> GetUserAddressForOrder(int userId)
     {
         var user = await userRepository.GetUserByIdAsync(userId);
-        var userAddress = new GetUserAddressForOrderViewModel()
+        var userAddress = new GetUserAddressForOrderViewModel
         {
             Address = user.Address!,
             FullName = user.FirstName + " " + user.LastName
@@ -104,17 +125,6 @@ public class OrderService(
         userRepository.UpdateUser(user);
         await userRepository.SaveChangesAsync();
     }
-    #endregion
 
-    #region Close Order
-    public async Task CloseOrder(int userId)
-    {
-        var order = await orderRepository.GetUserLatestOpenOrder(userId);
-        order.IsFinally = true;
-        order.PaymentDate = DateTime.Now;
-        orderRepository.UpdateOrder(order);
-        await orderRepository.Save();
-    }
     #endregion
-    
 }

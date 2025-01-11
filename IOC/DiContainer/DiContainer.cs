@@ -5,10 +5,8 @@ using Application.Services.Impelementation;
 using Application.Services.Interfaces;
 using Domain.Interface;
 using Infra.Data.Repositories;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-
 
 namespace IOC.DiContainer;
 
@@ -34,6 +32,7 @@ public static class DiContainer
         services.AddScoped<ICommentRepository, CommentRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IPermissionRepository, PermissionRepository>();
+        services.AddScoped<IFavoritesRepository, FavoritesRepository>();
 
         #endregion
 
@@ -56,15 +55,12 @@ public static class DiContainer
         services.AddScoped<IQuestionService, QuestionService>();
         services.AddScoped<ICommentService, CommentService>();
         services.AddScoped<IAdminService, AdminService>();
-        services.AddScoped<IPermissionService,PermissionService>();
-        
+        services.AddScoped<IPermissionService, PermissionService>();
+        services.AddScoped<IFavoritesService, FavoritesService>();
+
         #endregion
 
         services.AddSingleton<HtmlEncoder>(
-            HtmlEncoder.Create(new[]
-            {
-                UnicodeRanges.BasicLatin,
-                UnicodeRanges.Arabic
-            }));
+            HtmlEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Arabic));
     }
 }

@@ -1,5 +1,4 @@
 using Application.Services.Interfaces;
-using Domain.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.ViewComponents.ContactUsViewComponent;

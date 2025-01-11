@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Web.Attributes;
 
-public class InvokePermissionAttribute(string permissionName): AuthorizeAttribute, IAsyncAuthorizationFilter
+public class InvokePermissionAttribute(string permissionName) : AuthorizeAttribute, IAsyncAuthorizationFilter
 {
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {

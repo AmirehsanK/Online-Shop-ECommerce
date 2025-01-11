@@ -10,7 +10,7 @@
     <!-- Discount Code -->
     <div class="form-group mb-3">
         <label asp-for="Code" class="form-label"></label>
-        <input asp-for="Code" class="form-control" placeholder="کد تخفیف (اختیاری)" />
+        <input asp-for="Code" class="form-control" placeholder="کد تخفیف (اختیاری)"/>
         <span asp-validation-for="Code" class="text-danger"></span>
     </div>
 
@@ -27,14 +27,14 @@
     <!-- Discount Value -->
     <div class="form-group mb-3">
         <label asp-for="Value" class="form-label"></label>
-        <input asp-for="Value" class="form-control" type="number" placeholder="مقدار تخفیف" required />
+        <input asp-for="Value" class="form-control" type="number" placeholder="مقدار تخفیف" required/>
         <span asp-validation-for="Value" class="text-danger"></span>
     </div>
 
     <!-- Start Date -->
     <div class="form-group mb-3">
         <label asp-for="StartDate" class="form-label"></label>
-        <input asp-for="StartDate" class="form-control persianDate" type="text" readonly />
+        <input asp-for="StartDate" class="form-control persianDate" type="text" readonly/>
         <span asp-validation-for="StartDate" class="text-danger"></span>
     </div>
 
@@ -47,7 +47,7 @@
 
     <!-- Is Active -->
     <div class="form-group form-check mb-3">
-        <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+        <input asp-for="IsActive" class="form-check-input" type="checkbox"/>
         <label asp-for="IsActive" class="form-check-label"></label>
         <span asp-validation-for="IsActive" class="text-danger"></span>
     </div>
@@ -55,7 +55,7 @@
     <!-- Usage Limit -->
     <div class="form-group mb-3">
         <label asp-for="UsageLimit" class="form-label"></label>
-        <input asp-for="UsageLimit" class="form-control" type="number" placeholder="تعداد استفاده (اختیاری)" />
+        <input asp-for="UsageLimit" class="form-control" type="number" placeholder="تعداد استفاده (اختیاری)"/>
         <span asp-validation-for="UsageLimit" class="text-danger"></span>
     </div>
 
@@ -64,7 +64,7 @@
 </form>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
     <script>
         document.getElementById('LoadProducts').addEventListener('click', function () {
         });

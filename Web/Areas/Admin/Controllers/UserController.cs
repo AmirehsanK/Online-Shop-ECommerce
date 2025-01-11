@@ -1,16 +1,15 @@
 ﻿using Application.Services.Interfaces;
 using Domain.Enums;
 using Domain.ViewModel.User.Admin;
+using Infra.Data.Statics;
 using Microsoft.AspNetCore.Mvc;
 using Web.Attributes;
-using Infra.Data.Statics;
 
 namespace Web.Areas.Admin.Controllers;
 
 [InvokePermission(PermissionName.UserManagement)]
 public class UserController(IUserService userService) : AdminBaseController
 {
-
     #region UserList
 
     [HttpGet]
@@ -100,5 +99,4 @@ public class UserController(IUserService userService) : AdminBaseController
     }
 
     #endregion
-    
 }

@@ -7,7 +7,7 @@
             <div class="col-12">
                 <!-- start of banner -->
                 <div class="banner-img">
-                    @await Component.InvokeAsync("FixedImages" , new { banner = ImageEnum.Banner.TopTwo})
+                    @await Component.InvokeAsync("FixedImages", new { banner = ImageEnum.Banner.TopTwo })
                 </div>
                 <!-- end of banner -->
             </div>
@@ -23,14 +23,14 @@
                     <div class="col-lg-12 col-6 mb-lg-3">
                         <!-- start of banner -->
                         <div class="banner-img banner-side-main-slider bg-position-right banner-slider-top">
-                           @await Component.InvokeAsync("FixedImages" , new { banner = ImageEnum.Banner.LeftSliderTop})
+                            @await Component.InvokeAsync("FixedImages", new { banner = ImageEnum.Banner.LeftSliderTop })
                         </div>
                         <!-- end of banner -->
                     </div>
                     <div class="col-lg-12 col-6">
                         <!-- start of banner -->
                         <div class="banner-img banner-side-main-slider bg-position-right banner-slider-bot">
-                           @await Component.InvokeAsync("FixedImages" , new { banner = ImageEnum.Banner.LeftSliderBot})
+                            @await Component.InvokeAsync("FixedImages", new { banner = ImageEnum.Banner.LeftSliderBot })
                         </div>
                         <!-- end of banner -->
                     </div>
@@ -41,14 +41,14 @@
             <div class="col-md-6 mb-lg-0 mb-3">
                 <!-- start of banner -->
                 <div class="banner-img">
-                    @await Component.InvokeAsync("FixedImages" , new { banner = ImageEnum.Banner.BotSliderRight})
+                    @await Component.InvokeAsync("FixedImages", new { banner = ImageEnum.Banner.BotSliderRight })
                 </div>
                 <!-- end of banner -->
             </div>
             <div class="col-md-6 mb-lg-0 mb-3">
                 <!-- start of banner -->
                 <div class="banner-img">
-                    @await Component.InvokeAsync("FixedImages" , new { banner = ImageEnum.Banner.BotSliderLeft})
+                    @await Component.InvokeAsync("FixedImages", new { banner = ImageEnum.Banner.BotSliderLeft })
                 </div>
                 <!-- end of banner -->
             </div>
@@ -76,46 +76,48 @@
                                                  class="img-fluid mb-0" alt="">
                                         </div>
                                     </div>
-                                    
-                                        @if (Model.Any() && Model != null)
-                                        {
-                                            @foreach (var item in Model)
+
+                                    @if (Model.Any() && Model != null)
+                                    {
+                                        @foreach (var item in Model)
                                         {
                                             <div class="swiper-slide">
-                                            <div class="product-card">
-                                                <div class="product-thumbnail">
-                                                    <a href="#">
-                                                        <img class="offimage" src="@PathTools.FilePath@item.ImageName"
-                                                             alt="@item.ProductName">
-                                                    </a>
-                                                </div>
-                                                <div class="product-card-body">
-                                                    <h2 class="product-title">
+                                                <div class="product-card">
+                                                    <div class="product-thumbnail">
                                                         <a href="#">
-                                                            @item.ProductName
+                                                            <img class="offimage"
+                                                                 src="@PathTools.FilePath@item.ImageName"
+                                                                 alt="@item.ProductName">
                                                         </a>
-                                                    </h2>
-                                                    <div class="product-variant">
+                                                    </div>
+                                                    <div class="product-card-body">
+                                                        <h2 class="product-title">
+                                                            <a asp-action="ProductDetail" asp-controller="Product"
+                                                               asp-route-productId="@item.Id">
+                                                                @item.ProductName
+                                                            </a>
+                                                        </h2>
+                                                        <div class="product-variant">
                                                         <span class="color"
                                                               style="background-color: #d4d4d4;"></span>
-                                                        <span class="color"
-                                                              style="background-color: #e86841;"></span>
-                                                        <span class="color"
-                                                              style="background-color: #b82c32;"></span>
-                                                        <span>+</span>
-                                                    </div>
-                                                    <div class="product-price fa-num">
-                                                        <div class="d-flex align-items-center">
-                                                            <del class="price-old">@item.Price</del>
-                                                            <span class="discount ms-2">%@item.DiscountValue</span>
+                                                            <span class="color"
+                                                                  style="background-color: #e86841;"></span>
+                                                            <span class="color"
+                                                                  style="background-color: #b82c32;"></span>
+                                                            <span>+</span>
                                                         </div>
-                                                        <span class="price-now">@item.OffPrice
-                                                            <span
-                                                                class="currency">تومان</span></span>
+                                                        <div class="product-price fa-num">
+                                                            <div class="d-flex align-items-center">
+                                                                <del class="price-old">@item.Price</del>
+                                                                <span class="discount ms-2">%@item.DiscountValue</span>
+                                                            </div>
+                                                            <span class="price-now">@item.OffPrice
+                                                                <span
+                                                                    class="currency">تومان</span></span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="product-card-footer">
-                                                    @* <div
+                                                    <div class="product-card-footer">
+                                                        @* <div
                                                             class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
                                                             <div class="product-actions">
                                                                 <ul>
@@ -152,13 +154,14 @@
                                                                 <span>(۴۳۶)</span>
                                                             </div>
                                                         </div> *@
-                                                    <div class="countdown-timer fa-num" data-countdown="@item.DiscountEndDate">
+                                                        <div class="countdown-timer fa-num"
+                                                             data-countdown="@item.DiscountEndDate">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            </div>
-                                            }
                                         }
+                                    }
                                 </div>
                                 <!-- If we need pagination -->
                                 <div class="swiper-pagination"></div>
@@ -237,14 +240,14 @@
             <div class="col-md-6 mb-lg-0 mb-3">
                 <!-- start of banner -->
                 <div class="banner-img">
-                    @await Component.InvokeAsync("FixedImages" , new { banner = ImageEnum.Banner.BotRight})
+                    @await Component.InvokeAsync("FixedImages", new { banner = ImageEnum.Banner.BotRight })
                 </div>
                 <!-- end of banner -->
             </div>
             <div class="col-md-6 mb-lg-0 mb-3">
                 <!-- start of banner -->
                 <div class="banner-img">
-                    @await Component.InvokeAsync("FixedImages" , new { banner = ImageEnum.Banner.BotLeft})
+                    @await Component.InvokeAsync("FixedImages", new { banner = ImageEnum.Banner.BotLeft })
                 </div>
                 <!-- end of banner -->
             </div>

@@ -1,24 +1,19 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Entities.Common;
 
-namespace Domain.Entities.Product
+namespace Domain.Entities.Product;
+
+public class ProductGallery : BaseEntity
 {
-    public class ProductGallery:BaseEntity
-    {
-        [ForeignKey(nameof(Product))]
-        public int ProductId { get; set; }
+    [ForeignKey(nameof(Product))] public int ProductId { get; set; }
 
-     
-        [Required]
-        public string Image { get; set; }
 
-        #region Relation
+    [Required] public string Image { get; set; }
 
-        public Product Product { get; set; }
+    #region Relation
 
-        #endregion
+    public Product Product { get; set; }
 
-    }
+    #endregion
 }

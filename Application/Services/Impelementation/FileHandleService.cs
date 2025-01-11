@@ -10,8 +10,8 @@ namespace Application.Services.Impelementation;
 
 public class FileHandleService(IFileHandleRepository fileHandleRepository) : IFileHandleService
 {
-    
     #region Slider Images
+
     public async Task<IEnumerable<Banner>> GetAllBanner()
     {
         return await fileHandleRepository.GetAllImagesAsync();
@@ -30,7 +30,7 @@ public class FileHandleService(IFileHandleRepository fileHandleRepository) : IFi
         {
             Link = banner.Link,
             Title = banner.Title,
-            ExpirationDate = banner.ExpirationDate?.ToShamsi().ToString()
+            ExpirationDate = banner.ExpirationDate?.ToShamsi()
         };
     }
 
@@ -59,7 +59,7 @@ public class FileHandleService(IFileHandleRepository fileHandleRepository) : IFi
             CreateDate = DateTime.Now,
             IsDeleted = false,
             Link = banner.Link,
-            ExpirationDate = banner.ExpirationDate!.ToMiladiString(),
+            ExpirationDate = banner.ExpirationDate!.ToMiladiString()
         });
         await fileHandleRepository.SaveChangesAsync();
         return ImageEnum.Status.Success;
@@ -77,15 +77,18 @@ public class FileHandleService(IFileHandleRepository fileHandleRepository) : IFi
             banner.Title.DeleteImage(PathTools.BannerServerPath, null);
             existingBanner.Title = title;
         }
+
         existingBanner.ExpirationDate = banner.ExpirationDate!.ToMiladiString();
         existingBanner.Link = banner.Link;
         fileHandleRepository.UpdateImage(existingBanner);
         await fileHandleRepository.SaveChangesAsync();
         return ImageEnum.Status.Success;
     }
+
     #endregion
 
     #region Fixed Images
+
     public async Task<IEnumerable<BannerFixViewModel>> GetAllFixedBanners()
     {
         var fixedBanners = await fileHandleRepository.GetAllFixedImagesAsync();
@@ -105,8 +108,7 @@ public class FileHandleService(IFileHandleRepository fileHandleRepository) : IFi
         var banner = await fileHandleRepository.GetFixedImageByPositionAsync(position);
 
         if (banner != null!)
-        {
-            return new BannerFixViewModel()
+            return new BannerFixViewModel
             {
                 Id = banner.Id,
                 Position = banner.Position,
@@ -115,7 +117,6 @@ public class FileHandleService(IFileHandleRepository fileHandleRepository) : IFi
                 Title = banner.Title,
                 Link = banner.Link
             };
-        }
         return null!;
     }
 
@@ -183,6 +184,6 @@ public class FileHandleService(IFileHandleRepository fileHandleRepository) : IFi
         await fileHandleRepository.SaveChangesAsync();
         return ImageEnum.Status.Success;
     }
+
     #endregion
-    
 }

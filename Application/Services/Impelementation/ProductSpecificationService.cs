@@ -8,11 +8,11 @@ namespace Application.Services.Impelementation;
 public class ProductSpecificationService(IProductSpecificationRepository productSpecificationRepository)
     : IProductSpecificationService
 {
-        
     #region Add Specification
+
     public async Task AddNewSpecification(AddNewProductSpecification productSpecification)
     {
-        var productSpec = new ProductSpecification()
+        var productSpec = new ProductSpecification
         {
             CreateDate = DateTime.Now,
             IsDeleted = false,
@@ -23,10 +23,13 @@ public class ProductSpecificationService(IProductSpecificationRepository product
         await productSpecificationRepository.AddSpecificationAsync(productSpec);
         await productSpecificationRepository.SaveChangeAsync();
     }
+
     #endregion
 
     #region Get Specifications
-    public async Task<FilterProductSpecification> GetAllProductSpecificationAsync(FilterProductSpecification specification, int productid)
+
+    public async Task<FilterProductSpecification> GetAllProductSpecificationAsync(
+        FilterProductSpecification specification, int productid)
     {
         return await productSpecificationRepository.GetProductSpecification(productid, specification);
     }
@@ -34,15 +37,17 @@ public class ProductSpecificationService(IProductSpecificationRepository product
     public async Task<List<ProductSpecificationViewModel>> GetProductSpecification(int productId)
     {
         var specification = await productSpecificationRepository.GetSpecificationAsync(productId);
-        return specification.Select(u => new ProductSpecificationViewModel()
+        return specification.Select(u => new ProductSpecificationViewModel
         {
             Value = u.Value,
             key = u.Key
         }).ToList();
     }
+
     #endregion
 
     #region Edit Specification
+
     public async Task EditProductSpecification(EditProductSpecificationViewModel model)
     {
         var specification = await productSpecificationRepository.GetSpecificationById(model.Id);
@@ -55,7 +60,7 @@ public class ProductSpecificationService(IProductSpecificationRepository product
     public async Task<EditProductSpecificationViewModel> GetSpecificationForShow(int specificationId)
     {
         var spec = await productSpecificationRepository.GetSpecificationById(specificationId);
-        var viewmodel = new EditProductSpecificationViewModel()
+        var viewmodel = new EditProductSpecificationViewModel
         {
             Key = spec.Key,
             Value = spec.Value,
@@ -63,6 +68,6 @@ public class ProductSpecificationService(IProductSpecificationRepository product
         };
         return viewmodel;
     }
+
     #endregion
-        
 }

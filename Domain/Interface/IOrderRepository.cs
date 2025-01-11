@@ -4,6 +4,11 @@ namespace Domain.Interface;
 
 public interface IOrderRepository
 {
+    #region Save Changes
+
+    Task Save();
+
+    #endregion
 
     #region Order Management
 
@@ -16,11 +21,4 @@ public interface IOrderRepository
     Task<Order> GetUserBasketDetail(int userId);
 
     #endregion
-
-    #region Save Changes
-
-    Task Save();
-
-    #endregion
-
 }

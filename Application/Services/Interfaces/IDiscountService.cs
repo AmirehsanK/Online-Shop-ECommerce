@@ -1,15 +1,16 @@
 ﻿using Domain.ViewModel.Discount;
+using Domain.ViewModel.User;
 
 namespace Application.Services.Interfaces;
 
 public interface IDiscountService
 {
-
     #region Discount Retrieval
 
     Task<List<DiscountViewModel>> GetAllAsync();
     Task<List<DiscountListAdminViewModel>> GetAllForAdminAsync();
     Task<DiscountViewModel?> GetByIdAsync(int id);
+    Task<List<UserDiscountViewModel>> GetUserGiftCodes(int userId);
 
     #endregion
 
@@ -29,5 +30,4 @@ public interface IDiscountService
     Task AssignUserDiscountAsync(List<int> userId, int discountId);
 
     #endregion
-
 }

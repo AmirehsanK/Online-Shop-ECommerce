@@ -8,11 +8,11 @@
 <h2>ویرایش نقش: @Model.RoleName</h2>
 
 <form asp-action="SaveRole" asp-controller="Access" asp-area="Admin" method="post">
-    <input type="hidden" asp-for="RoleId" />
-    <input type="hidden" asp-for="RoleName" />
+    <input type="hidden" asp-for="RoleId"/>
+    <input type="hidden" asp-for="RoleName"/>
 
     <!-- Permissions Section -->
-    <hr />
+    <hr/>
     <h3>دسترسی‌ها</h3>
     <div class="permissions-container">
         <div class="check-all-page-container">
@@ -76,11 +76,11 @@
     </div>
 
     <!-- Back to List Link -->
-    <br />
+    <br/>
     <div>
         <a asp-action="Index" class="btn btn-danger">بازگشت به لیست</a>
     </div>
-    <br />
+    <br/>
 </form>
 
 @section Scripts {
@@ -110,7 +110,7 @@
 
                     childCheckboxes.forEach(childCheckbox => {
                         childCheckbox.checked = !allChecked;
-                        childCheckbox.dispatchEvent(new Event("change", { bubbles: true }));
+                        childCheckbox.dispatchEvent(new Event("change", {bubbles: true}));
                     });
 
                     const parentCheckbox = document.querySelector(`[data-permission-id="${parentId}"]`);
@@ -127,7 +127,7 @@
 
                 permissionCheckboxes.forEach(checkbox => {
                     checkbox.checked = !allChecked;
-                    checkbox.dispatchEvent(new Event("change", { bubbles: true }));
+                    checkbox.dispatchEvent(new Event("change", {bubbles: true}));
                 });
 
                 checkAllButtons.forEach(button => {
@@ -145,7 +145,7 @@
                         const childCheckboxes = document.querySelectorAll(`[data-parent-id="${checkbox.dataset.permissionId}"]`);
                         childCheckboxes.forEach(childCheckbox => {
                             childCheckbox.checked = checkbox.checked;
-                            childCheckbox.dispatchEvent(new Event("change", { bubbles: true }));
+                            childCheckbox.dispatchEvent(new Event("change", {bubbles: true}));
                         });
                     } else {
                         const parentCheckbox = document.querySelector(`[data-permission-id="${parentId}"]`);
