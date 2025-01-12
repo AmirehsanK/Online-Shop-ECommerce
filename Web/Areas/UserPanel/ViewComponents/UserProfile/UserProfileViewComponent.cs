@@ -5,19 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Areas.UserPanel.ViewComponents.UserProfile;
 
-public class UserProfileViewComponent : ViewComponent
+public class UserProfileViewComponent(IUserService userService, ITransactionService transactionService)
+    : ViewComponent
 {
 
-    #region Ctor
-    private readonly IUserService _userService;
-    private readonly ITransactionService _transactionService;
-
-    public UserProfileViewComponent(IUserService userService, ITransactionService transactionService)
-    {
-        _userService = userService;
-        _transactionService = transactionService;
-    }
-    #endregion
 
 
     [Authorize]
@@ -25,8 +16,8 @@ public class UserProfileViewComponent : ViewComponent
     {
         if (User.Identity.IsAuthenticated)
         {
-            ViewData["UserBalance"] = await _transactionService.GetUserBalanceTransaction(User.GetCurrentUserId());
-            ViewData["User"] = await _userService.GetUserById(User.GetCurrentUserId());
+            ViewData["UserBalance"] = await transactionService.GetUserBalanceTransaction(User.GetCurrentUserId());
+            ViewData["User"] = await userService.GetUserById(User.GetCurrentUserId());
 
         }
 
