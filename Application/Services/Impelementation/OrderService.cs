@@ -126,6 +126,7 @@ namespace Application.Services.Impelementation
         };
         return userAddress;
     }
+        #endregion
 
     public async Task AddUserAddressForOrder(GetUserAddressForOrderViewModel model, int userid)
     {

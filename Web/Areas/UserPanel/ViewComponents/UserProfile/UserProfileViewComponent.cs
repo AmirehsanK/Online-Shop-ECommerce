@@ -7,16 +7,8 @@ namespace Web.Areas.UserPanel.ViewComponents.UserProfile;
 
 public class UserProfileViewComponent : ViewComponent
 {
-    [Authorize]
-    public async Task<IViewComponentResult> InvokeAsync()
-    {
-        if (User.Identity.IsAuthenticated) ViewData["User"] = await _userService.GetUserById(User.GetCurrentUserId());
-
-        return View("UserProfile");
-    }
 
     #region Ctor
-
     private readonly IUserService _userService;
     private readonly ITransactionService _transactionService;
 
@@ -25,9 +17,6 @@ public class UserProfileViewComponent : ViewComponent
         _userService = userService;
         _transactionService = transactionService;
     }
-
-   
-
     #endregion
 
 
