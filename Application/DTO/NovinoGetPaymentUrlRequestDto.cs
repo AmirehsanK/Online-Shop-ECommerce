@@ -27,4 +27,4 @@ public class NovinoGetPaymentUrlRequestDto
         [JsonProperty("card_pan")]
         public string CardPan { get; set; }
     }
-}
+

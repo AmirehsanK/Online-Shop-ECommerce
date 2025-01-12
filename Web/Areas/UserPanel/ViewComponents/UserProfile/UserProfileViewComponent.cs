@@ -5,41 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Areas.UserPanel.ViewComponents.UserProfile;
 
-public class UserProfileViewComponent : ViewComponent
+public class UserProfileViewComponent(IUserService userService, ITransactionService transactionService)
+    : ViewComponent
 {
     [Authorize]
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        if (User.Identity.IsAuthenticated) ViewData["User"] = await _userService.GetUserById(User.GetCurrentUserId());
-
-        return View("UserProfile");
-    }
-
-    #region Ctor
-
-    private readonly IUserService _userService;
-    private readonly ITransactionService _transactionService;
-
-    public UserProfileViewComponent(IUserService userService, ITransactionService transactionService)
-    {
-        _userService = userService;
-        _transactionService = transactionService;
-    }
-
-   
-
-    #endregion
-
-
-    [Authorize]
-    public async Task<IViewComponentResult> InvokeAsync()
-    {
-        if (User.Identity.IsAuthenticated)
-        {
-            ViewData["UserBalance"] = await _transactionService.GetUserBalanceTransaction(User.GetCurrentUserId());
-            ViewData["User"] = await _userService.GetUserById(User.GetCurrentUserId());
-
-        }
+        if (!User.Identity!.IsAuthenticated) return View("UserProfile");
+        ViewData["UserBalance"] = await transactionService.GetUserBalanceTransaction(User.GetCurrentUserId());
+        ViewData["User"] = await userService.GetUserById(User.GetCurrentUserId());
 
         return View("UserProfile");
     }
