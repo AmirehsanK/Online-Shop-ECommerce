@@ -27,6 +27,7 @@ namespace Application.Services.Impelementation;
         }
 
     #region Get Questions
+
     public async Task<FilterQuestionListViewModel> GetQuestion(FilterQuestionListViewModel filter)
     {
         return await questionRepository.GetQuestionAsync(filter);
@@ -35,7 +36,7 @@ namespace Application.Services.Impelementation;
     public async Task<QuestionDetailViewModel> GetQuestionDetail(int questionId)
     {
         var question = await questionRepository.GetQuesetionById(questionId);
-        var model = new QuestionDetailViewModel()
+        var model = new QuestionDetailViewModel
         {
             Answer = question.Answer,
             ProductId = question.ProductId,
@@ -51,7 +52,7 @@ namespace Application.Services.Impelementation;
         var liked = await questionRepository.GetLikedQuestions();
         var likeCount = liked.Count(u => u.ProductId == productId && u.QuestionLike == QuestionLike.Liked);
         var dissLikeCount = liked.Count(u => u.ProductId == productId && u.QuestionLike == QuestionLike.Disliked);
-        return questionAnswers.Select(u => new QuestionLikeViewModel()
+        return questionAnswers.Select(u => new QuestionLikeViewModel
         {
             DissLikeCount = dissLikeCount,
             LikeCount = likeCount,
@@ -59,6 +60,7 @@ namespace Application.Services.Impelementation;
             Question = u.Question
         }).ToList();
     }
+
     #endregion
 
     #region Manage Questions
@@ -81,22 +83,13 @@ namespace Application.Services.Impelementation;
         await questionRepository.SaveAsync();
     }
 
-    public async Task ConfirmToShow(int questionId)
-    {
-        var question = await questionRepository.GetQuesetionById(questionId);
-        question.IsConfirmed = true;
-        questionRepository.Update(question);
-        await questionRepository.SaveAsync();
-    }
-    #endregion
-
-    #region Question Likes
     public async Task<bool> ToggleQuestionLike(int productId, int userId, QuestionLike questionLike)
     {
         var existingLike = await questionRepository.GeExitingLike(productId, userId);
 
-        if (existingLike == null!)
+        if (existingLike == null)
         {
+            // اگر وجود ندارد، اضافه کن
             var newLike = new QuestionLiked
             {
                 ProductId = productId,
@@ -108,13 +101,23 @@ namespace Application.Services.Impelementation;
         }
         else
         {
+            // اگر وجود دارد، به‌روزرسانی کن
             existingLike.QuestionLike = questionLike;
             existingLike.CreateDate = DateTime.UtcNow;
             questionRepository.UpdateLike(existingLike);
         }
-        await questionRepository.SaveAsync();
+
+        questionRepository.SaveAsync();
         return true;
     }
+
+    public async Task ConfirmToShow(int questionId)
+    {
+        var question = await questionRepository.GetQuesetionById(questionId);
+        question.IsConfirmed = true;
+        questionRepository.Update(question);
+        await questionRepository.SaveAsync();
+    }
+
     #endregion
-    
 }
