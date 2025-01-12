@@ -54,7 +54,7 @@ namespace Web.Areas.UserPanel.Controllers
             {
               var  order = await orderService.GetBasketDetail(User.GetCurrentUserId());
                 
-                if (order == null)
+                if (order == null!)
                     return NotFound();
                 var amount = order.Sum(od => od.FinallPrice);
                 model.Amount = amount * 10;

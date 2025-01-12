@@ -22,7 +22,7 @@ public class OrderRepository(ApplicationDbContext context) : IOrderRepository
     {
         var order = await context.Orders
             .Include(u => u.OrderDetails)
-            .FirstOrDefaultAsync(u => u.UserId == userId && u.PaymentDate == null);
+            .FirstOrDefaultAsync(u => u.UserId == userId&&u.IsFinally==false);
 
         if (order != null) return order;
 
