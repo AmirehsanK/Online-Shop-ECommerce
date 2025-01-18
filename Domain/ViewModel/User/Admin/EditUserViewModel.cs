@@ -32,7 +32,6 @@ public class EditUserViewModel
     [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
     public string? Address { get; set; }
     [Display(Name = "شماره تماس")]
-    [RegularExpression("^(\\+98|0)?9\\d{9}$\n")]
     [Required]
     public required string PhoneNumber { get; set; }
 }

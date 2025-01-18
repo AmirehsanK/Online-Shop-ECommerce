@@ -20,7 +20,6 @@ public class RegisterUserViewModel
 
     [Display(Name = "شماره تماس")]
     [Required(ErrorMessage = "{0} الزامی است")]
-    [RegularExpression("^(\\+98|0)?9\\d{9}$\n")]
     public required string PhoneNumber { get; set; }
 
     [MaxLength(50)]

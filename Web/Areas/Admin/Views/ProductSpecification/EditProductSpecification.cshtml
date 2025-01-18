@@ -14,7 +14,6 @@
     <partial name="_ValidationScriptsPartial"/>
     <script src="https://cdn.jsdelivr.net/npm/@@yaireo/tagify"></script>
     <script>
-        // تبدیل فیلد "tagInput" به TagInput
         const tagInput = document.getElementById('tagInput');
         const tagify = new Tagify(tagInput, {
             placeholder: "تگ‌های خود را وارد کنید...",
@@ -23,7 +22,6 @@
             whitelist: ["قهوه", "چای", "لاته", "موکا"]
         });
 
-        // تبدیل مقدار به رشته پیش از ارسال فرم
         const form = document.querySelector('form');
         form.addEventListener('submit', () => {
             tagInput.value = tagify.value.map(tag => tag.value).join(',');

@@ -10,9 +10,10 @@ public class BannerViewModel
 
     [Required] public string Title { get; set; }
 
-    [Required] public string Link { get; set; }
-
+    [Required(ErrorMessage = "لطفا لینک مورد نظر را وارد کنید")]
+    public string Link { get; set; }
     public string? ExpirationDate { get; set; }
+    [Required(ErrorMessage = "لطفا عکس خود را اپلود کنید")]
     public IFormFile? Image { get; set; }
 }
 

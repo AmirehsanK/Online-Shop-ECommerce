@@ -8,14 +8,14 @@
         <div class="form-group">
             <label for="currentImage">عکس موجود</label>
             <div>
-                <img src="@PathTools.FixedBannerPath@Model.Title" alt="Current Image"
+                <img id="currentImage" src="@PathTools.FixedBannerPath@Model.Title" alt="Current Image"
                      class="img-thumbnail image-edit-show">
             </div>
         </div>
 
         <div class="form-group">
             <label for="currentLink">لینک موجود</label>
-            <a href="@Model.Link">@Model.Link</a>
+            <a id="currentLink" href="@Model.Link">@Model.Link</a>
         </div>
 
         <div class="form-group mt-3">

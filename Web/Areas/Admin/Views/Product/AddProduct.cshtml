@@ -2,7 +2,7 @@
 
 <h2>افزودن محصول</h2>
 
-<form asp-action="AddProduct" method="post" enctype="multipart/form-data">
+<form asp-action="AddProduct" asp-controller="Product" asp-area="Admin" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="ProductName">عنوان</label>
         <input asp-for="ProductName" type="text" class="form-control" required/>
