@@ -85,7 +85,7 @@ public class ProductColorController(IProductColorService productColorService) : 
         }
 
         TempData[SuccessMessage] = "رنگ با موفقیت به محصول اضافه شد.";
-        return RedirectToAction("Productlist", "Product");
+        return RedirectToAction("Productlist", "Product", new { area = "Admin" });
     }
 
     #endregion
