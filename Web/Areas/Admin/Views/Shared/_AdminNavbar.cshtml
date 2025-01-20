@@ -8,14 +8,14 @@
 
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <!-- جستجو -->
-        <div class="navbar-nav align-items-center">
+        @*<div class="navbar-nav align-items-center">
             <div class="nav-item navbar-search-wrapper mb-0">
                 <a class="nav-item nav-link search-toggler px-0" href="javascript:void(0);">
                     <i class="bx bx-search bx-sm"></i>
                     <span class="d-none d-md-inline-block text-muted">جستجو</span>
                 </a>
             </div>
-        </div>
+        </div>*@
         <!-- /جستجو -->
 
         <ul class="navbar-nav flex-row align-items-center ms-auto">
@@ -27,7 +27,7 @@
             </li>
             <!--/ تغییر استایل -->
             <!-- اعلان‌ها -->
-            <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
+            @*<li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
                 <a class="nav-link dropdown-toggle hide-arrow"
                    href="javascript:void(0);"
                    data-bs-toggle="dropdown"
@@ -59,11 +59,11 @@
                                                  class="w-px-40 h-auto rounded-circle"/>
                                         </div>
                                     </div>
-                                    <div class="flex-grow-1">
+                                    $1$<div class="flex-grow-1">
                                         <h6 class="mb-1">تبریک لتتی 🎉</h6>
                                         <p class="mb-0">برنده نشان طلای بهترین فروشنده ماهانه شد</p>
                                         <small class="text-muted">1 ساعت پیش</small>
-                                    </div>
+                                    </div>#1#
                                     <div class="flex-shrink-0 dropdown-notifications-actions">
                                         <a href="javascript:void(0)" class="dropdown-notifications-read">
                                             <span class="badge badge-dot"></span>
@@ -83,7 +83,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li>*@
             <!--/ اعلان‌ها -->
             <!-- کاربر -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -102,8 +102,7 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <span class="fw-semibold d-block">جان دو</span>
-                                    <small class="text-muted">مدیر</small>
+                                    <span class="fw-semibold d-block">@User.Identity.Name</span>
                                 </div>
                             </div>
                         </a>
@@ -112,19 +111,19 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="pages-profile-user.html">
+                        <a class="dropdown-item" asp-action="Index" asp-controller="Home" asp-area="UserPanel">
                             <i class="bx bx-user me-2"></i>
                             <span class="align-middle">پروفایل من</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="pages-account-settings-account.html">
+                        <a class="dropdown-item" asp-action="UserInfo" asp-controller="Home" asp-area="UserPanel">
                             <i class="bx bx-cog me-2"></i>
                             <span class="align-middle">تنظیمات</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="auth-login-cover.html" target="_blank">
+                        <a class="dropdown-item" asp-action="LogOut" asp-controller="UserAuthentication" target="_blank">
                             <i class="bx bx-power-off me-2"></i>
                             <span class="align-middle">خروج</span>
                         </a>

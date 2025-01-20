@@ -17,12 +17,12 @@
     <style>
         .product-variants {
             display: flex;
-            gap: 10px; /* فاصله بین دکمه‌ها */
-            flex-wrap: wrap; /* اگر نیاز به قرار گرفتن دکمه‌ها در چند خط باشد */
+            gap: 10px; 
+            flex-wrap: wrap; 
         }
 
         .product-variant-item {
-            margin: 5px; /* فاصله داخلی برای هر دکمه */
+            margin: 5px;
         }
 
         .custom-radio-circle {
@@ -86,26 +86,22 @@
 
     <script>
         let selectedProductColorId = null;
-        let finalPrice = @Model.Price; // قیمت اولیه محصول
+        let finalPrice = @Model.Price; 
 
-        // تابع برای گرفتن انتخاب رنگ
         function setProductColorId(productColorId, additionalPrice) {
             selectedProductColorId = productColorId;
-            finalPrice = @Model.Price + additionalPrice; // محاسبه قیمت جدید
+            finalPrice = @Model.Price + additionalPrice; 
 
-            // به روز رسانی نمایش قیمت نهایی
             document.getElementById('finalPrice').innerText = finalPrice.toLocaleString();
         }
 
-        // ارسال اطلاعات به کنترلر وقتی که روی دکمه "افزودن به سبد خرید" کلیک می‌شود
         document.getElementById("addToCartButton").addEventListener("click", function() {
-            // ارسال درخواست به کنترلر
             $.ajax({
                 type: "POST",
-                url: "/UserPanel/Order/AddToCart", // اکشن شما در کنترلر
+                url: "/UserPanel/Order/AddToCart", 
                 data: {
-                     productId: @Model.ProductId, // شناسه محصول
-                     productColorId: selectedProductColorId === null ? null : selectedProductColorId //
+                     productId: @Model.ProductId,
+                     productColorId: selectedProductColorId === null ? null : selectedProductColorId 
                 },
             });
         });
@@ -141,11 +137,11 @@
                                     <li><a href="#" class="added"><i class="ri-heart-3-fill"></i></a></li>
                                     -->
                                     <li><a href="#"><i class="ri-heart-3-fill"></i></a></li>
-                                    <li><a href="#" data-remodal-target="share-modal"><i class="ri-share-forward-fill"></i></a></li>
+                                    @*<li><a href="" data-remodal-target="share-modal"><i class="ri-share-forward-fill"></i></a></li>
                                     <li><a href="#" data-remodal-target="notification-modal"><i class="ri-notification-fill"></i></a></li>
                                     <li><a href="#"><i class="ri-line-chart-fill"></i></a></li>
                                     <li><a href="#"><i class="ri-scales-3-fill"></i></a></li>
-                                    <li><a href="#"><i class="ri-play-list-add-fill"></i></a></li>
+                                    <li><a href="#"><i class="ri-play-list-add-fill"></i></a></li>*@
                                 </ul>
                             </div>
 
@@ -169,44 +165,40 @@
                     </div>
                 </div>
                 <div class="col-xl-5 col-lg-4 col-md-7 mb-lg-0 mb-4">
-                    <!-- start of breadcrumb -->
+                    @*<!-- start of breadcrumb -->
                     <nav class="mb-2" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">اپل</a></li>
                             <li class="breadcrumb-item"><a href="#">گوشی موبایل اپل</a></li>
                         </ol>
-                    </nav>
+                    </nav>*@
                     <!-- end of breadcrumb -->
                     <!-- start of product-detail -->
                     <h2 class="product-title">@Model.ProductName</h2>
-                    <div class="product-en mb-3">
+                    @*<div class="product-en mb-3">
                         <span>Apple iPhone 13 A2634 Dual SIM 128GB And 4GB RAM Mobile Phone</span>
-                    </div>
-                    <div class="product-user-suggestion mb-2">
+                    </div>*@
+                    @*<div class="product-user-suggestion mb-2">
                         <i class="ri-thumb-up-fill text-success me-1"></i>
                         <span class="fs-7 me-2">
                             ۷۹٪ (۱۷۰ نفر) از خریداران، این کالا را پیشنهاد کرده
                             اند.
                         </span>
                         <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="خریداران کالا با انتخاب یکی از گزینه‌های پیشنهاد یا عدم پیشنهاد، تجربه خرید خود را با کاربران به اشتراک می‌گذارند." aria-label="خریداران کالا با انتخاب یکی از گزینه‌های پیشنهاد یا عدم پیشنهاد، تجربه خرید خود را با کاربران به اشتراک می‌گذارند."><i class="ri-information-line"></i></span>
-                    </div>
+                    </div>*@
                     <div class="product-user-meta fa-num mb-4">
                         <span class="product-users-rating">
                             <i class="ri-star-fill icon me-1"></i>
-                            <span class="fw-bold me-1">4.4</span>
-                            <span class="text-muted fs-7">(742)</span>
+                            <span class="fw-bold me-1">@commentAvg["avgOverall"]</span>
                         </span>
                         <span class="divider"></span>
-                        <a href="#" class="link border-bottom-0 fs-7">۶۳۷ دیدگاه کاربران</a>
+                        <a href="#" class="link border-bottom-0 fs-7">@comments.Count دیدگاه کاربران</a>
                         <span class="divider"></span>
-                        <a href="#" class="link border-bottom-0 fs-7">۴۰۵ پرسش و پاسخ</a>
+                        <a href="#" class="link border-bottom-0 fs-7">@Questions.Count پرسش و پاسخ</a>
                     </div>
 
                     <div class="product-variants-container mb-3">
-
                         <div class="product-variant-selected-container">
-
-
                             <span class="product-variant-selected-label">رنگ:</span>
                             <span class="product-variant-selected"></span>
                         </div>
@@ -245,7 +237,7 @@
 
                     </div>
 
-                    <div class="expandable-text mb-3" style="height: 95px;">
+                    @*<div class="expandable-text mb-3" style="height: 95px;">
                         <div class="expandable-text_text">
                             <div class="product-params">
                                 <ul>
@@ -276,8 +268,8 @@
                                 بستن <i class="ri-arrow-up-s-line"></i>
                             </span>
                         </div>
-                    </div>
-                    <div class="product-additional-info-container mb-3">
+                    </div>*@
+                    @*<div class="product-additional-info-container mb-3">
                         <span class="icon">
                             <i class="ri-information-line"></i>
                         </span>
@@ -294,7 +286,7 @@
                                 مورد قبول است که پلمپ کالا باز نشده باشد.
                             </p>
                         </div>
-                    </div>
+                    </div>*@
                     <div class="widget p-0">
                         <div class="widget-content widget--free-shipping">
                             <div class="free-shipping--detail">
@@ -315,15 +307,15 @@
                     <!-- start of product-seller-info -->
                     <div class="product-seller-info ui-box">
                         <div class="seller-info-changeable">
-                            <div class="product-seller-counter">
+                            @*<div class="product-seller-counter">
                                 <span class="label">فروشنده</span>
                                 <a href="#" class="anchor-link link border-bottom-0 fs-7 fa-num">
                                     4
                                     فروشنده
                                     دیگر
                                 </a>
-                            </div>
-                            <div class="product-seller-row">
+                            </div>*@
+                            @*<div class="product-seller-row">
                                 <div class="product-seller-row-icon">
                                     <!-- <i class="ri-store-3-fill"></i> -->
                                     <img src="./theme-assets/images/seller-logo-small.svg" alt="">
@@ -341,7 +333,7 @@
                                     </div>
                                     <a href="#" class="seller-info-link"></a>
                                 </div>
-                            </div>
+                            </div>*@
                             <div class="product-seller-row">
                                 <div class="product-seller-row-icon">
                                     <i class="ri-shield-check-fill"></i>
@@ -359,7 +351,7 @@
                                     <div class="product-seller-row-detail-subtitle"><i></i> آماده ارسال</div>
                                 </div>
                             </div>
-                            <div class="product-seller-row">
+                            @*<div class="product-seller-row">
                                 <div class="product-seller-row-icon">
                                     <i class="ri-copper-coin-fill text-warning"></i>
                                 </div>
@@ -369,7 +361,7 @@
                                         در باشگاه مشتریان
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                             @if (Model.OffPrice > 0)
                             {
                                 <div class="product-seller-row product-seller-row--price">
@@ -413,6 +405,7 @@
             </div>
             <!-- end of product-detail-container -->
             <!-- start of box -->
+            @*
             <div class="ui-box bg-white mb-5">
                 <div class="ui-box-title">لیست فروشندگان این کالا</div>
                 <div class="ui-box-content">
@@ -494,8 +487,10 @@
                     <!-- end of suppliers-items -->
                 </div>
             </div>
+            *@
             <!-- end of box -->
             <!-- start of box -->
+            @*
             <div class="ui-box mb-5">
                 <div class="ui-box-title">محصولات مشابه</div>
                 <div class="ui-box-content">
@@ -911,6 +906,7 @@
                     </div>
                 </div>
             </div>
+            *@
             <!-- end of box -->
             <div class="row">
                 <div class="col-xl-9 col-lg-8">
@@ -941,7 +937,7 @@
                     <div class="product-tab-content product-content-expert-summary tab-content border-bottom pb-2 mb-4" id="scrollspyHeading1">
                         <div class="product-tab-title">
                             <h2>نقد و بررسی اجمالی</h2>
-                            <h3 class="subtitle">Apple iPhone 13 A2634 Dual SIM 128GB And 4GB RAM Mobile Phone</h3>
+                            <h3 class="subtitle">@Model.ProductName</h3>
                         </div>
                         <div class="expandable-text pt-1" style="height: 250px;">
                             <div class="expandable-text_text">
@@ -964,7 +960,7 @@
                     <div class="product-tab-content product-content-expert-articles tab-content border-bottom pb-2 mb-4" id="scrollspyHeading2">
                         <div class="product-tab-title">
                             <h2>نقد و بررسی تخصصی</h2>
-                            <h3 class="subtitle">Apple iPhone 13 A2634 Dual SIM 128GB And 4GB RAM Mobile Phone</h3>
+                            <h3 class="subtitle">@Model.ProductName</h3>
                         </div>
                         <div class="expandable-text pt-1" style="height: 840px;">
                             <div class="expandable-text_text">
@@ -986,7 +982,7 @@
                     <div class="product-tab-content product-params tab-content border-bottom pb-2 mb-4" id="scrollspyHeading3">
                         <div class="product-tab-title">
                             <h2>مشخصات کالا</h2>
-                            <h3 class="subtitle">Apple iPhone 13 A2634 Dual SIM 128GB And 4GB RAM Mobile Phone</h3>
+                            <h3 class="subtitle">@Model.ProductName</h3>
                         </div>
                         @await Component.InvokeAsync("ProductSpecification", new ProductSpecificationViewModel { ProductId = Model.ProductId })
                     </div>
@@ -995,7 +991,7 @@
                     <div class="product-tab-content product-comments tab-content border-bottom pb-2 mb-4" id="scrollspyHeading4">
                         <div class="product-tab-title mb-0">
                             <h2>امتیاز و دیدگاه کاربران</h2>
-                            <h3 class="subtitle">Samsung Galaxy M31 SM-M315F/DSN Dual SIM 128GB Mobile Phone</h3>
+                            <h3 class="subtitle">@Model.ProductName</h3>
                         </div>
                         <div class="row">
                             <div class="col-xl-3 col-lg-4 col-md-5 mb-3">
@@ -1008,7 +1004,6 @@
                                         </div>
                                         <div class="comments-sidebar-rating-bottom">
                                             <div class="stars-container justify-content-end">
-                                                <div class="stars-text ms-2">از مجموع ۹۴۰ امتیاز</div>
                                                 <div class="stars">
                                                     <div class="stars-val" style="width: 70%;"></div>
                                                 </div>
@@ -1077,7 +1072,7 @@
                             </div>
                             <div class="col-xl-9 col-lg-8 col-md-7 pt-5">
                                 <!-- start of filter-comments -->
-                                <div class="filter-comments mb-4">
+                                @*<div class="filter-comments mb-4">
                                     <div class="filter-comments-title me-2">
                                         <i class="ri-list-settings-fill me-1"></i>
                                         <span>مرتب سازی دیدگاه ها بر اساس:</span>
@@ -1087,7 +1082,7 @@
                                         <button class="filter-comments-option">مفیدترین دیدگاه ها</button>
                                         <button class="filter-comments-option">دیدگاه خریداران</button>
                                     </div>
-                                </div>
+                                </div>*@
                                 <!-- end of filter-comments -->
                                 <!-- start of comments -->
                                 <div class="comments">
@@ -1138,7 +1133,7 @@
                     <div class="product-tab-content product-questions tab-content border-bottom pb-2 mb-4" id="scrollspyHeading5">
                         <div class="product-tab-title mb-0">
                             <h2>پرسش و پاسخ</h2>
-                            <h3 class="subtitle">Samsung Galaxy M31 SM-M315F/DSN Dual SIM 128GB Mobile Phone</h3>
+                            <h3 class="subtitle">@Model.ProductName</h3>
                         </div>
                         <div class="row">
                             <div class="col-xl-3 col-lg-4 col-md-5 mb-3">
@@ -1181,7 +1176,7 @@
                             </div>
                             <div class="col-xl-9 col-lg-8 col-md-7 pt-5">
                                 <!-- start of filter-questions -->
-                                <div class="filter-comments mb-4">
+                                @*<div class="filter-comments mb-4">
                                     <div class="filter-comments-title me-2">
                                         <i class="ri-list-settings-fill me-1"></i>
                                         <span>مرتب‌سازی پرسش‌ها بر اساس:</span>
@@ -1190,7 +1185,7 @@
                                         <button class="filter-comments-option active">جدیدترین پرسش ها</button>
                                         <button class="filter-comments-option">مفیدترین پاسخ ها</button>
                                     </div>
-                                </div>
+                                </div>*@
                                 <!-- end of filter-questions -->
                                 <!-- start of questions -->
 
@@ -1290,8 +1285,6 @@
                                     }
 
                                     <!-- end of question -->
-                                    <!-- start of question -->
-                                    <!-- end of question -->
                                 </div>
                                 <!-- end of questions -->
                             </div>
@@ -1302,7 +1295,7 @@
                 <div class="col-xl-3 col-lg-4 d-lg-block d-none">
                     <div class="ui-sticky ui-sticky-top">
                         <!-- start of mini-buy-box -->
-                        <div class="mini-buy-box ui-box bg-transparent p-4">
+                        @*<div class="mini-buy-box ui-box bg-transparent p-4">
                             <div class="d-flex border-bottom pb-3 mb-3">
                                 <div class="product-thumbnail">
                                     <img src="./theme-assets/images/gallery/main.jpg" alt="product title">
@@ -1344,7 +1337,7 @@
                                 افزودن به
                                 سبد خرید
                             </a>
-                        </div>
+                        </div>*@
                         <div class="remodal remodal-sm remodal-is-initialized remodal-is-opened" data-remodal-id="add-question-modal" data-remodal-options="hashTracking: false" tabindex="-1">
                             <div class="remodal-header">
                                 <div class="remodal-title">پرسش خود را در مورد کالا مطرح کنید</div>
@@ -1358,13 +1351,5 @@
                 </div>
             </div>
         </div>
-        <!-- start of notification-modal -->
-        <!-- end of notification-modal -->
-        <!-- start of add-question-modal -->
-        <!-- end of add-question-modal -->
-        <!-- start of share-modal -->
-        <!-- end of share-modal -->
-        <!-- start of quick-view-modal -->
-        <!-- end of quick-view-modal -->
     </div>
 </main>
