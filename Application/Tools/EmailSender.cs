@@ -13,7 +13,7 @@ public static class EmailSender
         try
         {
             var mail = new MailMessage();
-            var SmtpServer = new SmtpClient("smtp.gmail.com");
+            var smtpServer = new SmtpClient("smtp.gmail.com");
 
             mail.From = new MailAddress(email, "فروشگاه ما");
             mail.To.Add(to);
@@ -21,12 +21,12 @@ public static class EmailSender
             mail.Body = body;
             mail.IsBodyHtml = true;
 
-            SmtpServer.Port = 587;
-            SmtpServer.EnableSsl = true;
+            smtpServer.Port = 587;
+            smtpServer.EnableSsl = true;
 
 
-            SmtpServer.Credentials = new NetworkCredential(email, password);
-            SmtpServer.Send(mail);
+            smtpServer.Credentials = new NetworkCredential(email, password);
+            smtpServer.Send(mail);
 
             return true;
         }
