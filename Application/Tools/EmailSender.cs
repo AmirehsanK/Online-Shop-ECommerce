@@ -7,8 +7,8 @@ public static class EmailSender
 {
     public static async Task<bool> SendEmail(string to, string subject, string body)
     {
-        var email = "awref.ahngar@gmail.com";
-        var password = "nfevaamqluuiainw";
+        var email = "Your Email Address";
+        var password = "Your Password";
 
         try
         {
