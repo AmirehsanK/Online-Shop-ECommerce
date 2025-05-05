@@ -4,6 +4,13 @@ namespace Domain.Interface;
 
 public interface IProductColorRepository
 {
+    #region Save Changes
+
+    Task SaveChangeAsync();
+
+    #endregion
+
+    Task<ProductColor?> GetProductColorWithid(int? productColorid);
 
     #region Color Management
 
@@ -23,13 +30,4 @@ public interface IProductColorRepository
     Task<List<ProductColor>> GetProductColorAsync(int productId);
 
     #endregion
-
-    #region Save Changes
-
-    Task SaveChangeAsync();
-
-    #endregion
-        Task<ProductColor?> GetProductColorWithid(int? productColorid);
-       
-
 }

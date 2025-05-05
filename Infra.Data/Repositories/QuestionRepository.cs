@@ -68,9 +68,7 @@ public class QuestionRepository(ApplicationDbContext context) : IQuestionReposit
 
         return filter;
     }
-          
 
-       
 
     public async Task<QuestionAnswer> GetQuesetionById(int questionId)
     {

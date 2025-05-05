@@ -4,7 +4,7 @@
 
 @foreach (var item in Model.Entities)
 {
-    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4" >
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4">
         <!-- start of product-card -->
         <div class="product-card">
             <div class="product-thumbnail">
@@ -58,7 +58,8 @@
                                    data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a>
                             </li>
                             <li>
-                                <a href="javascript:void(0);" onclick="addToFavorites(@item.Id)" data-bs-toggle="tooltip" data-bs-placement="top"
+                                <a href="javascript:void(0);" onclick="addToFavorites(@item.Id)"
+                                   data-bs-toggle="tooltip" data-bs-placement="top"
                                    title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی">
                                     <i class="ri-heart-3-line"></i>
                                 </a>
@@ -101,14 +102,14 @@
         $.ajax({
             url: '/UserPanel/Home/AddFavorite',
             type: 'POST',
-            headers: { "RequestVerificationToken": token },
-            data: { productId: productId },
-            success: function(response) {
+            headers: {"RequestVerificationToken": token},
+            data: {productId: productId},
+            success: function (response) {
                 console.log("Product added successfully");
                 var modal = $('[data-remodal-id="add-to-favorite-modal"]').remodal();
                 modal.open();
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error("ارور:", status, error);
                 alert("کالا در حال حاضر در لیست مورد علاقه شما وجود دارد!");
             }

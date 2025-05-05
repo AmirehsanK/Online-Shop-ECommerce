@@ -22,7 +22,7 @@ public class OrderRepository(ApplicationDbContext context) : IOrderRepository
     {
         var order = await context.Orders
             .Include(u => u.OrderDetails)
-            .FirstOrDefaultAsync(u => u.UserId == userId&&u.IsFinally==false);
+            .FirstOrDefaultAsync(u => u.UserId == userId && u.IsFinally == false);
 
         if (order != null) return order;
 
@@ -40,16 +40,12 @@ public class OrderRepository(ApplicationDbContext context) : IOrderRepository
 
     public async Task<OrderDetail?> GetExistOrderDetail(int productId, int? ProductColorId, int orderId)
     {
-        if (ProductColorId!=null)
-        {
+        if (ProductColorId != null)
             return await context.OrderDetails.Where(u => u.OrderId == orderId)
                 .FirstOrDefaultAsync(u => u.ProductId == productId && u.ProductColorId == ProductColorId);
-        }
-        else
-        {
-            return await context.OrderDetails.Where(u => u.OrderId == orderId)
-                .FirstOrDefaultAsync(u => u.ProductId == productId);
-        }
+
+        return await context.OrderDetails.Where(u => u.OrderId == orderId)
+            .FirstOrDefaultAsync(u => u.ProductId == productId);
     }
 
     public async Task AddOrder(Order order)
@@ -74,7 +70,6 @@ public class OrderRepository(ApplicationDbContext context) : IOrderRepository
     #endregion
 
     #region Order Detail Methods
-
 
     public async Task AddOrderDetail(OrderDetail orderDetail)
     {

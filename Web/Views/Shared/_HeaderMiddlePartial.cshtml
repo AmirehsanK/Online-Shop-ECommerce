@@ -45,7 +45,8 @@
             </div>
             <div class="user-options">
                 <div class="user-option user-option--account">
-                    <a asp-action="Index" asp-area="UserPanel" asp-controller="Home" class="user-option-btn user-option-btn--account">
+                    <a asp-action="Index" asp-area="UserPanel" asp-controller="Home"
+                       class="user-option-btn user-option-btn--account">
                         <i class="ri-user-fill icon"></i>
                         <i class="ri-arrow-down-s-fill icon fs-7 text-muted"></i>
                     </a>
@@ -57,7 +58,8 @@
                                             src="/theme-assets/images/avatar/default.png" alt="avatar">
                                     </div>
                                     <div class="profile-info">
-                                        <a asp-area="UserPanel" asp-controller="Home" class="text-decoration-none text-dark fw-bold mb-2">@User.GetCurrentUserFullName()
+                                        <a asp-area="UserPanel" asp-controller="Home"
+                                           class="text-decoration-none text-dark fw-bold mb-2">@User.GetCurrentUserFullName()
                                         </a>
                                         <div class="text-muted fs-7 fw-bold">@User.GetCurrentUserMobileNumber()</div>
                                     </div>

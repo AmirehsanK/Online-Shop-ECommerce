@@ -77,13 +77,16 @@ public class CommentRepository(ApplicationDbContext context) : ICommentRepositor
             .Include(c => c.Interactions).Where(c => !c.IsDeleted)
             .FirstOrDefaultAsync(c => c.Id == id))!;
     }
+
     public async Task<List<Comment>> GetCommentByProductIdAsync(int productId)
     {
         return await context.Comments.Where(u => u.ProductId == productId && u.IsApproved == true).ToListAsync();
     }
+
     public async Task<List<Comment>> GetCommentsByUserIdAsync(int userId)
     {
-        return await context.Comments.Where(c => c.UserId == userId && c.IsDeleted==false && c.IsApproved==true).ToListAsync();
+        return await context.Comments.Where(c => c.UserId == userId && c.IsDeleted == false && c.IsApproved == true)
+            .ToListAsync();
     }
 
     #endregion

@@ -7,7 +7,7 @@
 <div class="col-xl-9 col-lg-8 col-md-7">
     <div class="ui-box bg-white mb-5">
         <div class="ui-box-title">@ViewData["Title"]</div>
-        @if (Model.Count==0)
+        @if (Model.Count == 0)
         {
             <div class="alert alert-warning">کالای مورد علاقه ای اضافه نکرده اید!</div>
         }
@@ -22,16 +22,22 @@
                                 <!-- start of product-list-item -->
                                 <div class="product-list-item border-bottom pb-3">
                                     <div class="thumbnail">
-                                        <a asp-action="ProductDetail" asp-controller="Product" asp-route-productId="@product.ProductId"><img src="@PathTools.FilePath@product.ImageUrl" alt="@product.ProductName"></a>
+                                        <a asp-action="ProductDetail" asp-controller="Product"
+                                           asp-route-productId="@product.ProductId"><img
+                                                src="@PathTools.FilePath@product.ImageUrl"
+                                                alt="@product.ProductName"></a>
                                     </div>
                                     <div class="detail">
-                                        <a asp-action="ProductDetail" asp-controller="Product" asp-route-productId="@product.ProductId" class="title fs-7 fw-bold mb-2">@product.ProductName</a>
+                                        <a asp-action="ProductDetail" asp-controller="Product"
+                                           asp-route-productId="@product.ProductId"
+                                           class="title fs-7 fw-bold mb-2">@product.ProductName</a>
                                         <div class="price fa-num">
                                             <span class="fw-bold">@product.Price.ToString("N0")</span>
                                             <span class="currency">تومان</span>
                                         </div>
                                         <div class="action">
-                                            <form method="post" asp-action="RemoveFavorite" asp-controller="Home" asp-area="UserPanel" asp-route-productId="@product.ProductId">
+                                            <form method="post" asp-action="RemoveFavorite" asp-controller="Home"
+                                                  asp-area="UserPanel" asp-route-productId="@product.ProductId">
                                                 <button type="submit" class="btn btn-circle btn-outline-light">
                                                     <i class="ri-close-line"></i>
                                                 </button>

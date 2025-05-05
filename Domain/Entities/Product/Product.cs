@@ -40,9 +40,8 @@ public class Product : BaseEntity
     public ICollection<QuestionAnswer> QuestionAnswers { get; set; }
 
     public ICollection<OrderDetail> OrderDetails { get; set; }
-    
-    public ICollection<UserProductFavorites> FavoritedByUsers { get; set; }
 
+    public ICollection<UserProductFavorites> FavoritedByUsers { get; set; }
 
     #endregion
 }

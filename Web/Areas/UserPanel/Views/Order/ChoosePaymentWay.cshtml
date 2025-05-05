@@ -1,12 +1,8 @@
 ﻿@using Application.Tools
 @using Domain.ViewModel.Order
-
-
 @{
-
     ViewData["Title"] = "PaymentOrder";
     Layout = "_OrderLayout";
-
 
 
     // گرفتن UserId از کوکی یا سشن
@@ -23,7 +19,8 @@
                     <div class="ui-box-title">شیوه پرداخت</div>
                     <div class="ui-box-content">
                         <div class="custom-radio-outline">
-                            <input type="radio" class="custom-radio-outline-input" name="checkoutPayment" id="checkoutPayment01" value="OnlinePayment">
+                            <input type="radio" class="custom-radio-outline-input" name="checkoutPayment"
+                                   id="checkoutPayment01" value="OnlinePayment">
                             <label for="checkoutPayment01" class="custom-radio-outline-label">
                                 <span class="label">
                                     <span class="icon"><i class="ri-secure-payment-fill"></i></span>
@@ -35,7 +32,8 @@
                             </label>
                         </div>
                         <div class="custom-radio-outline">
-                            <input type="radio" class="custom-radio-outline-input" name="checkoutPayment" id="checkoutPayment02" value="WalletPayment">
+                            <input type="radio" class="custom-radio-outline-input" name="checkoutPayment"
+                                   id="checkoutPayment02" value="WalletPayment">
                             <label for="checkoutPayment02" class="custom-radio-outline-label">
                                 <span class="label">
                                     <span class="icon"><i class="ri-wallet-3-fill"></i></span>

@@ -8,7 +8,6 @@ namespace Infra.Data.Repositories;
 
 public class FavoritesRepository(ApplicationDbContext context) : IFavoritesRepository
 {
-    
     #region Retrival
 
     public async Task<bool> IsProductFavoriteAsync(int userId, int productId)
@@ -16,7 +15,7 @@ public class FavoritesRepository(ApplicationDbContext context) : IFavoritesRepos
         return await context.UserProductFavorites
             .AnyAsync(upf => upf.UserId == userId && upf.ProductId == productId);
     }
-    
+
     public async Task<List<FavoriteProductViewModel>> GetFavoriteProductsAsync(int userId)
     {
         var favoriteProductIds = await context.UserProductFavorites
@@ -61,5 +60,4 @@ public class FavoritesRepository(ApplicationDbContext context) : IFavoritesRepos
     }
 
     #endregion
-    
 }

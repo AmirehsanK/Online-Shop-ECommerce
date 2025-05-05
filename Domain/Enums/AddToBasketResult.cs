@@ -1,10 +1,7 @@
-﻿
+﻿namespace Domain.Enums;
 
-namespace Domain.Enums
+public enum AddToBasketResult
 {
-    public enum AddToBasketResult
-    {
-        Success,
-        Failed
-    }
+    Success,
+    Failed
 }

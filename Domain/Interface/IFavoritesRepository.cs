@@ -10,7 +10,7 @@ public interface IFavoritesRepository
     Task<List<FavoriteProductViewModel>> GetFavoriteProductsAsync(int userId);
     Task<bool> IsProductFavoriteAsync(int userId, int productId);
 
-        #endregion
+    #endregion
 
     #region Operations
 
@@ -18,5 +18,4 @@ public interface IFavoritesRepository
     Task RemoveFavoriteAsync(int userId, int productId);
 
     #endregion
-    
 }

@@ -45,9 +45,8 @@ public class User : BaseEntity
 
     public ICollection<Transaction> Transactions { get; set; }
     public ICollection<UserRoleMapping> UserRoleMappings { get; set; }
-    
-    public ICollection<UserProductFavorites> FavoriteProducts { get; set; }
 
+    public ICollection<UserProductFavorites> FavoriteProducts { get; set; }
 
     #endregion
 }

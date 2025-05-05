@@ -8,9 +8,6 @@ namespace Web.Areas.UserPanel.ViewComponents.UserProfile;
 public class UserProfileViewComponent(IUserService userService, ITransactionService transactionService)
     : ViewComponent
 {
-
-
-
     [Authorize]
     public async Task<IViewComponentResult> InvokeAsync()
     {
@@ -18,7 +15,6 @@ public class UserProfileViewComponent(IUserService userService, ITransactionServ
         {
             ViewData["UserBalance"] = await transactionService.GetUserBalanceTransaction(User.GetCurrentUserId());
             ViewData["User"] = await userService.GetUserById(User.GetCurrentUserId());
-
         }
 
         return View("UserProfile");

@@ -18,6 +18,7 @@ public static class UserExtention
         if (principal.Identity.IsAuthenticated) return user.GetCurrentUserId();
         return default;
     }
+
     public static string GetCurrentUserMobileNumber(this ClaimsPrincipal principal)
     {
         if (principal.Identity.IsAuthenticated)

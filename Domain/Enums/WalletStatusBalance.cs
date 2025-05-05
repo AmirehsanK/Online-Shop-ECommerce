@@ -1,10 +1,7 @@
-﻿
+﻿namespace Domain.Enums;
 
-namespace Domain.Enums
+public enum WalletStatusBalance
 {
-    public enum WalletStatusBalance
-    {
-        IsOkay,
-        NoneBalance
-    }
+    IsOkay,
+    NoneBalance
 }

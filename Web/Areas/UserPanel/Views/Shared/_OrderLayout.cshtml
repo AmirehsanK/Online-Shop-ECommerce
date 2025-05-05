@@ -1,24 +1,23 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fa">
 
 <head>
 
     <title>YektaKala | shipping</title>
-    <partial name="_OrderLayoutHeader" />
+    <partial name="_OrderLayoutHeader"/>
 </head>
 
 <body>
 
-    <div class="page-wrapper">
-        <partial name="_OrderLayoutHeaderCode" />
-        @RenderBody()
-        <partial name="_Footer" />
-    </div>
+<div class="page-wrapper">
+    <partial name="_OrderLayoutHeaderCode"/>
+    @RenderBody()
+    <partial name="_Footer"/>
+</div>
 
 
-<partial name="_Scripts" />
-@await RenderSectionAsync("Scripts" ,false)
+<partial name="_Scripts"/>
+@await RenderSectionAsync("Scripts", false)
 </body>
 
 </html>

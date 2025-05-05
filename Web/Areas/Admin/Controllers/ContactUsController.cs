@@ -42,5 +42,4 @@ public class ContactUsController(IContactUsService service) : AdminBaseControlle
     }
 
     #endregion
-    
 }

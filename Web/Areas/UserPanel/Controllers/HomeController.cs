@@ -6,7 +6,6 @@ using Domain.ViewModel.User;
 using Domain.ViewModel.User.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 namespace Web.Areas.UserPanel.Controllers;
 
@@ -28,17 +27,15 @@ public class HomeController(IUserService userService, INotificationService notif
 
             case NotificationEnum.NotFound:
                 if (publicMessage == null!) return View();
-                TempData[WarningMessage] =  publicMessage.Message;
+                TempData[WarningMessage] = publicMessage.Message;
                 await notificationService.markSeenForPrivateMessage(User.GetCurrentUserId(), publicMessage.Id);
                 return View();
         }
 
 
-
         return View();
-
     }
-    
+
     #endregion
 
     #region ChangePassword
@@ -64,41 +61,10 @@ public class HomeController(IUserService userService, INotificationService notif
 
         ViewBag.IsSuccess = true;
         return View();
-
-
-    }
-    
-    #endregion
-    
-    #region Profile Info
-
-    [HttpGet]
-    public async Task<IActionResult> UserInfo()
-    {
-        var model = await userService.GetUsersByIDAsync(User.GetCurrentUserId());
-        return View(model);
-    }
-    
-    [HttpPost]
-    public async Task<IActionResult> UserInfo(EditUserViewModel model)
-    {
-        model.Id = User.GetCurrentUserId();
-        
-        #region Validation
-
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
-        #endregion
-
-        await userService.EditUserAsync(model);
-        return View();
     }
 
     #endregion
-    
+
     #region UserNotification
 
     [HttpGet]
@@ -106,9 +72,7 @@ public class HomeController(IUserService userService, INotificationService notif
     {
         var message = await notificationService.GetShowNotificationById(User.GetCurrentUserId());
         if (message != null!)
-        {
             await notificationService.markSeenForPrivateMessage(User.GetCurrentUserId(), message.MessageId);
-        }
 
         return View(message);
     }
@@ -117,10 +81,37 @@ public class HomeController(IUserService userService, INotificationService notif
 
 
     #region AddTransactionToWallet
+
     [HttpGet]
     public async Task<IActionResult> AddTransactionToWallet()
     {
-        ViewData["UserId"]=User.GetCurrentUserId();
+        ViewData["UserId"] = User.GetCurrentUserId();
+        return View();
+    }
+
+    #endregion
+
+    #region Profile Info
+
+    [HttpGet]
+    public async Task<IActionResult> UserInfo()
+    {
+        var model = await userService.GetUsersByIDAsync(User.GetCurrentUserId());
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UserInfo(EditUserViewModel model)
+    {
+        model.Id = User.GetCurrentUserId();
+
+        #region Validation
+
+        if (!ModelState.IsValid) return View(model);
+
+        #endregion
+
+        await userService.EditUserAsync(model);
         return View();
     }
 

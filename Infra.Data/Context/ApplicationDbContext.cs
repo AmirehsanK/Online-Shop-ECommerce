@@ -23,6 +23,18 @@ public class ApplicationDbContext : DbContext
     {
     }
 
+    #region Transaction
+
+    public DbSet<Transaction> Transactions { get; set; }
+
+    #endregion
+
+    #region Favorites List
+
+    public DbSet<UserProductFavorites> UserProductFavorites { get; set; }
+
+    #endregion
+
     #region OnModelCreating
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -161,13 +173,6 @@ public class ApplicationDbContext : DbContext
 
     #endregion
 
-    #region Transaction
-
-    public DbSet<Transaction> Transactions { get; set; }
-    
-
-    #endregion
-
     #region QuestionAnswer
 
     public DbSet<QuestionAnswer> QuestionAnswers { get; set; }
@@ -191,11 +196,4 @@ public class ApplicationDbContext : DbContext
     public DbSet<UserRoleMapping> UserRoleMappings { get; set; }
 
     #endregion
-
-    #region Favorites List
-
-    public DbSet<UserProductFavorites> UserProductFavorites { get; set; }
-    
-    #endregion
-    
 }

@@ -133,7 +133,7 @@ public class UserAuthenticationController(IUserService userService, IConfigurati
                 var user = await userService.GetUserByEmailAsync(login.Email);
                 var claims = new List<Claim>
                 {
-                    new(ClaimTypes.Name, user.FirstName+" "+user.LastName),
+                    new(ClaimTypes.Name, user.FirstName + " " + user.LastName),
                     new(ClaimTypes.Email, user.Email),
                     new(ClaimTypes.MobilePhone, user.PhoneNumber),
                     new(ClaimTypes.NameIdentifier, user.Id.ToString()),

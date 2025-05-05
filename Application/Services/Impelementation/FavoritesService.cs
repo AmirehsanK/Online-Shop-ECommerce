@@ -7,13 +7,13 @@ namespace Application.Services.Impelementation;
 
 public class FavoritesService(IFavoritesRepository repository) : IFavoritesService
 {
-
     #region Retrival
 
     public async Task<bool> IsProductFavoriteAsync(int userId, int productId)
     {
         return await repository.IsProductFavoriteAsync(userId, productId);
     }
+
     public async Task<List<FavoriteProductViewModel>> GetFavoriteProductsAsync(int userId)
     {
         return await repository.GetFavoriteProductsAsync(userId);
@@ -27,10 +27,7 @@ public class FavoritesService(IFavoritesRepository repository) : IFavoritesServi
     {
         var isAlreadyFavorite = await repository.IsProductFavoriteAsync(userId, productId);
 
-        if (isAlreadyFavorite)
-        {
-            throw new InvalidOperationException("This product is already in your favorites.");
-        }
+        if (isAlreadyFavorite) throw new InvalidOperationException("This product is already in your favorites.");
 
         var favorite = new UserProductFavorites
         {
@@ -47,5 +44,4 @@ public class FavoritesService(IFavoritesRepository repository) : IFavoritesServi
     }
 
     #endregion
-    
 }

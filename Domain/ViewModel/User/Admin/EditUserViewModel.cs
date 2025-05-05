@@ -24,13 +24,14 @@ public class EditUserViewModel
     [DataType(DataType.Password)]
     public string? Password { get; set; }
 
-    [Display(Name = "ادمین")]
-    public bool IsAdmin { get; set; }
-    [Display(Name = "فعال است")]
-    public bool IsEmailActive { get; set; }
+    [Display(Name = "ادمین")] public bool IsAdmin { get; set; }
+
+    [Display(Name = "فعال است")] public bool IsEmailActive { get; set; }
+
     [Display(Name = "ادرس")]
     [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
     public string? Address { get; set; }
+
     [Display(Name = "شماره تماس")]
     [Required]
     public required string PhoneNumber { get; set; }

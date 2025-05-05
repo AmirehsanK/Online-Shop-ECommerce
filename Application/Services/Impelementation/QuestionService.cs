@@ -5,26 +5,23 @@ using Domain.ViewModel.Question;
 
 namespace Application.Services.Impelementation;
 
-    
-
-
-    public class QuestionService(IQuestionRepository questionRepository) : IQuestionService
+public class QuestionService(IQuestionRepository questionRepository) : IQuestionService
+{
+    public async Task AddNewQuestionToProduct(QuestionAnswerViewModel model, int userid)
     {
-        public async Task AddNewQuestionToProduct(QuestionAnswerViewModel model, int userid)
+        var Question = new QuestionAnswer
         {
-            var Question = new QuestionAnswer()
-            {
-                Question = model.Question,
-                CreateDate = DateTime.Now,
-                IsConfirmed = false,
-                QuestionStatus = QuestionStatus.NotAnswered,
-                IsClosed = false,
-                ProductId = model.ProductId,
-                UserId = userid
-            };
-            await questionRepository.AddAsync(Question);
-            await questionRepository.SaveAsync();
-        }
+            Question = model.Question,
+            CreateDate = DateTime.Now,
+            IsConfirmed = false,
+            QuestionStatus = QuestionStatus.NotAnswered,
+            IsClosed = false,
+            ProductId = model.ProductId,
+            UserId = userid
+        };
+        await questionRepository.AddAsync(Question);
+        await questionRepository.SaveAsync();
+    }
 
     #region Get Questions
 
@@ -65,15 +62,14 @@ namespace Application.Services.Impelementation;
 
     #region Manage Questions
 
-        public async Task AddAnswerToQuestion(QuestionDetailViewModel model)
-        {
-            var Question = await questionRepository.GetQuesetionById(model.QuestionId);
-            Question.Answer = model.Answer;
-            Question.QuestionStatus = QuestionStatus.Answered;
-            questionRepository.Update(Question);
-            await questionRepository.SaveAsync();
-
-        }
+    public async Task AddAnswerToQuestion(QuestionDetailViewModel model)
+    {
+        var Question = await questionRepository.GetQuesetionById(model.QuestionId);
+        Question.Answer = model.Answer;
+        Question.QuestionStatus = QuestionStatus.Answered;
+        questionRepository.Update(Question);
+        await questionRepository.SaveAsync();
+    }
 
     public async Task CloseQuestion(int questionId)
     {

@@ -60,18 +60,14 @@ public class ProductColorRepository(ApplicationDbContext context) : IProductColo
             .AnyAsync(u => u.Color.ColorCode == colorCode);
     }
 
-        public async Task<ProductColor?> GetProductColorWithid(int? productColorid)
-        {
-            var color= await context.ProductColors.Include(u=> u.Color).FirstOrDefaultAsync(u=> u.Id==productColorid);
-            if (color==null)
-            {
-                return null;
-            }
-            else
-            {
-                return color;
-            }
-        }
+    public async Task<ProductColor?> GetProductColorWithid(int? productColorid)
+    {
+        var color = await context.ProductColors.Include(u => u.Color).FirstOrDefaultAsync(u => u.Id == productColorid);
+        if (color == null) return null;
+
+        return color;
+    }
+
     public async Task<ProductColor> GetProductColorWithid(int productColorid)
     {
         return (await context.ProductColors

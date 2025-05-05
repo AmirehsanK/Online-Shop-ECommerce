@@ -1,12 +1,9 @@
-﻿
+﻿namespace Domain.ViewModel.AddWallet;
 
-namespace Domain.ViewModel.AddWallet
+public class AddWalletViewModel
 {
-    public class AddWalletViewModel
-    {
-        public int UserId { get; set; }
+    public int UserId { get; set; }
 
 
-        public int Amount { get; set; }
-    }
+    public int Amount { get; set; }
 }

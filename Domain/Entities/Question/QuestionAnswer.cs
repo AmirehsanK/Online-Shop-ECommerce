@@ -15,9 +15,9 @@ public class QuestionAnswer : BaseEntity
 
     public string? Answer { get; set; }
 
-        public QuestionStatus QuestionStatus { get; set; }
+    public QuestionStatus QuestionStatus { get; set; }
 
-        public bool IsConfirmed { get; set; }
+    public bool IsConfirmed { get; set; }
 
     public bool IsClosed { get; set; }
 
@@ -30,12 +30,8 @@ public class QuestionAnswer : BaseEntity
     #endregion
 }
 
-    public enum QuestionStatus
-    {
-        [Display(Name = "پاسخ داده شده")]
-        Answered,
-        [Display(Name = "بررسی نشده")]
-        NotAnswered
-    }
-
-
+public enum QuestionStatus
+{
+    [Display(Name = "پاسخ داده شده")] Answered,
+    [Display(Name = "بررسی نشده")] NotAnswered
+}

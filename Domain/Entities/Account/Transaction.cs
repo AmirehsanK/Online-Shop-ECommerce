@@ -1,37 +1,29 @@
-﻿
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Entities.Common;
 
-namespace Domain.Entities.Account
+namespace Domain.Entities.Account;
+
+public class Transaction : BaseEntity
 {
-    public class Transaction:BaseEntity
-    {
-        [ForeignKey(nameof(User))]
-        public int UserId { get; set; }
+    [ForeignKey(nameof(User))] public int UserId { get; set; }
 
-        public int Price { get; set; }
+    public int Price { get; set; }
 
-        public TransactionType TransactionType { get; set; }
+    public TransactionType TransactionType { get; set; }
 
-        public bool IsPay { get; set; }
+    public bool IsPay { get; set; }
 
 
-        #region Relation
+    #region Relation
 
-        public User User { get; set; }
+    public User User { get; set; }
 
-        #endregion
-    }
+    #endregion
+}
 
-    public enum TransactionType : byte
-    {
-        [Display(Name = "برداشت")]
-        WithDraw,
-        [Display(Name = "واریز")]
-        Deposit
-    }
-
- 
+public enum TransactionType : byte
+{
+    [Display(Name = "برداشت")] WithDraw,
+    [Display(Name = "واریز")] Deposit
 }

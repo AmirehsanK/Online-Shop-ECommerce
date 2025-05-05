@@ -17,5 +17,4 @@ public interface IFavoritesService
     Task RemoveFavoriteAsync(int userId, int productId);
 
     #endregion
-    
 }

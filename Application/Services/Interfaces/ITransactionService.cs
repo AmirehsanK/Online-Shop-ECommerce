@@ -1,20 +1,18 @@
-﻿
-using Domain.Entities.Account;
+﻿using Domain.Entities.Account;
 using Domain.Enums;
 using Domain.ViewModel.AddWallet;
 
-namespace Application.Services.Interfaces
+namespace Application.Services.Interfaces;
+
+public interface ITransactionService
 {
-    public interface ITransactionService
-    {
-        Task<int> AddNewTransaction(int userid, int price);
+    Task<int> AddNewTransaction(int userid, int price);
 
-        Task AddTransactionFromWallet(AddWalletViewModel model);
+    Task AddTransactionFromWallet(AddWalletViewModel model);
 
-        Task<Transaction> GetTransactionByid(int transId);
+    Task<Transaction> GetTransactionByid(int transId);
 
-        Task<int> GetUserBalanceTransaction(int userId);
+    Task<int> GetUserBalanceTransaction(int userId);
 
-        Task<WalletStatusBalance> GetUserBalanceWallet(int userId,int amount);
-    }
+    Task<WalletStatusBalance> GetUserBalanceWallet(int userId, int amount);
 }

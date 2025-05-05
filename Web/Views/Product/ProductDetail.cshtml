@@ -10,13 +10,14 @@
     var comments = ViewData["Comments"] as List<CommentViewModel>;
     var commentAvg = ViewData["Commentavg"] as Dictionary<string, float>;
 }
+
 @section Style
 {
     <style>
         .product-variants {
             display: flex;
-            gap: 10px; 
-            flex-wrap: wrap; 
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .product-variant-item {
@@ -33,7 +34,7 @@
 @section Scripts
 {
     <script>
-           $(document).on("click", ".like-btn, .dislike-btn", function () {
+        $(document).on("click", ".like-btn, .dislike-btn", function () {
             const productId = $(this).data("product-id");
             const userId = $(this).data("user-id");
             const questionLike = $(this).data("action");
@@ -41,7 +42,7 @@
             $.ajax({
                 url: '/Product/ToggleQuestionLike',
                 type: 'POST',
-                data: { productId, userId, questionLike },
+                data: {productId, userId, questionLike},
                 headers: {
                     'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
                 },
@@ -56,14 +57,15 @@
                     alert("مشکلی در ارسال درخواست وجود دارد.");
                 }
             });
-        });$(document).on("click", ".commentlike-btn, .commentdislike-btn", function () {
+        });
+        $(document).on("click", ".commentlike-btn, .commentdislike-btn", function () {
             const commentId = $(this).data("comment-id");
             const isLike = $(this).data("action");
 
             $.ajax({
                 url: '/Product/CommentLike',
                 type: 'POST',
-                data: { commentId, isLike },
+                data: {commentId, isLike},
                 headers: {
                     'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
                 },
@@ -84,22 +86,22 @@
 
     <script>
         let selectedProductColorId = null;
-        let finalPrice = @Model.Price; 
+        let finalPrice = @Model.Price;
 
         function setProductColorId(productColorId, additionalPrice) {
             selectedProductColorId = productColorId;
-            finalPrice = @Model.Price + additionalPrice; 
+            finalPrice = @Model.Price + additionalPrice;
 
             document.getElementById('finalPrice').innerText = finalPrice.toLocaleString();
         }
 
-        document.getElementById("addToCartButton").addEventListener("click", function() {
+        document.getElementById("addToCartButton").addEventListener("click", function () {
             $.ajax({
                 type: "POST",
-                url: "/UserPanel/Order/AddToCart", 
+                url: "/UserPanel/Order/AddToCart",
                 data: {
-                     productId: @Model.ProductId,
-                     productColorId: selectedProductColorId === null ? null : selectedProductColorId 
+                    productId: @Model.ProductId,
+                    productColorId: selectedProductColorId === null ? null : selectedProductColorId
                 },
             });
         });
@@ -108,6 +110,7 @@
 
 
 }
+
 <main class="page-content">
     <div class="container">
         <!-- start of breadcrumb -->
@@ -145,13 +148,16 @@
 
                             <div class="gallery-img-container">
                                 <div class="gallery-img">
-                                    <img src="@(PathTools.FilePath+Model.ImageName)" class="zoom-img" alt="" style="visibility: visible;">
+                                    <img src="@(PathTools.FilePath + Model.ImageName)" class="zoom-img" alt=""
+                                         style="visibility: visible;">
                                 </div>
                                 <div class="gallery-thumbs">
                                     <ul>
                                         @foreach (var item in Model.ProductGalleries)
                                         {
-                                            <li data-fancybox="gallery-a" data-src="@(PathTools.ProductGalleryImagePath + item.Image)"><img src="@(PathTools.ProductGalleryImagePath+item.Image)" alt=""></li>
+                                            <li data-fancybox="gallery-a"
+                                                data-src="@(PathTools.ProductGalleryImagePath + item.Image)"><img
+                                                    src="@(PathTools.ProductGalleryImagePath + item.Image)" alt=""></li>
                                         }
 
 
@@ -216,7 +222,7 @@
                                                        id="productColor_@item.Id"
                                                        value="@item.Id"
                                                        data-price="@item.Price"
-                                                       onclick="setProductColorId(@item.Id,@item.Price)" />
+                                                       onclick="setProductColorId(@item.Id,@item.Price)"/>
                                                 <label for="productColor_@item.Id"
                                                        class="custom-radio-circle-label">
                                                     <span class="color"
@@ -295,7 +301,8 @@
                                 <div class="subtitle">سفارش‌های بالای ۳۰۰ هزار تومان</div>
                             </div>
                             <div class="free-shipping--banner">
-                                <img src="/theme-assets/images/theme/free-shipping--banner.png" alt="ارسال رایگان سفارش">
+                                <img src="/theme-assets/images/theme/free-shipping--banner.png"
+                                     alt="ارسال رایگان سفارش">
                             </div>
                         </div>
                     </div>
@@ -366,7 +373,7 @@
                                     <div class="product-seller-row--price-now fa-num">
                                         <span class="price offprice" id="finalPrice">@Model.Price.ToString("#,0")</span>
                                         <span class="currency">تومان</span>
-                                        <br />
+                                        <br/>
                                         <span class="price" id="finalPrice">@Model.OffPrice.ToString("#,0")</span>
                                         <span class="currency">تومان</span>
                                     </div>
@@ -393,7 +400,10 @@
                             </div>
                         </div>
                         <div class="product-seller--add-to-cart">
-                            <a href="#" id="addToCartButton" class="btn btn-primary w-100" data-toast="" data-toast-type="success" data-toast-color="green" data-toast-position="topRight" data-toast-icon="ri-check-fill" data-toast-title="موفق!" data-toast-message="به سبد اضافه شد!">
+                            <a href="#" id="addToCartButton" class="btn btn-primary w-100" data-toast=""
+                               data-toast-type="success" data-toast-color="green" data-toast-position="topRight"
+                               data-toast-icon="ri-check-fill" data-toast-title="موفق!"
+                               data-toast-message="به سبد اضافه شد!">
                                 افزودن به سبد خرید
                             </a>
                         </div>
@@ -913,26 +923,32 @@
                         <div class="product-tabs">
                             <ul class="nav nav-pills">
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="#scrollspyHeading1" data-scroll="scrollspyHeading1">نقد و بررسی</a>
+                                    <a class="nav-link active" href="#scrollspyHeading1"
+                                       data-scroll="scrollspyHeading1">نقد و بررسی</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#scrollspyHeading2" data-scroll="scrollspyHeading2">بررسی تخصصی</a>
+                                    <a class="nav-link" href="#scrollspyHeading2" data-scroll="scrollspyHeading2">بررسی
+                                        تخصصی</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#scrollspyHeading3" data-scroll="scrollspyHeading3">مشخصات</a>
+                                    <a class="nav-link" href="#scrollspyHeading3"
+                                       data-scroll="scrollspyHeading3">مشخصات</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#scrollspyHeading4" data-scroll="scrollspyHeading4">دیدگاه کاربران</a>
+                                    <a class="nav-link" href="#scrollspyHeading4" data-scroll="scrollspyHeading4">دیدگاه
+                                        کاربران</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#scrollspyHeading5" data-scroll="scrollspyHeading5">پرسش و پاسخ</a>
+                                    <a class="nav-link" href="#scrollspyHeading5" data-scroll="scrollspyHeading5">پرسش و
+                                        پاسخ</a>
                                 </li>
                             </ul>
                         </div>
                         <!-- end of product-tabs -->
                     </div>
                     <!-- start of product-content-expert-summary -->
-                    <div class="product-tab-content product-content-expert-summary tab-content border-bottom pb-2 mb-4" id="scrollspyHeading1">
+                    <div class="product-tab-content product-content-expert-summary tab-content border-bottom pb-2 mb-4"
+                         id="scrollspyHeading1">
                         <div class="product-tab-title">
                             <h2>نقد و بررسی اجمالی</h2>
                             <h3 class="subtitle">@Model.ProductName</h3>
@@ -955,7 +971,8 @@
                     </div>
                     <!-- end of product-content-expert-summary -->
                     <!-- start of product-content-expert-articles -->
-                    <div class="product-tab-content product-content-expert-articles tab-content border-bottom pb-2 mb-4" id="scrollspyHeading2">
+                    <div class="product-tab-content product-content-expert-articles tab-content border-bottom pb-2 mb-4"
+                         id="scrollspyHeading2">
                         <div class="product-tab-title">
                             <h2>نقد و بررسی تخصصی</h2>
                             <h3 class="subtitle">@Model.ProductName</h3>
@@ -977,7 +994,8 @@
                     </div>
                     <!-- end of product-content-expert-articles -->
                     <!-- start of product-params -->
-                    <div class="product-tab-content product-params tab-content border-bottom pb-2 mb-4" id="scrollspyHeading3">
+                    <div class="product-tab-content product-params tab-content border-bottom pb-2 mb-4"
+                         id="scrollspyHeading3">
                         <div class="product-tab-title">
                             <h2>مشخصات کالا</h2>
                             <h3 class="subtitle">@Model.ProductName</h3>
@@ -986,7 +1004,8 @@
                     </div>
                     <!-- end of product-params -->
                     <!-- start of product-comments -->
-                    <div class="product-tab-content product-comments tab-content border-bottom pb-2 mb-4" id="scrollspyHeading4">
+                    <div class="product-tab-content product-comments tab-content border-bottom pb-2 mb-4"
+                         id="scrollspyHeading4">
                         <div class="product-tab-title mb-0">
                             <h2>امتیاز و دیدگاه کاربران</h2>
                             <h3 class="subtitle">@Model.ProductName</h3>
@@ -997,7 +1016,8 @@
                                     <!-- start of comments-sidebar -->
                                     <div class="comments-sidebar">
                                         <div class="comments-sidebar-rating">
-                                            <div class="comments-sidebar-rating-main me-2">@commentAvg["avgOverall"]</div>
+                                            <div
+                                                class="comments-sidebar-rating-main me-2">@commentAvg["avgOverall"]</div>
                                             <div class="comments-sidebar-rating-desc">از ۵</div>
                                         </div>
                                         <div class="comments-sidebar-rating-bottom">
@@ -1013,7 +1033,8 @@
                                                 <div class="content-expert-rating-value-wrapper">
                                                     <div class="content-expert-rating-value" style="width: 90%;">
                                                     </div>
-                                                    <div class="content-expert-rating-value-label">@commentAvg["avgQuality"]</div>
+                                                    <div
+                                                        class="content-expert-rating-value-label">@commentAvg["avgQuality"]</div>
                                                 </div>
                                             </div>
                                             <div class="mb-3">
@@ -1023,7 +1044,8 @@
                                                 <div class="content-expert-rating-value-wrapper">
                                                     <div class="content-expert-rating-value" style="width: 90%;">
                                                     </div>
-                                                    <div class="content-expert-rating-value-label">@commentAvg["avgValue"]</div>
+                                                    <div
+                                                        class="content-expert-rating-value-label">@commentAvg["avgValue"]</div>
                                                 </div>
                                             </div>
                                             <div class="mb-3">
@@ -1031,7 +1053,8 @@
                                                 <div class="content-expert-rating-value-wrapper">
                                                     <div class="content-expert-rating-value" style="width: 90%;">
                                                     </div>
-                                                    <div class="content-expert-rating-value-label">@commentAvg["avgInnovation"]</div>
+                                                    <div
+                                                        class="content-expert-rating-value-label">@commentAvg["avgInnovation"]</div>
                                                 </div>
                                             </div>
                                             <div class="mb-3">
@@ -1039,7 +1062,8 @@
                                                 <div class="content-expert-rating-value-wrapper">
                                                     <div class="content-expert-rating-value" style="width: 90%;">
                                                     </div>
-                                                    <div class="content-expert-rating-value-label">@commentAvg["avgFeatures"]</div>
+                                                    <div
+                                                        class="content-expert-rating-value-label">@commentAvg["avgFeatures"]</div>
                                                 </div>
                                             </div>
                                             <div class="mb-3">
@@ -1047,7 +1071,8 @@
                                                 <div class="content-expert-rating-value-wrapper">
                                                     <div class="content-expert-rating-value" style="width: 90%;">
                                                     </div>
-                                                    <div class="content-expert-rating-value-label">@commentAvg["avgEase"]</div>
+                                                    <div
+                                                        class="content-expert-rating-value-label">@commentAvg["avgEase"]</div>
                                                 </div>
                                             </div>
                                             <div class="mb-3">
@@ -1055,12 +1080,15 @@
                                                 <div class="content-expert-rating-value-wrapper">
                                                     <div class="content-expert-rating-value" style="width: 90%;">
                                                     </div>
-                                                    <div class="content-expert-rating-value-label">@commentAvg["avgDesign"]</div>
+                                                    <div
+                                                        class="content-expert-rating-value-label">@commentAvg["avgDesign"]</div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="mb-2">دیدگاه خود را درباره این کالا بیان کنید</div>
-                                        <a asp-action="ProductAddComment" asp-controller="Product" asp-route-productId="@Model.ProductId" class="btn btn-block btn-outline-primary">
+                                        <a asp-action="ProductAddComment" asp-controller="Product"
+                                           asp-route-productId="@Model.ProductId"
+                                           class="btn btn-block btn-outline-primary">
                                             افزودن
                                             دیدگاه
                                         </a>
@@ -1128,7 +1156,8 @@
                     </div>
                     <!-- end of product-comments -->
                     <!-- start of product-questions -->
-                    <div class="product-tab-content product-questions tab-content border-bottom pb-2 mb-4" id="scrollspyHeading5">
+                    <div class="product-tab-content product-questions tab-content border-bottom pb-2 mb-4"
+                         id="scrollspyHeading5">
                         <div class="product-tab-title mb-0">
                             <h2>پرسش و پاسخ</h2>
                             <h3 class="subtitle">@Model.ProductName</h3>
@@ -1141,13 +1170,15 @@
                                         <div class="border rounded p-2">
                                             <div class="border-bottom pb-2 mb-2">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
+                                                    <input class="form-check-input" type="checkbox" value=""
+                                                           id="flexCheckDefault1">
                                                     <label class="form-check-label" for="flexCheckDefault1">
                                                         پرسش های پاسخ داده شده
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
+                                                    <input class="form-check-input" type="checkbox" value=""
+                                                           id="flexCheckDefault2">
                                                     <label class="form-check-label" for="flexCheckDefault2">
                                                         پرسش های بی پاسخ
                                                     </label>
@@ -1156,14 +1187,17 @@
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <span>پرسش های من</span>
                                                 <div class="form-check form-switch mb-0">
-                                                    <input class="form-check-input ms-0" type="checkbox" id="flexSwitchCheckDefault">
-                                                    <label class="form-check-label" for="flexSwitchCheckDefault"></label>
+                                                    <input class="form-check-input ms-0" type="checkbox"
+                                                           id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label"
+                                                           for="flexSwitchCheckDefault"></label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="mt-3">
                                             <div class="mb-2">پرسش خود را درباره این کالا بیان کنید</div>
-                                            <button class="btn btn-block btn-outline-primary" data-remodal-target="add-question-modal">
+                                            <button class="btn btn-block btn-outline-primary"
+                                                    data-remodal-target="add-question-modal">
                                                 ثبت
                                                 پرسش
                                             </button>
@@ -1209,10 +1243,12 @@
                                                                         @item.Answer
                                                                     </p>
                                                                 </div>
-                                                                <div class="d-flex align-items-center flex-grow-1 justify-content-between w-100">
+                                                                <div
+                                                                    class="d-flex align-items-center flex-grow-1 justify-content-between w-100">
                                                                     <div>
                                                                         <span class="text-sm me-2">حسین کشاورزی</span>
-                                                                        <span class="badge badge-sm bg-info rounded-pill">خریدار</span>
+                                                                        <span
+                                                                            class="badge badge-sm bg-info rounded-pill">خریدار</span>
                                                                     </div>
                                                                     <div>
                                                                         <span class="me-2">
@@ -1223,13 +1259,15 @@
                                                                                 data-product-id="@Model.ProductId"
                                                                                 data-user-id="@User.GetCurrentUserId()"
                                                                                 data-action="Liked">
-                                                                            👍 لایک(<span id="dislike-count">@item.LikeCount</span>)
+                                                                            👍 لایک(<span
+                                                                                id="dislike-count">@item.LikeCount</span>)
                                                                         </button>
                                                                         <button class="dislike-btn btn btn-danger"
                                                                                 data-product-id="@Model.ProductId"
                                                                                 data-user-id="@User.GetCurrentUserId()"
                                                                                 data-action="Disliked">
-                                                                            👎 دیسلایک(<span id="dislike-count">@item.DissLikeCount</span>)
+                                                                            👎 دیسلایک(<span
+                                                                                id="dislike-count">@item.DissLikeCount</span>)
                                                                         </button>
 
                                                                     </div>
@@ -1237,7 +1275,11 @@
                                                             </div>
 
                                                             <div class="mb-5">
-                                                                <a class="link border-bottom-0" data-bs-toggle="collapse" href="#collapseAnswer01" role="button" aria-expanded="false" aria-controls="collapseAnswer01">ثبت پاسخ جدید <i class="ri-arrow-left-s-line"></i></a>
+                                                                <a class="link border-bottom-0"
+                                                                   data-bs-toggle="collapse" href="#collapseAnswer01"
+                                                                   role="button" aria-expanded="false"
+                                                                   aria-controls="collapseAnswer01">ثبت پاسخ جدید <i
+                                                                        class="ri-arrow-left-s-line"></i></a>
                                                             </div>
                                                             <div class="collapse" id="collapseAnswer01">
                                                                 <div class="rounded bg-light p-3">
@@ -1247,17 +1289,28 @@
                                                                                 به این پرسش پاسخ
                                                                                 دهید*
                                                                             </label>
-                                                                            <textarea rows="3" class="form-control" placeholder="متن پاسخ"></textarea>
+                                                                            <textarea rows="3" class="form-control"
+                                                                                      placeholder="متن پاسخ"></textarea>
                                                                         </div>
-                                                                        <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                                                        <div
+                                                                            class="d-flex align-items-center justify-content-between flex-wrap">
                                                                             <div class="mb-2">
-                                                                                ثبت پرسش به معنی موافقت با <a href="#" class="link border-bottom-0">
+                                                                                ثبت پرسش به معنی موافقت با <a href="#"
+                                                                                                              class="link border-bottom-0">
                                                                                     قوانین
                                                                                     انتشار در سایت
                                                                                 </a> است.
                                                                             </div>
                                                                             <div class="mb-2">
-                                                                                <button class="btn btn-sm btn-outline-danger me-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAnswer01" aria-expanded="false" aria-controls="collapseAnswer01">بستن</button>
+                                                                                <button
+                                                                                    class="btn btn-sm btn-outline-danger me-2"
+                                                                                    type="button"
+                                                                                    data-bs-toggle="collapse"
+                                                                                    data-bs-target="#collapseAnswer01"
+                                                                                    aria-expanded="false"
+                                                                                    aria-controls="collapseAnswer01">
+                                                                                    بستن
+                                                                                </button>
                                                                                 <button class="btn btn-sm btn-primary">
                                                                                     ثبت
                                                                                     پاسخ
@@ -1268,9 +1321,11 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="expandable-text-expand-btn justify-content-start text-sm">
+                                                        <div
+                                                            class="expandable-text-expand-btn justify-content-start text-sm">
                                                             <span class="show-more active">
-                                                                مشاهده پاسخ های دیگر <i class="ri-arrow-down-s-line ms-2"></i>
+                                                                مشاهده پاسخ های دیگر <i
+                                                                    class="ri-arrow-down-s-line ms-2"></i>
                                                             </span>
                                                             <span class="show-less d-none">
                                                                 مشاهده کمتر <i class="ri-arrow-up-s-line ms-2"></i>
@@ -1336,12 +1391,15 @@
                                 سبد خرید
                             </a>
                         </div>*@
-                        <div class="remodal remodal-sm remodal-is-initialized remodal-is-opened" data-remodal-id="add-question-modal" data-remodal-options="hashTracking: false" tabindex="-1">
+                        <div class="remodal remodal-sm remodal-is-initialized remodal-is-opened"
+                             data-remodal-id="add-question-modal" data-remodal-options="hashTracking: false"
+                             tabindex="-1">
                             <div class="remodal-header">
                                 <div class="remodal-title">پرسش خود را در مورد کالا مطرح کنید</div>
                                 <button data-remodal-action="close" class="remodal-close"></button>
                             </div>
-                            <partial name="_AddQuestionToProduct" model="new QuestionAnswerViewModel{ProductId=Model.ProductId}" />
+                            <partial name="_AddQuestionToProduct"
+                                     model="new QuestionAnswerViewModel{ProductId=Model.ProductId}"/>
 
                         </div>
                         <!-- end of mini-buy-box -->

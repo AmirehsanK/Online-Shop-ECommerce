@@ -91,7 +91,7 @@ public class DiscountRepository(ApplicationDbContext context) : IDiscountReposit
     public async Task<List<UserDiscountViewModel>> GetUserGiftCodesAsync(int userId)
     {
         return await context.UserDiscounts
-            .Where(ud => 
+            .Where(ud =>
                 ud.UserId == userId &&
                 ud.Discount.Code != null &&
                 ud.Discount.IsActive &&
@@ -107,7 +107,6 @@ public class DiscountRepository(ApplicationDbContext context) : IDiscountReposit
             })
             .ToListAsync();
     }
-
 
 
     public async Task AssignUserDiscountAsync(int userId, int discountId)

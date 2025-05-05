@@ -20,13 +20,16 @@
                             foreach (var favorite in favorites)
                             {
                                 <div class="product-list-item">
-                                <div class="thumbnail">
-                                <a asp-action="ProductDetail" asp-controller="Product" asp-route-productId="@favorite.ProductId">
-                                            <img src="@PathTools.FilePath@favorite.ImageUrl" alt="@favorite.ProductName">
+                                    <div class="thumbnail">
+                                        <a asp-action="ProductDetail" asp-controller="Product"
+                                           asp-route-productId="@favorite.ProductId">
+                                            <img src="@PathTools.FilePath@favorite.ImageUrl"
+                                                 alt="@favorite.ProductName">
                                         </a>
                                     </div>
                                     <div class="detail">
-                                        <a asp-action="ProductDetail" asp-controller="Product" asp-route-productId="@favorite.ProductId" class="title fs-7 fw-bold mb-2">
+                                        <a asp-action="ProductDetail" asp-controller="Product"
+                                           asp-route-productId="@favorite.ProductId" class="title fs-7 fw-bold mb-2">
                                             @favorite.ProductName
                                         </a>
                                         <div class="price fa-num">
@@ -34,7 +37,8 @@
                                             <span class="currency">تومان</span>
                                         </div>
                                         <div class="action">
-                                            <form method="post" asp-action="RemoveFavorite" asp-controller="Home" asp-area="UserPanel" asp-route-productId="@favorite.ProductId">
+                                            <form method="post" asp-action="RemoveFavorite" asp-controller="Home"
+                                                  asp-area="UserPanel" asp-route-productId="@favorite.ProductId">
                                                 <button type="submit" class="btn btn-circle btn-outline-light">
                                                     <i class="ri-close-line"></i>
                                                 </button>
@@ -43,7 +47,9 @@
                                     </div>
                                 </div>
                             }
-                            <a asp-action="FavoritesList" asp-controller="Home" asp-area="UserPanel" class="btn btn-primary mt-3">مشاهده همه</a>
+
+                            <a asp-action="FavoritesList" asp-controller="Home" asp-area="UserPanel"
+                               class="btn btn-primary mt-3">مشاهده همه</a>
                         }
                         else
                         {
