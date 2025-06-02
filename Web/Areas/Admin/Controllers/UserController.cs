@@ -83,7 +83,7 @@ public class UserController(IUserService userService) : AdminBaseController
     [InvokePermission(PermissionName.UpdateUser)]
     public async Task<IActionResult> EditUser(int userId)
     {
-        var model = await userService.GetUsersByIDAsync(userId);
+        var model = await userService.GetUserForEditAsync(userId);
         return View(model);
     }
 

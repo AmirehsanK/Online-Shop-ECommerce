@@ -2,9 +2,9 @@
     Layout = "_UserAuthenticationLayout";
 }
 @model Domain.ViewModel.User.LoginUserViewModel
-@inject IConfiguration configuration
+@inject IConfiguration Configuration
 @{
-    var siteKey = configuration["ReCaptchaSettings:SiteKey"];
+    var siteKey = Configuration["ReCaptchaSettings:SiteKey"];
 }
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script>
@@ -40,8 +40,11 @@
                     <div class="form-element-row mb-5">
                         <input asp-for="Email" type="text" class="form-control" placeholder="ایمیل">
                         <span asp-validation-for="Email" class="text-danger"></span>
+                        <br/>
+                        <br/>
                         <input asp-for="Password" type="password" class="form-control" placeholder="رمز عبور">
                         <span asp-validation-for="Password" class="text-danger"></span>
+                        <br/>
                         <label><input type="checkbox" asp-for="RememberMe"/>مرا به خاطر بسپار</label>
                     </div>
                     <!-- end of form-element -->
@@ -57,6 +60,7 @@
                     <a asp-action="ForgotPassword">رمز عبور خود را فراموش کرده اید؟</a>
                     <div class="form-element-row">
                         <a asp-action="SignUp" asp-controller="UserAuthentication" class="btn btn-primary">ثبت نام</a>
+                        <br/>
                     </div>
                     <!-- end of form-element -->
                     <!-- start of form-element -->

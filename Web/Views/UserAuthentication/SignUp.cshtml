@@ -2,9 +2,9 @@
 @{
     Layout = "_UserAuthenticationLayout";
 }
-@inject IConfiguration configuration
+@inject IConfiguration Configuration
 @{
-    var siteKey = configuration["ReCaptchaSettings:SiteKey"];
+    var siteKey = Configuration["ReCaptchaSettings:SiteKey"];
 }
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script>
@@ -41,11 +41,11 @@
                         <span asp-validation-for="PhoneNumber" class="alert-danger"></span>
                     </div>
                     <div class="form-element-row mb-5">
-                        <input asp-for="Password" type="text" class="form-control" placeholder="رمز عبور">
+                        <input asp-for="Password" type="password" class="form-control" placeholder="رمز عبور">
                         <span asp-validation-for="Password" class="alert-danger"></span>
                     </div>
                     <div class="form-element-row mb-5">
-                        <input asp-for="ConfirmPassword" type="text" class="form-control" placeholder="تکرار رمز عبور">
+                        <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="تکرار رمز عبور">
                         <span asp-validation-for="ConfirmPassword" class="alert-danger"></span>
                     </div>
                     <!-- end of form-element -->

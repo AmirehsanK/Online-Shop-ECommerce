@@ -6,11 +6,17 @@ using Domain.Enums;
 using Domain.Interface;
 using Domain.ViewModel.User;
 using Domain.ViewModel.User.Admin;
+using Microsoft.Extensions.Configuration;
 
 namespace Application.Services.Impelementation;
 
-public class UserService(IUserRepository userRepository) : IUserService
+public class UserService(IUserRepository userRepository,
+    IConfiguration configuration,
+    IEmailSender emailSender
+    ) : IUserService
 {
+    private readonly string _domainLink = configuration["ApplicationSettings:DomainLink"]!;
+
     #region User List
 
     public async Task<List<UserListViewModel>> GetUserListAsync()
@@ -137,59 +143,6 @@ public class UserService(IUserRepository userRepository) : IUserService
 
     #endregion
 
-    #region Password
-
-    public async Task<bool> IsPasswordCorrectAsync(string email, string password)
-    {
-        var x = await userRepository.GetUserByEmailAsync(email);
-        return PasswordHasher.VerifyHashedPassword(x.Password, password);
-    }
-
-    public async Task ChangePasswordAsync(int userId, string newPassword)
-    {
-        var user = await userRepository.GetUserByIdAsync(userId);
-
-        if (user == null)
-            throw new Exception("User not found");
-
-        user.Password = PasswordHasher.HashPassword(newPassword);
-
-        userRepository.UpdateUser(user);
-        await userRepository.SaveChangesAsync();
-    }
-
-    public async Task<ForgetPasswordEnum> ForgotPasswordEmailSenderAsync(string email)
-    {
-        var user = await userRepository.GetUserByEmailAsync(email);
-        if (user == null!)
-            return ForgetPasswordEnum.UserNotFound;
-        const string domainLink = "https://localhost:7271";
-        var mailBody = $"<a href=\"{domainLink}/ForgetPassword/{user.EmailActiveCode}\"> فراموشی رمز عبور</a>";
-        await EmailSender.SendEmail(user.Email, "فراموشی رمز عبور", mailBody);
-        return ForgetPasswordEnum.Success;
-    }
-
-    public async Task<ForgetPasswordTokenCheckEnum> ForgotPasswordTokenCheckerAsync(string token)
-    {
-        var exist = await userRepository.IsExistUserByGuidAsync(token);
-        return exist ? ForgetPasswordTokenCheckEnum.Success : ForgetPasswordTokenCheckEnum.Failed;
-    }
-
-    public async Task ResetPasswordAsync(string token, string newPassword)
-    {
-        var user = await userRepository.GetUserByGUIDAsync(token);
-        user.Password = PasswordHasher.HashPassword(newPassword);
-        userRepository.UpdateUser(user);
-        await userRepository.SaveChangesAsync();
-    }
-
-    public bool ComparePasswordAsync(string hashedPassword, string providedPassword)
-    {
-        return PasswordHasher.VerifyHashedPassword(hashedPassword, providedPassword);
-    }
-
-    #endregion
-
     #region User Retrieval
 
     public async Task<User> GetUserByEmailAsync(string email)
@@ -221,9 +174,8 @@ public class UserService(IUserRepository userRepository) : IUserService
             CreateDate = DateTime.UtcNow,
             EmailActiveCode = Guid.NewGuid().ToString("N")
         };
-        const string domainLink = "https://localhost:7271";
-        var mailBody = $"<a href=\"{domainLink}/EmailActive/{user.EmailActiveCode}\"> فعالسازی حساب کاربری </a>";
-        await EmailSender.SendEmail(user.Email, "فعال سازی حساب کاربری", mailBody);
+        var mailBody = $"<a href=\"{_domainLink}/EmailActive/{user.EmailActiveCode}\"> فعالسازی حساب کاربری </a>";
+        await emailSender.SendEmailAsync(user.Email, "فعال سازی حساب کاربری", mailBody);
         await userRepository.AddUserAsync(user);
         await userRepository.SaveChangesAsync();
     }
@@ -249,7 +201,6 @@ public class UserService(IUserRepository userRepository) : IUserService
         user.IsAdmin = model.IsAdmin;
         user.IsEmailActive = model.IsEmailActive;
         user.Address = model.Address;
-        user.Address = model.Address;
         user.Password = !string.IsNullOrEmpty(model.Password?.Trim())
             ? PasswordHasher.HashPassword(model.Password)
             : user.Password;
@@ -257,7 +208,7 @@ public class UserService(IUserRepository userRepository) : IUserService
         await userRepository.SaveChangesAsync();
     }
 
-    public async Task<EditUserViewModel> GetUsersByIDAsync(int userid)
+    public async Task<EditUserViewModel> GetUserForEditAsync(int userid)
     {
         var user = await userRepository.GetUserByIdAsync(userid);
         var edit = new EditUserViewModel

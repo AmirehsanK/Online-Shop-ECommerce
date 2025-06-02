@@ -60,6 +60,10 @@ public static class DiContainer
         services.AddScoped<IAdminService, AdminService>();
         services.AddScoped<IPermissionService, PermissionService>();
         services.AddScoped<IFavoritesService, FavoritesService>();
+        services.AddScoped<IPasswordService, PasswordService>();
+        services.AddScoped<IPasswordHasher, PasswordHasherService>();
+        services.AddScoped<IRecaptchaVerifier, RecaptchaVerifierService>();
+        services.AddScoped<IEmailSender, EmailSenderService>();
 
         #endregion
 

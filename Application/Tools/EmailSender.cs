@@ -5,34 +5,22 @@ namespace Application.Tools;
 
 public static class EmailSender
 {
-    public static async Task<bool> SendEmail(string to, string subject, string body)
+    public static void Send(string to, string subject, string body)
     {
-        var email = "Your Email Address";
-        var password = "Your Password";
+        MailMessage mail = new MailMessage();
+        SmtpClient smtpServer = new SmtpClient();
+        mail.From = new MailAddress("your mail", "your name");
+        mail.To.Add(to);
+        mail.Subject = subject;
+        mail.Body = body;
+        mail.IsBodyHtml = true;
 
-        try
-        {
-            var mail = new MailMessage();
-            var smtpServer = new SmtpClient("smtp.gmail.com");
+        smtpServer.Host = "smtp.gmail.com";
+        smtpServer.Port = 587;
+        smtpServer.EnableSsl = true;
+        smtpServer.Credentials = new System.Net.NetworkCredential("your mail", "password");
 
-            mail.From = new MailAddress(email, "فروشگاه ما");
-            mail.To.Add(to);
-            mail.Subject = subject;
-            mail.Body = body;
-            mail.IsBodyHtml = true;
+        smtpServer.Send(mail);
 
-            smtpServer.Port = 587;
-            smtpServer.EnableSsl = true;
-
-
-            smtpServer.Credentials = new NetworkCredential(email, password);
-            smtpServer.Send(mail);
-
-            return true;
-        }
-        catch (Exception exception)
-        {
-            return false;
-        }
     }
 }

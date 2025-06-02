@@ -2,6 +2,7 @@
 
 namespace Application.Tools;
 
+
 public static class RegexNumber
 {
     public static bool IsValidMobileNumber(this string input)

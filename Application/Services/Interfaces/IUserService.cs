@@ -49,17 +49,6 @@ public interface IUserService
 
     #endregion
 
-    #region Password Management
-
-    Task<bool> IsPasswordCorrectAsync(string email, string password);
-    bool ComparePasswordAsync(string hashedPassword, string providedPassword);
-    Task ChangePasswordAsync(int userId, string newPassword);
-    Task<ForgetPasswordEnum> ForgotPasswordEmailSenderAsync(string email);
-    Task<ForgetPasswordTokenCheckEnum> ForgotPasswordTokenCheckerAsync(string token);
-    Task ResetPasswordAsync(string token, string newPassword);
-
-    #endregion
-
     #region User Retrieval
 
     Task<User> GetUserByEmailAsync(string email);
@@ -78,7 +67,7 @@ public interface IUserService
     #region User Editing
 
     Task EditUserAsync(EditUserViewModel model);
-    Task<EditUserViewModel> GetUsersByIDAsync(int userid);
+    Task<EditUserViewModel> GetUserForEditAsync(int userid);
 
     #endregion
 }

@@ -53,8 +53,7 @@ public class ApplicationDbContext : DbContext
             new Subject { Id = 4, Name = "فروش" },
             new Subject { Id = 5, Name = "گارانتی" },
             new Subject { Id = 6, Name = "مدیریت" },
-            new Subject { Id = 7, Name = "مالی" },
-            new Subject { Id = 8, Name = "موضوعات" }
+            new Subject { Id = 7, Name = "مالی" }
         );
 
         #endregion

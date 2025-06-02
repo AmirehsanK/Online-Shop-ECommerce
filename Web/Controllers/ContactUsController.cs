@@ -1,46 +1,60 @@
 using Application.DTO;
-using Application.Services.Interfaces;
-using Application.Tools;
+using Application.Services.Interfaces; 
 using Microsoft.AspNetCore.Mvc;
 
-namespace Web.Controllers;
 
-[Route("contact-us")]
-public class ContactUsController(IContactUsService contactUsService, IConfiguration configuration) : SiteBaseController
+namespace Web.Controllers
 {
-    #region Main page
-
-    [HttpGet]
-    public IActionResult ContactUs()
+    [Route("contact-us")]
+    public class ContactUsController : SiteBaseController 
     {
-        return View();
-    }
+        private readonly IContactUsService _contactUsService;
+        private readonly IRecaptchaVerifier _recaptchaVerifier;
 
-    #endregion
-
-    #region ContactUs
-
-    [HttpPost]
-    public async Task<IActionResult> ContactUs(ContactMessageDto dto)
-    {
-        #region Validation
-
-        var googleRecaptchaToken = Request.Form["g-recaptcha-response"].ToString();
-        var secretKey = configuration["ReCaptchaSettings:SecretKey"]!;
-        var verificationUrl = configuration["ReCaptchaSettings:VerificationUrl"]!;
-        var isValid = await VerifyRecaptcha.VerifyRecaptchaV3(googleRecaptchaToken, secretKey, verificationUrl);
-        if (!isValid)
+        public ContactUsController(
+            IContactUsService contactUsService,
+            IRecaptchaVerifier recaptchaVerifier)
         {
-            TempData[ErrorMessage] = "کپچا را کامل کنید";
-            return View();
+            _contactUsService = contactUsService;
+            _recaptchaVerifier = recaptchaVerifier;
+        }
+
+        #region Main page
+
+        [HttpGet]
+        public IActionResult ContactUsPage() 
+        {
+            return View("ContactUs"); 
         }
 
         #endregion
 
-        await contactUsService.AddMessage(dto);
-        TempData[SuccessMessage] = "پیام شما با موفقیت ارسال شد";
-        return RedirectToAction("Index", "Home");
-    }
+        #region ContactUs Action
 
-    #endregion
+        [HttpPost]
+        public async Task<IActionResult> SubmitContactUs(ContactMessageDto dto)
+        {
+            #region Validation
+
+            var googleRecaptchaToken = Request.Form["g-recaptcha-response"].ToString();
+            
+            string? userIpAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+            
+            var isValid = await _recaptchaVerifier.IsRecaptchaValidAsync(googleRecaptchaToken, userIpAddress);
+            
+            if (!isValid)
+            {
+                TempData["ErrorMessage"] = "کپچا را کامل کنید"; 
+                return View("ContactUs", dto);
+            }
+
+            #endregion
+
+            await _contactUsService.AddMessage(dto); 
+            TempData["SuccessMessage"] = "پیام شما با موفقیت ارسال شد";
+            return RedirectToAction("Index", "Home");
+        }
+
+        #endregion
+    }
 }

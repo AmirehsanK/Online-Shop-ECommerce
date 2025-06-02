@@ -7,7 +7,9 @@ using Domain.ViewModel.ContactUs;
 
 namespace Application.Services.Impelementation;
 
-public class ContactUsService(IContactUsRepository contactUsRepository) : IContactUsService
+public class ContactUsService(IContactUsRepository contactUsRepository,
+    IEmailSender emailSender
+) : IContactUsService
 {
     #region Subjects
 
@@ -85,7 +87,7 @@ public class ContactUsService(IContactUsRepository contactUsRepository) : IConta
             message.AdminResponse = messageResponse;
             message.RespondedAt = DateTime.UtcNow;
             await contactUsRepository.UpdateMessageAsync(message);
-            await EmailSender.SendEmail(message.Email, message.Subject, messageResponse);
+            await emailSender.SendEmailAsync(message.Email, message.Subject, messageResponse);
         }
     }
 

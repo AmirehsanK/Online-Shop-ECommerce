@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Web.Areas.UserPanel.Controllers;
 
 [Authorize]
-public class HomeController(IUserService userService, INotificationService notificationService)
+public class HomeController(IUserService userService, INotificationService notificationService,IPasswordService passwordService)
     : UserPanelBaseController
 {
     #region Index
@@ -48,16 +48,16 @@ public class HomeController(IUserService userService, INotificationService notif
 
         var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-        var user = await userService.GetUsersByIDAsync(currentUserId);
+        var user = await userService.GetUserForEditAsync(currentUserId);
 
 
-        if (!userService.ComparePasswordAsync(user.Password!, changePassword.OldPassword))
+        if (!await passwordService.ComparePasswordAsync(user.Password!, changePassword.OldPassword))
         {
             ModelState.AddModelError("oldPassword", "کلمه عبور فعلی صحیح نمیباشد");
             return View(changePassword);
         }
 
-        await userService.ChangePasswordAsync(currentUserId, changePassword.NewPassword);
+        await passwordService.ChangePasswordAsync(currentUserId, changePassword.NewPassword);
 
         ViewBag.IsSuccess = true;
         return View();
@@ -78,8 +78,7 @@ public class HomeController(IUserService userService, INotificationService notif
     }
 
     #endregion
-
-
+    
     #region AddTransactionToWallet
 
     [HttpGet]
@@ -96,7 +95,7 @@ public class HomeController(IUserService userService, INotificationService notif
     [HttpGet]
     public async Task<IActionResult> UserInfo()
     {
-        var model = await userService.GetUsersByIDAsync(User.GetCurrentUserId());
+        var model = await userService.GetUserForEditAsync(User.GetCurrentUserId());
         return View(model);
     }
 
