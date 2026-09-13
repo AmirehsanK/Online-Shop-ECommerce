@@ -17,8 +17,8 @@ public class PasswordService(
 
     public async Task<bool> IsPasswordCorrectAsync(string email, string password)
     {
-        var x = await userRepository.GetUserByEmailAsync(email);
-        return await passwordHasher.VerifyPasswordAsync(x.Password, password);
+        var user = await userRepository.GetUserByEmailAsync(email);
+        return user != null && await passwordHasher.VerifyPasswordAsync(user.Password, password);
     }
 
     public async Task ChangePasswordAsync(int userId, string newPassword)
@@ -63,6 +63,9 @@ public class PasswordService(
         if (user == null)
             return false;
         user.Password = await passwordHasher.EncodePasswordAsync(newPassword);
+        // The token is the only thing the emailed link carries. Replace it so the link stops
+        // working once used - otherwise anyone who later finds the email can reset again.
+        user.EmailActiveCode = Guid.NewGuid().ToString("N");
         userRepository.UpdateUser(user);
         await userRepository.SaveChangesAsync();
         return true;

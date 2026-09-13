@@ -4,9 +4,13 @@
 @model Application.DTO.ContactMessageDto
 @inject IConfiguration configuration
 @{
-    var siteKey = configuration["ReCaptchaSettings:SiteKey"];
+    var siteKey = configuration["GoogleRecaptcha:SiteKey"];
+    var recaptchaEnabled = configuration.GetValue("GoogleRecaptcha:Enabled", true);
 }
-<script src="https://www.google.com/recaptcha/api.js"></script>
+@if (recaptchaEnabled)
+{
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+}
 <script>
     function onSubmit(token) {
         document.getElementById("ContactUsForm_id").submit();
@@ -79,10 +83,10 @@
                             </div>
                             <div class="col-12 text-end">
                                 <div class="btn btn-primary px-4">
-                                    <button class="g-recaptcha btn btn-primary"
-                                            data-sitekey="@siteKey"
-                                            data-callback="onSubmit"
-                                            data-action="submit">
+                                    <button class="@(recaptchaEnabled ? "g-recaptcha " : "")btn btn-primary"
+                                            data-sitekey="@(recaptchaEnabled ? siteKey : null)"
+                                            data-callback="@(recaptchaEnabled ? "onSubmit" : null)"
+                                            data-action="@(recaptchaEnabled ? "submit" : null)">
                                         ثبت و ارسال
                                     </button>
                                 </div>

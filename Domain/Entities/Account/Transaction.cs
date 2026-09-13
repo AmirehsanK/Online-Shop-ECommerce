@@ -14,6 +14,13 @@ public class Transaction : BaseEntity
 
     public bool IsPay { get; set; }
 
+    /// <summary>
+    /// The basket this payment is for, or null for a wallet top-up. The payment callback used
+    /// to guess from whatever was in the basket, so topping up a wallet also marked the
+    /// basket as paid.
+    /// </summary>
+    public int? OrderId { get; set; }
+
 
     #region Relation
 

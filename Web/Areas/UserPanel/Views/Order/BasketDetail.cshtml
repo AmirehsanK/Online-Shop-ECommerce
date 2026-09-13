@@ -1,4 +1,4 @@
-﻿@using Application.Tools
+@using Application.Tools
 @model List<Domain.ViewModel.Order.BasketDetailViewModel>
 @{
     ViewData["Title"] = "جزییات سبد خرید";
@@ -17,7 +17,7 @@
                                 data-bs-target="#nav-1" type="button" role="tab" aria-controls="nav-1"
                                 aria-selected="true">
                             سبد خرید
-                            <span class="counter fa-num">3</span>
+                            <span class="counter fa-num">@(Model?.Sum(u => u.ProductCount) ?? 0)</span>
                         </button>
                     </div>
                 </nav>
@@ -131,16 +131,9 @@
                     <!-- start of checkout-bill -->
                     <div class="checkout-bill ui-box bg-white mb-5">
                         <div class="checkout-bill-row">
-                            <div class="checkout-bill-row-label">قیمت کالاها (۴)</div>
+                            <div class="checkout-bill-row-label">قیمت کالاها (<span class="fa-num">@(Model?.Sum(u => u.ProductCount) ?? 0)</span>)</div>
                             <div class="checkout-bill-row-value">
-                                <span class="fs-6">۴۲,۴۲۰,۰۰۰</span> <span class="currency">تومان</span>
-                            </div>
-                        </div>
-                        <div class="checkout-bill-row">
-                            <div class="checkout-bill-row-label">تخفیف کالاها</div>
-                            <div class="checkout-bill-row-value">
-                                <span class="fs-6 text-danger">۵,۰۰۰</span>
-                                <span class="currency text-danger">تومان</span>
+                                <span class="fs-6 fa-num">@(Model?.Sum(u => u.FinallPrice).ToString("#,0"))</span> <span class="currency">تومان</span>
                             </div>
                         </div>
                         <div class="checkout-bill-row">
@@ -157,16 +150,6 @@
                         <div class="checkout-bill-row checkout-bill-action">
                             <a asp-area="UserPanel" asp-controller="Order" asp-action="ChooseAddress"
                                class="btn btn-block btn-primary">ادامه فرایند خرید</a>
-                        </div>
-                        <div class="checkout-bill-row checkout-bill-footer">
-                            <div class="checkout-bill-row-label">
-                                    <span class="d-flex">
-                                        <i class="ri-copper-coin-fill text-warning me-1"></i>
-                                        <span class="fs-7">امتیاز باشگاه مشتریان</span>
-                                    </span>
-                            </div>
-                            <div class="checkout-bill-row-value">۱۵۰ <span class="fs-7 fw-bold text-muted">امتیاز</span>
-                            </div>
                         </div>
                     </div>
                     <!-- end of checkout-bill -->

@@ -1,4 +1,4 @@
-﻿@using Application.Tools
+@using Application.Tools
 @using Domain.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Domain.ViewModel.User.Admin.AdminPanelViewModel
@@ -32,7 +32,7 @@
                     <div class="card">
                         <div class="card-body pb-0">
                             <span class="d-block fw-semibold mb-1">سفارشات</span>
-                            <h3 class="card-title mb-1">K @Model.OrderAmount</h3>
+                            <h3 class="card-title mb-1">@Model.OrderAmount</h3>
                         </div>
                         <div id="orderChart" class="mb-3"></div>
                     </div>
@@ -62,7 +62,7 @@
                                 </div>
                             </div>
                             <span>فروش</span>
-                            <h3 class="card-title text-nowrap mb-1">@Model.SalesAmount</h3>
+                            <h3 class="card-title text-nowrap mb-1">@Model.SalesAmount.ToString("#,0")</h3>
                             <span class="currency">تومان</span>
                         </div>
                     </div>

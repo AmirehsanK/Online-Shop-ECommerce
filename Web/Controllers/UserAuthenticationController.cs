@@ -52,12 +52,12 @@ namespace Web.Controllers
             var result = await _passwordService.ForgotPasswordEmailSenderAsync(mailViewModel.Email);
             switch (result)
             {
+                // Same answer whether or not the account exists, so this form cannot be used
+                // to find out which email addresses are registered.
                 case ForgetPasswordEnum.Success:
-                    TempData[SuccessMessage] = "لینک تغییر رمز عبور با موفقیت به ایمیل شما ارسال شد";
-                    return RedirectToAction(nameof(Login));
                 case ForgetPasswordEnum.UserNotFound:
-                    ViewBag.message = "حساب کاربری با این ایمیل یافت نشد"; 
-                    return View(mailViewModel);
+                    TempData[SuccessMessage] = "اگر حسابی با این ایمیل وجود داشته باشد، لینک تغییر رمز عبور برای آن ارسال شد";
+                    return RedirectToAction(nameof(Login));
                 case ForgetPasswordEnum.EmailSendFailed:
                 default: // Consolidate default and EmailSendFailed
                     ViewBag.message = "خطایی رخ داده است لطفا دوباره تلاش کنید";
@@ -78,25 +78,7 @@ namespace Web.Controllers
             return RedirectToAction(nameof(Login)); 
         }
         
-        // This GET action seems problematic as it tries to activate an email with a token
-        // and then redirects to login. It might be confused with email activation.
-        // If it's intended to show a form for password change after token validation,
-        // the ForgotPasswordChangePassword(string token) GET action should render that form.
-        // I'm commenting it out as its purpose is unclear and potentially conflicting.
-        
-        [HttpGet("ForgetPassword")] // This route conflicts with the POST below if not distinguished by parameters/name
-        public async Task<IActionResult> ForgotPasswordChanger()
-        {
-            // This logic seems to belong elsewhere or needs rethinking.
-            // 'TempData["Token"] as string' is unreliable across requests if not set carefully.
-            // 'userService.EmailActivatorAsync' seems out of place for password reset.
-            var token = TempData["Token"] as string; 
-            var user = await _userService.EmailActivatorAsync(token!);
-            return RedirectToAction(nameof(Login));
-        }
-        
-
-        [HttpPost("ResetPasswordWithToken")] 
+        [HttpPost("ResetPasswordWithToken")]
         public async Task<IActionResult> ResetPasswordWithToken(ForgetPasswordUserViewModel model)
         {
             if (!ModelState.IsValid)

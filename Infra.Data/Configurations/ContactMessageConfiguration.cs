@@ -14,7 +14,7 @@ public class ContactMessageConfiguration : IEntityTypeConfiguration<ContactMessa
         builder.Property(m => m.Email).IsRequired().HasMaxLength(100);
         builder.Property(m => m.Message).IsRequired();
         builder.Property(m => m.IsAnswered).HasDefaultValue(false);
-        builder.Property(m => m.CreatedAt).HasDefaultValueSql("GETDATE()");
+        builder.Property(m => m.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
         builder.Property(m => m.AdminResponse).HasMaxLength(500);
         builder.Property(m => m.RespondedAt).IsRequired(false);
     }

@@ -5,11 +5,6 @@
     Layout = "_OrderLayout";
 
 
-    // گرفتن UserId از کوکی یا سشن
-
-    var userId = User.GetCurrentUserId();
-    var basket = ViewData["BasketDetail"] as List<BasketDetailViewModel>;
-    var basketAmount = basket.Sum(u => u.FinallPrice);
 }
 <main class="page-content">
     <div class="container">
@@ -46,6 +41,7 @@
                     </div>
                 </div>
                 <button id="payButton" class="btn btn-primary btn-block">پرداخت</button>
+                <form id="walletPaymentForm" asp-area="UserPanel" asp-controller="Order" asp-action="PayWithWallet" method="post"></form>
             </div>
         </div>
     </div>
@@ -55,8 +51,6 @@
     <script>
         document.getElementById('payButton').addEventListener('click', function () {
             const selectedPayment = document.querySelector('input[name="checkoutPayment"]:checked');
-            const basketAmount = @basketAmount;
-            const userId = '@userId';
 
             if (!selectedPayment) {
                 alert('لطفاً روش پرداخت را انتخاب کنید.');
@@ -67,8 +61,8 @@
                 // پرداخت اینترنتی
                 window.location.href = `/Start-pay`;
             } else if (selectedPayment.id === "checkoutPayment02") {
-                // پرداخت از کیف پول
-                window.location.href = `/UserPanel/Order/CheckWalletBalance?amount=${basketAmount}&userId=${userId}`;
+                // پرداخت از کیف پول - the server works out the amount and the user itself
+                document.getElementById('walletPaymentForm').submit();
             }
         });
     </script>

@@ -83,5 +83,15 @@ public class ProductColorRepository(ApplicationDbContext context) : IProductColo
             .ToListAsync();
     }
 
+    public async Task<bool> TryReserveOneAsync(int productColorId)
+    {
+        // One conditional UPDATE instead of read-then-write: two shoppers taking the last
+        // unit at the same moment cannot both succeed, and stock can never go negative.
+        var updated = await context.ProductColors
+            .Where(c => c.Id == productColorId && c.Count > 0)
+            .ExecuteUpdateAsync(s => s.SetProperty(c => c.Count, c => c.Count - 1));
+        return updated == 1;
+    }
+
     #endregion
 }

@@ -1,18 +1,20 @@
-﻿using System.Text.Encodings.Web;
+using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using Application.Security;
 using Application.Services.Impelementation;
 using Application.Services.Interfaces;
+using Application.Tools;
 using Domain.Interface;
 using Infra.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IOC.DiContainer;
 
 public static class DiContainer
 {
-    public static void IOcContainer(this IServiceCollection services)
+    public static void IOcContainer(this IServiceCollection services, IConfiguration configuration)
     {
         #region Repositories
 
@@ -23,7 +25,6 @@ public static class DiContainer
         services.AddScoped<IFileHandleRepository, FileHandleRepository>();
         services.AddScoped<IDiscountRepository, DiscountRepository>();
         services.AddScoped<IProductSpecificationRepository, ProductSpecificationRepository>();
-        services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IFaqRepository, FaqRepository>();
         services.AddScoped<IProductGalleryRepository, ProductGalleryRepository>();
         services.AddScoped<INotificationRepository, NotificationRepository>();
@@ -33,15 +34,14 @@ public static class DiContainer
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IPermissionRepository, PermissionRepository>();
         services.AddScoped<IFavoritesRepository, FavoritesRepository>();
-
         services.AddScoped<ITransactionRepository, TransactionRepository>();
 
         #endregion
 
         #region Services
 
+        services.AddScoped<ICheckoutService, CheckoutService>();
         services.AddScoped<ITransactionService, TransactionService>();
-        services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ITicketService, TicketService>();
@@ -61,9 +61,28 @@ public static class DiContainer
         services.AddScoped<IPermissionService, PermissionService>();
         services.AddScoped<IFavoritesService, FavoritesService>();
         services.AddScoped<IPasswordService, PasswordService>();
-        services.AddScoped<IPasswordHasher, PasswordHasherService>();
+        services.AddSingleton<IPasswordHasher, PasswordHasherService>();
         services.AddScoped<IRecaptchaVerifier, RecaptchaVerifierService>();
-        services.AddScoped<IEmailSender, EmailSenderService>();
+
+        #endregion
+
+        #region Email
+
+        services.Configure<SmtpOptions>(configuration.GetSection(SmtpOptions.SectionName));
+        if (string.IsNullOrWhiteSpace(configuration[$"{SmtpOptions.SectionName}:Host"]))
+            services.AddScoped<IEmailSender, LoggingEmailSender>();
+        else
+            services.AddScoped<IEmailSender, EmailSenderService>();
+
+        #endregion
+
+        #region Payment
+
+        services.Configure<PaymentOptions>(configuration.GetSection(PaymentOptions.SectionName));
+        if (string.Equals(configuration[$"{PaymentOptions.SectionName}:Provider"], "Demo", StringComparison.OrdinalIgnoreCase))
+            services.AddScoped<IPaymentGateway, DemoPaymentGateway>();
+        else
+            services.AddHttpClient<IPaymentGateway, NovinoPaymentGateway>();
 
         #endregion
 

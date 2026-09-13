@@ -29,9 +29,19 @@ public class RecaptchaVerifierService : IRecaptchaVerifier
             }
 
             _httpClient = httpClientFactory.CreateClient("RecaptchaVerifier");
-            _recaptchaSecretKey = configuration["GoogleRecaptcha:SecretKey"]
-                                  ?? throw new InvalidOperationException("Google reCAPTCHA Secret Key is not configured. Please set 'GoogleRecaptcha:SecretKey' in configuration.");
+
+            // Off only when explicitly configured (local runs and the Docker demo, which have no
+            // registered domain for Google to issue keys to). When on, a missing key is an error
+            // rather than a silent pass.
+            _enabled = configuration.GetValue("GoogleRecaptcha:Enabled", true);
+            _recaptchaSecretKey = configuration["GoogleRecaptcha:SecretKey"] ?? "";
+            if (_enabled && string.IsNullOrWhiteSpace(_recaptchaSecretKey))
+                throw new InvalidOperationException(
+                    "Google reCAPTCHA is enabled but 'GoogleRecaptcha:SecretKey' is not set. " +
+                    "Set the key (user secrets or an environment variable), or GoogleRecaptcha:Enabled=false.");
         }
+
+        private readonly bool _enabled;
 
         /// <summary>
         /// Verifies the reCAPTCHA token asynchronously by sending a request to Google's API.
@@ -41,6 +51,11 @@ public class RecaptchaVerifierService : IRecaptchaVerifier
         /// <returns>True if the reCAPTCHA token is valid according to Google, otherwise false.</returns>
         public async Task<bool> IsRecaptchaValidAsync(string recaptchaToken, string? userIpAddress = null)
         {
+            if (!_enabled)
+            {
+                return true;
+            }
+
             if (string.IsNullOrEmpty(recaptchaToken))
             {
                 return false;

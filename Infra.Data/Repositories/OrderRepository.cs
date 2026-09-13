@@ -67,6 +67,19 @@ public class OrderRepository(ApplicationDbContext context) : IOrderRepository
             .FirstOrDefaultAsync();
     }
 
+    public async Task<Order?> GetOrderWithDetailsAsync(int orderId)
+    {
+        return await context.Orders
+            .Include(o => o.OrderDetails)
+            .ThenInclude(d => d.Product)
+            .FirstOrDefaultAsync(o => o.Id == orderId);
+    }
+
+    public async Task<int> CountPaidOrdersAsync()
+    {
+        return await context.Orders.CountAsync(o => o.IsFinally && !o.IsDeleted);
+    }
+
     #endregion
 
     #region Order Detail Methods

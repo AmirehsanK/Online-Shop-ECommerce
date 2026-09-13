@@ -22,6 +22,8 @@ public interface IOrderRepository
     void UpdateOrderDetail(OrderDetail orderDetail);
     Task AddOrderDetail(OrderDetail orderDetail);
     Task<Order> GetUserBasketDetail(int userId);
+    Task<Order?> GetOrderWithDetailsAsync(int orderId);
+    Task<int> CountPaidOrdersAsync();
 
     #endregion
 }

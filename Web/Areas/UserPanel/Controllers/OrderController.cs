@@ -1,17 +1,16 @@
-﻿using Application.Services.Interfaces;
+using Application.Services.Interfaces;
 using Application.Tools;
 using Domain.Enums;
-using Domain.ViewModel.AddWallet;
 using Domain.ViewModel.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Areas.UserPanel.Controllers;
 
+[Authorize]
 public class OrderController(
     IOrderService orderService,
-    IUserService userService,
-    IConfiguration configuration,
-    ITransactionService transactionService) : UserPanelBaseController
+    ICheckoutService checkoutService) : UserPanelBaseController
 {
     [HttpGet("BasketDetail")]
     public async Task<IActionResult> BasketDetail()
@@ -20,29 +19,26 @@ public class OrderController(
         return View(model);
     }
 
-
     #region AddToBasket
 
     [HttpPost]
     public async Task<IActionResult> AddToCart(int productId, int? productColorId)
     {
-        if (User.Identity.IsAuthenticated)
+        var res = await orderService.AddProductToOrder(productId, User.GetCurrentUserId(), productColorId);
+        switch (res)
         {
-            var res = await orderService.AddProductToOrder(productId, User.GetCurrentUserId(), productColorId);
-            switch (res)
-            {
-                case AddToBasketResult.Success:
-                    if (productColorId != null) await orderService.MinuesColorCount(productColorId.Value);
-                    TempData[SuccessMessage] = "محصول به سبد خرید اضافه شد";
-                    return Redirect(HttpContext.Response.Headers.Referer);
-
-                case AddToBasketResult.Failed:
-                    TempData[ErrorMessage] = "با خطا مواجه شد";
-                    return Redirect(HttpContext.Response.Headers.Referer);
-            }
+            case AddToBasketResult.Success:
+                TempData[SuccessMessage] = "محصول به سبد خرید اضافه شد";
+                break;
+            case AddToBasketResult.OutOfStock:
+                TempData[ErrorMessage] = "موجودی این محصول به پایان رسیده است";
+                break;
+            default:
+                TempData[ErrorMessage] = "با خطا مواجه شد";
+                break;
         }
 
-        return RedirectToAction("login", "UserAuthentication");
+        return RedirectToReferer();
     }
 
     #endregion
@@ -53,28 +49,31 @@ public class OrderController(
         return View();
     }
 
-    public async Task<IActionResult> CheckWalletBalance(int amount, int UserId)
+    #region Pay From Wallet
+
+    /// <summary>
+    /// Pays the signed-in user's basket from their wallet. This used to be a GET that took
+    /// the amount and the user id from the query string, so anyone could pay any basket for
+    /// one toman, or spend someone else's balance.
+    /// </summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> PayWithWallet()
     {
-        var res = await transactionService.GetUserBalanceWallet(UserId, amount);
-        switch (res)
+        switch (await checkoutService.PayBasketFromWalletAsync(User.GetCurrentUserId()))
         {
-            case WalletStatusBalance.IsOkay:
-
+            case WalletCheckoutResult.Paid:
                 return RedirectToAction("SuccessPayment", "Payment");
-
-            case WalletStatusBalance.NoneBalance:
-                var wallet = new AddWalletViewModel
-                {
-                    Amount = amount,
-                    UserId = UserId
-                };
-                return RedirectToAction("StartPay", "Payment", wallet);
-                break;
+            case WalletCheckoutResult.InsufficientBalance:
+                TempData[ErrorMessage] = "موجودی کیف پول کافی نیست";
+                return RedirectToAction(nameof(ChoosePaymentWay));
+            default:
+                TempData[ErrorMessage] = "سبد خرید شما خالی است";
+                return RedirectToAction(nameof(BasketDetail));
         }
-
-
-        return View();
     }
+
+    #endregion
 
     #region ChooseAddrress
 
@@ -99,4 +98,12 @@ public class OrderController(
     }
 
     #endregion
+
+    private IActionResult RedirectToReferer()
+    {
+        var referer = Request.Headers.Referer.ToString();
+        return Url.IsLocalUrl(referer) || Uri.TryCreate(referer, UriKind.Absolute, out var uri) && uri.Host == Request.Host.Host
+            ? Redirect(referer)
+            : RedirectToAction(nameof(BasketDetail));
+    }
 }

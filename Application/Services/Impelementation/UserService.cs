@@ -1,4 +1,4 @@
-﻿using Application.Security;
+using Application.Security;
 using Application.Services.Interfaces;
 using Application.Tools;
 using Domain.Entities.Account;
@@ -12,7 +12,8 @@ namespace Application.Services.Impelementation;
 
 public class UserService(IUserRepository userRepository,
     IConfiguration configuration,
-    IEmailSender emailSender
+    IEmailSender emailSender,
+    IPasswordHasher passwordHasher
     ) : IUserService
 {
     private readonly string _domainLink = configuration["ApplicationSettings:DomainLink"]!;
@@ -51,7 +52,7 @@ public class UserService(IUserRepository userRepository,
             CreateDate = DateTime.Now,
             IsDeleted = false,
             IsEmailActive = model.IsEmailActive,
-            Password = model.Password
+            Password = await passwordHasher.EncodePasswordAsync(model.Password)
         };
         await userRepository.AddUserAsync(user);
         await userRepository.SaveChangesAsync();
@@ -100,8 +101,19 @@ public class UserService(IUserRepository userRepository,
         var user = await userRepository.GetUserByEmailAsync(model.Email);
         if (user != null!)
         {
-            if (PasswordHasher.VerifyHashedPassword(user.Password, model.Password))
+            if (await passwordHasher.VerifyPasswordAsync(user.Password, model.Password))
+            {
+                // The plain password is only ever known here, so this is where hashes from
+                // older formats or weaker settings get upgraded.
+                if (passwordHasher.NeedsRehash(user.Password))
+                {
+                    user.Password = await passwordHasher.EncodePasswordAsync(model.Password);
+                    userRepository.UpdateUser(user);
+                    await userRepository.SaveChangesAsync();
+                }
+
                 return user.IsEmailActive ? LoginUserEnum.Success : LoginUserEnum.UserNotActive;
+            }
 
             return LoginUserEnum.PasswordInvalid;
         }
@@ -166,7 +178,7 @@ public class UserService(IUserRepository userRepository,
             FirstName = model.FirstName,
             LastName = model.LastName,
             Email = model.Email,
-            Password = PasswordHasher.HashPassword(model.Password),
+            Password = await passwordHasher.EncodePasswordAsync(model.Password),
             PhoneNumber = model.PhoneNumber,
             IsAdmin = false,
             IsEmailActive = false,
@@ -202,7 +214,7 @@ public class UserService(IUserRepository userRepository,
         user.IsEmailActive = model.IsEmailActive;
         user.Address = model.Address;
         user.Password = !string.IsNullOrEmpty(model.Password?.Trim())
-            ? PasswordHasher.HashPassword(model.Password)
+            ? await passwordHasher.EncodePasswordAsync(model.Password)
             : user.Password;
         userRepository.UpdateUser(user);
         await userRepository.SaveChangesAsync();
@@ -218,12 +230,35 @@ public class UserService(IUserRepository userRepository,
             Email = user.Email,
             IsAdmin = user.IsAdmin,
             IsEmailActive = user.IsEmailActive,
-            Password = user.Password,
+            // Never send the stored hash to a form: it came back on save as a "new"
+            // password and was hashed again, locking the user out.
+            Password = null,
             Id = userid,
             Address = user.Address,
             PhoneNumber = user.PhoneNumber
         };
         return edit;
+    }
+
+    #endregion
+
+    #region Profile
+
+    /// <summary>
+    /// Updates only what a customer may change about themselves. The profile form used to be
+    /// bound straight into <see cref="EditUserAsync"/>, so a user could post IsAdmin=true or
+    /// another person's email, and fields the form did not send (IsEmailActive) were reset
+    /// to false - deactivating every account that saved its profile.
+    /// </summary>
+    public async Task UpdateProfileAsync(int userId, EditUserViewModel model)
+    {
+        var user = await userRepository.GetUserByIdAsync(userId);
+        user.FirstName = model.FirstName;
+        user.LastName = model.LastName;
+        user.PhoneNumber = model.PhoneNumber;
+        user.Address = model.Address;
+        userRepository.UpdateUser(user);
+        await userRepository.SaveChangesAsync();
     }
 
     #endregion

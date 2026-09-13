@@ -1,10 +1,14 @@
-﻿using Domain.Entities.Permission;
+using Domain.Entities.Permission;
 using Infra.Data.Statics;
 
 namespace Infra.Data.Seeds;
 
 public class PermissionSeeds
 {
+    // Seed rows must be identical on every build: a value like DateTime.UtcNow makes EF
+    // see a model change each time, and EF Core 9+ refuses to migrate while one is pending.
+    private static readonly DateTime SeedDate = new(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
     public static List<Permission> ApplicationPermissions { get; } =
     [
         #region User
@@ -610,6 +614,18 @@ public class PermissionSeeds
         },
 
         #endregion
+
+        #region Admin Panel
+
+        new()
+        {
+            ParentId = null,
+            Id = 76,
+            UniqueName = PermissionName.AdminPanel,
+            DisplayName = "داشبورد مدیریت"
+        },
+
+        #endregion
     ];
 
     public static class RoleSeeds
@@ -621,7 +637,7 @@ public class PermissionSeeds
                 Id = 3,
                 RoleName = "ادمین کل",
                 IsDeleted = false,
-                CreateDate = DateTime.UtcNow
+                CreateDate = SeedDate
             }
         ];
     }
@@ -634,7 +650,7 @@ public class PermissionSeeds
                 {
                     Id = index + 1,
                     IsDeleted = false,
-                    CreateDate = DateTime.UtcNow
+                    CreateDate = SeedDate
                 })
                 .ToList();
     }

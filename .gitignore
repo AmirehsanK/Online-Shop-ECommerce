@@ -4,6 +4,15 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 /.vs
-/Infra.Data/Migrations
-/Web/appsettings.json
-appsettings.json
+.idea/
+
+# Secrets never go in appsettings*.json - use `dotnet user-secrets` or environment variables.
+# Local SQLite databases
+*.db
+*.db-shm
+*.db-wal
+
+# Test output
+TestResults/
+
+.DS_Store

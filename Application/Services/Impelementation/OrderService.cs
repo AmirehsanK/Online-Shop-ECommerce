@@ -1,4 +1,4 @@
-﻿using Application.Services.Interfaces;
+using Application.Services.Interfaces;
 using Domain.Entities.Orders;
 using Domain.Enums;
 using Domain.Interface;
@@ -10,95 +10,84 @@ namespace Application.Services.Impelementation;
 public class OrderService(
     IOrderRepository orderRepository,
     IProductColorRepository colorRepository,
-    IUserRepository userRepository,
-    ITransactionRepository transactionRepository) : IOrderService
+    IUserRepository userRepository) : IOrderService
 {
     #region Add Product to Order
 
     public async Task<AddToBasketResult> AddProductToOrder(int productId, int userId, int? productColorId,
         int count = 1)
     {
+        int colorPrice = 0;
+        if (productColorId.HasValue)
+        {
+            var color = await colorRepository.GetProductColorWithid(productColorId.Value);
+            if (color == null || color.ProductId != productId)
+                return AddToBasketResult.Failed;
+
+            // Take the unit first. Stock used to be decremented after the fact with no check,
+            // so it went negative and sold-out variants could still be bought.
+            if (!await colorRepository.TryReserveOneAsync(productColorId.Value))
+                return AddToBasketResult.OutOfStock;
+
+            colorPrice = color.Price;
+        }
+
         var openOrder = await orderRepository.GetUserLatestOpenOrder(userId);
         var existOrderDetail = await orderRepository.GetExistOrderDetail(productId, productColorId, openOrder.Id);
         if (existOrderDetail == null)
         {
-            var orderDetail = new OrderDetail
+            await orderRepository.AddOrderDetail(new OrderDetail
             {
                 ProductId = productId,
                 Count = count,
                 OrderId = openOrder.Id,
                 IsDeleted = false,
                 CreateDate = DateTime.Now,
-                ProductColorId = productColorId
-            };
-
-            if (productColorId.HasValue)
-            {
-                var colorPrice = await colorRepository.GetProductColorWithid(productColorId.Value);
-                var color = colorPrice.Price;
-                orderDetail.ColorPrice = color;
-            }
-
-            await orderRepository.AddOrderDetail(orderDetail);
-            await orderRepository.Save();
+                ProductColorId = productColorId,
+                ColorPrice = colorPrice
+            });
         }
         else
         {
-            existOrderDetail.Count = existOrderDetail.Count + 1;
+            existOrderDetail.Count += 1;
             orderRepository.UpdateOrderDetail(existOrderDetail);
-            await orderRepository.Save();
         }
 
+        await orderRepository.Save();
         return AddToBasketResult.Success;
     }
 
     #endregion
 
-    #region Update Product Color Count
-
-    public async Task MinuesColorCount(int productColorId)
+    public async Task<List<BasketDetailViewModel>> GetBasketDetail(int userId)
     {
-        var product = await colorRepository.GetProductColorWithid(productColorId);
-        product.Count = product.Count - 1;
-        colorRepository.UpdateProductColor(product);
-        await colorRepository.SaveChangeAsync();
-    }
+        var basket = await orderRepository.GetUserBasketDetail(userId);
+        if (basket == null) return [];
 
-    #endregion
-
-    public async Task<List<BasketDetailViewModel?>> GetBasketDetail(int userId)
-    {
-        var details = await orderRepository.GetUserBasketDetail(userId);
-        if (details == null) return null;
-        var detailss = new List<BasketDetailViewModel>();
-        string color = null;
-        string colorcodes = null;
-        foreach (var item in details.OrderDetails)
+        var details = new List<BasketDetailViewModel>();
+        foreach (var item in basket.OrderDetails.Where(d => !d.IsDeleted))
         {
-            var colorcode = await colorRepository.GetProductColorWithid(item.ProductColorId);
-            if (colorcode != null)
-            {
-                color = colorcode.Color.Title;
-                colorcodes = colorcode.Color.ColorCode;
-            }
+            // Looked up per row: these used to be declared outside the loop, so an item
+            // without a colour showed the colour of the item before it.
+            var productColor = item.ProductColorId.HasValue
+                ? await colorRepository.GetProductColorWithid(item.ProductColorId)
+                : null;
 
-            var newdetail = new BasketDetailViewModel
+            details.Add(new BasketDetailViewModel
             {
-                ColorCode = colorcodes,
+                ColorCode = productColor?.Color.ColorCode,
+                ColorName = productColor?.Color.Title,
                 Title = item.Product.ProductName,
                 ImageName = item.Product.ImageName,
                 FinallPrice = (item.ColorPrice + item.Product.Price) * item.Count,
                 OrderDetailId = item.Id,
-                ColorName = color,
                 ProductCount = item.Count,
                 ProductId = item.ProductId
-            };
-            detailss.Add(newdetail);
+            });
         }
 
-        return detailss;
+        return details;
     }
-
 
     #region User Address for Order
 
@@ -121,31 +110,5 @@ public class OrderService(
         user.Address = model.Address;
         userRepository.UpdateUser(user);
         await userRepository.SaveChangesAsync();
-    }
-
-    public async Task CloseOrder(int userId, int transId)
-    {
-        var order = await orderRepository.GetUserLatestOpenOrder(userId);
-        if (order.OrderDetails.Count != 0)
-        {
-            order.IsFinally = true;
-            order.PaymentDate = DateTime.Now;
-            orderRepository.UpdateOrder(order);
-            await orderRepository.Save();
-        }
-
-
-        var trans = await transactionRepository.GetTransactionById(transId);
-        trans.IsPay = true;
-        transactionRepository.UpdateTransaction(trans);
-        await transactionRepository.Save();
-    }
-
-    public async Task ChangeTransactionStatus(int transid)
-    {
-        var transaction = await transactionRepository.GetTransactionById(transid);
-        transaction.IsPay = false;
-        transactionRepository.UpdateTransaction(transaction);
-        await transactionRepository.Save();
     }
 }

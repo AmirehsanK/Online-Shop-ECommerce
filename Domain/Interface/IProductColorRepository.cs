@@ -29,5 +29,10 @@ public interface IProductColorRepository
     Task<ProductColor> GetProductColorWithid(int productColorid);
     Task<List<ProductColor>> GetProductColorAsync(int productId);
 
+    /// <summary>
+    /// Takes one unit of stock if any is left. Returns false when the variant is sold out.
+    /// </summary>
+    Task<bool> TryReserveOneAsync(int productColorId);
+
     #endregion
 }

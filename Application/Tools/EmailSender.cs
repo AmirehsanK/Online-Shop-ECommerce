@@ -1,26 +1,15 @@
-﻿using System.Net;
-using System.Net.Mail;
-
 namespace Application.Tools;
 
-public static class EmailSender
+/// <summary>Bound from the "Smtp" configuration section. Credentials belong in user secrets or environment variables.</summary>
+public class SmtpOptions
 {
-    public static void Send(string to, string subject, string body)
-    {
-        MailMessage mail = new MailMessage();
-        SmtpClient smtpServer = new SmtpClient();
-        mail.From = new MailAddress("your mail", "your name");
-        mail.To.Add(to);
-        mail.Subject = subject;
-        mail.Body = body;
-        mail.IsBodyHtml = true;
+    public const string SectionName = "Smtp";
 
-        smtpServer.Host = "smtp.gmail.com";
-        smtpServer.Port = 587;
-        smtpServer.EnableSsl = true;
-        smtpServer.Credentials = new System.Net.NetworkCredential("your mail", "password");
-
-        smtpServer.Send(mail);
-
-    }
+    public string? Host { get; set; }
+    public int Port { get; set; } = 587;
+    public bool EnableSsl { get; set; } = true;
+    public string? UserName { get; set; }
+    public string? Password { get; set; }
+    public string? FromAddress { get; set; }
+    public string FromName { get; set; } = "Online Shop";
 }

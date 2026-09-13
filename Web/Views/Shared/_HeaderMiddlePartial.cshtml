@@ -1,4 +1,21 @@
 @using Application.Tools
+@using Application.Services.Interfaces
+@inject IOrderService OrderService
+@inject ICheckoutService CheckoutService
+@{
+    // Real numbers for the header: this used to be the theme's placeholder cart (4 items,
+    // 83,678,000 toman) shown to everyone, signed in or not.
+    var basketCount = 0;
+    var basketTotal = 0;
+    var walletBalance = 0;
+    if (User.Identity?.IsAuthenticated == true)
+    {
+        var basket = await OrderService.GetBasketDetail(User.GetCurrentUserId());
+        basketCount = basket.Sum(b => b.ProductCount);
+        basketTotal = basket.Sum(b => b.FinallPrice);
+        walletBalance = await CheckoutService.GetWalletBalanceAsync(User.GetCurrentUserId());
+    }
+}
 <div class="page-header--middle">
     <div class="container">
         <div class="d-flex align-items-center justify-content-between">
@@ -69,7 +86,7 @@
                                         <li>
                                             <span class="label">کیف پول</span>
                                             <span class="detail">
-                                                            <span class="d-block">۰ <span
+                                                            <span class="d-block fa-num">@walletBalance.ToString("#,0") <span
                                                                     class="currency fs-7 fw-bold">تومان</span></span>
                                                             <a href="#"
                                                                class="link border-bottom-0 text-info fs-7 fw-bold">افزایش
@@ -98,13 +115,13 @@
                         <i class="ri-shopping-bag-2-fill icon"></i>
                         <span class="user-item-text">
                                         <span class="title">سبد خرید شما</span>
-                                        <span class="value fa-num">83,678,000 <span class="currency">تومان</span></span>
+                                        <span class="value fa-num">@basketTotal.ToString("#,0") <span class="currency">تومان</span></span>
                                     </span>
-                        <span class="counter">۴</span>
+                        <span class="counter fa-num">@basketCount</span>
                     </a>
                     <div class="mini-cart">
                         <div class="mini-cart-header">
-                            <span class="mini-cart-products-count fa-num">4 کالا</span>
+                            <span class="mini-cart-products-count fa-num">@basketCount کالا</span>
                             <a asp-area="UserPanel" asp-action="BasketDetail" asp-controller="Order"
                                class="btn btn-link px-0">
                                 مشاهده سبد خرید <i class="ri-arrow-left-s-fill"></i></a>
@@ -115,7 +132,7 @@
                         <div class="mini-cart-footer">
                             <div class="mini-cart-total">
                                 <span class="mini-cart-total-label">مبلغ قابل پرداخت:</span>
-                                <span class="mini-cart-total-value fa-num">83,678,000 <span
+                                <span class="mini-cart-total-value fa-num">@basketTotal.ToString("#,0") <span
                                         class="currency">تومان</span></span>
                             </div>
                             <partial name="_LoggedInUserP3"/>

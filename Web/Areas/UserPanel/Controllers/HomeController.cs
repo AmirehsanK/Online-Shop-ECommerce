@@ -48,10 +48,9 @@ public class HomeController(IUserService userService, INotificationService notif
 
         var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-        var user = await userService.GetUserForEditAsync(currentUserId);
+        var user = await userService.GetUserById(currentUserId);
 
-
-        if (!await passwordService.ComparePasswordAsync(user.Password!, changePassword.OldPassword))
+        if (!await passwordService.ComparePasswordAsync(user.Password, changePassword.OldPassword))
         {
             ModelState.AddModelError("oldPassword", "کلمه عبور فعلی صحیح نمیباشد");
             return View(changePassword);
@@ -102,7 +101,7 @@ public class HomeController(IUserService userService, INotificationService notif
     [HttpPost]
     public async Task<IActionResult> UserInfo(EditUserViewModel model)
     {
-        model.Id = User.GetCurrentUserId();
+        var userId = User.GetCurrentUserId();
 
         #region Validation
 
@@ -110,8 +109,8 @@ public class HomeController(IUserService userService, INotificationService notif
 
         #endregion
 
-        await userService.EditUserAsync(model);
-        return View();
+        await userService.UpdateProfileAsync(userId, model);
+        return View(await userService.GetUserForEditAsync(userId));
     }
 
     #endregion

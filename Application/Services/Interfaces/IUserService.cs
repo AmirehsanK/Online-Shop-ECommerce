@@ -70,4 +70,10 @@ public interface IUserService
     Task<EditUserViewModel> GetUserForEditAsync(int userid);
 
     #endregion
+
+    #region Profile
+
+    Task UpdateProfileAsync(int userId, EditUserViewModel model);
+
+    #endregion
 }

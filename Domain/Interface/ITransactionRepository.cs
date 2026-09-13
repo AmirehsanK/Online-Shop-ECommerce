@@ -11,4 +11,7 @@ public interface ITransactionRepository
     Task<Transaction> GetTransactionById(int transactionId);
     Task Save();
     Task<List<Transaction>> GetUserTransaction(int userId);
+
+    /// <summary>Money spent on orders: completed withdrawals that paid a basket.</summary>
+    Task<int> GetTotalSalesAsync();
 }

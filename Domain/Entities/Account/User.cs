@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using Domain.Entities.Common;
 using Domain.Entities.Discount;
 using Domain.Entities.Favorites;
@@ -18,7 +18,7 @@ public class User : BaseEntity
 
     [MaxLength(200)] public string Email { get; set; }
 
-    [MaxLength(11)] public string PhoneNumber { get; set; }
+    [MaxLength(11)] public string? PhoneNumber { get; set; }
 
     [MaxLength(200)] public string Password { get; set; }
 

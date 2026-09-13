@@ -1,31 +1,51 @@
-﻿using Application.Services.Interfaces;
+using System.Net;
+using System.Net.Mail;
+using Application.Services.Interfaces;
 using Application.Tools;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Application.Services.Impelementation;
 
-public class EmailSenderService(IConfiguration configuration): IEmailSender
-{  
-    private readonly string _domainLink = configuration["ApplicationSettings:DomainLink"]!;
-    
-    /// <summary>
-    /// Sends an email notification using the SendEmail utility.
-    /// </summary>
-    /// <param name="recipient">The email address of the recipient.</param>
-    /// <param name="subject">The subject of the email.</param>
-    /// <param name="body">The HTML or plain text body of the email.</param>
-    /// <returns>A task that represents the asynchronous send operation.</returns>
+/// <summary>
+/// Sends mail through the SMTP server in the "Smtp" configuration section. The address and
+/// password used to be hard-coded in source - and a real Gmail app password sat in the
+/// public history. Now they only ever come from configuration.
+/// </summary>
+public class EmailSenderService(IOptions<SmtpOptions> options) : IEmailSender
+{
+    private readonly SmtpOptions _options = options.Value;
+
+    public async Task SendEmailAsync(string recipient, string subject, string body)
+    {
+        using var mail = new MailMessage
+        {
+            From = new MailAddress(_options.FromAddress ?? _options.UserName!, _options.FromName),
+            Subject = subject,
+            Body = body,
+            IsBodyHtml = true
+        };
+        mail.To.Add(recipient);
+
+        using var client = new SmtpClient(_options.Host, _options.Port)
+        {
+            EnableSsl = _options.EnableSsl,
+            Credentials = new NetworkCredential(_options.UserName, _options.Password)
+        };
+        await client.SendMailAsync(mail);
+    }
+}
+
+/// <summary>
+/// Used when no SMTP host is configured: writes the email, links included, to the log so
+/// sign-up activation and password reset can be completed locally and in the Docker demo.
+/// </summary>
+public class LoggingEmailSender(ILogger<LoggingEmailSender> logger) : IEmailSender
+{
     public Task SendEmailAsync(string recipient, string subject, string body)
     {
-        try
-        {
-            EmailSender.Send(recipient, subject, body);
-            return Task.CompletedTask;
-        }
-        catch (Exception ex)
-        {
-            // Log the exception later
-            return Task.FromException(ex);
-        }
+        logger.LogWarning("SMTP is not configured; email not sent. To: {Recipient} Subject: {Subject} Body: {Body}",
+            recipient, subject, body);
+        return Task.CompletedTask;
     }
 }

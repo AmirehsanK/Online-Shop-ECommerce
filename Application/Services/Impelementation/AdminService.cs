@@ -1,13 +1,15 @@
-﻿using Application.Services.Interfaces;
+using Application.Services.Interfaces;
+using Domain.Interface;
 using Domain.ViewModel.User.Admin;
 
 namespace Application.Services.Impelementation;
 
 public class AdminService(
     ITicketService ticketService,
-    ICommentService commentService,
     IDiscountService discountService,
-    IContactUsService contactUsService) : IAdminService
+    IContactUsService contactUsService,
+    IOrderRepository orderRepository,
+    ITransactionRepository transactionRepository) : IAdminService
 {
     #region Admin Panel
 
@@ -19,7 +21,9 @@ public class AdminService(
 
         return new AdminPanelViewModel
         {
-            SalesAmount = 1532,
+            // Both used to be placeholders (sales was always 1532).
+            SalesAmount = await transactionRepository.GetTotalSalesAsync(),
+            OrderAmount = await orderRepository.CountPaidOrdersAsync(),
             ActiveDiscountList = discounts,
             TicketList = tickets,
             ContactUsList = contactUsList

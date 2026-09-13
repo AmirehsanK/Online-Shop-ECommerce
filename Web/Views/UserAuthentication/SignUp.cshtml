@@ -4,9 +4,13 @@
 }
 @inject IConfiguration Configuration
 @{
-    var siteKey = Configuration["ReCaptchaSettings:SiteKey"];
+    var siteKey = Configuration["GoogleRecaptcha:SiteKey"];
+    var recaptchaEnabled = Configuration.GetValue("GoogleRecaptcha:Enabled", true);
 }
-<script src="https://www.google.com/recaptcha/api.js"></script>
+@if (recaptchaEnabled)
+{
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+}
 <script>
     function onSubmit(token) {
         document.getElementById("RegisterForm_id").submit();
@@ -51,10 +55,10 @@
                     <!-- end of form-element -->
                     <!-- start of form-element -->
                     <div class="form-element-row mb-3">
-                        <button class="g-recaptcha btn btn-primary"
-                                data-sitekey="@siteKey"
-                                data-callback="onSubmit"
-                                data-action="submit">
+                        <button class="@(recaptchaEnabled ? "g-recaptcha " : "")btn btn-primary"
+                                data-sitekey="@(recaptchaEnabled ? siteKey : null)"
+                                data-callback="@(recaptchaEnabled ? "onSubmit" : null)"
+                                data-action="@(recaptchaEnabled ? "submit" : null)">
                             ثبت نام
                         </button>
                     </div>

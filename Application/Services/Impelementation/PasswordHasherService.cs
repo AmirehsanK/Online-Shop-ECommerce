@@ -1,60 +1,93 @@
-﻿using System.Security.Cryptography;
+using System.Globalization;
+using System.Security.Cryptography;
+using Application.Security;
 using Application.Services.Interfaces;
 
 namespace Application.Services.Impelementation;
 
+/// <summary>
+/// The one place passwords are hashed and checked.
+///
+/// The app used to have two hashers with incompatible formats: sign-up and login used
+/// <see cref="PasswordHasher"/> (PBKDF2-SHA1), while password reset and change used a
+/// "salt;hash" PBKDF2-SHA256 format. A reset therefore wrote a hash that login could not
+/// read, and changing a password never matched the old one. New hashes use a
+/// self-describing format that carries its own iteration count; both older formats are
+/// still accepted so existing accounts keep working, and <see cref="NeedsRehash"/> lets
+/// login upgrade them.
+/// </summary>
 public class PasswordHasherService : IPasswordHasher
 {
-    private const int SaltSize = 16; 
-    private const int KeySize = 32; 
-    // as it's a key security parameter. Higher is more secure but slower.
-    private const int Iterations = 10000;
-    private static readonly HashAlgorithmName _hashAlgorithmName = HashAlgorithmName.SHA256;
-    private const char Delimiter = ';';
+    private const string Prefix = "pbkdf2-sha256";
+    private const int SaltSize = 16;
+    private const int KeySize = 32;
 
-    public async Task<string> EncodePasswordAsync(string password)
+    // OWASP's current recommendation for PBKDF2-HMAC-SHA256.
+    public const int Iterations = 600_000;
+
+    private const int SemicolonFormatIterations = 10_000;
+
+    public Task<string> EncodePasswordAsync(string password)
     {
         if (string.IsNullOrEmpty(password))
-        {
             throw new ArgumentNullException(nameof(password));
-        }
 
-        return await Task.Run(() =>
-        {
-            var salt = RandomNumberGenerator.GetBytes(SaltSize);
-            var hash = Rfc2898DeriveBytes.Pbkdf2(password, salt, Iterations, _hashAlgorithmName, KeySize);
-            return string.Join(Delimiter, Convert.ToBase64String(salt), Convert.ToBase64String(hash));
-        });
+        var salt = RandomNumberGenerator.GetBytes(SaltSize);
+        var hash = Rfc2898DeriveBytes.Pbkdf2(password, salt, Iterations, HashAlgorithmName.SHA256, KeySize);
+        return Task.FromResult(
+            $"{Prefix}${Iterations.ToString(CultureInfo.InvariantCulture)}${Convert.ToBase64String(salt)}${Convert.ToBase64String(hash)}");
     }
 
-    public async Task<bool> VerifyPasswordAsync(string passwordHash, string inputPassword)
+    public Task<bool> VerifyPasswordAsync(string passwordHash, string inputPassword)
     {
         if (string.IsNullOrEmpty(passwordHash) || string.IsNullOrEmpty(inputPassword))
+            return Task.FromResult(false);
+
+        try
         {
-            return false; 
+            return Task.FromResult(Verify(passwordHash, inputPassword));
+        }
+        catch (FormatException)
+        {
+            return Task.FromResult(false);
+        }
+    }
+
+    public bool NeedsRehash(string passwordHash)
+    {
+        var parts = passwordHash.Split('$');
+        return parts.Length != 4
+               || parts[0] != Prefix
+               || !int.TryParse(parts[1], NumberStyles.None, CultureInfo.InvariantCulture, out var iterations)
+               || iterations < Iterations;
+    }
+
+    private static bool Verify(string passwordHash, string inputPassword)
+    {
+        if (passwordHash.StartsWith(Prefix + "$", StringComparison.Ordinal))
+        {
+            var parts = passwordHash.Split('$');
+            if (parts.Length != 4
+                || !int.TryParse(parts[1], NumberStyles.None, CultureInfo.InvariantCulture, out var iterations)
+                || iterations <= 0)
+                return false;
+
+            return FixedTimeMatch(inputPassword, parts[2], parts[3], iterations);
         }
 
-        return await Task.Run(() =>
-        {
-            var elements = passwordHash.Split(Delimiter);
-            if (elements.Length != 2)
-            {
-                return false; 
-            }
+        var semicolon = passwordHash.Split(';');
+        if (semicolon.Length == 2)
+            return FixedTimeMatch(inputPassword, semicolon[0], semicolon[1], SemicolonFormatIterations);
 
-            try
-            {
-                var salt = Convert.FromBase64String(elements[0]);
-                var hash = Convert.FromBase64String(elements[1]);
+        // Oldest format: accounts created through sign-up before the formats were unified.
+        return PasswordHasher.VerifyHashedPassword(passwordHash, inputPassword);
+    }
 
-                var hashInput = Rfc2898DeriveBytes.Pbkdf2(inputPassword, salt, Iterations, _hashAlgorithmName, KeySize);
-
-                return CryptographicOperations.FixedTimeEquals(hash, hashInput);
-            }
-            catch (FormatException)
-            {
-                return false;
-            }
-        });
+    private static bool FixedTimeMatch(string password, string saltBase64, string hashBase64, int iterations)
+    {
+        var salt = Convert.FromBase64String(saltBase64);
+        var expected = Convert.FromBase64String(hashBase64);
+        var actual = Rfc2898DeriveBytes.Pbkdf2(password, salt, iterations, HashAlgorithmName.SHA256, expected.Length);
+        return CryptographicOperations.FixedTimeEquals(expected, actual);
     }
 }

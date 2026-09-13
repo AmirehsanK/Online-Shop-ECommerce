@@ -1,4 +1,4 @@
-﻿namespace Infra.Data.Statics;
+namespace Infra.Data.Statics;
 
 public class PermissionName
 {
@@ -153,6 +153,12 @@ public class PermissionName
     public const string CreateRole = "CreateRole";
     public const string DeleteRole = "DeleteRole";
     public const string UpdateRole = "UpdateRole";
+
+    #endregion
+
+    #region Admin Panel
+
+    public const string AdminPanel = "AdminPanel";
 
     #endregion
 }

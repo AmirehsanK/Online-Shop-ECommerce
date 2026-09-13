@@ -1,42 +1,39 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>online-shop-web</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\IOC\IOC.csproj"/>
+        <ProjectReference Include="..\IOC\IOC.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="wwwroot\theme-assets\.DS_Store"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7"/>
-        <PackageReference Include="zarinpalsandbox" Version="2.0.4"/>
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="10.0.12" />
+        <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.18.0" />
+        <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.18.0" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.18.0" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.18.0" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.18.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\Subjects\Default.cshtml"/>
-        <_ContentIncludedByDefault Remove="Views\Components\ContactUs.cshtml\Default.cshtml"/>
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\BotLeftSliderBanner\Default.cshtml"/>
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\BotRightBanner\Default.cshtml"/>
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\BotSliderLeftBanner\Default.cshtml"/>
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\BotSliderRightBanner\Default.cshtml"/>
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\TopClosableBanner\Default.cshtml"/>
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\TopLeftSliderBanner\Default.cshtml"/>
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\TopSecondBanner\Default.cshtml"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="wwwroot\images\Banners\"/>
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\Subjects\Default.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Components\ContactUs.cshtml\Default.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\BotLeftSliderBanner\Default.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\BotRightBanner\Default.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\BotSliderLeftBanner\Default.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\BotSliderRightBanner\Default.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\TopClosableBanner\Default.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\TopLeftSliderBanner\Default.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\TopSecondBanner\Default.cshtml" />
     </ItemGroup>
 
 </Project>
