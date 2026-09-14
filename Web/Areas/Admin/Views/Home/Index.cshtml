@@ -2,6 +2,16 @@
 @using Domain.Enums
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Domain.ViewModel.User.Admin.AdminPanelViewModel
+@functions {
+    // The sales card is a narrow column: a full figure such as 72,000,000 overflows it,
+    // so large amounts are shown as millions or billions (the exact amount is in the tooltip).
+    private static (string Number, string Unit) CompactToman(long amount) => amount switch
+    {
+        >= 1_000_000_000 => ((amount / 1_000_000_000d).ToString("0.#"), "میلیارد تومان"),
+        >= 1_000_000 => ((amount / 1_000_000d).ToString("0.#"), "میلیون تومان"),
+        _ => (amount.ToString("#,0"), "تومان")
+    };
+}
 
 <!-- Content -->
 <div class="container-xxl flex-grow-1 container-p-y" dir="rtl">
@@ -29,7 +39,7 @@
         <div class="col-lg-4 col-md-4 order-1">
             <div class="row">
                 <div class="col-lg-6 col-md-12 col-6 mb-4">
-                    <div class="card">
+                    <div class="card h-100">
                         <div class="card-body pb-0">
                             <span class="d-block fw-semibold mb-1">سفارشات</span>
                             <h3 class="card-title mb-1">@Model.OrderAmount</h3>
@@ -38,7 +48,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 col-6 mb-4">
-                    <div class="card">
+                    <div class="card h-100">
                         <div class="card-body">
                             <div class="card-title d-flex align-items-start justify-content-between">
                                 <div class="avatar flex-shrink-0">
@@ -62,8 +72,9 @@
                                 </div>
                             </div>
                             <span>فروش</span>
-                            <h3 class="card-title text-nowrap mb-1">@Model.SalesAmount.ToString("#,0")</h3>
-                            <span class="currency">تومان</span>
+                            @{ var sales = CompactToman(Model.SalesAmount); }
+                            <h3 class="card-title text-nowrap mb-1" title="@Model.SalesAmount.ToString("#,0") تومان">@sales.Number</h3>
+                            <span class="currency">@sales.Unit</span>
                         </div>
                     </div>
                 </div>
