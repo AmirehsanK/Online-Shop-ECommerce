@@ -11,7 +11,6 @@ colour variants and stock, discounts, basket and checkout with card payment or a
 in-site wallet, customer panel with tickets and notifications, and an admin panel
 with role-based permissions.
 
-فروشگاه اینترنتی فارسی با ASP.NET Core MVC — سبد خرید، کیف پول، درگاه پرداخت و پنل مدیریت با سطح دسترسی.
 
 ![Browsing the store, signing in, adding to the basket, paying from the wallet, and the admin dashboard](docs/demo.gif)
 
