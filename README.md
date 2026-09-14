@@ -15,22 +15,31 @@ with role-based permissions.
 
 ![Browsing the store, signing in, adding to the basket, paying from the wallet, and the admin dashboard](docs/demo.gif)
 
-## Security and correctness fixes
+## What it does
 
-The shop worked in a happy-path demo but had holes that matter the moment it takes real
-money. Each fix below has a test that fails against the old code.
+**Storefront** — browse products through a category mega menu and category slider,
+filter the product list, and open a product page with its gallery, colour variants
+(each with its own price and stock), specifications, customer comments with ratings,
+and questions and answers. Discounted products appear on the home page with a
+countdown, and customers can keep a favourites list.
 
-| Problem | Impact | Fix |
-| --- | --- | --- |
-| The permission filter wrote a redirect but never set `context.Result`, so MVC ran the action anyway. The admin dashboard had no check at all. | **Any signed-in customer could perform every admin action**, and anyone could read tickets and contact messages. | Short-circuit with `ChallengeResult` / 403; dedicated `AdminPanel` permission. |
-| Wallet checkout was `GET ?amount=…&userId=…`. | Pay any basket for 1 toman, or with **someone else's wallet**. | `POST` with antiforgery; the server computes the total for the signed-in user. |
-| The wallet repository returned **every user's** transactions. | Each balance was the whole store's deposits. | Filter by user. |
-| The payment callback trusted the user id in the request and closed whatever basket was open. | Topping up a wallet marked the basket as paid; a card purchase also credited the wallet. | Payments carry their `OrderId`; the callback works only from the stored transaction, verifies the recorded amount, and is idempotent. |
-| Stock was decremented after adding to the basket, with no check. | Negative stock; sold-out items still sellable. | One conditional `UPDATE … WHERE Count > 0`. |
-| The profile form was bound to the admin edit model. | Customers could post `IsAdmin=true` or another person's email; saving the profile **deactivated the account**. | Separate profile update touching only profile fields. |
-| Two incompatible password hash formats; the edit form round-tripped the stored hash; admin-created users were stored in plain text. | Password reset and change never worked; editing a user locked them out. | One PBKDF2-SHA256 (600k) hasher that still reads both old formats and upgrades them at sign-in. |
-| Password-reset links never expired; the form posted to a non-existent action. | Reset was broken, and an old email link worked forever. | Working form, single-use token, no account enumeration. |
-| reCAPTCHA secret and SMTP credentials in source. | Secrets in a public repository. | Configuration only (user secrets / environment variables). |
+**Accounts** — sign up with email activation, sign in, and reset a forgotten password
+by email. Sign-in, sign-up and the contact form are protected by Google reCAPTCHA.
+
+**Basket and checkout** — add products in a chosen colour, review the basket, pick a
+delivery address, then pay by card through the payment gateway or from the wallet.
+Customers top up their wallet by card, and stock is reserved as items go into the
+basket.
+
+**Customer panel** — edit the profile, change the password, check the wallet balance,
+open support tickets and follow their replies, and read notifications from the store.
+
+**Admin panel** — manage products, categories, colours, specifications and galleries;
+home page slider and banners; discounts, including assigning them to products or
+users; users, roles and fine-grained permissions (each admin page and action is
+guarded by its own permission); support tickets, contact messages, comments,
+product questions, FAQs and notifications. The dashboard shows sales, paid orders,
+open tickets and active discounts.
 
 ## How it is put together
 
@@ -104,10 +113,10 @@ on start.
 dotnet test
 ```
 
-- **Checkout and payments:** server-side totals, balance checks, wallet isolation between users, card payments not crediting the wallet, idempotent callbacks, a basket edited mid-payment.
-- **Stock:** the last unit sells once; a colour from another product is rejected.
-- **Passwords:** both legacy formats verify and upgrade; reset works and is single-use; admin-created users are hashed; the stored hash never reaches a form.
-- **Over HTTP:** admin pages for anonymous users, customers and the administrator; profile mass assignment; wallet checkout ignoring a tampered amount and user id; antiforgery; a repeated gateway callback.
+- **Checkout and payments:** basket totals, wallet balances, card and wallet payments, wallet top-ups, repeated gateway callbacks, and a basket edited during payment.
+- **Stock:** reserving the last unit, and rejecting a colour that belongs to another product.
+- **Accounts:** password hashing, sign-in, single-use password reset links, and profile updates.
+- **Over HTTP:** the whole site booted in memory — admin permissions for visitors, customers and administrators, the profile form, wallet checkout, and the card payment callback.
 
 [CI](.github/workflows/ci.yml) runs the tests, checks that the migrations match the
 model, and brings the Docker Compose stack up until `/health/ready` passes.
